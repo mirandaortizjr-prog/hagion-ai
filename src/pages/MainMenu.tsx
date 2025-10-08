@@ -8,13 +8,34 @@ const MainMenu = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("assistants");
 
-  const assistants = [
+  const divineGuidance = [
     {
-      id: "divine",
-      name: "Divine Guidance",
+      id: "elohim",
+      name: "Elohim",
       image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=200&h=200&fit=crop",
       isPro: true,
     },
+    {
+      id: "christ",
+      name: "Christ",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+    {
+      id: "holy-spirit",
+      name: "Holy Spirit",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+    {
+      id: "trinity",
+      name: "Trinity",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+  ];
+
+  const assistants = [
     {
       id: "apologetics",
       name: "Miranda-Ortiz",
@@ -73,8 +94,9 @@ const MainMenu = () => {
       {/* Tabs */}
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-2 bg-muted/30">
+          <TabsList className="w-full grid grid-cols-3 bg-muted/30">
             <TabsTrigger value="assistants">Assistants</TabsTrigger>
+            <TabsTrigger value="divine">Divine Guidance</TabsTrigger>
             <TabsTrigger value="storytelling">Storytelling</TabsTrigger>
           </TabsList>
         </Tabs>
@@ -83,16 +105,45 @@ const MainMenu = () => {
       {/* Grid of Assistants */}
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
+          {/* Divine Guidance Cards */}
+          {activeTab === "divine" && divineGuidance.map((guide) => (
+            <div
+              key={guide.id}
+              className="flex flex-col items-center gap-3 cursor-pointer group"
+              onClick={() => navigate(`/divine/${guide.id}`)}
+            >
+              <div className="relative">
+                <div
+                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                    guide.isPro
+                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                      : "border-muted group-hover:border-primary"
+                  }`}
+                >
+                  <img
+                    src={guide.image}
+                    alt={guide.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {guide.isPro && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span>★</span> PRO
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium">{guide.name}</p>
+              </div>
+            </div>
+          ))}
+
           {/* Assistant Cards */}
-          {assistants.map((assistant) => (
+          {activeTab === "assistants" && assistants.map((assistant) => (
             <div
               key={assistant.id}
               className="flex flex-col items-center gap-3 cursor-pointer group"
-              onClick={() =>
-                assistant.id === "divine"
-                  ? navigate("/divine")
-                  : navigate(`/${assistant.id}`)
-              }
+              onClick={() => navigate(`/${assistant.id}`)}
             >
               <div className="relative">
                 <div
