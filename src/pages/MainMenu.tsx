@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Plus, MessageCircle, FileText, Clock } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import elohimImage from "@/assets/elohim-crown.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const MainMenu = () => {
     {
       id: "elohim",
       name: "Elohim",
-      image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=200&h=200&fit=crop",
+      image: elohimImage,
       isPro: true,
     },
     {
