@@ -1,123 +1,177 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Book, Shield, Atom, Heart, Brain, Landmark, Crown } from "lucide-react";
-import logo from "@/assets/logo.jpg";
+import { Settings, Plus, MessageCircle, FileText, Clock } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const MainMenu = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("assistants");
 
   const assistants = [
     {
       id: "divine",
-      title: "Divine Guidance",
-      description: "Speak with God, Christ, or the Holy Spirit",
-      icon: Book,
-      gradient: "from-primary to-accent",
+      name: "Divine Guidance",
+      image: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=200&h=200&fit=crop",
+      isPro: true,
     },
     {
       id: "apologetics",
-      title: "Apologetics",
-      description: "Miranda-Ortiz • Defender of the Faith",
-      icon: Shield,
-      gradient: "from-secondary to-blue-600",
+      name: "Miranda-Ortiz",
+      subtitle: "Biblical Apologetics",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      isPro: false,
     },
     {
       id: "science",
-      title: "Science Evidence",
-      description: "Sophia • God's Design in Nature",
-      icon: Atom,
-      gradient: "from-emerald-500 to-teal-600",
+      name: "Sophia",
+      subtitle: "Science Evidence",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+      isPro: true,
     },
     {
       id: "medical",
-      title: "Medical Evidence",
-      description: "Asher • Divine Design in Biology",
-      icon: Heart,
-      gradient: "from-rose-500 to-pink-600",
+      name: "Asher",
+      subtitle: "Medical Evidence",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
+      isPro: false,
     },
     {
       id: "psychology",
-      title: "Psychological Evidence",
-      description: "Caleb • The Mind of God's Image",
-      icon: Brain,
-      gradient: "from-purple-500 to-indigo-600",
+      name: "Caleb",
+      subtitle: "Psychology",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      isPro: true,
     },
     {
       id: "historical",
-      title: "Historical Evidence",
-      description: "Brooke • Faith Through History",
-      icon: Landmark,
-      gradient: "from-amber-600 to-orange-600",
+      name: "Brooke",
+      subtitle: "Historical Evidence",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+      isPro: false,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-white">
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="Hagion AI" className="w-10 h-10 rounded-full" />
-            <h1 className="text-2xl font-bold text-secondary">Hagion AI</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-muted-foreground">
-              3/5 free uses today
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="flex items-center justify-between px-4 py-4 border-b">
+        <Button variant="ghost" size="icon">
+          <Settings className="w-6 h-6" />
+        </Button>
+        <h1 className="text-2xl font-bold">Discover</h1>
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-full gap-1"
+          onClick={() => navigate("/premium")}
+        >
+          <span className="text-orange-500">★</span> PRO
+        </Button>
+      </header>
+
+      {/* Tabs */}
+      <div className="px-4 pt-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full grid grid-cols-4 bg-muted/30">
+            <TabsTrigger value="bots">My bots</TabsTrigger>
+            <TabsTrigger value="assistants">Assistants</TabsTrigger>
+            <TabsTrigger value="prompts">Hot Prompts</TabsTrigger>
+            <TabsTrigger value="storytelling">Storytelling</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
+      {/* Grid of Assistants */}
+      <div className="flex-1 overflow-auto px-4 py-6">
+        <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
+          {/* Create Assistant Card */}
+          <div className="flex flex-col items-center gap-3">
+            <div className="relative">
+              <div className="w-24 h-24 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center hover:border-primary transition-colors cursor-pointer">
+                <Plus className="w-8 h-8 text-muted-foreground" />
+              </div>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/premium")}
-              className="gap-2 border-primary text-primary hover:bg-primary hover:text-white"
+            <p className="text-center text-sm font-medium">Create your assistant</p>
+          </div>
+
+          {/* Assistant Cards */}
+          {assistants.map((assistant) => (
+            <div
+              key={assistant.id}
+              className="flex flex-col items-center gap-3 cursor-pointer group"
+              onClick={() =>
+                assistant.id === "divine"
+                  ? navigate("/divine")
+                  : navigate(`/${assistant.id}`)
+              }
             >
-              <Crown className="w-4 h-4" />
-              Upgrade
+              <div className="relative">
+                <div
+                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                    assistant.isPro
+                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                      : "border-muted group-hover:border-primary"
+                  }`}
+                >
+                  <img
+                    src={assistant.image}
+                    alt={assistant.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {assistant.isPro && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span>★</span> PRO
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium">{assistant.name}</p>
+                {assistant.subtitle && (
+                  <p className="text-xs text-muted-foreground">{assistant.subtitle}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Input */}
+      <div className="px-4 py-4 border-t bg-muted/30">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center gap-2 bg-background rounded-full px-4 py-3 shadow-sm">
+            <input
+              type="text"
+              placeholder="Ask your question"
+              className="flex-1 bg-transparent outline-none text-sm"
+            />
+            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+              <Plus className="w-5 h-5" />
             </Button>
           </div>
         </div>
-      </header>
+      </div>
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl font-bold text-secondary mb-4">
-            Choose Your Spiritual Guide
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Receive biblically-grounded wisdom and guidance through conversational AI,
-            rooted in Scripture and designed to strengthen your faith.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {assistants.map((assistant, index) => {
-            const Icon = assistant.icon;
-            return (
-              <Card
-                key={assistant.id}
-                className="p-6 hover:shadow-xl transition-all duration-300 cursor-pointer group animate-slide-up border-2 hover:border-primary"
-                style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => navigate(`/${assistant.id}`)}
-              >
-                <div className="flex flex-col items-center text-center gap-4">
-                  <div
-                    className={`w-16 h-16 rounded-full bg-gradient-to-br ${assistant.gradient} flex items-center justify-center group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-secondary mb-2">
-                      {assistant.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {assistant.description}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </main>
+      {/* Bottom Navigation */}
+      <nav className="flex items-center justify-around px-4 py-3 border-t bg-background">
+        <button className="flex flex-col items-center gap-1">
+          <div className="w-6 h-6 rounded-full bg-foreground" />
+          <span className="text-xs font-medium">Discover</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+          <MessageCircle className="w-6 h-6" />
+          <span className="text-xs">Chat</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+          <FileText className="w-6 h-6" />
+          <span className="text-xs">Prompts</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+          <Clock className="w-6 h-6" />
+          <span className="text-xs">History</span>
+        </button>
+      </nav>
     </div>
   );
 };
