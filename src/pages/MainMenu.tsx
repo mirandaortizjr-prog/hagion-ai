@@ -5,6 +5,7 @@ import { Settings, Plus, MessageCircle, FileText, Clock } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
+import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const MainMenu = () => {
     {
       id: "holy-spirit",
       name: "Holy Spirit",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
+      image: holySpiritImage,
       isPro: true,
     },
     {
