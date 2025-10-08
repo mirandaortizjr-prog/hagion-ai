@@ -35,6 +35,21 @@ const MainMenu = () => {
     },
   ];
 
+  const storytelling = [
+    {
+      id: "biblical-stories",
+      name: "Biblical Stories",
+      image: "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=200&h=200&fit=crop",
+      isPro: false,
+    },
+    {
+      id: "martyrs",
+      name: "Martyrs for the Faith",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+  ];
+
   const assistants = [
     {
       id: "apologetics",
@@ -170,6 +185,39 @@ const MainMenu = () => {
                 {assistant.subtitle && (
                   <p className="text-xs text-muted-foreground">{assistant.subtitle}</p>
                 )}
+              </div>
+            </div>
+          ))}
+
+          {/* Storytelling Cards */}
+          {activeTab === "storytelling" && storytelling.map((story) => (
+            <div
+              key={story.id}
+              className="flex flex-col items-center gap-3 cursor-pointer group"
+              onClick={() => navigate(`/storytelling/${story.id}`)}
+            >
+              <div className="relative">
+                <div
+                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                    story.isPro
+                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                      : "border-muted group-hover:border-primary"
+                  }`}
+                >
+                  <img
+                    src={story.image}
+                    alt={story.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {story.isPro && (
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span>★</span> PRO
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium">{story.name}</p>
               </div>
             </div>
           ))}
