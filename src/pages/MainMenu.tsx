@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
+import trinityImage from "@/assets/trinity-symbol.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const MainMenu = () => {
     {
       id: "trinity",
       name: "Trinity",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+      image: trinityImage,
       isPro: true,
     },
   ];
