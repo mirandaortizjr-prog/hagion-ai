@@ -73,10 +73,8 @@ const MainMenu = () => {
       {/* Tabs */}
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-4 bg-muted/30">
-            <TabsTrigger value="bots">My bots</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-2 bg-muted/30">
             <TabsTrigger value="assistants">Assistants</TabsTrigger>
-            <TabsTrigger value="prompts">Hot Prompts</TabsTrigger>
             <TabsTrigger value="storytelling">Storytelling</TabsTrigger>
           </TabsList>
         </Tabs>
@@ -85,16 +83,6 @@ const MainMenu = () => {
       {/* Grid of Assistants */}
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
-          {/* Create Assistant Card */}
-          <div className="flex flex-col items-center gap-3">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center hover:border-primary transition-colors cursor-pointer">
-                <Plus className="w-8 h-8 text-muted-foreground" />
-              </div>
-            </div>
-            <p className="text-center text-sm font-medium">Create your assistant</p>
-          </div>
-
           {/* Assistant Cards */}
           {assistants.map((assistant) => (
             <div
