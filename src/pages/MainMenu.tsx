@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, Plus, MessageCircle, FileText, Clock } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import elohimImage from "@/assets/elohim-crown.jpg";
+import christImage from "@/assets/christ-thorns.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const MainMenu = () => {
     {
       id: "christ",
       name: "Christ",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      image: christImage,
       isPro: true,
     },
     {
