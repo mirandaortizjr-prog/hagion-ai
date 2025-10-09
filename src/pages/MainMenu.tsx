@@ -14,7 +14,7 @@ import mirandaImage from "@/assets/miranda-avatar.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("divine");
+  const [activeTab, setActiveTab] = useState("assistants");
   const [inputValue, setInputValue] = useState("");
 
   const divineGuidance = [
