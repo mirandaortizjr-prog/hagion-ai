@@ -11,6 +11,7 @@ import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
 import mirandaImage from "@/assets/miranda-avatar.jpg";
+import thaddeuSImage from "@/assets/thaddeus-avatar.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const MainMenu = () => {
       id: "philosophical",
       name: "Thaddeus",
       subtitle: "Philosophical Evidence",
-      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&h=200&fit=crop",
+      image: thaddeuSImage,
       isPro: false,
     },
     {
