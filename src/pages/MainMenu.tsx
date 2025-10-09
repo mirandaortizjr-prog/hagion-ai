@@ -102,7 +102,7 @@ const MainMenu = () => {
         <Button variant="ghost" size="icon">
           <Settings className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Discover</h1>
+        <h1 className="text-2xl font-bold">Hagion AI</h1>
         <Button
           variant="outline"
           size="sm"
@@ -249,10 +249,6 @@ const MainMenu = () => {
 
       {/* Bottom Navigation */}
       <nav className="flex items-center justify-around px-4 py-3 border-t bg-background">
-        <button className="flex flex-col items-center gap-1">
-          <div className="w-6 h-6 rounded-full bg-foreground" />
-          <span className="text-xs font-medium">Discover</span>
-        </button>
         <button className="flex flex-col items-center gap-1 text-muted-foreground">
           <MessageCircle className="w-6 h-6" />
           <span className="text-xs">Chat</span>
