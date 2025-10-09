@@ -97,6 +97,13 @@ const MainMenu = () => {
       isPro: true,
     },
     {
+      id: "philosophical",
+      name: "Thaddeus",
+      subtitle: "Philosophical Evidence",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop",
+      isPro: false,
+    },
+    {
       id: "psychology",
       name: "Caleb",
       subtitle: "Psychology",
