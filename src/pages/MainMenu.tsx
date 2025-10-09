@@ -61,6 +61,12 @@ const MainMenu = () => {
       image: martyrsImage,
       isPro: true,
     },
+    {
+      id: "history-christianity",
+      name: t('history_christianity'),
+      image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=200&h=200&fit=crop",
+      isPro: false,
+    },
   ];
 
   const assistants = [

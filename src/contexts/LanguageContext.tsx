@@ -40,6 +40,7 @@ const translations: Record<Language, Record<string, string>> = {
     'trinity': 'Trinity',
     'biblical_stories': 'Biblical Stories',
     'martyrs_faith': 'Martyrs for the Faith',
+    'history_christianity': 'History of Christianity',
     
     // Navigation
     'chat': 'Chat',
@@ -155,6 +156,7 @@ const translations: Record<Language, Record<string, string>> = {
     'trinity': 'Trinidad',
     'biblical_stories': 'Historias Bíblicas',
     'martyrs_faith': 'Mártires de la Fe',
+    'history_christianity': 'Historia del Cristianismo',
     
     // Navigation
     'chat': 'Chat',

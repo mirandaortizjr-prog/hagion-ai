@@ -43,6 +43,12 @@ const StorytellingChat = () => {
       image: martyrsImage,
       greeting: "These are the stories of those who gave everything for their faith - raw accounts of courage, suffering, and unwavering devotion. Their testimonies are not easy, but they are true. Which martyr's story calls to you?"
     },
+    "history-christianity": {
+      name: t('history_christianity'),
+      description: "2000 Years of Faith",
+      image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=200&h=200&fit=crop",
+      greeting: "From the early church to the present day, I will share the remarkable journey of Christianity through the ages. These are the real events, movements, and figures that shaped the faith. What period of Christian history would you like to explore?"
+    },
   };
 
   const info = storyInfo[storyId || "biblical-stories"];
