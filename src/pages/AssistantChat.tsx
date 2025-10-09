@@ -3,9 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Mic } from "lucide-react";
+import { ArrowLeft, Send, Mic, Sparkles } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { useMessageLimit } from "@/hooks/useMessageLimit";
 
 interface Message {
   role: "user" | "assistant";
@@ -15,6 +17,8 @@ interface Message {
 const AssistantChat = () => {
   const navigate = useNavigate();
   const { language, t } = useLanguage();
+  const { toast } = useToast();
+  const { remaining, refetch: refetchUsage } = useMessageLimit();
   const { assistantId } = useParams();
   
   const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -113,6 +117,23 @@ const AssistantChat = () => {
         }),
       });
 
+      if (response.status === 429) {
+        const errorData = await response.json();
+        toast({
+          title: "Daily limit reached",
+          description: errorData.error || "You've used all 5 free messages today. Upgrade to PRO for unlimited access!",
+          variant: "destructive",
+          action: (
+            <Button variant="outline" size="sm" onClick={() => navigate('/premium')}>
+              Upgrade
+            </Button>
+          ),
+        });
+        setMessages((prev) => prev.slice(0, -1)); // Remove the empty assistant message
+        refetchUsage();
+        return;
+      }
+
       if (!response.ok || !response.body) {
         throw new Error("Failed to get response");
       }
@@ -163,6 +184,9 @@ const AssistantChat = () => {
           }
         }
       }
+      
+      // Refetch usage after successful message
+      refetchUsage();
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
@@ -184,7 +208,15 @@ const AssistantChat = () => {
           </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-secondary">{info.name}</h1>
-            <p className="text-sm text-muted-foreground">{info.subtitle}</p>
+            <p className="text-sm text-muted-foreground flex items-center gap-2">
+              {info.subtitle}
+              {remaining !== null && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                  <Sparkles className="w-3 h-3" />
+                  {remaining} free {remaining === 1 ? 'message' : 'messages'} left today
+                </span>
+              )}
+            </p>
           </div>
         </div>
       </header>
@@ -233,6 +265,16 @@ const AssistantChat = () => {
               <Send className="w-5 h-5" />
             </Button>
           </div>
+          {remaining !== null && remaining <= 2 && remaining > 0 && (
+            <p className="text-xs text-center mt-2 text-muted-foreground">
+              {remaining} free {remaining === 1 ? 'message' : 'messages'} remaining today. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited access!
+            </p>
+          )}
+          {remaining === 0 && (
+            <p className="text-xs text-center mt-2 text-destructive">
+              Daily limit reached. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited messages!
+            </p>
+          )}
         </div>
       </div>
     </div>
