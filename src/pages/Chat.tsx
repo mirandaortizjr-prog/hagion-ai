@@ -151,36 +151,15 @@ const Chat = () => {
         }),
       });
 
-      // Get remaining messages from header
-      const remaining = response.headers.get("X-RateLimit-Remaining");
-      if (remaining) {
-        setRemainingMessages(parseInt(remaining));
-      }
-
       if (response.status === 429) {
         const errorData = await response.json();
         toast({
-          title: "Daily limit reached",
-          description: `You've used all 5 free messages today. Resets in ${errorData.resetIn || "24 hours"}. Upgrade to Premium for unlimited messages!`,
-          variant: "destructive",
-          action: (
-            <Button size="sm" onClick={() => navigate('/premium')}>
-              Upgrade
-            </Button>
-          ),
-        });
-        return;
-      }
-
-      if (response.status === 429) {
-        const errorData = await response.json();
-        toast({
-          title: "Daily limit reached",
-          description: errorData.error || "You've used all 5 free messages today. Upgrade to PRO for unlimited access!",
+          title: t('daily_limit_reached'),
+          description: t('upgrade_unlimited'),
           variant: "destructive",
           action: (
             <Button variant="outline" size="sm" onClick={() => navigate('/premium')}>
-              Upgrade
+              {t('upgrade')}
             </Button>
           ),
         });
@@ -351,9 +330,9 @@ const Chat = () => {
           {remainingMessages !== null && (
             <div className="text-xs text-center text-muted-foreground mb-2">
               {remainingMessages > 0 ? (
-                `${remainingMessages} free message${remainingMessages === 1 ? '' : 's'} remaining today`
+                `${remainingMessages} ${t('messages_remaining')}`
               ) : (
-                <span className="text-destructive">Daily limit reached. <button onClick={() => navigate('/premium')} className="underline">Upgrade to Premium</button></span>
+                <span className="text-destructive">{t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="underline">{t('upgrade_premium')}</button></span>
               )}
             </div>
           )}
@@ -378,16 +357,16 @@ const Chat = () => {
           </div>
           {remaining !== null && remaining <= 2 && remaining > 0 && (
             <p className="text-xs text-center mt-2 text-muted-foreground">
-              {remaining} free {remaining === 1 ? 'message' : 'messages'} remaining today. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited access!
+              {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>
           )}
           {remaining === 0 && (
             <p className="text-xs text-center mt-2 text-destructive">
-              Daily limit reached. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited messages!
+              {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>
           )}
           <p className="text-xs text-muted-foreground text-center mt-2">
-            All guidance is rooted in Scripture and designed to strengthen your faith
+            {t('guidance_disclaimer')}
           </p>
         </div>
       </div>

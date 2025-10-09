@@ -120,16 +120,16 @@ const AssistantChat = () => {
       if (response.status === 429) {
         const errorData = await response.json();
         toast({
-          title: "Daily limit reached",
-          description: errorData.error || "You've used all 5 free messages today. Upgrade to PRO for unlimited access!",
+          title: t('daily_limit_reached'),
+          description: t('upgrade_unlimited'),
           variant: "destructive",
           action: (
             <Button variant="outline" size="sm" onClick={() => navigate('/premium')}>
-              Upgrade
+              {t('upgrade')}
             </Button>
           ),
         });
-        setMessages((prev) => prev.slice(0, -1)); // Remove the empty assistant message
+        setMessages((prev) => prev.slice(0, -1));
         refetchUsage();
         return;
       }
@@ -213,7 +213,7 @@ const AssistantChat = () => {
               {remaining !== null && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                   <Sparkles className="w-3 h-3" />
-                  {remaining} free {remaining === 1 ? 'message' : 'messages'} left today
+                  {remaining} {t('messages_remaining')}
                 </span>
               )}
             </p>
@@ -267,12 +267,12 @@ const AssistantChat = () => {
           </div>
           {remaining !== null && remaining <= 2 && remaining > 0 && (
             <p className="text-xs text-center mt-2 text-muted-foreground">
-              {remaining} free {remaining === 1 ? 'message' : 'messages'} remaining today. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited access!
+              {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>
           )}
           {remaining === 0 && (
             <p className="text-xs text-center mt-2 text-destructive">
-              Daily limit reached. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">Upgrade to PRO</button> for unlimited messages!
+              {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>
           )}
         </div>

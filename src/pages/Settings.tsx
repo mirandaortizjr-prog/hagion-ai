@@ -16,14 +16,14 @@ const Settings = () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to log out",
+        title: language === 'en' ? "Error" : "Error",
+        description: language === 'en' ? "Failed to log out" : "Error al cerrar sesión",
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Logged out",
-        description: "You've been successfully logged out",
+        title: language === 'en' ? "Logged out" : "Sesión cerrada",
+        description: language === 'en' ? "You've been successfully logged out" : "Has cerrado sesión exitosamente",
       });
       navigate("/auth");
     }
@@ -31,14 +31,14 @@ const Settings = () => {
 
   const settingsSections = [
     {
-      title: "Account",
+      title: language === 'en' ? "Account" : "Cuenta",
       items: [
-        { icon: User, label: "Profile", action: () => navigate("/profile") },
-        { icon: Bell, label: "Notifications", action: () => navigate("/notifications") },
+        { icon: User, label: language === 'en' ? "Profile" : "Perfil", action: () => navigate("/profile") },
+        { icon: Bell, label: language === 'en' ? "Notifications" : "Notificaciones", action: () => navigate("/notifications") },
       ],
     },
     {
-      title: "Preferences",
+      title: language === 'en' ? "Preferences" : "Preferencias",
       items: [
         { 
           icon: Shield, 
@@ -48,9 +48,9 @@ const Settings = () => {
       ],
     },
     {
-      title: "Support",
+      title: language === 'en' ? "Support" : "Soporte",
       items: [
-        { icon: HelpCircle, label: "Help & Support", action: () => navigate("/support") },
+        { icon: HelpCircle, label: language === 'en' ? "Help & Support" : "Ayuda y Soporte", action: () => navigate("/support") },
       ],
     },
   ];
@@ -62,7 +62,7 @@ const Settings = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Settings</h1>
+        <h1 className="text-2xl font-bold">{language === 'en' ? 'Settings' : 'Configuración'}</h1>
       </header>
 
       {/* Content */}
@@ -96,7 +96,7 @@ const Settings = () => {
               className="w-full flex items-center gap-4 px-4 py-4 hover:bg-muted/50 transition-colors text-left text-destructive"
             >
               <LogOut className="w-5 h-5" />
-              <span className="flex-1">Log Out</span>
+              <span className="flex-1">{language === 'en' ? 'Log Out' : 'Cerrar Sesión'}</span>
             </button>
           </Card>
 

@@ -3,9 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, BookOpen } from "lucide-react";
+import { ArrowLeft, Send, BookOpen, Sparkles } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { useMessageLimit } from "@/hooks/useMessageLimit";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
@@ -16,6 +19,9 @@ interface Message {
 
 const StorytellingChat = () => {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
+  const { toast } = useToast();
+  const { remaining, refetch: refetchUsage } = useMessageLimit();
   const { storyId } = useParams();
   
   const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -113,8 +119,27 @@ const StorytellingChat = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice: storyId,
           context: "storytelling",
+          language,
         }),
       });
+
+      if (response.status === 429) {
+        const errorData = await response.json();
+        toast({
+          title: t('daily_limit_reached'),
+          description: t('upgrade_unlimited'),
+          variant: "destructive",
+          action: (
+            <Button variant="outline" size="sm" onClick={() => navigate('/premium')}>
+              {t('upgrade')}
+            </Button>
+          ),
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        refetchUsage();
+        setIsLoading(false);
+        return;
+      }
 
       if (!response.ok || !response.body) {
         throw new Error("Failed to get response");
@@ -202,7 +227,15 @@ const StorytellingChat = () => {
           )}
           <div className="flex-1">
             <h1 className="text-xl font-bold text-secondary">{info.name}</h1>
-            <p className="text-sm text-muted-foreground">{info.description}</p>
+            <p className="text-sm text-muted-foreground flex items-center gap-2">
+              {info.description}
+              {remaining !== null && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                  <Sparkles className="w-3 h-3" />
+                  {remaining} {t('messages_remaining')}
+                </span>
+              )}
+            </p>
           </div>
         </div>
       </header>
@@ -260,7 +293,7 @@ const StorytellingChat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-              placeholder="Ask about a story..."
+              placeholder={t('type_message')}
               className="flex-1"
               disabled={isLoading}
             />
@@ -272,6 +305,16 @@ const StorytellingChat = () => {
               <Send className="w-5 h-5" />
             </Button>
           </div>
+          {remaining !== null && remaining <= 2 && remaining > 0 && (
+            <p className="text-xs text-center mt-2 text-muted-foreground">
+              {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
+            </p>
+          )}
+          {remaining === 0 && (
+            <p className="text-xs text-center mt-2 text-destructive">
+              {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
+            </p>
+          )}
         </div>
       </div>
     </div>

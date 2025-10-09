@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Plus, MessageCircle, FileText, Clock, Swords } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
@@ -16,6 +17,7 @@ import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("assistants");
   const [inputValue, setInputValue] = useState("");
 
@@ -135,7 +137,7 @@ const MainMenu = () => {
           className="rounded-full gap-1"
           onClick={() => navigate("/premium")}
         >
-          <span className="text-orange-500">★</span> PRO
+          <span className="text-orange-500">★</span> {t('pro')}
         </Button>
       </header>
 
@@ -143,9 +145,9 @@ const MainMenu = () => {
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="w-full grid grid-cols-3 bg-muted/30">
-            <TabsTrigger value="assistants">Assistants</TabsTrigger>
-            <TabsTrigger value="divine">Divine Guidance</TabsTrigger>
-            <TabsTrigger value="storytelling">Storytelling</TabsTrigger>
+            <TabsTrigger value="assistants">{t('assistants')}</TabsTrigger>
+            <TabsTrigger value="divine">{t('divine_guidance')}</TabsTrigger>
+            <TabsTrigger value="storytelling">{t('storytelling')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -268,7 +270,7 @@ const MainMenu = () => {
           <div className="flex items-center gap-2 bg-background rounded-full px-4 py-3 shadow-sm">
             <input
               type="text"
-              placeholder="Ask your question"
+              placeholder={t('ask_question')}
               className="flex-1 bg-transparent outline-none text-sm"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
@@ -301,21 +303,21 @@ const MainMenu = () => {
           onClick={() => navigate('/chat')}
         >
           <MessageCircle className="w-6 h-6" />
-          <span className="text-xs">Chat</span>
+          <span className="text-xs">{t('chat')}</span>
         </button>
         <button 
           className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => navigate('/saved')}
         >
           <FileText className="w-6 h-6" />
-          <span className="text-xs">Saved</span>
+          <span className="text-xs">{t('saved')}</span>
         </button>
         <button 
           className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => navigate('/history')}
         >
           <Clock className="w-6 h-6" />
-          <span className="text-xs">History</span>
+          <span className="text-xs">{t('history')}</span>
         </button>
       </nav>
     </div>
