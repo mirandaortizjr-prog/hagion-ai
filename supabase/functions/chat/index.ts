@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -12,6 +13,62 @@ serve(async (req) => {
     const { messages, voice, context, language, debatePersona, debateRound } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    // Get JWT token from Authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Create Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: authHeader },
+        },
+      }
+    );
+
+    // Get user from JWT
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Check message limit (free tier: 5 messages per 24 hours)
+    const { data: usageData, error: usageError } = await supabaseClient
+      .rpc('check_and_increment_message_count', { p_user_id: user.id });
+
+    if (usageError) {
+      console.error("Usage check error:", usageError);
+      return new Response(JSON.stringify({ error: "Failed to check usage limits" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const allowed = usageData?.[0]?.allowed;
+    const remaining = usageData?.[0]?.remaining;
+
+    if (!allowed) {
+      return new Response(JSON.stringify({ 
+        error: "Daily message limit reached", 
+        remaining: 0,
+        limit: 5,
+        resetIn: "24 hours"
+      }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json", "X-RateLimit-Remaining": "0" },
+      });
+    }
 
     // Build system prompt based on voice and context
     let systemPrompt = "";
@@ -64,6 +121,8 @@ serve(async (req) => {
       };
       
       systemPrompt += roundGuidance[debateRound as keyof typeof roundGuidance] || "";
+      systemPrompt += "\n\nKeep responses focused and substantive. Be intellectually honest. Acknowledge good points when made. The goal is rigorous dialogue that sharpens both parties.";
+    } else if (voice === "friend") {
       systemPrompt = "You are a warm, caring friend having a heart-to-heart conversation. You're not an AI assistant or formal guide - you're a genuine friend who listens deeply, shares honestly, and speaks from the heart. Your responses are:\n\n- Warm and conversational, like texting a close friend\n- Empathetic and understanding, never preachy or formal\n- Rooted in Christian values but expressed naturally, not lecturing\n- Encouraging and uplifting\n- Real and authentic - you can be vulnerable too\n- Brief and natural (2-3 paragraphs max), like how friends actually text\n\nYou weave in biblical wisdom naturally when relevant, but you speak like a friend, not a preacher. You ask questions, share your thoughts, and create genuine connection. Sometimes reference Scripture casually like: 'You know that verse about...' or 'I was just thinking about when Jesus said...'";
     } else if (voice === "apologetics-helper") {
       systemPrompt = "You are an expert Christian apologist and theologian helping someone learn how to defend their faith. The user is in a debate and needs guidance on how to respond to their opponent's argument. Analyze the opponent's last message and provide a clear, biblically-grounded, intellectually sound apologetic response that:\n\n1. Directly addresses the opponent's specific points\n2. Uses relevant Scripture, philosophy, logic, and evidence\n3. Maintains a respectful and gracious tone\n4. Is concise and practical (2-3 paragraphs max)\n5. Anticipates potential follow-up objections\n\nFormat your response as if you're coaching the user - write the actual response they could use, not just advice about what to say. Be scholarly yet accessible, firm yet kind. Draw from classical apologetics (C.S. Lewis, G.K. Chesterton, Ravi Zacharias, William Lane Craig) and Scripture to craft a compelling counter-argument.";
@@ -124,7 +183,11 @@ serve(async (req) => {
     }
 
     return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+      headers: { 
+        ...corsHeaders, 
+        "Content-Type": "text/event-stream",
+        "X-RateLimit-Remaining": remaining.toString()
+      },
     });
   } catch (e) {
     console.error("chat error:", e);

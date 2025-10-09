@@ -24,6 +24,7 @@ const Chat = () => {
   const voice = searchParams.get("voice") || locationState?.context || "elohim";
   const context = searchParams.get("context") || "throne";
   const historyId = searchParams.get("history");
+  const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   
@@ -147,6 +148,27 @@ const Chat = () => {
           language,
         }),
       });
+
+      // Get remaining messages from header
+      const remaining = response.headers.get("X-RateLimit-Remaining");
+      if (remaining) {
+        setRemainingMessages(parseInt(remaining));
+      }
+
+      if (response.status === 429) {
+        const errorData = await response.json();
+        toast({
+          title: "Daily limit reached",
+          description: `You've used all 5 free messages today. Resets in ${errorData.resetIn || "24 hours"}. Upgrade to Premium for unlimited messages!`,
+          variant: "destructive",
+          action: (
+            <Button size="sm" onClick={() => navigate('/premium')}>
+              Upgrade
+            </Button>
+          ),
+        });
+        return;
+      }
 
       if (!response.ok || !response.body) {
         throw new Error("Failed to get response");
@@ -298,6 +320,15 @@ const Chat = () => {
 
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-4xl px-4 py-4">
+          {remainingMessages !== null && (
+            <div className="text-xs text-center text-muted-foreground mb-2">
+              {remainingMessages > 0 ? (
+                `${remainingMessages} free message${remainingMessages === 1 ? '' : 's'} remaining today`
+              ) : (
+                <span className="text-destructive">Daily limit reached. <button onClick={() => navigate('/premium')} className="underline">Upgrade to Premium</button></span>
+              )}
+            </div>
+          )}
           <div className="flex gap-2">
             <Button variant="outline" size="icon" className="flex-shrink-0">
               <Mic className="w-5 h-5" />

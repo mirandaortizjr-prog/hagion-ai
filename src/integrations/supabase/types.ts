@@ -41,12 +41,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_message_usage: {
+        Row: {
+          created_at: string
+          id: string
+          last_reset_at: string
+          message_count: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_reset_at?: string
+          message_count?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_reset_at?: string
+          message_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_and_increment_message_count: {
+        Args: { p_user_id: string }
+        Returns: {
+          allowed: boolean
+          remaining: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
