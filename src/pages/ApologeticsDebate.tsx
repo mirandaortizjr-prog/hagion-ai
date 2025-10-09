@@ -91,19 +91,23 @@ const ApologeticsDebate = () => {
     }
   }, [messages]);
 
-  const selectRandomPersona = () => {
-    const randomIndex = Math.floor(Math.random() * personas.length);
-    const selected = personas[randomIndex];
-    setCurrentPersona(selected);
+  const selectPersona = (persona: Persona) => {
+    setCurrentPersona(persona);
     setDebateStarted(true);
     setRound('opening');
     
     const invocationMessage: Message = {
       role: 'assistant',
-      content: `⚔️ **Circle of Apologetics: Trial by Truth**\n\nYou have summoned **${selected.name}** to the arena.\n\n**Stance:** ${selected.title}\n**Tone:** ${selected.tone}\n**Challenge:** ${selected.challenge}\n\nPrepare yourself. The trial begins now.\n\n*Round 1: Opening Statement*\nState your position clearly. What truth do you defend?`
+      content: `⚔️ **Circle of Apologetics: Trial by Truth**\n\nYou have summoned **${persona.name}** to the arena.\n\n**Stance:** ${persona.title}\n**Tone:** ${persona.tone}\n**Challenge:** ${persona.challenge}\n\nPrepare yourself. The trial begins now.\n\n*Round 1: Opening Statement*\nState your position clearly. What truth do you defend?`
     };
     
     setMessages([invocationMessage]);
+  };
+
+  const selectRandomPersona = () => {
+    const randomIndex = Math.floor(Math.random() * personas.length);
+    const selected = personas[randomIndex];
+    selectPersona(selected);
   };
 
   const handleSend = async () => {
@@ -343,23 +347,32 @@ const ApologeticsDebate = () => {
             
             <div className="grid grid-cols-2 gap-3 mt-8">
               {personas.map((persona) => (
-                <div key={persona.id} className="p-4 rounded-lg border bg-card space-y-2">
+                <button
+                  key={persona.id}
+                  onClick={() => selectPersona(persona)}
+                  className="p-4 rounded-lg border bg-card space-y-2 hover:border-primary hover:bg-accent transition-colors text-left"
+                >
                   <h3 className={`font-bold ${persona.color}`}>{persona.name}</h3>
                   <p className="text-xs text-muted-foreground">{persona.title}</p>
                   <p className="text-xs italic">{persona.challenge}</p>
-                </div>
+                </button>
               ))}
             </div>
           </div>
 
-          <Button 
-            size="lg" 
-            className="gap-2"
-            onClick={selectRandomPersona}
-          >
-            <Swords className="w-5 h-5" />
-            Enter the Arena
-          </Button>
+          <div className="flex flex-col gap-3">
+            <Button 
+              size="lg" 
+              className="gap-2"
+              onClick={selectRandomPersona}
+            >
+              <Swords className="w-5 h-5" />
+              Random Opponent
+            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              Or click any opponent above to challenge them directly
+            </p>
+          </div>
         </div>
       </div>
     );
