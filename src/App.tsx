@@ -10,6 +10,7 @@ import DivineChat from "./pages/DivineChat";
 import Chat from "./pages/Chat";
 import Premium from "./pages/Premium";
 import AssistantChat from "./pages/AssistantChat";
+import StorytellingChat from "./pages/StorytellingChat";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/menu" element={<MainMenu />} />
           <Route path="/divine" element={<DivineGuidance />} />
           <Route path="/divine/:voiceId" element={<DivineChat />} />
+          <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/premium" element={<Premium />} />
           <Route path="/:assistantId" element={<AssistantChat />} />
