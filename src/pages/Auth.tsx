@@ -157,8 +157,18 @@ const Auth = () => {
             <img src={logo} alt="Hagion AI" className="w-20 h-20 rounded-full" />
           </div>
           <CardTitle className="text-3xl font-bold">Hagion AI</CardTitle>
-          <CardDescription>
-            {isLogin ? "Welcome back! Sign in to continue" : "Create an account to get started"}
+          <CardDescription className="text-base">
+            {isLogin ? (
+              <>
+                <span className="block font-semibold text-foreground mb-1">Sign In</span>
+                <span>Log into your existing account</span>
+              </>
+            ) : (
+              <>
+                <span className="block font-semibold text-foreground mb-1">Create New Account</span>
+                <span>Sign up to get started with Hagion AI</span>
+              </>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -210,20 +220,25 @@ const Auth = () => {
                   {isLogin ? "Signing in..." : "Creating account..."}
                 </>
               ) : (
-                <>{isLogin ? "Sign In" : "Sign Up"}</>
+                <>{isLogin ? "Sign In to Existing Account" : "Create New Account"}</>
               )}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-6 text-center">
+            <p className="text-sm text-muted-foreground mb-2">
+              {isLogin ? "New to Hagion AI?" : "Already have an account?"}
+            </p>
             <button
               onClick={() => {
                 setIsLogin(!isLogin);
                 setConfirmPassword("");
+                setEmail("");
+                setPassword("");
               }}
-              className="text-primary hover:underline"
+              className="text-primary hover:underline font-medium"
               disabled={isLoading}
             >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              {isLogin ? "Create a new account" : "Sign in to existing account"}
             </button>
           </div>
         </CardContent>
