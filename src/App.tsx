@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Splash from "./pages/Splash";
 import MainMenu from "./pages/MainMenu";
 import DivineGuidance from "./pages/DivineGuidance";
+import DivineChat from "./pages/DivineChat";
 import Chat from "./pages/Chat";
 import Premium from "./pages/Premium";
 import AssistantChat from "./pages/AssistantChat";
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<Splash />} />
           <Route path="/menu" element={<MainMenu />} />
           <Route path="/divine" element={<DivineGuidance />} />
+          <Route path="/divine/:voiceId" element={<DivineChat />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/premium" element={<Premium />} />
           <Route path="/:assistantId" element={<AssistantChat />} />
