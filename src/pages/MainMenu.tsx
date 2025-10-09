@@ -10,6 +10,7 @@ import trinityImage from "@/assets/trinity-symbol.jpg";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
+import mirandaImage from "@/assets/miranda-avatar.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const MainMenu = () => {
       id: "apologetics",
       name: "Miranda-Ortiz",
       subtitle: "Biblical Apologetics",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      image: mirandaImage,
       isPro: false,
     },
     {
