@@ -14,6 +14,7 @@ import brookeImage from "@/assets/brooke-avatar.jpg";
 import mirandaImage from "@/assets/miranda-avatar.jpg";
 import thaddeuSImage from "@/assets/thaddeus-avatar.jpg";
 import kenanImage from "@/assets/kenan-avatar.jpg";
+import raphaelImage from "@/assets/raphael-avatar.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
 const MainMenu = () => {
@@ -132,7 +133,7 @@ const MainMenu = () => {
       id: "artistic",
       name: "Raphael",
       subtitle: t('artistic_evidence'),
-      image: "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=200&h=200&fit=crop",
+      image: raphaelImage,
       isPro: true,
     },
     {
