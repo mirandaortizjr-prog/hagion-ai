@@ -121,6 +121,27 @@ const MainMenu = () => {
       image: brookeImage,
       isPro: false,
     },
+    {
+      id: "artistic",
+      name: "Raphael",
+      subtitle: t('artistic_evidence'),
+      image: "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+    {
+      id: "linguistic",
+      name: "Elias",
+      subtitle: t('linguistic_evidence'),
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop",
+      isPro: false,
+    },
+    {
+      id: "cultural",
+      name: "Naomi",
+      subtitle: t('cultural_evidence'),
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+      isPro: true,
+    },
   ];
 
   return (

@@ -27,6 +27,9 @@ const translations: Record<Language, Record<string, string>> = {
     'philosophical_evidence': 'Philosophical Evidence',
     'psychological_evidence': 'Psychological Evidence',
     'historical_evidence': 'Historical Evidence',
+    'artistic_evidence': 'Artistic Evidence',
+    'linguistic_evidence': 'Linguistic Evidence',
+    'cultural_evidence': 'Cultural Evidence',
     'biblical_storytelling': 'Biblical Storytelling',
     'psychology': 'Psychology',
     
@@ -139,6 +142,9 @@ const translations: Record<Language, Record<string, string>> = {
     'philosophical_evidence': 'Evidencia Filosófica',
     'psychological_evidence': 'Evidencia Psicológica',
     'historical_evidence': 'Evidencia Histórica',
+    'artistic_evidence': 'Evidencia Artística',
+    'linguistic_evidence': 'Evidencia Lingüística',
+    'cultural_evidence': 'Evidencia Cultural',
     'biblical_storytelling': 'Narrativa Bíblica',
     'psychology': 'Psicología',
     
