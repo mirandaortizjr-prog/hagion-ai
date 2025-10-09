@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -15,9 +15,11 @@ interface Message {
 
 const Chat = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { language, t } = useLanguage();
   const [searchParams] = useSearchParams();
-  const voice = searchParams.get("voice") || "elohim";
+  const locationState = location.state as { context?: string; question?: string } | null;
+  const voice = searchParams.get("voice") || locationState?.context || "elohim";
   const context = searchParams.get("context") || "throne";
   const historyId = searchParams.get("history");
   
@@ -39,6 +41,17 @@ const Chat = () => {
         }
       }
     }
+    
+    // Check if coming from Prompts button with friendly context
+    if (locationState?.context === 'friend' && locationState?.question) {
+      return [
+        {
+          role: "assistant",
+          content: locationState.question,
+        },
+      ];
+    }
+    
     return [
       {
         role: "assistant",
@@ -102,6 +115,7 @@ const Chat = () => {
     medical: "Asher",
     psychology: "Caleb",
     historical: "Brooke",
+    friend: "Friend Chat",
   };
 
   const handleSend = async () => {
