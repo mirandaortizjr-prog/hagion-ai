@@ -36,6 +36,7 @@ const AssistantChat = () => {
     medical: { name: "Asher", subtitle: "Medical Evidence" },
     psychology: { name: "Caleb", subtitle: "Psychological Evidence" },
     historical: { name: "Brooke", subtitle: "Historical Evidence" },
+    storytelling: { name: "David", subtitle: "Biblical Storytelling" },
   };
 
   const info = assistantInfo[assistantId || "apologetics"];
