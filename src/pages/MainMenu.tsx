@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
@@ -60,6 +60,14 @@ const MainMenu = () => {
   ];
 
   const assistants = [
+    {
+      id: "apologetics-debate",
+      name: "Debate Arena",
+      subtitle: "Trial by Truth",
+      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&h=200&fit=crop",
+      isPro: false,
+      isSpecial: true,
+    },
     {
       id: "apologetics",
       name: "Miranda-Ortiz",
@@ -174,6 +182,8 @@ const MainMenu = () => {
                   className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
                     assistant.isPro
                       ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                      : assistant.isSpecial
+                      ? "border-primary shadow-lg shadow-primary/20 group-hover:shadow-primary/40"
                       : "border-muted group-hover:border-primary"
                   }`}
                 >
@@ -190,7 +200,10 @@ const MainMenu = () => {
                 )}
               </div>
               <div className="text-center">
-                <p className="text-sm font-medium">{assistant.name}</p>
+                <p className="text-sm font-medium flex items-center justify-center gap-1">
+                  {assistant.isSpecial && <Swords className="w-3 h-3 text-primary" />}
+                  {assistant.name}
+                </p>
                 {assistant.subtitle && (
                   <p className="text-xs text-muted-foreground">{assistant.subtitle}</p>
                 )}

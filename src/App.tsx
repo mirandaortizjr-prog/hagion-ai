@@ -12,6 +12,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import Support from "./pages/Support";
+import ApologeticsDebate from "./pages/ApologeticsDebate";
 import DivineGuidance from "./pages/DivineGuidance";
 import DivineChat from "./pages/DivineChat";
 import Chat from "./pages/Chat";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/divine-guidance" element={<DivineGuidance />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />
+            <Route path="/apologetics-debate" element={<ApologeticsDebate />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />
