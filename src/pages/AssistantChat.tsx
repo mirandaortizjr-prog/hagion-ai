@@ -71,6 +71,7 @@ const AssistantChat = () => {
     apologetics: { name: "Miranda-Ortiz", subtitle: "Biblical Apologetics" },
     science: { name: "Sophia", subtitle: "Science Evidence" },
     medical: { name: "Asher", subtitle: "Medical Evidence" },
+    forensic: { name: "Kenan", subtitle: "Forensic Evidence" },
     psychology: { name: "Caleb", subtitle: "Psychological Evidence" },
     historical: { name: "Brooke", subtitle: "Historical Evidence" },
     storytelling: { name: "Story teller", subtitle: "Biblical Storytelling" },

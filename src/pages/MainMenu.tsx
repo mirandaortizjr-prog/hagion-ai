@@ -90,6 +90,13 @@ const MainMenu = () => {
       isPro: false,
     },
     {
+      id: "forensic",
+      name: "Kenan",
+      subtitle: "Forensic Evidence",
+      image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&h=200&fit=crop",
+      isPro: true,
+    },
+    {
       id: "psychology",
       name: "Caleb",
       subtitle: "Psychology",

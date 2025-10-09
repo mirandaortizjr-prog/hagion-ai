@@ -115,6 +115,7 @@ const Chat = () => {
     apologetics: "Miranda-Ortiz",
     science: "Sophia",
     medical: "Asher",
+    forensic: "Kenan",
     psychology: "Caleb",
     historical: "Brooke",
     friend: "Friend Chat",
