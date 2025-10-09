@@ -283,7 +283,7 @@ const MainMenu = () => {
         </button>
         <button 
           className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/chat')}
+          onClick={() => navigate('/history')}
         >
           <Clock className="w-6 h-6" />
           <span className="text-xs">History</span>

@@ -19,16 +19,70 @@ const Chat = () => {
   const [searchParams] = useSearchParams();
   const voice = searchParams.get("voice") || "elohim";
   const context = searchParams.get("context") || "throne";
+  const historyId = searchParams.get("history");
   
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "Peace be with you, beloved child. I am here to guide you with wisdom from Scripture. What weighs upon your heart today?",
-      scripture: "Psalm 46:1",
-    },
-  ]);
+  const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load from history if resuming a conversation
+    if (historyId) {
+      const stored = localStorage.getItem("chat_history");
+      if (stored) {
+        try {
+          const history = JSON.parse(stored);
+          const conversation = history.find((c: any) => c.id === historyId);
+          if (conversation) {
+            return conversation.messages;
+          }
+        } catch (error) {
+          console.error("Failed to load conversation:", error);
+        }
+      }
+    }
+    return [
+      {
+        role: "assistant",
+        content: "Peace be with you, beloved child. I am here to guide you with wisdom from Scripture. What weighs upon your heart today?",
+        scripture: "Psalm 46:1",
+      },
+    ];
+  });
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Save conversation to history whenever messages change
+  useEffect(() => {
+    if (messages.length > 1) {
+      const stored = localStorage.getItem("chat_history");
+      let history = [];
+      try {
+        history = stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error("Failed to parse history:", error);
+      }
+
+      const existingIndex = history.findIndex((c: any) => c.id === conversationId);
+      const userMessages = messages.filter(m => m.role === "user");
+      const preview = userMessages.length > 0 ? userMessages[0].content : "New conversation";
+
+      const conversationData = {
+        id: conversationId,
+        voice,
+        context,
+        timestamp: Date.now(),
+        messages: messages.map(m => ({ role: m.role, content: m.content })),
+        preview: preview.substring(0, 100),
+      };
+
+      if (existingIndex >= 0) {
+        history[existingIndex] = conversationData;
+      } else {
+        history.push(conversationData);
+      }
+
+      localStorage.setItem("chat_history", JSON.stringify(history));
+    }
+  }, [messages, conversationId, voice, context]);
 
   useEffect(() => {
     if (scrollRef.current) {
