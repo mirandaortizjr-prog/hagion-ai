@@ -61,6 +61,8 @@ serve(async (req) => {
       
       systemPrompt += roundGuidance[debateRound as keyof typeof roundGuidance] || "";
       systemPrompt += "\n\nKeep responses focused and substantive. Be intellectually honest. Acknowledge good points when made. The goal is rigorous dialogue that sharpens both parties.";
+    } else if (voice === "apologetics-helper") {
+      systemPrompt = "You are an expert Christian apologist and theologian helping someone learn how to defend their faith. The user is in a debate and needs guidance on how to respond to their opponent's argument. Analyze the opponent's last message and provide a clear, biblically-grounded, intellectually sound apologetic response that:\n\n1. Directly addresses the opponent's specific points\n2. Uses relevant Scripture, philosophy, logic, and evidence\n3. Maintains a respectful and gracious tone\n4. Is concise and practical (2-3 paragraphs max)\n5. Anticipates potential follow-up objections\n\nFormat your response as if you're coaching the user - write the actual response they could use, not just advice about what to say. Be scholarly yet accessible, firm yet kind. Draw from classical apologetics (C.S. Lewis, G.K. Chesterton, Ravi Zacharias, William Lane Craig) and Scripture to craft a compelling counter-argument.";
     } else {
       // Default for any other assistants
       systemPrompt = "You are a biblical assistant providing evidence-based insights grounded in Scripture. Your responses are clear, compassionate, and intellectually rigorous. Always connect your insights back to biblical truth.";

@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, Send, Swords, RefreshCw } from "lucide-react";
+import { ArrowLeft, Send, Swords, RefreshCw, Lightbulb } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { Card } from "@/components/ui/card";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -80,6 +81,8 @@ const ApologeticsDebate = () => {
   const [currentPersona, setCurrentPersona] = useState<Persona | null>(null);
   const [debateStarted, setDebateStarted] = useState(false);
   const [round, setRound] = useState<'opening' | 'rebuttal' | 'cross-examination' | 'closing'>('opening');
+  const [suggestedResponses, setSuggestedResponses] = useState<Record<number, string>>({});
+  const [loadingSuggestion, setLoadingSuggestion] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -231,6 +234,88 @@ const ApologeticsDebate = () => {
     setCurrentPersona(null);
     setMessages([]);
     setRound('opening');
+    setSuggestedResponses({});
+    setLoadingSuggestion(null);
+  };
+
+  const getSuggestedResponse = async (messageIndex: number) => {
+    if (!currentPersona) return;
+    
+    setLoadingSuggestion(messageIndex);
+
+    try {
+      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+      
+      // Get the conversation up to this point
+      const conversationSoFar = messages.slice(0, messageIndex + 1);
+      
+      const response = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          messages: conversationSoFar.map(m => ({ role: m.role, content: m.content })),
+          voice: "apologetics-helper",
+          debatePersona: currentPersona.id,
+          debateRound: round,
+        }),
+      });
+
+      if (!response.ok || !response.body) {
+        throw new Error("Failed to get suggested response");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let suggestedContent = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6);
+            if (data === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                suggestedContent += content;
+                setSuggestedResponses(prev => ({
+                  ...prev,
+                  [messageIndex]: suggestedContent
+                }));
+              }
+            } catch (e) {
+              // Invalid JSON, skip
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error getting suggestion:", error);
+      toast({
+        title: "Error",
+        description: "Failed to get suggested response. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingSuggestion(null);
+    }
+  };
+
+  const useSuggestedResponse = (messageIndex: number) => {
+    const suggestion = suggestedResponses[messageIndex];
+    if (suggestion) {
+      setInput(suggestion);
+    }
   };
 
   if (!debateStarted) {
@@ -306,24 +391,61 @@ const ApologeticsDebate = () => {
       <ScrollArea className="flex-1 px-4 py-6">
         <div className="max-w-3xl mx-auto space-y-6">
           {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-            >
+            <div key={index} className="space-y-2">
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
-                }`}
+                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                {message.role === "assistant" && (
-                  <p className={`text-xs font-bold mb-1 ${currentPersona?.color}`}>
-                    {currentPersona?.name}
-                  </p>
-                )}
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                <div
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted"
+                  }`}
+                >
+                  {message.role === "assistant" && (
+                    <p className={`text-xs font-bold mb-1 ${currentPersona?.color}`}>
+                      {currentPersona?.name}
+                    </p>
+                  )}
+                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                </div>
               </div>
+              
+              {message.role === "assistant" && index > 0 && (
+                <div className="flex justify-start">
+                  <div className="max-w-[80%] space-y-2">
+                    {!suggestedResponses[index] && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        onClick={() => getSuggestedResponse(index)}
+                        disabled={loadingSuggestion === index}
+                      >
+                        <Lightbulb className="w-4 h-4" />
+                        {loadingSuggestion === index ? "Getting help..." : "Show Suggested Response"}
+                      </Button>
+                    )}
+                    
+                    {suggestedResponses[index] && (
+                      <Card className="p-4 bg-accent/50 border-primary/20">
+                        <div className="flex items-start gap-2 mb-2">
+                          <Lightbulb className="w-4 h-4 text-primary mt-0.5" />
+                          <p className="text-xs font-semibold text-primary">Suggested Apologetic Response</p>
+                        </div>
+                        <p className="text-sm whitespace-pre-wrap mb-3">{suggestedResponses[index]}</p>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => useSuggestedResponse(index)}
+                        >
+                          Use This Response
+                        </Button>
+                      </Card>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
           {isLoading && (
