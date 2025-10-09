@@ -7,6 +7,7 @@ import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
 import trinityImage from "@/assets/trinity-symbol.jpg";
+import martyrsImage from "@/assets/martyrs-symbol.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const MainMenu = () => {
     {
       id: "martyrs",
       name: "Martyrs for the Faith",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+      image: martyrsImage,
       isPro: true,
     },
   ];
