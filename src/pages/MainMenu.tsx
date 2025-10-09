@@ -101,7 +101,7 @@ const MainMenu = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-4 border-b">
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <Settings className="w-6 h-6" />
         </Button>
         <h1 className="text-2xl font-bold">Hagion AI</h1>
