@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Send, Mic } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -13,6 +14,7 @@ interface Message {
 
 const AssistantChat = () => {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
   const { assistantId } = useParams();
   
   const [messages, setMessages] = useState<Message[]>([
@@ -39,7 +41,14 @@ const AssistantChat = () => {
     storytelling: { name: "Story teller", subtitle: "Biblical Storytelling" },
   };
 
-  const info = assistantInfo[assistantId || "apologetics"];
+  const info = assistantInfo[assistantId || "apologetics"] || { name: "Assistant", subtitle: "AI Assistant" };
+  
+  // Redirect if invalid assistant ID
+  useEffect(() => {
+    if (assistantId && !assistantInfo[assistantId]) {
+      navigate("/menu");
+    }
+  }, [assistantId, navigate]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -63,6 +72,7 @@ const AssistantChat = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice: assistantId,
           context: "",
+          language,
         }),
       });
 
@@ -175,7 +185,7 @@ const AssistantChat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask your question..."
+              placeholder={t('type_message')}
               className="flex-1"
             />
             <Button
