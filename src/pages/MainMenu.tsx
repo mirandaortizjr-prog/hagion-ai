@@ -24,25 +24,25 @@ const MainMenu = () => {
       id: "elohim",
       name: "Elohim",
       image: elohimImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "christ",
       name: "Christ",
       image: christImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "holy-spirit",
       name: "Holy Spirit",
       image: holySpiritImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "trinity",
       name: "Trinity",
       image: trinityImage,
-      isPro: true,
+      isPro: false,
     },
   ];
 
