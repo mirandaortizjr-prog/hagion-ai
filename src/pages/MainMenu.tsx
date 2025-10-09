@@ -271,7 +271,7 @@ const MainMenu = () => {
             <input
               type="text"
               placeholder={t('ask_question')}
-              className="flex-1 bg-transparent outline-none text-sm"
+              className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
