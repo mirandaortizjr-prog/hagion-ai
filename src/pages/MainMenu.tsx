@@ -289,10 +289,10 @@ const MainMenu = () => {
         </button>
         <button 
           className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/chat', { state: { context: 'friend', question: "Hey! Let's chat about whatever is on your heart today. What's been on your mind?" } })}
+          onClick={() => navigate('/saved')}
         >
           <FileText className="w-6 h-6" />
-          <span className="text-xs">Prompts</span>
+          <span className="text-xs">Saved</span>
         </button>
         <button 
           className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"

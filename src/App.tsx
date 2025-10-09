@@ -8,6 +8,7 @@ import Splash from "./pages/Splash";
 import MainMenu from "./pages/MainMenu";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
+import Saved from "./pages/Saved";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/support" element={<Support />} />
             <Route path="/history" element={<History />} />
+            <Route path="/saved" element={<Saved />} />
             <Route path="/divine-guidance" element={<DivineGuidance />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />

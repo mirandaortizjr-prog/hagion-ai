@@ -3,9 +3,10 @@ import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Mic } from "lucide-react";
+import { ArrowLeft, Send, Mic, Bookmark } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   role: "user" | "assistant";
@@ -17,6 +18,7 @@ const Chat = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { language, t } = useLanguage();
+  const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const locationState = location.state as { context?: string; question?: string } | null;
   const voice = searchParams.get("voice") || locationState?.context || "elohim";
@@ -206,6 +208,35 @@ const Chat = () => {
     }
   };
 
+  const handleSaveAnswer = (content: string, index: number) => {
+    const questionMessage = messages[index - 1];
+    const question = questionMessage?.role === "user" ? questionMessage.content : "";
+    
+    const savedAnswer = {
+      id: `saved_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      content,
+      question,
+      voice,
+      timestamp: Date.now(),
+    };
+
+    const stored = localStorage.getItem("saved_answers");
+    let savedAnswers = [];
+    try {
+      savedAnswers = stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error("Failed to parse saved answers:", error);
+    }
+
+    savedAnswers.push(savedAnswer);
+    localStorage.setItem("saved_answers", JSON.stringify(savedAnswers));
+
+    toast({
+      title: "Saved",
+      description: "Answer saved to your collection",
+    });
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b bg-card/50 backdrop-blur-sm">
@@ -245,6 +276,17 @@ const Chat = () => {
                   <p className="text-xs mt-2 opacity-70 italic">
                     — {message.scripture}
                   </p>
+                )}
+                {message.role === "assistant" && message.content && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-2 gap-2"
+                    onClick={() => handleSaveAnswer(message.content, index)}
+                  >
+                    <Bookmark className="w-4 h-4" />
+                    Save
+                  </Button>
                 )}
               </Card>
             </div>
