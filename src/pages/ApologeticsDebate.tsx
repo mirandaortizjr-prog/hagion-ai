@@ -325,18 +325,18 @@ const ApologeticsDebate = () => {
   if (!debateStarted) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <header className="flex items-center gap-4 px-4 py-4 border-b">
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-            <ArrowLeft className="w-6 h-6" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold flex items-center gap-2">
-              <Swords className="w-6 h-6 text-primary" />
-              Apologetics Arena
-            </h1>
-            <p className="text-sm text-muted-foreground">Trial by Truth</p>
-          </div>
-        </header>
+      <header className="flex items-center gap-4 px-4 py-4 border-b">
+        <Button variant="ghost" size="icon" onClick={() => navigate('/main-menu')}>
+          <ArrowLeft className="w-6 h-6" />
+        </Button>
+        <div className="flex-1">
+          <h1 className="text-xl font-bold flex items-center gap-2">
+            <Swords className="w-6 h-6 text-primary" />
+            Apologetics Arena
+          </h1>
+          <p className="text-sm text-muted-foreground">Trial by Truth</p>
+        </div>
+      </header>
 
         <div className="flex-1 flex flex-col items-center justify-center px-6 gap-8">
           <div className="text-center space-y-4 max-w-lg">
@@ -381,7 +381,7 @@ const ApologeticsDebate = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="flex items-center gap-4 px-4 py-4 border-b">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+        <Button variant="ghost" size="icon" onClick={() => navigate('/main-menu')}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">
