@@ -13,6 +13,7 @@ import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
 import mirandaImage from "@/assets/miranda-avatar.jpg";
 import thaddeuSImage from "@/assets/thaddeus-avatar.jpg";
+import kenanImage from "@/assets/kenan-avatar.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
 const MainMenu = () => {
@@ -103,7 +104,7 @@ const MainMenu = () => {
       id: "forensic",
       name: "Kenan",
       subtitle: t('forensic_evidence'),
-      image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200&h=200&fit=crop",
+      image: kenanImage,
       isPro: true,
     },
     {
