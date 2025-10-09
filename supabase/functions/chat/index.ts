@@ -9,7 +9,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, voice, context } = await req.json();
+    const { messages, voice, context, language } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -50,6 +50,11 @@ serve(async (req) => {
       systemPrompt += "\n\nContext: You are speaking from the cross, emphasizing grace, redemption, sacrifice, and reconciliation.";
     } else if (context === "spirit") {
       systemPrompt += "\n\nContext: You are speaking as the Spirit leads, emphasizing ongoing transformation, guidance, and sanctification in daily life.";
+    }
+
+    // Add language instruction
+    if (language === "es") {
+      systemPrompt += "\n\nIMPORTANT: Respond in Spanish. All your responses must be in Spanish language.";
     }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {

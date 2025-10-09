@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Send, Mic } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -14,6 +15,7 @@ interface Message {
 
 const Chat = () => {
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
   const [searchParams] = useSearchParams();
   const voice = searchParams.get("voice") || "elohim";
   const context = searchParams.get("context") || "throne";
@@ -63,6 +65,7 @@ const Chat = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice,
           context,
+          language,
         }),
       });
 
@@ -184,7 +187,7 @@ const Chat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Ask for guidance..."
+              placeholder={t('type_message')}
               className="flex-1"
             />
             <Button
