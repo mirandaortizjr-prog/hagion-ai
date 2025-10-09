@@ -4,17 +4,37 @@ import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut } from "lucide-react"
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Logged out",
+        description: "You've been successfully logged out",
+      });
+      navigate("/auth");
+    }
+  };
 
   const settingsSections = [
     {
       title: "Account",
       items: [
-        { icon: User, label: "Profile", action: () => {} },
-        { icon: Bell, label: "Notifications", action: () => {} },
+        { icon: User, label: "Profile", action: () => navigate("/profile") },
+        { icon: Bell, label: "Notifications", action: () => navigate("/notifications") },
       ],
     },
     {
@@ -30,7 +50,7 @@ const Settings = () => {
     {
       title: "Support",
       items: [
-        { icon: HelpCircle, label: "Help & Support", action: () => {} },
+        { icon: HelpCircle, label: "Help & Support", action: () => navigate("/support") },
       ],
     },
   ];
@@ -72,7 +92,7 @@ const Settings = () => {
 
           <Card>
             <button
-              onClick={() => {}}
+              onClick={handleLogout}
               className="w-full flex items-center gap-4 px-4 py-4 hover:bg-muted/50 transition-colors text-left text-destructive"
             >
               <LogOut className="w-5 h-5" />

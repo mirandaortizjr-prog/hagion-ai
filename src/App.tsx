@@ -8,6 +8,10 @@ import Splash from "./pages/Splash";
 import MainMenu from "./pages/MainMenu";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import Support from "./pages/Support";
 import DivineGuidance from "./pages/DivineGuidance";
 import DivineChat from "./pages/DivineChat";
 import Chat from "./pages/Chat";
@@ -31,7 +35,11 @@ const App = () => (
             <Route path="/" element={<Navigate to="/splash" replace />} />
             <Route path="/splash" element={<Splash />} />
             <Route path="/main-menu" element={<MainMenu />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/support" element={<Support />} />
             <Route path="/history" element={<History />} />
             <Route path="/divine-guidance" element={<DivineGuidance />} />
             <Route path="/chat" element={<Chat />} />
