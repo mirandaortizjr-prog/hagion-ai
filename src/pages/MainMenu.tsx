@@ -100,7 +100,7 @@ const MainMenu = () => {
       id: "philosophical",
       name: "Thaddeus",
       subtitle: "Philosophical Evidence",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&h=200&fit=crop",
       isPro: false,
     },
     {
