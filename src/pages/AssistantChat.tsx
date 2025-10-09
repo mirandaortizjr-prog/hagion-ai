@@ -46,7 +46,7 @@ const AssistantChat = () => {
   // Redirect if invalid assistant ID
   useEffect(() => {
     if (assistantId && !assistantInfo[assistantId]) {
-      navigate("/menu");
+      navigate("/main-menu");
     }
   }, [assistantId, navigate]);
 
@@ -142,7 +142,7 @@ const AssistantChat = () => {
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/menu")}>
+          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="flex-1">
