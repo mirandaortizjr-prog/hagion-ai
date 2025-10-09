@@ -12,6 +12,7 @@ import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
 import mirandaImage from "@/assets/miranda-avatar.jpg";
 import thaddeuSImage from "@/assets/thaddeus-avatar.jpg";
+import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const MainMenu = () => {
     {
       id: "biblical-stories",
       name: "Biblical Stories",
-      image: "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=200&h=200&fit=crop",
+      image: biblicalScrollImage,
       isPro: false,
     },
     {

@@ -7,6 +7,7 @@ import { ArrowLeft, Send, BookOpen } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
+import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,6 +28,7 @@ const StorytellingChat = () => {
     "biblical-stories": {
       name: "Biblical Stories",
       description: "Raw, Unfiltered Truth",
+      image: biblicalScrollImage,
       greeting: "I will tell you the stories of Scripture as they were written - unfiltered, raw, and true. These are not sanitized tales, but the real accounts of faith, struggle, sin, and redemption. What story would you like to hear?"
     },
     "martyrs": {
