@@ -72,14 +72,14 @@ const AssistantChat = () => {
   }, [messages, conversationId, assistantId]);
 
   const assistantInfo: Record<string, { name: string; subtitle: string }> = {
-    apologetics: { name: "Miranda-Ortiz", subtitle: "Biblical Apologetics" },
-    science: { name: "Sophia", subtitle: "Science Evidence" },
-    medical: { name: "Asher", subtitle: "Medical Evidence" },
-    forensic: { name: "Kenan", subtitle: "Forensic Evidence" },
-    philosophical: { name: "Thaddeus", subtitle: "Philosophical Evidence" },
-    psychology: { name: "Caleb", subtitle: "Psychological Evidence" },
-    historical: { name: "Brooke", subtitle: "Historical Evidence" },
-    storytelling: { name: "Story teller", subtitle: "Biblical Storytelling" },
+    apologetics: { name: "Miranda-Ortiz", subtitle: t('biblical_apologetics') },
+    science: { name: "Sophia", subtitle: t('science_evidence') },
+    medical: { name: "Asher", subtitle: t('medical_evidence') },
+    forensic: { name: "Kenan", subtitle: t('forensic_evidence') },
+    philosophical: { name: "Thaddeus", subtitle: t('philosophical_evidence') },
+    psychology: { name: "Caleb", subtitle: t('psychological_evidence') },
+    historical: { name: "Brooke", subtitle: t('historical_evidence') },
+    storytelling: { name: "Story teller", subtitle: t('biblical_storytelling') },
   };
 
   const info = assistantInfo[assistantId || "apologetics"] || { name: "Assistant", subtitle: "AI Assistant" };

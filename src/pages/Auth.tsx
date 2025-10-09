@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Loader2 } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 
 const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -51,8 +53,8 @@ const Auth = () => {
     
     if (!validateEmail(email)) {
       toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
+        title: t('invalid_email'),
+        description: t('invalid_email_desc'),
         variant: "destructive",
       });
       return;
@@ -60,8 +62,8 @@ const Auth = () => {
 
     if (!validatePassword(password)) {
       toast({
-        title: "Invalid password",
-        description: "Password must be at least 6 characters long",
+        title: t('invalid_password'),
+        description: t('invalid_password_desc'),
         variant: "destructive",
       });
       return;
@@ -69,8 +71,8 @@ const Auth = () => {
 
     if (!isLogin && password !== confirmPassword) {
       toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match",
+        title: t('passwords_no_match'),
+        description: t('passwords_no_match_desc'),
         variant: "destructive",
       });
       return;
@@ -88,13 +90,13 @@ const Auth = () => {
         if (error) {
           if (error.message.includes("Invalid login credentials")) {
             toast({
-              title: "Login failed",
-              description: "Invalid email or password",
+              title: t('login_failed'),
+              description: t('invalid_credentials'),
               variant: "destructive",
             });
           } else {
             toast({
-              title: "Error",
+              title: t('error'),
               description: error.message,
               variant: "destructive",
             });
@@ -103,8 +105,8 @@ const Auth = () => {
         }
 
         toast({
-          title: "Welcome back!",
-          description: "You've successfully logged in",
+          title: t('welcome_back'),
+          description: t('login_success'),
         });
       } else {
         const redirectUrl = `${window.location.origin}/`;
@@ -120,13 +122,13 @@ const Auth = () => {
         if (error) {
           if (error.message.includes("already registered")) {
             toast({
-              title: "Account exists",
-              description: "This email is already registered. Please log in instead.",
+              title: t('account_exists'),
+              description: t('account_exists_desc'),
               variant: "destructive",
             });
           } else {
             toast({
-              title: "Error",
+              title: t('error'),
               description: error.message,
               variant: "destructive",
             });
@@ -135,13 +137,13 @@ const Auth = () => {
         }
 
         toast({
-          title: "Account created!",
-          description: "Welcome to Hagion AI",
+          title: t('account_created'),
+          description: t('welcome_hagion'),
         });
       }
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('error'),
         description: error.message || "An unexpected error occurred",
         variant: "destructive",
       });
@@ -167,17 +169,17 @@ const Auth = () => {
             setConfirmPassword("");
           }}>
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="signin" disabled={isLoading}>Sign In</TabsTrigger>
-              <TabsTrigger value="signup" disabled={isLoading}>Sign Up</TabsTrigger>
+              <TabsTrigger value="signin" disabled={isLoading}>{t('sign_in')}</TabsTrigger>
+              <TabsTrigger value="signup" disabled={isLoading}>{t('sign_up')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="signin">
               <CardDescription className="text-center mb-6">
-                Log into your existing account
+                {t('signin_description')}
               </CardDescription>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t('email')}</Label>
                   <Input
                     id="email"
                     type="email"
@@ -189,7 +191,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t('password')}</Label>
                   <Input
                     id="password"
                     type="password"
@@ -205,10 +207,10 @@ const Auth = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing in...
+                      {t('signing_in')}
                     </>
                   ) : (
-                    "Sign In"
+                    t('sign_in')
                   )}
                 </Button>
               </form>
@@ -216,11 +218,11 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <CardDescription className="text-center mb-6">
-                Create a new account to get started
+                {t('signup_description')}
               </CardDescription>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email">{t('email')}</Label>
                   <Input
                     id="signup-email"
                     type="email"
@@ -232,7 +234,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
+                  <Label htmlFor="signup-password">{t('password')}</Label>
                   <Input
                     id="signup-password"
                     type="password"
@@ -245,7 +247,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">{t('confirm_password')}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -261,10 +263,10 @@ const Auth = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating account...
+                      {t('creating_account')}
                     </>
                   ) : (
-                    "Create Account"
+                    t('create_account')
                   )}
                 </Button>
               </form>
