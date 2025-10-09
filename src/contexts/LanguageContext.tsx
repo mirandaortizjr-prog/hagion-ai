@@ -21,7 +21,7 @@ const translations: Record<Language, Record<string, string>> = {
     'debate_arena': 'Debate Arena',
     'trial_by_truth': 'Trial by Truth',
     'biblical_apologetics': 'Biblical Apologetics',
-    'science_evidence': 'Science Evidence',
+    'science_evidence': 'Scientific Evidence',
     'medical_evidence': 'Medical Evidence',
     'forensic_evidence': 'Forensic Evidence',
     'philosophical_evidence': 'Philosophical Evidence',
