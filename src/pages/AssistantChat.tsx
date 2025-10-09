@@ -17,6 +17,7 @@ const AssistantChat = () => {
   const { language, t } = useLanguage();
   const { assistantId } = useParams();
   
+  const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -31,6 +32,40 @@ const AssistantChat = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Save conversation to history
+  useEffect(() => {
+    if (messages.length > 1) {
+      const stored = localStorage.getItem("chat_history");
+      let history = [];
+      try {
+        history = stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error("Failed to parse history:", error);
+      }
+
+      const existingIndex = history.findIndex((c: any) => c.id === conversationId);
+      const userMessages = messages.filter(m => m.role === "user");
+      const preview = userMessages.length > 0 ? userMessages[0].content : "New conversation";
+
+      const conversationData = {
+        id: conversationId,
+        voice: assistantId || "apologetics",
+        context: "assistant",
+        timestamp: Date.now(),
+        messages: messages.map(m => ({ role: m.role, content: m.content })),
+        preview: preview.substring(0, 100),
+      };
+
+      if (existingIndex >= 0) {
+        history[existingIndex] = conversationData;
+      } else {
+        history.push(conversationData);
+      }
+
+      localStorage.setItem("chat_history", JSON.stringify(history));
+    }
+  }, [messages, conversationId, assistantId]);
 
   const assistantInfo: Record<string, { name: string; subtitle: string }> = {
     apologetics: { name: "Miranda-Ortiz", subtitle: "Biblical Apologetics" },

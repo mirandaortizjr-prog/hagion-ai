@@ -17,6 +17,7 @@ const StorytellingChat = () => {
   const navigate = useNavigate();
   const { storyId } = useParams();
   
+  const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +53,40 @@ const StorytellingChat = () => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Save conversation to history
+  useEffect(() => {
+    if (messages.length > 1) {
+      const stored = localStorage.getItem("chat_history");
+      let history = [];
+      try {
+        history = stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error("Failed to parse history:", error);
+      }
+
+      const existingIndex = history.findIndex((c: any) => c.id === conversationId);
+      const userMessages = messages.filter(m => m.role === "user");
+      const preview = userMessages.length > 0 ? userMessages[0].content : "New conversation";
+
+      const conversationData = {
+        id: conversationId,
+        voice: storyId || "biblical-stories",
+        context: "storytelling",
+        timestamp: Date.now(),
+        messages: messages.map(m => ({ role: m.role, content: m.content })),
+        preview: preview.substring(0, 100),
+      };
+
+      if (existingIndex >= 0) {
+        history[existingIndex] = conversationData;
+      } else {
+        history.push(conversationData);
+      }
+
+      localStorage.setItem("chat_history", JSON.stringify(history));
+    }
+  }, [messages, conversationId, storyId]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -154,7 +189,7 @@ const StorytellingChat = () => {
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/menu")}>
+          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
           {info.image && (

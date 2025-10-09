@@ -92,9 +92,16 @@ const Chat = () => {
 
   const voiceNames: Record<string, string> = {
     elohim: "Elohim",
-    emmanuel: "Emmanuel",
-    ruach: "Ruach",
-    trinity: "The Trinity",
+    christ: "Christ",
+    "holy-spirit": "Holy Spirit",
+    trinity: "Trinity",
+    "biblical-stories": "Biblical Stories",
+    martyrs: "Martyrs for the Faith",
+    apologetics: "Miranda-Ortiz",
+    science: "Sophia",
+    medical: "Asher",
+    psychology: "Caleb",
+    historical: "Brooke",
   };
 
   const handleSend = async () => {
@@ -189,7 +196,7 @@ const Chat = () => {
     <div className="h-screen flex flex-col bg-background">
       <header className="border-b bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/divine")}>
+          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="flex-1">
