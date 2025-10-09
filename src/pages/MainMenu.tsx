@@ -8,6 +8,7 @@ import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
 import trinityImage from "@/assets/trinity-symbol.jpg";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
+import sophiaImage from "@/assets/sophia-avatar.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const MainMenu = () => {
       id: "science",
       name: "Sophia",
       subtitle: "Science Evidence",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop",
+      image: sophiaImage,
       isPro: true,
     },
     {
