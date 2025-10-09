@@ -15,6 +15,7 @@ import mirandaImage from "@/assets/miranda-avatar.jpg";
 const MainMenu = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("divine");
+  const [inputValue, setInputValue] = useState("");
 
   const divineGuidance = [
     {
@@ -240,8 +241,24 @@ const MainMenu = () => {
               type="text"
               placeholder="Ask your question"
               className="flex-1 bg-transparent outline-none text-sm"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && inputValue.trim()) {
+                  navigate('/chat', { state: { question: inputValue } });
+                }
+              }}
             />
-            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="rounded-full h-8 w-8"
+              onClick={() => {
+                if (inputValue.trim()) {
+                  navigate('/chat', { state: { question: inputValue } });
+                }
+              }}
+            >
               <Plus className="w-5 h-5" />
             </Button>
           </div>
@@ -250,15 +267,24 @@ const MainMenu = () => {
 
       {/* Bottom Navigation */}
       <nav className="flex items-center justify-around px-4 py-3 border-t bg-background">
-        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+        <button 
+          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => navigate('/chat')}
+        >
           <MessageCircle className="w-6 h-6" />
           <span className="text-xs">Chat</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+        <button 
+          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => navigate('/chat')}
+        >
           <FileText className="w-6 h-6" />
           <span className="text-xs">Prompts</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-muted-foreground">
+        <button 
+          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => navigate('/chat')}
+        >
           <Clock className="w-6 h-6" />
           <span className="text-xs">History</span>
         </button>
