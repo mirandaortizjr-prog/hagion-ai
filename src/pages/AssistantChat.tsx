@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -106,11 +107,23 @@ const AssistantChat = () => {
     setInput("");
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast({
+          title: "Login required",
+          description: "Please log in to continue.",
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        navigate("/auth");
+        return;
+      }
+
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
@@ -134,6 +147,27 @@ const AssistantChat = () => {
         });
         setMessages((prev) => prev.slice(0, -1));
         refetchUsage();
+        return;
+      }
+
+      if (response.status === 402) {
+        toast({
+          title: "Credits required",
+          description: "Please add credits to continue.",
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        return;
+      }
+
+      if (response.status === 401) {
+        toast({
+          title: "Login required",
+          description: "Please log in to continue.",
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        navigate("/auth");
         return;
       }
 

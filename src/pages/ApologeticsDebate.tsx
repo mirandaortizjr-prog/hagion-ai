@@ -121,11 +121,24 @@ const ApologeticsDebate = () => {
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
       
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast({
+          title: "Login required",
+          description: "Please log in to start the debate.",
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        navigate('/auth');
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
@@ -150,6 +163,16 @@ const ApologeticsDebate = () => {
           description: "Please add credits to continue.",
           variant: "destructive",
         });
+        return;
+      }
+
+      if (response.status === 401) {
+        toast({
+          title: "Login required",
+          description: "Please log in to continue.",
+          variant: "destructive",
+        });
+        navigate('/auth');
         return;
       }
 
@@ -253,11 +276,21 @@ const ApologeticsDebate = () => {
       // Get the conversation up to this point
       const conversationSoFar = messages.slice(0, messageIndex + 1);
       
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast({
+          title: "Login required",
+          description: "Please log in to continue.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           messages: conversationSoFar.map(m => ({ role: m.role, content: m.content })),
@@ -266,6 +299,16 @@ const ApologeticsDebate = () => {
           debateRound: round,
         }),
       });
+
+      if (response.status === 401) {
+        toast({
+          title: "Login required",
+          description: "Please log in to continue.",
+          variant: "destructive",
+        });
+        navigate('/auth');
+        return;
+      }
 
       if (!response.ok || !response.body) {
         throw new Error("Failed to get suggested response");
