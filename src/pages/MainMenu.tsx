@@ -17,6 +17,7 @@ import kenanImage from "@/assets/kenan-avatar.jpg";
 import raphaelImage from "@/assets/raphael-avatar.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 import historyChristianityImage from "@/assets/history-christianity.jpg";
+import atheistDebateImage from "@/assets/atheist-debate.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const MainMenu = () => {
       id: "apologetics-debate",
       name: t('debate_arena'),
       subtitle: t('trial_by_truth'),
-      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=200&h=200&fit=crop",
+      image: atheistDebateImage,
       isPro: false,
       isSpecial: true,
     },
