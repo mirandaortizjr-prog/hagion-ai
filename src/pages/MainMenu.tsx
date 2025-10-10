@@ -16,6 +16,7 @@ import thaddeuSImage from "@/assets/thaddeus-avatar.jpg";
 import kenanImage from "@/assets/kenan-avatar.jpg";
 import raphaelImage from "@/assets/raphael-avatar.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
+import historyChristianityImage from "@/assets/history-christianity.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const MainMenu = () => {
     {
       id: "history-christianity",
       name: t('history_christianity'),
-      image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=200&h=200&fit=crop",
+      image: historyChristianityImage,
       isPro: false,
     },
   ];
