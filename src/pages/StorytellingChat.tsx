@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
+import historyChristianityImage from "@/assets/history-christianity.jpg";
 
 interface Message {
   role: "user" | "assistant";
@@ -46,7 +47,7 @@ const StorytellingChat = () => {
     "history-christianity": {
       name: t('history_christianity'),
       description: "2000 Years of Faith",
-      image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=200&h=200&fit=crop",
+      image: historyChristianityImage,
       greeting: "From the early church to the present day, I will share the remarkable journey of Christianity through the ages. These are the real events, movements, and figures that shaped the faith. What period of Christian history would you like to explore?"
     },
   };
