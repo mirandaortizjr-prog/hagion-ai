@@ -445,14 +445,14 @@ const ApologeticsDebate = () => {
       </header>
 
       <ScrollArea className="flex-1 px-4 py-6">
-        <div className="max-w-3xl mx-auto space-y-6">
+        <div className="max-w-6xl mx-auto space-y-6">
           {messages.map((message, index) => (
             <div key={index} className="space-y-2">
               <div
                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                  className={`max-w-[95%] rounded-2xl px-4 py-3 ${
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted"

@@ -259,7 +259,7 @@ const DivineChat = () => {
       </header>
 
       <ScrollArea ref={scrollRef} className="flex-1 px-4">
-        <div className="container mx-auto max-w-4xl py-6 space-y-6">
+        <div className="container mx-auto max-w-6xl py-6 space-y-6">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -274,7 +274,7 @@ const DivineChat = () => {
                 </Avatar>
               )}
               <Card
-                className={`max-w-[80%] p-4 ${
+                className={`max-w-[95%] p-4 ${
                   message.role === "user"
                     ? "bg-primary text-white"
                     : "bg-card border-primary/20"
@@ -303,7 +303,7 @@ const DivineChat = () => {
       </ScrollArea>
 
       <div className="border-t bg-card/80 backdrop-blur-sm">
-        <div className="container mx-auto max-w-4xl px-4 py-4">
+        <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex gap-2">
             <Input
               value={input}
