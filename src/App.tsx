@@ -45,6 +45,7 @@ const App = () => (
             <Route path="/history" element={<History />} />
             <Route path="/saved" element={<Saved />} />
             <Route path="/divine-guidance" element={<DivineGuidance />} />
+            <Route path="/divine/:voiceId" element={<DivineChat />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />
             <Route path="/apologetics-debate" element={<ApologeticsDebate />} />
