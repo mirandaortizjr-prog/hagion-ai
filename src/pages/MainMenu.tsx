@@ -191,7 +191,7 @@ const MainMenu = () => {
             <div
               key={guide.id}
               className="flex flex-col items-center gap-3 cursor-pointer group"
-              onClick={() => navigate(`/divine/${guide.id}`)}
+              onClick={() => navigate('/divine-guidance')}
             >
               <div className="relative">
                 <div
