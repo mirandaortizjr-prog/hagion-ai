@@ -390,13 +390,11 @@ const MainMenu = () => {
                       aria-label={`About ${assistant.name}`}
                       className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
                       onClick={(e) => e.stopPropagation()}
-                      onMouseDown={(e) => e.stopPropagation()}
-                      onPointerDown={(e) => e.stopPropagation()}
                     >
                       <Info className="w-3 h-3" />
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className="max-w-xs pointer-events-auto" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                  <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
                     <p className="text-sm">{assistant.description}</p>
                   </PopoverContent>
                 </Popover>
