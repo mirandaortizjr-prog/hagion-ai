@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import sophiaAvatar from "@/assets/sophia-avatar.jpg";
+import raphaelAvatar from "@/assets/raphael-avatar.jpg";
+import thaddeuAvatar from "@/assets/thaddeus-avatar.jpg";
+import brookeAvatar from "@/assets/brooke-avatar.jpg";
+import kenanAvatar from "@/assets/kenan-avatar.jpg";
+import mirandaAvatar from "@/assets/miranda-avatar.jpg";
 
 const LogosCircle = () => {
   const navigate = useNavigate();
@@ -13,6 +20,7 @@ const LogosCircle = () => {
       name: "Foundations of Logos",
       description: "Basic logic principles, deductive/inductive reasoning",
       icon: BookOpen,
+      avatar: sophiaAvatar,
       tone: "Grounding, clear",
       isPro: false,
     },
@@ -21,6 +29,7 @@ const LogosCircle = () => {
       name: "Fallacies & Shadows",
       description: "Identifying and ritualizing logical fallacies",
       icon: Shield,
+      avatar: raphaelAvatar,
       tone: "Protective, revealing",
       isPro: false,
     },
@@ -29,6 +38,7 @@ const LogosCircle = () => {
       name: "Apologetics Logic",
       description: "Structuring theological arguments",
       icon: Scroll,
+      avatar: thaddeuAvatar,
       tone: "Bold, reverent",
       isPro: true,
     },
@@ -37,6 +47,7 @@ const LogosCircle = () => {
       name: "Witnessing with Wisdom",
       description: "Emotional logic, conversational discernment",
       icon: MessageSquare,
+      avatar: brookeAvatar,
       tone: "Gentle, strategic",
       isPro: false,
     },
@@ -45,6 +56,7 @@ const LogosCircle = () => {
       name: "Logic in Scripture",
       description: "How biblical texts use logic and structure",
       icon: Scroll,
+      avatar: kenanAvatar,
       tone: "Mystical, analytical",
       isPro: true,
     },
@@ -53,6 +65,7 @@ const LogosCircle = () => {
       name: "Emotional Logic",
       description: "How feelings and truth interact",
       icon: Heart,
+      avatar: mirandaAvatar,
       tone: "Reflective, intimate",
       isPro: false,
     },
@@ -138,9 +151,12 @@ const LogosCircle = () => {
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="p-3 rounded-lg bg-violet-500/10">
-                            <Icon className="w-6 h-6 text-violet-500" />
-                          </div>
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage src={track.avatar} alt={track.name} />
+                            <AvatarFallback>
+                              <Icon className="w-6 h-6 text-violet-500" />
+                            </AvatarFallback>
+                          </Avatar>
                           <div>
                             <CardTitle className="text-lg flex items-center gap-2">
                               {track.name}
