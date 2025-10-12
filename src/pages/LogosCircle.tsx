@@ -150,18 +150,21 @@ const LogosCircle = () => {
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="h-12 w-12">
-                            <AvatarImage src={track.avatar} alt={track.name} />
-                            <AvatarFallback>
-                              <Icon className="w-6 h-6 text-violet-500" />
-                            </AvatarFallback>
-                          </Avatar>
+                        <div className="flex items-center gap-4">
+                          <div className="relative group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+                            <Avatar className="relative h-16 w-16 border-2 border-violet-500/20 ring-2 ring-violet-500/10 transition-all duration-300 group-hover:scale-110 group-hover:border-violet-500/40">
+                              <AvatarImage src={track.avatar} alt={track.name} className="object-cover" />
+                              <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-600">
+                                <Icon className="w-8 h-8 text-white" />
+                              </AvatarFallback>
+                            </Avatar>
+                          </div>
                           <div>
                             <CardTitle className="text-lg flex items-center gap-2">
                               {track.name}
                               {track.isPro && (
-                                <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">
+                                <span className="text-xs bg-gradient-to-r from-orange-500 to-amber-500 text-white px-2 py-0.5 rounded-full animate-pulse">
                                   ★ PRO
                                 </span>
                               )}
