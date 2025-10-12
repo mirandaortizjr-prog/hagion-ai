@@ -133,6 +133,7 @@ const LogosCircle = () => {
                   <Card
                     key={track.id}
                     className="cursor-pointer hover:shadow-lg transition-all hover:border-violet-500/50"
+                    onClick={() => navigate(`/logos-circle/track/${track.id}`)}
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -234,6 +235,7 @@ const LogosCircle = () => {
                   <Card
                     key={path.id}
                     className="cursor-pointer hover:shadow-lg transition-all overflow-hidden group"
+                    onClick={() => navigate(`/logos-circle/path/${path.id}`)}
                   >
                     <div className={`h-2 bg-gradient-to-r ${path.color}`} />
                     <CardHeader>
