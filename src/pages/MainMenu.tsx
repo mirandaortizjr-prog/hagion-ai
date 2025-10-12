@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
@@ -25,6 +26,15 @@ const MainMenu = () => {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("assistants");
   const [inputValue, setInputValue] = useState("");
+  const [openSections, setOpenSections] = useState({
+    storytelling: true,
+    tracks: true,
+    paths: true,
+  });
+
+  const toggleSection = (section: keyof typeof openSections) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
 
   const divineGuidance = [
     {
@@ -417,61 +427,129 @@ const MainMenu = () => {
           ))}
 
           {/* Hagion University Cards */}
-          {activeTab === "hagion-university" && hagionUniversity.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.id}
-                className="flex flex-col items-center gap-3 cursor-pointer group"
-                onClick={() => {
-                  if (item.type === "track" || item.type === "path") {
-                    navigate(`/logos-circle/${item.type}/${item.id}`);
-                  } else {
-                    navigate(`/storytelling/${item.id}`);
-                  }
-                }}
-              >
-                <div className="relative">
-                  <div
-                    className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
-                      item.isPro
-                        ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                        : item.isSpecial
-                        ? "border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-gradient-to-br from-violet-500 to-purple-600"
-                        : item.image
-                        ? "border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600"
-                        : "border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10"
-                    } ${item.image || item.icon ? "flex items-center justify-center" : ""}`}
-                  >
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : Icon ? (
-                      <Icon className="w-10 h-10 text-violet-500" />
-                    ) : (
-                      <div className="text-white text-center">
-                        <div className="text-2xl font-bold">Λ</div>
-                      </div>
-                    )}
+          {activeTab === "hagion-university" && (
+            <div className="col-span-3 space-y-6">
+              {/* Storytelling Section */}
+              <Collapsible open={openSections.storytelling} onOpenChange={() => toggleSection("storytelling")}>
+                <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Scroll className="w-5 h-5 text-teal-500" />
+                    Storytelling
+                  </h3>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${openSections.storytelling ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pt-4">
+                  <div className="grid grid-cols-3 gap-6">
+                    {hagionUniversity.filter(item => item.type === "storytelling").map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex flex-col items-center gap-3 cursor-pointer group"
+                          onClick={() => navigate(`/storytelling/${item.id}`)}
+                        >
+                          <div className="relative">
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600 transition-all">
+                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            </div>
+                            {item.isPro && (
+                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span>★</span> PRO
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium">{item.name}</p>
+                            {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  {item.isPro && (
-                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <span>★</span> PRO
-                    </div>
-                  )}
-                </div>
-                <div className="text-center">
-                  <p className="text-sm font-medium">{item.name}</p>
-                  {item.subtitle && (
-                    <p className="text-xs text-muted-foreground">{item.subtitle}</p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                </CollapsibleContent>
+              </Collapsible>
+
+              {/* Curriculum Tracks Section */}
+              <Collapsible open={openSections.tracks} onOpenChange={() => toggleSection("tracks")}>
+                <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-violet-500" />
+                    Curriculum Tracks
+                  </h3>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${openSections.tracks ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pt-4">
+                  <div className="grid grid-cols-3 gap-6">
+                    {hagionUniversity.filter(item => item.type === "track").map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex flex-col items-center gap-3 cursor-pointer group"
+                          onClick={() => navigate(`/logos-circle/track/${item.id}`)}
+                        >
+                          <div className="relative">
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10 flex items-center justify-center transition-all">
+                              {Icon && <Icon className="w-10 h-10 text-violet-500" />}
+                            </div>
+                            {item.isPro && (
+                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span>★</span> PRO
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium">{item.name}</p>
+                            {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+              {/* Teaching Paths Section */}
+              <Collapsible open={openSections.paths} onOpenChange={() => toggleSection("paths")}>
+                <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-violet-500" />
+                    Teaching Paths
+                  </h3>
+                  <ChevronDown className={`w-5 h-5 transition-transform ${openSections.paths ? 'rotate-180' : ''}`} />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pt-4">
+                  <div className="grid grid-cols-3 gap-6">
+                    {hagionUniversity.filter(item => item.type === "path").map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex flex-col items-center gap-3 cursor-pointer group"
+                          onClick={() => navigate(`/logos-circle/path/${item.id}`)}
+                        >
+                          <div className="relative">
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10 flex items-center justify-center transition-all">
+                              {Icon && <Icon className="w-10 h-10 text-violet-500" />}
+                            </div>
+                            {item.isPro && (
+                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span>★</span> PRO
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium">{item.name}</p>
+                            {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          )}
         </div>
       </div>
 
