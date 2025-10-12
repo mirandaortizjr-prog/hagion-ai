@@ -318,7 +318,7 @@ const MainMenu = () => {
           <TabsList className="w-full grid grid-cols-3 bg-muted/30">
             <TabsTrigger value="assistants">{t('assistants')}</TabsTrigger>
             <TabsTrigger value="divine">{t('divine_guidance')}</TabsTrigger>
-            <TabsTrigger value="hagion-university">Hagion University</TabsTrigger>
+            <TabsTrigger value="hagion-university">Hagion University Lite</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
