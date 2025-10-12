@@ -280,7 +280,7 @@ const MainMenu = () => {
     },
     {
       id: "artistic",
-      name: "Raphael",
+      name: "J.R. Miranda",
       subtitle: t('artistic_evidence'),
       description: "Explores how art, beauty, and creativity reflect divine truth and Christian heritage throughout history.",
       image: raphaelImage,

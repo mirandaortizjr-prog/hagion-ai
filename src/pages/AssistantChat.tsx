@@ -80,7 +80,7 @@ const AssistantChat = () => {
     philosophical: { name: "Thaddeus", subtitle: t('philosophical_evidence') },
     psychology: { name: "Caleb", subtitle: t('psychological_evidence') },
     historical: { name: "Brooke", subtitle: t('historical_evidence') },
-    artistic: { name: "Raphael", subtitle: t('artistic_evidence') },
+    artistic: { name: "J.R. Miranda", subtitle: t('artistic_evidence') },
     linguistic: { name: "Elias", subtitle: t('linguistic_evidence') },
     cultural: { name: "Naomi", subtitle: t('cultural_evidence') },
     storytelling: { name: "Story teller", subtitle: t('biblical_storytelling') },
