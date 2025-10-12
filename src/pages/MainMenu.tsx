@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
@@ -295,9 +295,8 @@ const MainMenu = () => {
   ];
 
   return (
-    <TooltipProvider>
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* Header */}
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
       <header className="flex items-center justify-between px-4 py-4 border-b">
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <Settings className="w-6 h-6" />
@@ -383,19 +382,19 @@ const MainMenu = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <Tooltip>
-                  <TooltipTrigger asChild>
+                <Popover>
+                  <PopoverTrigger asChild>
                     <button
                       className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Info className="w-3 h-3" />
                     </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>{assistant.description}</p>
-                  </TooltipContent>
-                </Tooltip>
+                  </PopoverTrigger>
+                  <PopoverContent className="max-w-xs" onClick={(e) => e.stopPropagation()}>
+                    <p className="text-sm">{assistant.description}</p>
+                  </PopoverContent>
+                </Popover>
                 {assistant.isPro && (
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                     <span>★</span> PRO
@@ -530,7 +529,6 @@ const MainMenu = () => {
         </button>
       </nav>
     </div>
-    </TooltipProvider>
   );
 };
 
