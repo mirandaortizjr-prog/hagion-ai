@@ -20,6 +20,7 @@ import Chat from "./pages/Chat";
 import Premium from "./pages/Premium";
 import AssistantChat from "./pages/AssistantChat";
 import StorytellingChat from "./pages/StorytellingChat";
+import LogosCircle from "./pages/LogosCircle";
 import NotFound from "./pages/NotFound";
 import LanguageToggle from "./components/LanguageToggle";
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />
             <Route path="/apologetics-debate" element={<ApologeticsDebate />} />
+            <Route path="/logos-circle" element={<LogosCircle />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />

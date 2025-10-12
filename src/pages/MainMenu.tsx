@@ -175,10 +175,11 @@ const MainMenu = () => {
       {/* Tabs */}
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 bg-muted/30">
+          <TabsList className="w-full grid grid-cols-4 bg-muted/30">
             <TabsTrigger value="assistants">{t('assistants')}</TabsTrigger>
             <TabsTrigger value="divine">{t('divine_guidance')}</TabsTrigger>
             <TabsTrigger value="storytelling">{t('storytelling')}</TabsTrigger>
+            <TabsTrigger value="logos">Logos</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -292,6 +293,30 @@ const MainMenu = () => {
               </div>
             </div>
           ))}
+
+          {/* Logos Circle Card */}
+          {activeTab === "logos" && (
+            <div
+              className="col-span-3 flex flex-col items-center gap-4 cursor-pointer group max-w-md mx-auto"
+              onClick={() => navigate("/logos-circle")}
+            >
+              <div className="relative">
+                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 transition-all bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                  <div className="text-white text-center p-4">
+                    <div className="text-4xl font-bold mb-1">Λ</div>
+                    <div className="text-xs font-medium">LOGOS</div>
+                  </div>
+                </div>
+              </div>
+              <div className="text-center">
+                <p className="text-base font-bold">Circle of Logos</p>
+                <p className="text-sm text-muted-foreground">Logic as Sacred Structure</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Learn logic, identify fallacies, and build arguments with wisdom
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
