@@ -198,7 +198,7 @@ const MainMenu = () => {
                   className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
                     guide.isPro
                       ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                      : "border-muted group-hover:border-primary"
+                      : "border-purple-500 shadow-lg shadow-purple-500/20 group-hover:border-purple-600"
                   }`}
                 >
                   <img
@@ -233,7 +233,7 @@ const MainMenu = () => {
                       ? "border-orange-500 shadow-lg shadow-orange-500/20"
                       : assistant.isSpecial
                       ? "border-primary shadow-lg shadow-primary/20 group-hover:shadow-primary/40"
-                      : "border-muted group-hover:border-primary"
+                      : "border-cyan-500 shadow-lg shadow-cyan-500/20 group-hover:border-cyan-600"
                   }`}
                 >
                   <img
@@ -272,7 +272,7 @@ const MainMenu = () => {
                   className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
                     story.isPro
                       ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                      : "border-muted group-hover:border-primary"
+                      : "border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600"
                   }`}
                 >
                   <img
