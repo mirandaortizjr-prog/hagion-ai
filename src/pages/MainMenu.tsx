@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
@@ -206,6 +207,7 @@ const MainMenu = () => {
       id: "apologetics-debate",
       name: t('debate_arena'),
       subtitle: t('trial_by_truth'),
+      description: "Engage in rigorous apologetics debates, defend your faith with logic and scripture against challenging arguments.",
       image: atheistDebateImage,
       isPro: false,
       isSpecial: true,
@@ -214,6 +216,7 @@ const MainMenu = () => {
       id: "apologetics",
       name: "Miranda-Ortiz",
       subtitle: t('biblical_apologetics'),
+      description: "Expert in defending Christian faith through biblical evidence, theological arguments, and scriptural interpretation.",
       image: mirandaImage,
       isPro: false,
     },
@@ -221,6 +224,7 @@ const MainMenu = () => {
       id: "science",
       name: "Sophia",
       subtitle: t('science_evidence'),
+      description: "Bridges faith and science, exploring scientific evidence that supports Christian beliefs and biblical truths.",
       image: sophiaImage,
       isPro: true,
     },
@@ -228,6 +232,7 @@ const MainMenu = () => {
       id: "medical",
       name: "Asher",
       subtitle: t('medical_evidence'),
+      description: "Analyzes medical miracles, healing testimonies, and health-related biblical principles with scientific rigor.",
       image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop",
       isPro: false,
     },
@@ -235,6 +240,7 @@ const MainMenu = () => {
       id: "forensic",
       name: "Kenan",
       subtitle: t('forensic_evidence'),
+      description: "Investigates biblical events and Christian claims through forensic analysis and historical evidence.",
       image: kenanImage,
       isPro: true,
     },
@@ -242,6 +248,7 @@ const MainMenu = () => {
       id: "philosophical",
       name: "Thaddeus",
       subtitle: t('philosophical_evidence'),
+      description: "Explores deep philosophical questions about God, existence, morality, and truth through classical and modern philosophy.",
       image: thaddeuSImage,
       isPro: false,
     },
@@ -249,6 +256,7 @@ const MainMenu = () => {
       id: "psychology",
       name: "Caleb",
       subtitle: t('psychological_evidence'),
+      description: "Studies the psychological aspects of faith, spiritual development, and the impact of Christianity on mental health.",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
       isPro: true,
     },
@@ -256,6 +264,7 @@ const MainMenu = () => {
       id: "historical",
       name: "Brooke",
       subtitle: t('historical_evidence'),
+      description: "Chronicles historical evidence for Christianity, examining archaeological findings and ancient documentation.",
       image: brookeImage,
       isPro: false,
     },
@@ -263,6 +272,7 @@ const MainMenu = () => {
       id: "artistic",
       name: "Raphael",
       subtitle: t('artistic_evidence'),
+      description: "Explores how art, beauty, and creativity reflect divine truth and Christian heritage throughout history.",
       image: raphaelImage,
       isPro: true,
     },
@@ -270,6 +280,7 @@ const MainMenu = () => {
       id: "linguistic",
       name: "Elias",
       subtitle: t('linguistic_evidence'),
+      description: "Analyzes biblical languages, translation accuracy, and linguistic patterns that reveal deeper scriptural meanings.",
       image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop",
       isPro: false,
     },
@@ -277,14 +288,16 @@ const MainMenu = () => {
       id: "cultural",
       name: "Naomi",
       subtitle: t('cultural_evidence'),
+      description: "Studies how Christianity has shaped cultures worldwide and examines cultural contexts of biblical teachings.",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
       isPro: true,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
+    <TooltipProvider>
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Header */}
       <header className="flex items-center justify-between px-4 py-4 border-b">
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <Settings className="w-6 h-6" />
@@ -370,6 +383,19 @@ const MainMenu = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Info className="w-3 h-3" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>{assistant.description}</p>
+                  </TooltipContent>
+                </Tooltip>
                 {assistant.isPro && (
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                     <span>★</span> PRO
@@ -504,6 +530,7 @@ const MainMenu = () => {
         </button>
       </nav>
     </div>
+    </TooltipProvider>
   );
 };
 
