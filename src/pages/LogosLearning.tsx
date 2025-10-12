@@ -30,7 +30,7 @@ const LogosLearning = () => {
   };
 
   const title = type === "track" ? trackTitles[id || ""] : pathTitles[id || ""];
-  const curriculum = type === "track" && id ? curriculumData[id] : null;
+  const curriculum = id ? curriculumData[id] : null;
 
   const toggleLessonComplete = (lessonId: string) => {
     setCompletedLessons((prev) => {

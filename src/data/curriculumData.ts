@@ -20,6 +20,7 @@ export interface Curriculum {
 }
 
 export const curriculumData: Record<string, Curriculum> = {
+  // Curriculum Tracks
   foundations: {
     id: "foundations",
     modules: [
@@ -688,4 +689,146 @@ export const curriculumData: Record<string, Curriculum> = {
       },
     ],
   },
+  
+  // Teaching Paths
+  "apologetics-path": {
+    id: "apologetics-path",
+    modules: [
+      {
+        id: "intro-apologetics",
+        title: "Introduction to Apologetics",
+        description: "Understanding the role of apologetics in defending the faith",
+        lessons: [
+          {
+            id: "what-is-apologetics",
+            title: "What is Apologetics?",
+            description: "Learn the foundational purpose and methods",
+            duration: "15 min",
+            content: [
+              "Apologetics comes from the Greek word 'apologia,' meaning 'to give a defense.' It's the practice of defending Christian beliefs through reasoned arguments and evidence.",
+              "1 Peter 3:15 calls us to 'always be prepared to give an answer to everyone who asks you to give the reason for the hope that you have.'",
+              "Effective apologetics combines logic, evidence, and compassion to help others understand the truth of Christianity."
+            ],
+            exercises: [
+              "Write down three questions people have asked you about your faith",
+              "Practice explaining the gospel using logical reasoning",
+              "Study 1 Peter 3:15 and memorize it"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "witnessing-path": {
+    id: "witnessing-path",
+    modules: [
+      {
+        id: "intro-witnessing",
+        title: "Introduction to Witnessing",
+        description: "Learning to share your faith with wisdom and grace",
+        lessons: [
+          {
+            id: "emotional-discernment",
+            title: "Emotional Discernment in Witnessing",
+            description: "Understanding how to read and respond to emotions",
+            duration: "20 min",
+            content: [
+              "Effective witnessing requires both truth and compassion. We must discern the emotional state of those we're speaking with.",
+              "Jesus demonstrated perfect emotional intelligence - comforting the broken-hearted while challenging the self-righteous.",
+              "Learn to ask questions, listen deeply, and tailor your message to where someone is in their spiritual journey."
+            ],
+            exercises: [
+              "Practice active listening with someone this week",
+              "Identify three emotional barriers people have to faith",
+              "Role-play a witnessing conversation focusing on empathy"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logic-path": {
+    id: "logic-path",
+    modules: [
+      {
+        id: "intro-logic",
+        title: "Introduction to Logic",
+        description: "Building the scaffolding of truth through logical reasoning",
+        lessons: [
+          {
+            id: "basic-logic-principles",
+            title: "Basic Logic Principles",
+            description: "Understanding the fundamental laws of logic",
+            duration: "25 min",
+            content: [
+              "Logic is the study of correct reasoning. It helps us distinguish between valid and invalid arguments.",
+              "The three fundamental laws of logic are: (1) Law of Identity (A is A), (2) Law of Non-Contradiction (A cannot be both B and not B), (3) Law of Excluded Middle (A is either B or not B).",
+              "These principles are foundational to all rational thought and reflect the nature of God, who is Logos - the divine reason."
+            ],
+            exercises: [
+              "Identify examples of each law of logic in daily life",
+              "Find a flawed argument and explain which logical principle it violates",
+              "Write a paragraph explaining how logic reflects God's nature"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "scriptural-path": {
+    id: "scriptural-path",
+    modules: [
+      {
+        id: "intro-scripture",
+        title: "Introduction to Scripture",
+        description: "Studying the structure and rhetoric of biblical texts",
+        lessons: [
+          {
+            id: "bible-logic-structure",
+            title: "Logic and Structure in the Bible",
+            description: "Discovering how Scripture uses logical reasoning",
+            duration: "30 min",
+            content: [
+              "The Bible is not just a collection of stories - it contains sophisticated logical arguments and rhetorical structures.",
+              "Paul's epistles, especially Romans, use formal logical argumentation. Jesus often used syllogisms, analogies, and reductio ad absurdum in His teaching.",
+              "Understanding the logical structure of Scripture helps us interpret it correctly and apply it faithfully."
+            ],
+            exercises: [
+              "Read Romans 5:12-21 and outline Paul's logical argument",
+              "Identify a parable where Jesus uses logical reasoning",
+              "Compare the structure of different biblical genres (narrative, epistle, prophecy)"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ceremonial-path": {
+    id: "ceremonial-path",
+    modules: [
+      {
+        id: "intro-ceremonial",
+        title: "Introduction to Ceremonial Logic",
+        description: "Learning to ritualize truth through prayer, poetry, and proclamation",
+        lessons: [
+          {
+            id: "ritualizing-truth",
+            title: "Ritualizing Truth",
+            description: "How ceremony embodies logical and spiritual truth",
+            duration: "20 min",
+            content: [
+              "Truth is not just intellectual - it must be embodied through ritual, prayer, and sacred practice.",
+              "The liturgy, sacraments, and Christian calendar all ritualize theological truths, making abstract concepts tangible.",
+              "When we combine logic with ceremony, we engage both mind and heart in worship."
+            ],
+            exercises: [
+              "Write a prayer that incorporates a logical truth about God",
+              "Create a personal ritual that reminds you of a biblical truth",
+              "Study the structure of the Lord's Prayer and identify its logical progression"
+            ]
+          }
+        ]
+      }
+    ]
+  }
 };
