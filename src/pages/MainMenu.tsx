@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
@@ -58,36 +58,146 @@ const MainMenu = () => {
       name: t('biblical_stories'),
       subtitle: "",
       image: biblicalScrollImage,
+      icon: undefined,
       isPro: false,
       isSpecial: false,
+      type: "storytelling" as const,
     },
     {
       id: "martyrs",
       name: t('martyrs_faith'),
       subtitle: "",
       image: martyrsImage,
+      icon: undefined,
       isPro: true,
       isSpecial: false,
+      type: "storytelling" as const,
     },
     {
       id: "history-christianity",
       name: t('history_christianity'),
       subtitle: "",
       image: historyChristianityImage,
+      icon: undefined,
       isPro: false,
       isSpecial: false,
+      type: "storytelling" as const,
     },
   ];
 
   const hagionUniversity = [
     ...storytelling,
+    // Curriculum Tracks
     {
-      id: "logos-circle",
-      name: "Circle of Logos",
-      subtitle: "Logic as Sacred Structure",
-      image: null,
+      id: "foundations",
+      name: "Foundations of Logos",
+      subtitle: "Logic principles & reasoning",
+      image: undefined,
+      icon: BookOpen,
       isPro: false,
-      isSpecial: true,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    {
+      id: "fallacies",
+      name: "Fallacies & Shadows",
+      subtitle: "Identifying logical fallacies",
+      image: undefined,
+      icon: Shield,
+      isPro: false,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    {
+      id: "apologetics",
+      name: "Apologetics Logic",
+      subtitle: "Theological arguments",
+      image: undefined,
+      icon: Scroll,
+      isPro: true,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    {
+      id: "witnessing",
+      name: "Witnessing with Wisdom",
+      subtitle: "Conversational discernment",
+      image: undefined,
+      icon: MessageCircle,
+      isPro: false,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    {
+      id: "scripture",
+      name: "Logic in Scripture",
+      subtitle: "Biblical logic & structure",
+      image: undefined,
+      icon: Scroll,
+      isPro: true,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    {
+      id: "emotional",
+      name: "Emotional Logic",
+      subtitle: "Feelings & truth",
+      image: undefined,
+      icon: Heart,
+      isPro: false,
+      isSpecial: false,
+      type: "track" as const,
+    },
+    // Teaching Paths
+    {
+      id: "apologetics-path",
+      name: "Apologetics Path",
+      subtitle: "Defend with reasoning",
+      image: undefined,
+      icon: Shield,
+      isPro: false,
+      isSpecial: false,
+      type: "path" as const,
+    },
+    {
+      id: "witnessing-path",
+      name: "Witnessing Path",
+      subtitle: "Emotional discernment",
+      image: undefined,
+      icon: MessageCircle,
+      isPro: false,
+      isSpecial: false,
+      type: "path" as const,
+    },
+    {
+      id: "logic-path",
+      name: "Logic Path",
+      subtitle: "Scaffolding of truth",
+      image: undefined,
+      icon: Brain,
+      isPro: false,
+      isSpecial: false,
+      type: "path" as const,
+    },
+    {
+      id: "scriptural-path",
+      name: "Scriptural Path",
+      subtitle: "Biblical structure",
+      image: undefined,
+      icon: Scroll,
+      isPro: false,
+      isSpecial: false,
+      type: "path" as const,
+    },
+    {
+      id: "ceremonial-path",
+      name: "Ceremonial Path",
+      subtitle: "Ritualize truth",
+      image: undefined,
+      icon: Heart,
+      isPro: true,
+      isSpecial: false,
+      type: "path" as const,
     },
   ];
 
@@ -279,48 +389,61 @@ const MainMenu = () => {
           ))}
 
           {/* Hagion University Cards */}
-          {activeTab === "hagion-university" && hagionUniversity.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col items-center gap-3 cursor-pointer group"
-              onClick={() => navigate(item.id === "logos-circle" ? "/logos-circle" : `/storytelling/${item.id}`)}
-            >
-              <div className="relative">
-                <div
-                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
-                    item.isPro
-                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                      : item.isSpecial
-                      ? "border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-gradient-to-br from-violet-500 to-purple-600"
-                      : "border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600"
-                  } ${item.image ? "" : "flex items-center justify-center"}`}
-                >
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-white text-center">
-                      <div className="text-2xl font-bold">Λ</div>
+          {activeTab === "hagion-university" && hagionUniversity.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.id}
+                className="flex flex-col items-center gap-3 cursor-pointer group"
+                onClick={() => {
+                  if (item.type === "track" || item.type === "path") {
+                    navigate(`/logos-circle/${item.type}/${item.id}`);
+                  } else {
+                    navigate(`/storytelling/${item.id}`);
+                  }
+                }}
+              >
+                <div className="relative">
+                  <div
+                    className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                      item.isPro
+                        ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                        : item.isSpecial
+                        ? "border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-gradient-to-br from-violet-500 to-purple-600"
+                        : item.image
+                        ? "border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600"
+                        : "border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10"
+                    } ${item.image || item.icon ? "flex items-center justify-center" : ""}`}
+                  >
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : Icon ? (
+                      <Icon className="w-10 h-10 text-violet-500" />
+                    ) : (
+                      <div className="text-white text-center">
+                        <div className="text-2xl font-bold">Λ</div>
+                      </div>
+                    )}
+                  </div>
+                  {item.isPro && (
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span>★</span> PRO
                     </div>
                   )}
                 </div>
-                {item.isPro && (
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <span>★</span> PRO
-                  </div>
-                )}
+                <div className="text-center">
+                  <p className="text-sm font-medium">{item.name}</p>
+                  {item.subtitle && (
+                    <p className="text-xs text-muted-foreground">{item.subtitle}</p>
+                  )}
+                </div>
               </div>
-              <div className="text-center">
-                <p className="text-sm font-medium">{item.name}</p>
-                {item.subtitle && (
-                  <p className="text-xs text-muted-foreground">{item.subtitle}</p>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
