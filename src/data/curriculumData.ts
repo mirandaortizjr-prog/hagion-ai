@@ -695,24 +695,87 @@ export const curriculumData: Record<string, Curriculum> = {
     id: "apologetics-path",
     modules: [
       {
-        id: "intro-apologetics",
-        title: "Introduction to Apologetics",
-        description: "Understanding the role of apologetics in defending the faith",
+        id: "foundations-apologetics",
+        title: "Foundations of Christian Apologetics",
+        description: "Understanding the biblical basis and purpose of defending the faith",
         lessons: [
           {
             id: "what-is-apologetics",
             title: "What is Apologetics?",
             description: "Learn the foundational purpose and methods",
-            duration: "15 min",
+            duration: "20 min",
             content: [
-              "Apologetics comes from the Greek word 'apologia,' meaning 'to give a defense.' It's the practice of defending Christian beliefs through reasoned arguments and evidence.",
-              "1 Peter 3:15 calls us to 'always be prepared to give an answer to everyone who asks you to give the reason for the hope that you have.'",
-              "Effective apologetics combines logic, evidence, and compassion to help others understand the truth of Christianity."
+              "📖 BIBLICAL FOUNDATION: The word 'apologetics' comes from the Greek 'apologia' (ἀπολογία), meaning 'to give a defense' or 'to speak in defense.' In 1 Peter 3:15, we're commanded: 'Always be prepared to give an answer (apologia) to everyone who asks you to give the reason for the hope that you have. But do this with gentleness and respect.'",
+              "Apologetics is not about being apologetic or defensive—it's about confidently and lovingly presenting the rational foundations of Christian faith. It combines three essential elements: LOGIC (sound reasoning), EVIDENCE (historical and scientific facts), and LOVE (compassionate presentation).",
+              "💡 KEY INSIGHT: Apologetics serves multiple purposes: (1) Removing intellectual obstacles that prevent people from considering Christ, (2) Strengthening the faith of believers through reasoned understanding, (3) Defending Christianity against false teachings and objections.",
+              "Throughout Scripture, we see apologetics in action. Paul 'reasoned' with people in synagogues (Acts 17:2), Jesus used logical arguments to refute the Pharisees (Matthew 22:41-46), and the early church fathers wrote extensive defenses of Christianity against pagan critics.",
+              "🎯 THREE APPROACHES: (1) Classical Apologetics - Uses philosophical arguments like the cosmological and teleological arguments for God's existence. (2) Evidential Apologetics - Focuses on historical evidence, especially for the resurrection. (3) Presuppositional Apologetics - Examines the foundational assumptions necessary for rational thought itself."
             ],
             exercises: [
-              "Write down three questions people have asked you about your faith",
-              "Practice explaining the gospel using logical reasoning",
-              "Study 1 Peter 3:15 and memorize it"
+              "MEMORIZATION: Write out 1 Peter 3:15-16 and memorize it this week",
+              "REFLECTION: List three intellectual questions or objections to Christianity you've encountered. How might apologetics address each?",
+              "PRACTICE: Choose one approach (Classical, Evidential, or Presuppositional) and research one argument from that tradition"
+            ]
+          },
+          {
+            id: "cosmological-argument",
+            title: "The Cosmological Argument",
+            description: "Understanding arguments for God as the First Cause",
+            duration: "30 min",
+            content: [
+              "📖 FOUNDATION: The Cosmological Argument states that everything that begins to exist has a cause, the universe began to exist, therefore the universe has a cause. This cause must be uncaused, eternal, and outside of time and space—attributes that match the biblical God.",
+              "Thomas Aquinas famously formulated five ways to prove God's existence, with the cosmological argument being central. Modern versions, like the Kalam Cosmological Argument developed by William Lane Craig, incorporate contemporary science including Big Bang cosmology.",
+              "💡 THE KALAM ARGUMENT: (1) Whatever begins to exist has a cause. (2) The universe began to exist. (3) Therefore, the universe has a cause. Scientific evidence from thermodynamics and cosmic expansion supports premise #2. The cause must be timeless, spaceless, immaterial, powerful, and personal.",
+              "The Big Bang theory, far from disproving God, actually provides strong evidence for a cosmic beginning. Even atheist scientists like Stephen Hawking acknowledged that 'almost everyone now believes that the universe began with a Big Bang singularity.' This beginning demands an explanation.",
+              "🎯 ANSWERING OBJECTIONS: Common objection: 'Who created God?' Response: God, by definition, is uncaused and eternal. Only things that BEGIN to exist need a cause. God never began—He is the eternal 'I AM' (Exodus 3:14). The question contains a category error, like asking 'What does blue taste like?'"
+            ],
+            exercises: [
+              "STUDY: Read Genesis 1:1 and John 1:1-3. How do these passages relate to the cosmological argument?",
+              "LOGIC PRACTICE: Write out the Kalam argument in syllogistic form and explain each premise",
+              "APPLICATION: Watch a debate on the cosmological argument and identify the key objections raised"
+            ]
+          },
+          {
+            id: "design-argument",
+            title: "The Teleological Argument (Design)",
+            description: "Evidence of purpose and design in creation",
+            duration: "30 min",
+            content: [
+              "📖 BIBLICAL FOUNDATION: Romans 1:20 states, 'Since the creation of the world God's invisible qualities—his eternal power and divine nature—have been clearly seen, being understood from what has been made.' The design argument reasons from the apparent design in nature to an intelligent Designer.",
+              "The classic watchmaker analogy: If you found a watch on a beach, you wouldn't assume it formed by random wave action. The complexity and purpose evident in its mechanism point to an intelligent watchmaker. How much more does the far greater complexity of life point to a Creator?",
+              "💡 MODERN DESIGN ARGUMENTS: (1) Fine-Tuning of Universal Constants - The physical constants of the universe are calibrated to within impossibly narrow margins for life to exist. If gravity were different by 1 part in 10^40, no stars or planets could form. (2) Information in DNA - DNA contains specified, complex information that functions like computer code. Information always has an intelligent source.",
+              "The human eye is often cited as an example of 'irreducible complexity'—a system that requires all parts working together. Remove any component (lens, retina, optic nerve, etc.) and the system fails. This challenges the idea of gradual, step-by-step evolution with no guidance.",
+              "🎯 ANSWERING OBJECTIONS: 'Evolution explains design.' Response: Evolution describes a mechanism but doesn't eliminate the need for a Designer who established the laws that govern evolution. Even if God used evolutionary processes, that doesn't negate His role as Creator and Sustainer."
+            ],
+            exercises: [
+              "OBSERVATION: Examine your own hand—bones, muscles, nerves, skin working in harmony. Write down 5 aspects that demonstrate design",
+              "RESEARCH: Look up the fine-tuning of one universal constant (e.g., cosmological constant, strong nuclear force) and explain its significance",
+              "BIBLICAL STUDY: Read Psalm 19:1-4 and Job 12:7-10. How do these passages present the design argument?"
+            ]
+          }
+        ]
+      },
+      {
+        id: "resurrection-evidence",
+        title: "Evidence for the Resurrection",
+        description: "Historical arguments for Christ's resurrection",
+        lessons: [
+          {
+            id: "resurrection-facts",
+            title: "Minimal Facts Approach",
+            description: "Core historical facts virtually all scholars accept",
+            duration: "35 min",
+            content: [
+              "📖 BIBLICAL FOUNDATION: 1 Corinthians 15:3-8 contains an early Christian creed stating that Christ died, was buried, rose on the third day, and appeared to many witnesses. Paul wrote this around 55 AD, within 20-25 years of the events, and the creed itself dates to within just 2-5 years of the crucifixion.",
+              "The 'Minimal Facts' approach, developed by Gary Habermas, focuses on facts that are so well-established that virtually all critical scholars—including skeptics—accept them. This creates common ground for discussion regardless of someone's presuppositions.",
+              "💡 THE FIVE MINIMAL FACTS: (1) Jesus died by crucifixion. (2) Jesus' disciples believed He rose and appeared to them. (3) The conversion of the church persecutor Saul/Paul. (4) The conversion of the skeptic James, Jesus' brother. (5) Jesus' tomb was found empty. These facts must be explained by any theory about what happened.",
+              "Alternative theories consistently fail to account for all the facts. The 'swoon theory' (Jesus didn't really die) fails because Roman crucifixion was extremely effective, and a barely-alive Jesus couldn't have convinced anyone He conquered death. The 'hallucination theory' fails because hallucinations are individual experiences, yet Jesus appeared to groups. Plus, hallucinations don't leave empty tombs.",
+              "🎯 THE RESURRECTION BEST EXPLAINS THE FACTS: The 'legend theory' fails because legends take generations to develop, but here we have testimony from eyewitnesses still alive when accounts were written. The 'conspiracy theory' fails because people don't willingly die for what they know is a lie—yet the disciples faced martyrdom proclaiming the resurrection. Only the actual resurrection adequately explains all the historical data."
+            ],
+            exercises: [
+              "MEMORIZATION: Memorize the 1 Corinthians 15:3-8 creed. Notice how early and how close to the events this testimony is",
+              "CRITICAL THINKING: Choose one alternative theory (swoon, hallucination, conspiracy, or legend) and write out why it fails to explain the facts",
+              "HISTORICAL ANALYSIS: Research the martyrdom of at least two apostles. What does their willingness to die tell us about their certainty?"
             ]
           }
         ]
@@ -723,24 +786,69 @@ export const curriculumData: Record<string, Curriculum> = {
     id: "witnessing-path",
     modules: [
       {
-        id: "intro-witnessing",
-        title: "Introduction to Witnessing",
-        description: "Learning to share your faith with wisdom and grace",
+        id: "foundations-witnessing",
+        title: "Foundations of Effective Witnessing",
+        description: "Biblical principles for sharing your faith with wisdom and love",
         lessons: [
+          {
+            id: "jesus-model-witnessing",
+            title: "Jesus' Model of Witnessing",
+            description: "Learning from how Christ shared truth",
+            duration: "25 min",
+            content: [
+              "📖 BIBLICAL FOUNDATION: Jesus was the master witness who perfectly adapted His approach to each person. With Nicodemus (John 3), a religious leader, He discussed theological concepts. With the Samaritan woman (John 4), a social outcast, He met her practical needs and revealed Himself gradually. With the rich young ruler (Mark 10), He challenged his idolatry of wealth.",
+              "💡 KEY PRINCIPLE: Jesus always started where people were, not where He wished they were. He asked questions to reveal hearts ('Who do you say that I am?'), told stories that convicted without condemning (parables), and demonstrated the Father's love through actions before expecting faith.",
+              "MEETING EMOTIONAL NEEDS: Before addressing intellectual objections, Jesus often met emotional and relational needs. The woman caught in adultery (John 8) needed acceptance before correction. Zacchaeus (Luke 19) needed to be seen and valued. Thomas (John 20) needed his doubts taken seriously, not dismissed.",
+              "🎯 PRACTICAL APPLICATION: Effective witnessing requires: (1) LISTEN MORE than you speak—understand before being understood. (2) ASK QUESTIONS rather than making assertions—help people discover truth. (3) TELL YOUR STORY—personal testimony is powerful and hard to argue against. (4) SHOW LOVE IN ACTION—actions validate words.",
+              "Remember Jesus' command in Matthew 28:19-20: 'Go and make disciples'—not just converts. Witnessing isn't just about getting someone to pray a prayer; it's about walking with them in their journey toward Christ and discipleship."
+            ],
+            exercises: [
+              "STUDY: Read John 4:1-42 (Jesus and the Samaritan woman). List 5 techniques Jesus used in this witnessing encounter",
+              "REFLECTION: Think of someone you want to witness to. What are their emotional needs? Their intellectual questions? Their life situation?",
+              "PRACTICE: Write out your own testimony in 3-5 minutes—what life was like before Christ, how you came to faith, and what changed after"
+            ]
+          },
           {
             id: "emotional-discernment",
             title: "Emotional Discernment in Witnessing",
-            description: "Understanding how to read and respond to emotions",
-            duration: "20 min",
+            description: "Reading and responding to emotional barriers",
+            duration: "30 min",
             content: [
-              "Effective witnessing requires both truth and compassion. We must discern the emotional state of those we're speaking with.",
-              "Jesus demonstrated perfect emotional intelligence - comforting the broken-hearted while challenging the self-righteous.",
-              "Learn to ask questions, listen deeply, and tailor your message to where someone is in their spiritual journey."
+              "📖 BIBLICAL WISDOM: Proverbs 18:13 warns, 'To answer before listening—that is folly and shame.' Proverbs 20:5 says, 'The purposes of a person's heart are deep waters, but one who has insight draws them out.' Effective witnessing requires emotional intelligence to understand what's really happening beneath the surface.",
+              "💡 COMMON EMOTIONAL BARRIERS: (1) HURT - Many reject Christianity because they've been hurt by Christians or feel abandoned by God during suffering. Logic won't reach them until you address the pain. (2) FEAR - Fear of judgment, fear of lifestyle changes required, fear of being wrong. (3) PRIDE - Not wanting to admit need or submit to authority. (4) SHAME - Feeling too 'far gone' or unworthy of grace.",
+              "DISCERNING THE REAL ISSUE: Often intellectual objections are smokescreens for emotional resistance. Someone arguing about evolution might actually be wrestling with God's goodness after losing a loved one. Someone raising the 'problem of evil' might be dealing with personal trauma. Ask yourself: 'Is this really about logic, or about something deeper?'",
+              "🎯 RESPONDING WITH COMPASSION: When you discern emotional barriers: (1) ACKNOWLEDGE THE PAIN - Don't minimize or rush to fix it. 'That sounds incredibly difficult' validates their experience. (2) SHARE AUTHENTICALLY - Your own struggles and doubts show you're human and trustworthy. (3) DEMONSTRATE GOD'S CHARACTER - Sometimes being present and caring does more than any argument. (4) GIVE TIME - Don't force a decision when someone isn't ready.",
+              "Jesus wept with those who wept (John 11:35) before raising Lazarus. He felt compassion for the crowds (Matthew 9:36). Following His example means entering into others' emotional worlds with empathy, not just presenting propositions with precision."
             ],
             exercises: [
-              "Practice active listening with someone this week",
-              "Identify three emotional barriers people have to faith",
-              "Role-play a witnessing conversation focusing on empathy"
+              "ROLE-PLAY: Practice with a friend. Have them present an intellectual objection with an emotional undercurrent. Practice identifying and addressing both",
+              "JOURNAL: Write about a time you faced emotional barriers to faith. What helped you move forward? How can you offer that to others?",
+              "SCRIPTURE STUDY: Study how Paul adapted his approach in Acts 17 (Athens - philosophical approach) vs. Acts 26 (before Agrippa - personal testimony)"
+            ]
+          }
+        ]
+      },
+      {
+        id: "conversational-techniques",
+        title: "Conversational Techniques",
+        description: "Practical methods for effective spiritual conversations",
+        lessons: [
+          {
+            id: "asking-questions",
+            title: "The Power of Questions",
+            description: "Using questions to guide discovery",
+            duration: "25 min",
+            content: [
+              "📖 JESUS THE QUESTIONER: Jesus asked over 300 questions in the Gospels! 'What do you want me to do for you?' (Mark 10:51). 'Who do you say that I am?' (Matthew 16:15). 'Do you want to get well?' (John 5:6). Questions engage people, reveal hearts, and allow self-discovery rather than defensive argument.",
+              "💡 TYPES OF POWERFUL QUESTIONS: (1) CLARIFYING QUESTIONS - 'What do you mean by that?' helps you understand their actual position. (2) LEADING QUESTIONS - 'If God exists, would you want to know?' reveals openness or resistance. (3) STORY QUESTIONS - 'How did you come to that conclusion?' lets them share their journey.",
+              "THE COLUMBO TACTIC: Named after the TV detective, this approach uses innocent curiosity. Instead of 'You're wrong about evolution,' try: 'That's interesting. What evidence convinced you?' or 'Have you considered...?' This disarms defensiveness and turns monologue into dialogue.",
+              "🎯 QUESTIONS THAT PROBE WORLDVIEWS: (1) 'Where do you think right and wrong come from?' (2) 'What gives human life value?' (3) 'Is truth relative or absolute?' (4) 'What happens after we die?' These reveal presuppositions and open doors to share how Christianity answers these fundamental questions.",
+              "Remember: The goal isn't to 'win' an argument but to help someone think deeply about truth. Questions plant seeds that the Holy Spirit waters. Sometimes the best thing you can do is ask a question that lingers in their mind long after the conversation ends."
+            ],
+            exercises: [
+              "PRACTICE: List 5 questions you could ask when someone says 'All religions are basically the same'",
+              "OBSERVATION: This week, practice asking questions in normal conversations. Notice how questions deepen dialogue",
+              "PREPARATION: Write out questions for common objections: 'Christianity is intolerant,' 'The Bible has errors,' 'Science disproves God'"
             ]
           }
         ]
@@ -751,24 +859,69 @@ export const curriculumData: Record<string, Curriculum> = {
     id: "logic-path",
     modules: [
       {
-        id: "intro-logic",
-        title: "Introduction to Logic",
-        description: "Building the scaffolding of truth through logical reasoning",
+        id: "foundations-logic",
+        title: "Foundations of Logical Reasoning",
+        description: "Understanding the basic principles that govern sound thinking",
         lessons: [
           {
-            id: "basic-logic-principles",
-            title: "Basic Logic Principles",
-            description: "Understanding the fundamental laws of logic",
-            duration: "25 min",
+            id: "three-laws-logic",
+            title: "The Three Fundamental Laws of Logic",
+            description: "Foundational principles of all rational thought",
+            duration: "30 min",
             content: [
-              "Logic is the study of correct reasoning. It helps us distinguish between valid and invalid arguments.",
-              "The three fundamental laws of logic are: (1) Law of Identity (A is A), (2) Law of Non-Contradiction (A cannot be both B and not B), (3) Law of Excluded Middle (A is either B or not B).",
-              "These principles are foundational to all rational thought and reflect the nature of God, who is Logos - the divine reason."
+              "📖 BIBLICAL FOUNDATION: Logic reflects the nature of God, who is Logos (John 1:1). God cannot lie (Titus 1:2) or deny Himself (2 Timothy 2:13) because He is truth itself. The laws of logic aren't arbitrary human inventions—they reflect the character of the divine mind and the structure of reality He created.",
+              "💡 THE THREE LAWS: (1) LAW OF IDENTITY: A is A. Everything is itself and not something else. A tree is a tree. God is God. This seems obvious, but it's fundamental to all clear thinking. (2) LAW OF NON-CONTRADICTION: A cannot be both B and not-B at the same time and in the same sense. Something cannot be both true and false simultaneously. (3) LAW OF EXCLUDED MIDDLE: Either A is B or A is not-B. There is no third option. Either God exists or He doesn't—there's no middle ground.",
+              "WHY THESE LAWS MATTER: Without these laws, no reasoning is possible. If contradictions were acceptable, then every statement would be meaningless. The statement 'Jesus is Lord' would mean the same as 'Jesus is not Lord.' Science, mathematics, philosophy, theology—all depend on these three laws.",
+              "🎯 PRACTICAL EXAMPLES: Law of Identity applied: When someone says 'That's your truth,' respond: 'If truth can contradict itself, the word truth becomes meaningless.' Law of Non-Contradiction applied: 'Jesus was a good teacher' contradicts 'Jesus was a liar' (if He lied about being God). He must be one or the other. Law of Excluded Middle applied: Either the resurrection happened historically or it didn't. 'It's true for you but not for me' violates this law.",
+              "These laws exist because we live in a rational universe created by a rational God. When someone rejects these laws (as some postmodern thinkers do), they cannot live consistently with that rejection. They still use logic to argue against logic, which is self-refuting."
             ],
             exercises: [
-              "Identify examples of each law of logic in daily life",
-              "Find a flawed argument and explain which logical principle it violates",
-              "Write a paragraph explaining how logic reflects God's nature"
+              "IDENTIFICATION: Find three examples from daily life where people violate the Law of Non-Contradiction (e.g., 'All truth is relative' is itself presented as absolute)",
+              "APPLICATION: Write out how each of the three laws applies to the statement 'Jesus is the only way to God'",
+              "APOLOGETICS: How would you use these laws to respond to someone who says 'Christianity might be true for you, but not for me'?"
+            ]
+          },
+          {
+            id: "valid-sound-arguments",
+            title: "Valid vs. Sound Arguments",
+            description: "Understanding the difference between form and truth",
+            duration: "25 min",
+            content: [
+              "📖 BIBLICAL DISCERNMENT: Acts 17:11 praises the Bereans who 'examined the Scriptures every day to see if what Paul said was true.' They didn't just accept claims—they tested them. Similarly, we must learn to evaluate arguments for both logical validity (correct form) and soundness (true premises).",
+              "💡 VALIDITY = CORRECT FORM: An argument is valid if the conclusion logically follows from the premises. Example: 'All men are mortal. Socrates is a man. Therefore, Socrates is mortal.' The conclusion MUST be true if the premises are true. The structure is correct.",
+              "SOUNDNESS = VALIDITY + TRUE PREMISES: A sound argument is both valid AND has true premises. Example: 'All ice cream is frozen. This cone contains ice cream. Therefore, this cone contains something frozen.' Valid structure AND true premises = sound argument that proves its conclusion.",
+              "🎯 WHY THIS MATTERS: Someone can construct a perfectly valid argument from false premises. Example: 'All dogs can fly. Fido is a dog. Therefore, Fido can fly.' The logic is valid, but the premise is false, so the argument is unsound. When defending the faith, we need BOTH—valid reasoning AND true premises based on evidence and Scripture.",
+              "TESTING ARGUMENTS: When you hear an argument against Christianity, ask two questions: (1) Is the logic valid? Does the conclusion really follow? (2) Are the premises true? Is there evidence for the claims being made? Many objections fail one or both tests."
+            ],
+            exercises: [
+              "PRACTICE: Create three syllogisms—one valid and sound, one valid but unsound, and one invalid",
+              "EVALUATION: Analyze this argument: 'If God were good, evil wouldn't exist. Evil exists. Therefore, God isn't good.' Is it valid? Are the premises true?",
+              "APOLOGETICS: Find an atheist argument online. Evaluate whether it's valid and whether its premises are true"
+            ]
+          }
+        ]
+      },
+      {
+        id: "deductive-inductive",
+        title: "Deductive and Inductive Reasoning",
+        description: "Two essential methods of logical argument",
+        lessons: [
+          {
+            id: "deductive-reasoning",
+            title: "Deductive Reasoning",
+            description: "From general principles to specific conclusions",
+            duration: "25 min",
+            content: [
+              "📖 BIBLICAL EXAMPLE: Romans 6:23 uses deductive logic: 'For the wages of sin is death, but the gift of God is eternal life.' The logic: If you sin (general principle), you deserve death (specific conclusion). If you receive God's gift (general principle), you receive eternal life (specific conclusion).",
+              "💡 HOW DEDUCTION WORKS: Deductive arguments move from general premises to specific conclusions with absolute certainty. If the premises are true and the logic is valid, the conclusion MUST be true. Example: 'All humans need salvation. You are human. Therefore, you need salvation.' The conclusion is guaranteed.",
+              "THE SYLLOGISM: The classic form of deductive reasoning. Major premise (general principle) + Minor premise (specific case) = Conclusion. Example: 'Whatever begins to exist has a cause. The universe began to exist. Therefore, the universe has a cause.' This is the Kalam Cosmological Argument in deductive form.",
+              "🎯 STRENGTH OF DEDUCTION: When premises are true, deduction provides certainty. This is why mathematical proofs use deduction—the conclusions are inescapable. In apologetics, we use deduction to show that IF certain things are true (God's existence, Christ's resurrection), THEN other things must follow (Christianity is true, we should follow Christ).",
+              "COMMON FORMS: Modus Ponens (If P then Q. P. Therefore Q.), Modus Tollens (If P then Q. Not Q. Therefore not P.), Hypothetical Syllogism (If P then Q. If Q then R. Therefore, if P then R.). Recognizing these forms helps you construct and evaluate arguments."
+            ],
+            exercises: [
+              "CONSTRUCTION: Write three deductive arguments for Christian truths using syllogistic form",
+              "BIBLICAL STUDY: Find three passages where Jesus or Paul uses deductive reasoning (hint: look for 'if...then' statements)",
+              "EVALUATION: Identify the logical form of the Moral Argument: 'If God doesn't exist, objective moral values don't exist. Objective moral values DO exist. Therefore, God exists.'"
             ]
           }
         ]
@@ -779,24 +932,69 @@ export const curriculumData: Record<string, Curriculum> = {
     id: "scriptural-path",
     modules: [
       {
-        id: "intro-scripture",
-        title: "Introduction to Scripture",
-        description: "Studying the structure and rhetoric of biblical texts",
+        id: "logic-in-scripture",
+        title: "Logic and Rhetoric in Biblical Texts",
+        description: "How Scripture employs logical reasoning and persuasive argumentation",
         lessons: [
           {
-            id: "bible-logic-structure",
-            title: "Logic and Structure in the Bible",
-            description: "Discovering how Scripture uses logical reasoning",
-            duration: "30 min",
+            id: "pauls-logical-arguments",
+            title: "Paul's Logical Arguments in Romans",
+            description: "Analyzing the apostle's sophisticated reasoning",
+            duration: "35 min",
             content: [
-              "The Bible is not just a collection of stories - it contains sophisticated logical arguments and rhetorical structures.",
-              "Paul's epistles, especially Romans, use formal logical argumentation. Jesus often used syllogisms, analogies, and reductio ad absurdum in His teaching.",
-              "Understanding the logical structure of Scripture helps us interpret it correctly and apply it faithfully."
+              "📖 ROMANS AS THEOLOGY: The book of Romans is Paul's most systematic theological work, structured as a legal brief proving that salvation comes through faith in Christ alone. It follows rigorous logical progression from problem (human sinfulness) to solution (justification by faith) to application (sanctified living).",
+              "💡 ROMANS 1-3 - THE PROBLEM: Paul argues deductively that all humanity is guilty before God. (1) The Gentiles are guilty because creation reveals God's existence, yet they worship created things (Romans 1:18-32). (2) The moralists are guilty because they condemn others while doing the same things (Romans 2:1-16). (3) The Jews are guilty despite having the Law, because the Law reveals sin without providing salvation (Romans 2:17-3:20). Conclusion: 'All have sinned and fall short of the glory of God' (3:23).",
+              "ROMANS 5 - ADAM AND CHRIST: Paul uses typology and logical parallelism. Just as sin and death entered through one man (Adam), so righteousness and life come through one man (Christ). The logic: If Adam's one sin brought condemnation to all, how much more does Christ's one act of righteousness bring justification to all who believe! This is called 'from the lesser to the greater' reasoning (kal v'chomer).",
+              "🎯 ROMANS 8 - CHAIN REASONING: 'If God is for us, who can be against us? He who did not spare his own Son...will he not also give us all things?' (8:31-32). Paul builds a logical chain: God gave His most precious gift (His Son), therefore He will certainly give lesser gifts. This argument moves from certainty about a greater fact to certainty about lesser facts.",
+              "PRACTICAL APPLICATION: When reading Paul's letters, identify: (1) The main argument or thesis statement, (2) How premises build upon each other, (3) Anticipated objections and Paul's responses, (4) The logical connectors ('therefore,' 'for,' 'since,' 'if...then'). This reveals the rational structure of theology."
             ],
             exercises: [
-              "Read Romans 5:12-21 and outline Paul's logical argument",
-              "Identify a parable where Jesus uses logical reasoning",
-              "Compare the structure of different biblical genres (narrative, epistle, prophecy)"
+              "OUTLINE: Read Romans 3:21-31 and create a logical outline showing how Paul argues for justification by faith",
+              "OBJECTIONS: In Romans 6:1, Paul anticipates an objection: 'Shall we go on sinning so that grace may increase?' Find two other places where Paul raises and answers potential objections",
+              "COMPARISON: Compare the logical structure of Romans (systematic argument) with the narrative structure of Luke (historical narrative). What different purposes do these structures serve?"
+            ]
+          },
+          {
+            id: "jesus-logical-methods",
+            title: "Jesus' Logical and Rhetorical Techniques",
+            description: "How Christ used reasoning to teach and confound opponents",
+            duration: "30 min",
+            content: [
+              "📖 THE MASTER TEACHER: Jesus regularly employed sophisticated logical arguments, often leaving opponents speechless. He used syllogisms, analogies, reductio ad absurdum (reducing a position to absurdity), and rhetorical questions—all tools of classical logic and rhetoric.",
+              "💡 SYLLOGISTIC REASONING: In Matthew 22:41-46, Jesus uses deductive logic to prove the Messiah must be both David's son and David's Lord. Major premise: David calls the Messiah 'Lord' (Psalm 110:1). Minor premise: A father doesn't normally call his son 'Lord.' Conclusion: The Messiah must be something more than merely David's human descendant—He must be divine. This silenced the Pharisees.",
+              "REDUCTIO AD ABSURDUM: When accused of casting out demons by Beelzebul (Matthew 12:24-29), Jesus uses logical reduction to show the absurdity. 'If Satan casts out Satan, he is divided against himself. How then will his kingdom stand?' The argument: Satan wouldn't destroy his own work. By accepting their premise and showing its absurd conclusion, Jesus refutes their accusation.",
+              "🎯 ANALOGICAL REASONING: Jesus constantly used 'how much more' arguments. 'If you, being evil, know how to give good gifts to your children, how much more will your Father in heaven give good gifts to those who ask Him?' (Matthew 7:11). Structure: If earthly fathers (imperfect) do X, heavenly Father (perfect) will certainly do Y (something greater). These arguments are both logically sound and emotionally powerful.",
+              "THE DOUBLE QUESTION TRAP: In Matthew 21:23-27, when asked 'By what authority do you do these things?', Jesus responds with a question: 'Was John's baptism from heaven or from man?' This creates a logical dilemma—either answer incriminates His questioners. They're forced to admit ignorance. This demonstrates how questions can be more powerful than direct assertions."
+            ],
+            exercises: [
+              "ANALYSIS: Read Mark 2:1-12 (paralytic healed). What logical argument does Jesus make about His authority to forgive sins?",
+              "PARABLES: Choose one parable (e.g., Good Samaritan, Prodigal Son) and identify the logical point being made",
+              "PRACTICE: Find three examples where Jesus uses 'if...then' or 'how much more' reasoning in the Sermon on the Mount"
+            ]
+          }
+        ]
+      },
+      {
+        id: "biblical-genres-logic",
+        title: "Logical Structures in Different Biblical Genres",
+        description: "How various types of biblical literature employ reasoning",
+        lessons: [
+          {
+            id: "wisdom-literature-logic",
+            title: "Logic in Wisdom Literature",
+            description: "Reasoning in Proverbs, Ecclesiastes, and Job",
+            duration: "25 min",
+            content: [
+              "📖 PROVERBS - PRACTICAL SYLLOGISMS: Proverbs presents compressed logical arguments. 'The fear of the LORD is the beginning of knowledge' (1:7) implies: If you want knowledge, you must fear the LORD. 'A gentle answer turns away wrath, but a harsh word stirs up anger' (15:1) presents cause-effect reasoning based on observation.",
+              "💡 PARALLELISM AS LOGIC: Hebrew poetry uses parallelism to make logical points. Synonymous parallelism restates the same idea ('The LORD watches over the way of the righteous, but the way of the wicked leads to destruction' - Psalm 1:6). Antithetic parallelism contrasts opposites to clarify meaning. This isn't just poetic—it's logical emphasis.",
+              "ECCLESIASTES - LOGICAL EXPLORATION: The Teacher in Ecclesiastes systematically tests various approaches to finding meaning: pleasure (2:1-11), wisdom (2:12-16), work (2:18-23), etc. Each is examined and found wanting. The logical structure: If X were ultimate meaning, we'd find satisfaction. We don't find satisfaction in X. Therefore, X isn't ultimate meaning. Conclusion: Only God provides meaning (12:13-14).",
+              "🎯 JOB - THEODICY AND LOGIC: Job and his friends engage in logical argument about suffering and divine justice. The friends assume: Righteous people prosper, wicked people suffer. Job is suffering. Therefore, Job must be wicked (syllogistic reasoning). Job refutes this by showing the minor premise doesn't universally hold—sometimes the wicked prosper and righteous suffer. God's speech (ch. 38-41) uses rhetorical questions to demonstrate the limits of human logic when comprehending divine wisdom.",
+              "Understanding these logical structures helps us interpret wisdom literature correctly. These aren't random sayings—they're carefully reasoned arguments about how to live wisely in God's world."
+            ],
+            exercises: [
+              "ANALYSIS: Choose 5 Proverbs and rewrite each as an if-then statement to reveal its logical structure",
+              "DEBATE: Read Job 4-5 (Eliphaz's first speech). Outline his logical argument. Where does it go wrong?",
+              "SYNTHESIS: How does Ecclesiastes 3:1-8 ('A time for everything') present a logical argument about divine sovereignty and human action?"
             ]
           }
         ]
@@ -807,24 +1005,69 @@ export const curriculumData: Record<string, Curriculum> = {
     id: "ceremonial-path",
     modules: [
       {
-        id: "intro-ceremonial",
-        title: "Introduction to Ceremonial Logic",
-        description: "Learning to ritualize truth through prayer, poetry, and proclamation",
+        id: "embodied-truth",
+        title: "Embodying Truth Through Ritual and Ceremony",
+        description: "How sacred practices ritualize theological realities",
         lessons: [
           {
-            id: "ritualizing-truth",
-            title: "Ritualizing Truth",
-            description: "How ceremony embodies logical and spiritual truth",
-            duration: "20 min",
+            id: "sacramental-logic",
+            title: "The Logic of Sacraments",
+            description: "How baptism and communion embody theological truths",
+            duration: "30 min",
             content: [
-              "Truth is not just intellectual - it must be embodied through ritual, prayer, and sacred practice.",
-              "The liturgy, sacraments, and Christian calendar all ritualize theological truths, making abstract concepts tangible.",
-              "When we combine logic with ceremony, we engage both mind and heart in worship."
+              "📖 BIBLICAL FOUNDATION: Jesus instituted baptism (Matthew 28:19) and communion (Luke 22:19-20) as enacted truths. These aren't merely symbolic—they're physical expressions of spiritual realities. Baptism portrays death to sin and resurrection to new life (Romans 6:3-4). Communion proclaims Christ's death 'until he comes' (1 Corinthians 11:26).",
+              "💡 BAPTISM - RITUAL LOGIC: The act of baptism follows a logical-theological progression: (1) Going under water = death and burial with Christ, (2) Immersion = cleansing from sin, (3) Rising from water = resurrection to new life. The physical action embodies the spiritual reality. You can't 'die with Christ' literally, but baptism makes that abstract truth tangible and memorable.",
+              "COMMUNION - REMEMBRANCE AND PARTICIPATION: 'Do this in remembrance of me' (Luke 22:19). The Eucharist ritualizes multiple truths: (1) Christ's body was broken for us (bread broken), (2) His blood was shed for our sins (wine poured), (3) We participate in His death (eating and drinking), (4) We're united as His body (sharing one loaf). The ceremony teaches theology through action.",
+              "🎯 WHY RITUAL MATTERS: Humans are embodied creatures, not pure minds. We learn and remember through physical actions. Neuroscience confirms that ritual creates strong neural pathways. When we physically enact spiritual truths, we engage our whole being—mind, body, and emotions. This makes abstract doctrine personal and memorable.",
+              "COVENANTAL STRUCTURE: Biblical rituals often have covenantal structure paralleling ancient Near Eastern treaties: (1) Preamble (who God is), (2) Historical prologue (what God has done), (3) Stipulations (what we must do), (4) Witnesses, (5) Blessings and curses. Recognizing this structure helps us understand the logical flow of ceremonial acts."
             ],
             exercises: [
-              "Write a prayer that incorporates a logical truth about God",
-              "Create a personal ritual that reminds you of a biblical truth",
-              "Study the structure of the Lord's Prayer and identify its logical progression"
+              "OBSERVATION: If you've been baptized, journal about that experience. What truths did the physical act help you grasp?",
+              "THEOLOGY: Read 1 Corinthians 11:17-34. What theological truths does Paul say communion expresses and reinforces?",
+              "CREATION: Design a personal ritual that helps you remember and embody one Christian truth (e.g., placing a stone to represent answered prayer)"
+            ]
+          },
+          {
+            id: "liturgical-logic",
+            title: "The Logical Structure of Liturgy",
+            description: "How worship services teach through structure",
+            duration: "25 min",
+            content: [
+              "📖 LITURGY = PROGRESSIVE THEOLOGY: Traditional liturgy follows a logical narrative arc that tells the gospel story. Whether Catholic, Orthodox, Anglican, or liturgical Protestant, worship services generally follow this structure: Call to Worship → Confession → Assurance of Pardon → Scripture → Sermon → Response → Communion → Benediction.",
+              "💡 NARRATIVE LOGIC: The worship service enacts the gospel: (1) CALL TO WORSHIP - God initiates, (2) CONFESSION - We acknowledge our sin, (3) ASSURANCE OF PARDON - God forgives through Christ, (4) WORD - God speaks truth, (5) RESPONSE - We commit/offer ourselves, (6) COMMUNION - We remember Christ's sacrifice and our union with Him, (7) SENDING - We go to live as His people. This is the gospel story ritualized weekly.",
+              "THE CHURCH YEAR TEACHES THEOLOGY: The liturgical calendar isn't arbitrary. Advent (anticipation) → Christmas (Incarnation) → Epiphany (revelation to nations) → Lent (preparation, fasting) → Holy Week (suffering) → Easter (resurrection) → Pentecost (Spirit's empowerment) → Ordinary Time (living out the faith). Following this cycle annually teaches Christ's life and work systematically.",
+              "🎯 CREEDS AS RITUALIZED DOCTRINE: When we recite the Apostles' Creed or Nicene Creed, we're participating in a ritual that reinforces core theological truths. The structure is deliberate: Father (creation), Son (redemption), Spirit (sanctification). Speaking these truths aloud in community reinforces them and creates identity.",
+              "PRACTICAL APPLICATION: Even in non-liturgical churches, service structure teaches theology. What does your church's worship order communicate? Does it emphasize God's initiative or human response? Does it balance Word and sacrament? Structure is never neutral—it always teaches."
+            ],
+            exercises: [
+              "ANALYSIS: Attend a liturgical service (or watch online) and note how the structure tells the gospel story",
+              "COMPARISON: Compare the service structure of two different traditions. What theological emphases does each structure reveal?",
+              "PERSONAL LITURGY: Create a daily prayer liturgy for yourself that follows a logical theological progression"
+            ]
+          }
+        ]
+      },
+      {
+        id: "prayer-proclamation",
+        title: "Prayer, Poetry, and Proclamation",
+        description: "Ritualizing truth through language and declaration",
+        lessons: [
+          {
+            id: "structured-prayer",
+            title: "The Logic of Structured Prayer",
+            description: "How prayer frameworks embody theological truths",
+            duration: "25 min",
+            content: [
+              "📖 THE LORD'S PRAYER STRUCTURE: Jesus' model prayer (Matthew 6:9-13) has a deliberate logical structure: (1) Address - 'Our Father in heaven' (relationship and reverence), (2) Priorities - 'hallowed be your name, your kingdom come, your will be done' (God's glory first), (3) Petitions - daily bread, forgiveness, deliverance (our needs second), (4) Conclusion - 'for yours is the kingdom...' (return to God's sovereignty). The structure teaches proper prayer priorities.",
+              "💡 ACTS PRAYER MODEL: Another helpful framework: Adoration (praising God for who He is) → Confession (admitting our sin) → Thanksgiving (gratitude for what He's done) → Supplication (requests for ourselves and others). This structure ensures balanced prayer that doesn't become self-focused wish-lists. It ritualizes a proper view of God and self.",
+              "LITURGICAL PRAYERS - TESTED TRUTH: Historic prayers like the collect, Te Deum, or Gloria Patri have been refined over centuries to express theological truth precisely. They protect against doctrinal error while elevating language. When we pray these prayers, we participate in the historic church's wisdom.",
+              "🎯 WRITTEN VS. SPONTANEOUS: Both written prayers and spontaneous prayers have value. Written prayers ensure theological precision and connect us to church history. Spontaneous prayers express immediate needs authentically. The best prayer life incorporates both—structured prayers provide the framework, spontaneous prayers fill in personal details.",
+              "DECLARATION AND SPIRITUAL WARFARE: Some prayers are declarative—proclaiming truth to remind ourselves and assert it against spiritual opposition. 'The LORD is my shepherd, I shall not want' (Psalm 23:1) isn't asking for something; it's declaring reality. Ephesians 6:10-18 presents spiritual armor as declarations of truth to be proclaimed."
+            ],
+            exercises: [
+              "MEMORIZATION: Memorize the Lord's Prayer in a formal translation. Pray it daily this week, meditating on each phrase",
+              "PRACTICE: Use the ACTS model for your prayers this week. Notice how structure shapes content",
+              "CREATION: Write a collect (formal prayer) that follows this structure: Address to God, acknowledgment of God's attribute, petition based on that attribute, desired result, through Christ. Amen."
             ]
           }
         ]
