@@ -315,10 +315,12 @@ const MainMenu = () => {
       {/* Tabs */}
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 bg-muted/30">
-            <TabsTrigger value="assistants">{t('assistants')}</TabsTrigger>
-            <TabsTrigger value="divine">{t('divine_guidance')}</TabsTrigger>
-            <TabsTrigger value="hagion-university">Hagion University Lite</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-3 bg-muted/30 h-auto">
+            <TabsTrigger value="assistants" className="text-sm py-2">{t('assistants')}</TabsTrigger>
+            <TabsTrigger value="divine" className="text-sm py-2">{t('divine_guidance')}</TabsTrigger>
+            <TabsTrigger value="hagion-university" className="text-sm py-2 whitespace-normal leading-tight">
+              Hagion University Lite
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
