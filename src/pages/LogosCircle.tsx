@@ -104,7 +104,7 @@ const LogosCircle = () => {
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">Circle of Logos</h1>
+          <h1 className="text-2xl font-bold">Hagion University</h1>
           <p className="text-sm text-muted-foreground">Logic as Sacred Structure</p>
         </div>
       </header>

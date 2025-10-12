@@ -309,7 +309,7 @@ const MainMenu = () => {
                 </div>
               </div>
               <div className="text-center">
-                <p className="text-base font-bold">Circle of Logos</p>
+                <p className="text-base font-bold">Hagion University</p>
                 <p className="text-sm text-muted-foreground">Logic as Sacred Structure</p>
                 <p className="text-xs text-muted-foreground mt-2">
                   Learn logic, identify fallacies, and build arguments with wisdom
