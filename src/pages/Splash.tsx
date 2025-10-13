@@ -17,11 +17,11 @@ const Splash = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-white">
       <div className="text-center animate-fade-in">
         <div className="relative w-48 h-48 mx-auto">
-          <div className="absolute inset-0 animate-glow-pulse rounded-full" />
+          <div className="absolute inset-0 animate-glow-pulse rounded-3xl" />
           <img
             src={logo}
             alt="Hagion AI"
-            className="w-full h-full object-cover rounded-full animate-scale-in shadow-2xl"
+            className="w-full h-full object-cover rounded-3xl animate-scale-in shadow-2xl"
           />
         </div>
         <h1 className="mt-8 text-4xl font-bold text-secondary animate-slide-up">
