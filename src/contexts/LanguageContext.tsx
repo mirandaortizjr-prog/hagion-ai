@@ -185,6 +185,21 @@ const translations: Record<Language, Record<string, string>> = {
     'tone_gentle': 'Gentle, strategic',
     'tone_mystical': 'Mystical, analytical',
     'tone_reflective': 'Reflective, intimate',
+    
+    // Curriculum Learning Page
+    'curriculum_track': 'Curriculum Track',
+    'teaching_path_label': 'Teaching Path',
+    'coming_soon': 'Welcome to {title}! This learning path is coming soon.',
+    'curriculum_overview': 'Curriculum Overview',
+    'curriculum_overview_desc': 'Progress through structured modules and lessons to master this track',
+    'modules': 'Modules',
+    'lessons': 'Lessons',
+    'completed': 'Completed',
+    'module': 'Module',
+    'lesson_content': 'Lesson Content',
+    'practice_exercises': 'Practice Exercises',
+    'mark_complete': 'Mark Complete',
+    'mark_incomplete': 'Mark Incomplete',
   },
   es: {
     // Main Menu
@@ -362,6 +377,21 @@ const translations: Record<Language, Record<string, string>> = {
     'tone_gentle': 'Gentil, estratégico',
     'tone_mystical': 'Místico, analítico',
     'tone_reflective': 'Reflexivo, íntimo',
+    
+    // Curriculum Learning Page
+    'curriculum_track': 'Pista Curricular',
+    'teaching_path_label': 'Camino de Enseñanza',
+    'coming_soon': '¡Bienvenido a {title}! Este camino de aprendizaje estará disponible pronto.',
+    'curriculum_overview': 'Resumen del Currículo',
+    'curriculum_overview_desc': 'Progresa a través de módulos y lecciones estructuradas para dominar esta pista',
+    'modules': 'Módulos',
+    'lessons': 'Lecciones',
+    'completed': 'Completado',
+    'module': 'Módulo',
+    'lesson_content': 'Contenido de la Lección',
+    'practice_exercises': 'Ejercicios de Práctica',
+    'mark_complete': 'Marcar Completo',
+    'mark_incomplete': 'Marcar Incompleto',
   }
 };
 

@@ -6,27 +6,29 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { curriculumData } from "@/data/curriculumData";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LogosLearning = () => {
   const navigate = useNavigate();
   const { type, id } = useParams<{ type: string; id: string }>();
+  const { t } = useLanguage();
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
   const trackTitles: Record<string, string> = {
-    foundations: "Foundations of Logos",
-    fallacies: "Fallacies & Shadows",
-    apologetics: "Apologetics Logic",
-    witnessing: "Witnessing with Wisdom",
-    scripture: "Logic in Scripture",
-    emotional: "Emotional Logic",
+    foundations: t('foundations_logos'),
+    fallacies: t('fallacies_shadows'),
+    apologetics: t('apologetics_logic'),
+    witnessing: t('witnessing_wisdom'),
+    scripture: t('logic_scripture'),
+    emotional: t('emotional_logic'),
   };
 
   const pathTitles: Record<string, string> = {
-    "apologetics-path": "Apologetics Path",
-    "witnessing-path": "Witnessing Path",
-    "logic-path": "Logic Path",
-    "scriptural-path": "Scriptural Path",
-    "ceremonial-path": "Ceremonial Path",
+    "apologetics-path": t('apologetics_path'),
+    "witnessing-path": t('witnessing_path'),
+    "logic-path": t('logic_path'),
+    "scriptural-path": t('scriptural_path'),
+    "ceremonial-path": t('ceremonial_path'),
   };
 
   const title = type === "track" ? trackTitles[id || ""] : pathTitles[id || ""];
@@ -54,7 +56,7 @@ const LogosLearning = () => {
         <div className="flex-1">
           <h1 className="text-xl font-bold">{title}</h1>
           <p className="text-sm text-muted-foreground">
-            {type === "track" ? "Curriculum Track" : "Teaching Path"}
+            {type === "track" ? t('curriculum_track') : t('teaching_path_label')}
           </p>
         </div>
       </header>
@@ -66,7 +68,7 @@ const LogosLearning = () => {
             <Card className="bg-violet-500/5 border-violet-500/20">
               <CardContent className="pt-6">
                 <p className="text-center text-muted-foreground">
-                  Welcome to {title}! This learning path is coming soon.
+                  {t('coming_soon').replace('{title}', title)}
                 </p>
               </CardContent>
             </Card>
@@ -79,25 +81,25 @@ const LogosLearning = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-violet-500" />
-                    Curriculum Overview
+                    {t('curriculum_overview')}
                   </CardTitle>
                   <CardDescription>
-                    Progress through structured modules and lessons to master this track
+                    {t('curriculum_overview_desc')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-4 text-sm">
                     <div>
-                      <span className="font-semibold">{curriculum.modules.length}</span> Modules
+                      <span className="font-semibold">{curriculum.modules.length}</span> {t('modules')}
                     </div>
                     <div>
                       <span className="font-semibold">
                         {curriculum.modules.reduce((acc, mod) => acc + mod.lessons.length, 0)}
                       </span>{" "}
-                      Lessons
+                      {t('lessons')}
                     </div>
                     <div>
-                      <span className="font-semibold">{completedLessons.size}</span> Completed
+                      <span className="font-semibold">{completedLessons.size}</span> {t('completed')}
                     </div>
                   </div>
                 </CardContent>
@@ -108,7 +110,7 @@ const LogosLearning = () => {
                 <Card key={module.id}>
                   <CardHeader>
                     <div className="flex items-center gap-2">
-                      <Badge variant="secondary">Module {moduleIdx + 1}</Badge>
+                      <Badge variant="secondary">{t('module')} {moduleIdx + 1}</Badge>
                       <CardTitle className="text-lg">{module.title}</CardTitle>
                     </div>
                     <CardDescription>{module.description}</CardDescription>
@@ -154,7 +156,7 @@ const LogosLearning = () => {
                             <AccordionContent className="pt-4 space-y-4">
                               {/* Lesson Content */}
                               <div className="space-y-3">
-                                <h4 className="font-semibold text-sm">Lesson Content</h4>
+                                <h4 className="font-semibold text-sm">{t('lesson_content')}</h4>
                                 {lesson.content.map((paragraph, idx) => (
                                   <p key={idx} className="text-sm leading-relaxed">
                                     {paragraph}
@@ -165,7 +167,7 @@ const LogosLearning = () => {
                               {/* Exercises */}
                               {lesson.exercises && lesson.exercises.length > 0 && (
                                 <div className="space-y-3 pt-4 border-t">
-                                  <h4 className="font-semibold text-sm">Practice Exercises</h4>
+                                  <h4 className="font-semibold text-sm">{t('practice_exercises')}</h4>
                                   <ul className="space-y-2">
                                     {lesson.exercises.map((exercise, idx) => (
                                       <li key={idx} className="flex items-start gap-2 text-sm">
@@ -184,7 +186,7 @@ const LogosLearning = () => {
                                   variant={isCompleted ? "outline" : "default"}
                                   onClick={() => toggleLessonComplete(lesson.id)}
                                 >
-                                  {isCompleted ? "Mark Incomplete" : "Mark Complete"}
+                                  {isCompleted ? t('mark_incomplete') : t('mark_complete')}
                                 </Button>
                               </div>
                             </AccordionContent>
