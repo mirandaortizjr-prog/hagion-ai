@@ -18,7 +18,6 @@ const DivineGuidance = () => {
   const navigate = useNavigate();
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [selectedContext, setSelectedContext] = useState<string>("");
-  const [selectedDiscern, setSelectedDiscern] = useState<string>("");
 
   const voices: Voice[] = [
     {
@@ -115,7 +114,7 @@ const DivineGuidance = () => {
     }
   ];
 
-  const canStartConversation = selectedVoice && selectedContext && selectedDiscern;
+  const canStartConversation = selectedVoice && selectedContext;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-white">
@@ -221,60 +220,49 @@ const DivineGuidance = () => {
             </div>
           </section>
 
+          {/* Discern Section */}
           <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
             <h3 className="text-xl font-semibold text-secondary mb-6">
               Discern: Three Circles of Evaluation
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {discernOptions.map((option) => {
                 const Icon = option.icon;
-                const isSelected = selectedDiscern === option.id;
                 return (
-                  <Card
+                  <button
                     key={option.id}
-                    className={`p-6 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                      isSelected
-                        ? "border-2 border-primary ring-4 ring-primary/20 bg-primary/5"
-                        : "border-2 hover:border-primary/50"
-                    }`}
-                    onClick={() => setSelectedDiscern(option.id)}
+                    type="button"
+                    onClick={() => navigate(`/chat?discern=${option.id}`)}
+                    className="group flex flex-col items-center gap-4 focus:outline-none"
                   >
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-bold text-secondary mb-1">
-                          {option.name}
-                        </h4>
-                        {isSelected && (
-                          <Badge className="bg-primary mb-2">Selected</Badge>
-                        )}
+                    <div className="relative">
+                      {/* Outer ring on hover */}
+                      <div className="absolute inset-0 rounded-full border-4 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110" />
+                      
+                      {/* Main circle */}
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-background to-card border-4 border-primary flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                        <Icon className={`w-12 h-12 ${option.icon === Church ? 'text-amber-500' : option.icon === Search ? 'text-purple-500' : 'text-blue-500'}`} />
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {option.description}
-                    </p>
-                    <div className="space-y-1">
-                      <p className="text-xs font-semibold text-secondary">Tests Include:</p>
-                      <ul className="text-xs text-muted-foreground space-y-0.5">
-                        {option.tests.slice(0, 3).map((test, idx) => (
-                          <li key={idx}>• {test}</li>
-                        ))}
-                      </ul>
+                    
+                    <div className="text-center">
+                      <h4 className="text-lg font-bold text-secondary mb-1">{option.name}</h4>
+                      <p className="text-xs text-muted-foreground max-w-[200px]">
+                        {option.description}
+                      </p>
                     </div>
-                  </Card>
+                  </button>
                 );
               })}
             </div>
           </section>
 
-          <div className="flex justify-center pt-6 animate-slide-up" style={{ animationDelay: "500ms" }}>
+          <div className="flex justify-center pt-6 animate-slide-up" style={{ animationDelay: "400ms" }}>
             <Button
               size="lg"
               disabled={!canStartConversation}
               onClick={() =>
-                navigate(`/chat?voice=${selectedVoice}&context=${selectedContext}&discern=${selectedDiscern}`)
+                navigate(`/chat?voice=${selectedVoice}&context=${selectedContext}`)
               }
               className="bg-gradient-to-r from-primary to-accent text-white px-12 py-6 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
             >
