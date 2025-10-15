@@ -215,6 +215,9 @@ const Chat = () => {
           voice,
           context,
           language,
+          discern,
+          subject,
+          discernContext,
         }),
       });
 
