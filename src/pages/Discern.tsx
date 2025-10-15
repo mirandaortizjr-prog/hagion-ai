@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Church, Search, BookOpen, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -9,6 +11,8 @@ const Discern = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [subjectName, setSubjectName] = useState("");
+  const [additionalContext, setAdditionalContext] = useState("");
 
   const discernOptions = [
     {
@@ -56,10 +60,13 @@ const Discern = () => {
   ];
 
   const handleStartEvaluation = () => {
-    if (selectedCategory) {
-      navigate(`/divine-guidance?discern=${selectedCategory}`);
+    if (selectedCategory && subjectName.trim()) {
+      const category = discernOptions.find(opt => opt.id === selectedCategory);
+      navigate(`/chat?discern=${selectedCategory}&subject=${encodeURIComponent(subjectName)}&context=${encodeURIComponent(additionalContext)}&categoryName=${encodeURIComponent(category?.name || '')}`);
     }
   };
+
+  const canStartEvaluation = selectedCategory && subjectName.trim().length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -136,12 +143,54 @@ const Discern = () => {
           })}
         </div>
 
+        {/* Input Form - Only show after category is selected */}
+        {selectedCategory && (
+          <Card className="mb-8 border-primary/20 animate-fade-in">
+            <CardHeader>
+              <CardTitle>What would you like to evaluate?</CardTitle>
+              <CardDescription>
+                Provide the name and any additional context for evaluation
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-secondary mb-2 block">
+                  Name / Title *
+                </label>
+                <Input
+                  placeholder={
+                    selectedCategory === "churches" 
+                      ? "e.g., First Baptist Church of Springfield"
+                      : selectedCategory === "belief-systems"
+                      ? "e.g., Mormonism, Jehovah's Witnesses, Eastern Orthodox"
+                      : "e.g., Book of Mormon, Quran, Bhagavad Gita"
+                  }
+                  value={subjectName}
+                  onChange={(e) => setSubjectName(e.target.value)}
+                  className="text-base"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-secondary mb-2 block">
+                  Additional Context (Optional)
+                </label>
+                <Textarea
+                  placeholder="Provide any additional information that might help with the evaluation..."
+                  value={additionalContext}
+                  onChange={(e) => setAdditionalContext(e.target.value)}
+                  className="min-h-[100px] text-base"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Action Button */}
         <div className="flex justify-center">
           <Button
             size="lg"
             onClick={handleStartEvaluation}
-            disabled={!selectedCategory}
+            disabled={!canStartEvaluation}
             className="px-8"
           >
             Start Evaluation
