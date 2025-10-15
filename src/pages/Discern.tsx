@@ -99,12 +99,41 @@ const Discern = () => {
           </CardHeader>
         </Card>
 
+        {/* Circle Selector */}
+        <div className="grid grid-cols-3 gap-6 mb-6">
+          {discernOptions.map((option) => {
+            const Icon = option.icon;
+            const isSelected = selectedCategory === option.id;
+            return (
+              <button
+                key={`circle-${option.id}`}
+                type="button"
+                aria-label={`Select ${option.name}`}
+                onClick={() => setSelectedCategory(option.id)}
+                className={`group mx-auto flex flex-col items-center gap-3 focus:outline-none`}
+              >
+                <div
+                  className={`w-24 h-24 rounded-full flex items-center justify-center transition-all border-2 ${
+                    isSelected
+                      ? "border-primary ring-4 ring-primary/20 bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <Icon className={`w-8 h-8 ${option.color}`} />
+                </div>
+                <span className="text-sm font-medium text-secondary text-center leading-tight">
+                  {option.name}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Category Cards */}
         <div className="grid gap-6 mb-8">
           {discernOptions.map((option) => {
             const Icon = option.icon;
             const isSelected = selectedCategory === option.id;
-            
             return (
               <Card
                 key={option.id}
