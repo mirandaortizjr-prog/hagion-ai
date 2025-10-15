@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown, Church, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -60,6 +60,48 @@ const MainMenu = () => {
       name: t('trinity'),
       image: trinityImage,
       isPro: false,
+    },
+  ];
+
+  const discernOptions = [
+    {
+      id: "churches",
+      name: "Discern: Churches",
+      icon: Church,
+      description: "Evaluate individual churches for alignment with the true Christian faith.",
+      tests: [
+        "Creedal and doctrinal alignment",
+        "Salvation clarity (grace vs. works)",
+        "Emotional atmosphere and fruit",
+        "Witness and mission integrity",
+        "Leadership humility and restoration culture",
+      ],
+    },
+    {
+      id: "belief-systems",
+      name: "Discern: Belief Systems & Religions",
+      icon: Search,
+      description: "Evaluate belief systems, denominations, or religions for theological soundness.",
+      tests: [
+        "Christology (Who is Jesus?)",
+        "Trinitarian theology",
+        "Path to salvation",
+        "Scriptural authority and additions",
+        "Cultural fruit and emotional impact",
+      ],
+    },
+    {
+      id: "texts",
+      name: "Discern: Religious Texts & Books",
+      icon: BookOpen,
+      description: "Evaluate sacred or spiritual texts for theological integrity and resonance.",
+      tests: [
+        "Alignment with Scripture",
+        "Christ-centeredness",
+        "Doctrinal clarity or distortion",
+        "Emotional and spiritual impact",
+        "Historical and canonical context",
+      ],
     },
   ];
 
@@ -384,6 +426,36 @@ const MainMenu = () => {
               </div>
             </div>
           ))}
+
+          {activeTab === "divine" && (
+            <div className="col-span-3 mt-2 space-y-4">
+              <h3 className="text-base font-semibold text-secondary">Discern: Three Circles of Evaluation</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {discernOptions.map((opt) => {
+                  const Icon = opt.icon;
+                  return (
+                    <div
+                      key={opt.id}
+                      className="p-4 rounded-xl border-2 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all"
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <p className="text-sm font-semibold text-secondary">{opt.name}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">{opt.description}</p>
+                      <ul className="text-xs text-muted-foreground space-y-0.5">
+                        {opt.tests.slice(0, 3).map((t, i) => (
+                          <li key={i}>• {t}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Assistant Cards */}
           {activeTab === "assistants" && assistants.map((assistant) => (
