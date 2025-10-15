@@ -11,7 +11,7 @@ interface LanguageContextType {
 const translations: Record<Language, Record<string, string>> = {
   en: {
     // Main Menu
-    'assistants': 'Assistants',
+    'assistants': 'Analysts of Faith',
     'divine_guidance': 'Divine Guidance',
     'storytelling': 'Storytelling',
     'ask_question': 'Ask your question',
@@ -204,7 +204,7 @@ const translations: Record<Language, Record<string, string>> = {
   },
   es: {
     // Main Menu
-    'assistants': 'Asistentes',
+    'assistants': 'Analistas de Fe',
     'divine_guidance': 'Guía Divina',
     'storytelling': 'Historias',
     'ask_question': 'Haz tu pregunta',
