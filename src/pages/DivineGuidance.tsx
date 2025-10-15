@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Sparkles, Cross, Wind, Flame } from "lucide-react";
+import { ArrowLeft, Sparkles, Cross, Wind, Flame, Church, Search, BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface Voice {
@@ -18,6 +18,7 @@ const DivineGuidance = () => {
   const navigate = useNavigate();
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [selectedContext, setSelectedContext] = useState<string>("");
+  const [selectedDiscern, setSelectedDiscern] = useState<string>("");
 
   const voices: Voice[] = [
     {
@@ -72,7 +73,49 @@ const DivineGuidance = () => {
     },
   ];
 
-  const canStartConversation = selectedVoice && selectedContext;
+  const discernOptions = [
+    {
+      id: "churches",
+      name: "Churches",
+      icon: Church,
+      description: "Evaluate individual churches for alignment with the true Christian faith",
+      tests: [
+        "Creedal and doctrinal alignment",
+        "Salvation clarity (grace vs. works)",
+        "Emotional atmosphere and fruit",
+        "Witness and mission integrity",
+        "Leadership humility and restoration culture"
+      ]
+    },
+    {
+      id: "belief-systems",
+      name: "Belief Systems & Religions",
+      icon: Search,
+      description: "Evaluate entire belief systems, denominations, or religions for theological soundness",
+      tests: [
+        "Christology (Who is Jesus?)",
+        "Trinitarian theology",
+        "Path to salvation",
+        "Scriptural authority and additions",
+        "Cultural fruit and emotional impact"
+      ]
+    },
+    {
+      id: "texts",
+      name: "Religious Texts & Books",
+      icon: BookOpen,
+      description: "Evaluate sacred or spiritual texts for theological integrity and resonance",
+      tests: [
+        "Alignment with Scripture",
+        "Christ-centeredness",
+        "Doctrinal clarity or distortion",
+        "Emotional and spiritual impact",
+        "Historical and canonical context"
+      ]
+    }
+  ];
+
+  const canStartConversation = selectedVoice && selectedContext && selectedDiscern;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-white">
@@ -178,12 +221,60 @@ const DivineGuidance = () => {
             </div>
           </section>
 
-          <div className="flex justify-center pt-6 animate-slide-up" style={{ animationDelay: "400ms" }}>
+          <section className="animate-slide-up" style={{ animationDelay: "300ms" }}>
+            <h3 className="text-xl font-semibold text-secondary mb-6">
+              Discern: Three Circles of Evaluation
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {discernOptions.map((option) => {
+                const Icon = option.icon;
+                const isSelected = selectedDiscern === option.id;
+                return (
+                  <Card
+                    key={option.id}
+                    className={`p-6 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                      isSelected
+                        ? "border-2 border-primary ring-4 ring-primary/20 bg-primary/5"
+                        : "border-2 hover:border-primary/50"
+                    }`}
+                    onClick={() => setSelectedDiscern(option.id)}
+                  >
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-lg font-bold text-secondary mb-1">
+                          {option.name}
+                        </h4>
+                        {isSelected && (
+                          <Badge className="bg-primary mb-2">Selected</Badge>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {option.description}
+                    </p>
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold text-secondary">Tests Include:</p>
+                      <ul className="text-xs text-muted-foreground space-y-0.5">
+                        {option.tests.slice(0, 3).map((test, idx) => (
+                          <li key={idx}>• {test}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </section>
+
+          <div className="flex justify-center pt-6 animate-slide-up" style={{ animationDelay: "500ms" }}>
             <Button
               size="lg"
               disabled={!canStartConversation}
               onClick={() =>
-                navigate(`/chat?voice=${selectedVoice}&context=${selectedContext}`)
+                navigate(`/chat?voice=${selectedVoice}&context=${selectedContext}&discern=${selectedDiscern}`)
               }
               className="bg-gradient-to-r from-primary to-accent text-white px-12 py-6 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
             >
