@@ -71,11 +71,11 @@ const translations: Record<Language, Record<string, string>> = {
     'per_month': '/month',
     'or_yearly': 'or $99/year (save 17%)',
     'upgrade_now': 'Upgrade Now',
-    'cancel_anytime': 'Cancel anytime • Secure payment • 7-day money-back guarantee',
+    'cancel_anytime': 'Cancel anytime • Secure payment',
     
     // Features
     'feature_daily_limit': '5 conversations per day',
-    'feature_all_assistants': 'Access to all assistants',
+    'feature_all_assistants': 'Access to basic analysts',
     'feature_basic_scripture': 'Basic Scripture references',
     'feature_unlimited': 'Unlimited conversations',
     'feature_priority': 'Priority response times',
@@ -264,11 +264,11 @@ const translations: Record<Language, Record<string, string>> = {
     'per_month': '/mes',
     'or_yearly': 'o $99/año (ahorra 17%)',
     'upgrade_now': 'Actualizar Ahora',
-    'cancel_anytime': 'Cancela en cualquier momento • Pago seguro • Garantía de devolución de 7 días',
+    'cancel_anytime': 'Cancela en cualquier momento • Pago seguro',
     
     // Features
     'feature_daily_limit': '5 conversaciones por día',
-    'feature_all_assistants': 'Acceso a todos los asistentes',
+    'feature_all_assistants': 'Acceso a analistas básicos',
     'feature_basic_scripture': 'Referencias bíblicas básicas',
     'feature_unlimited': 'Conversaciones ilimitadas',
     'feature_priority': 'Tiempos de respuesta prioritarios',
