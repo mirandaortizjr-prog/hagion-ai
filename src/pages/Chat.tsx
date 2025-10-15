@@ -63,45 +63,16 @@ const Chat = () => {
       ];
     }
 
-    // Discernment flow: seed with evaluation intro if coming from Discern page
-    if (discern && subject) {
-      const evaluationConfig: Record<string, { label: string; tests: string[] }> = {
-        "churches": {
-          label: "Churches",
-          tests: [
-            "Creedal and doctrinal alignment",
-            "Salvation clarity (grace vs. works)",
-            "Emotional atmosphere and fruit",
-            "Witness and mission integrity",
-            "Leadership humility and restoration culture",
-          ],
-        },
-        "belief-systems": {
-          label: "Belief Systems & Religions",
-          tests: [
-            "Christology (Who is Jesus?)",
-            "Trinitarian theology",
-            "Path to salvation",
-            "Scriptural authority and additions",
-            "Cultural fruit and emotional impact",
-          ],
-        },
-        "texts": {
-          label: "Religious Texts & Books",
-          tests: [
-            "Alignment with Scripture",
-            "Christ-centeredness",
-            "Doctrinal clarity or distortion",
-            "Emotional and spiritual impact",
-            "Historical and canonical context",
-          ],
-        },
+    // Discernment flow: show welcome message for category
+    if (discern) {
+      const categoryLabels: Record<string, string> = {
+        "churches": "Churches",
+        "belief-systems": "Belief Systems & Religions",
+        "texts": "Religious Texts & Books",
       };
 
-      const cfg = evaluationConfig[discern as keyof typeof evaluationConfig];
-      const label = categoryName || cfg?.label || discern;
-      const bullets = (cfg?.tests || []).map(t => `• ${t}`).join("\n");
-      const intro = `Starting Discernment: ${label} → ${subject}\n\nEvaluation criteria:\n${bullets}${discernContext ? `\n\nAdditional context: ${discernContext}` : ""}\n\nWhen you're ready, say "Begin" or ask a specific question to start the evaluation.`;
+      const label = categoryLabels[discern] || discern;
+      const intro = `Welcome to the ${label} Discernment Circle.\n\nI am your theological evaluation specialist. I will help you assess ${discern === "churches" ? "churches" : discern === "belief-systems" ? "belief systems, denominations, or religions" : "sacred or spiritual texts"} using biblical criteria.\n\nWhat would you like to evaluate? Please share the name and any context you have.`;
 
       return [
         {
@@ -216,8 +187,6 @@ const Chat = () => {
           context,
           language,
           discern,
-          subject,
-          discernContext,
         }),
       });
 
@@ -363,11 +332,6 @@ const Chat = () => {
                 </span>
               )}
             </p>
-            {discern && subject && (
-              <p className="text-xs text-muted-foreground mt-1">
-                Discernment: {(categoryName || discern).toString()} — {subject}
-              </p>
-            )}
           </div>
         </div>
       </header>

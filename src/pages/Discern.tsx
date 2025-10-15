@@ -1,18 +1,10 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Church, Search, BookOpen, CheckCircle2 } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Church, Search, BookOpen } from "lucide-react";
 
 const Discern = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [subjectName, setSubjectName] = useState("");
-  const [additionalContext, setAdditionalContext] = useState("");
 
   const discernOptions = [
     {
@@ -20,53 +12,27 @@ const Discern = () => {
       name: "Churches",
       icon: Church,
       description: "Evaluate individual churches for alignment with the true Christian faith.",
-      color: "text-blue-500",
-      tests: [
-        "Creedal and doctrinal alignment",
-        "Salvation clarity (grace vs. works)",
-        "Emotional atmosphere and fruit",
-        "Witness and mission integrity",
-        "Leadership humility and restoration culture",
-      ],
+      color: "text-amber-500",
     },
     {
       id: "belief-systems",
-      name: "Belief Systems & Religions",
+      name: "Belief Systems",
       icon: Search,
       description: "Evaluate belief systems, denominations, or religions for theological soundness.",
       color: "text-purple-500",
-      tests: [
-        "Christology (Who is Jesus?)",
-        "Trinitarian theology",
-        "Path to salvation",
-        "Scriptural authority and additions",
-        "Cultural fruit and emotional impact",
-      ],
     },
     {
       id: "texts",
-      name: "Religious Texts & Books",
+      name: "Religious Texts",
       icon: BookOpen,
       description: "Evaluate sacred or spiritual texts for theological integrity and resonance.",
-      color: "text-amber-500",
-      tests: [
-        "Alignment with Scripture",
-        "Christ-centeredness",
-        "Doctrinal clarity or distortion",
-        "Emotional and spiritual impact",
-        "Historical and canonical context",
-      ],
+      color: "text-blue-500",
     },
   ];
 
-  const handleStartEvaluation = () => {
-    if (selectedCategory && subjectName.trim()) {
-      const category = discernOptions.find(opt => opt.id === selectedCategory);
-      navigate(`/chat?discern=${selectedCategory}&subject=${encodeURIComponent(subjectName)}&discernContext=${encodeURIComponent(additionalContext)}&categoryName=${encodeURIComponent(category?.name || '')}`);
-    }
+  const handleCircleClick = (categoryId: string) => {
+    navigate(`/chat?discern=${categoryId}`);
   };
-
-  const canStartEvaluation = selectedCategory && subjectName.trim().length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,100 +54,46 @@ const Discern = () => {
         </div>
 
         {/* Description */}
-        <Card className="mb-8 border-primary/20">
+        <Card className="mb-12 border-primary/20">
           <CardHeader>
-            <CardTitle className="text-xl">How Discernment Works</CardTitle>
+            <CardTitle className="text-xl">Three Circles of Evaluation</CardTitle>
             <CardDescription>
-              Select a category below to evaluate churches, belief systems, or religious texts
-              using biblical and theological criteria. Each evaluation uses a specific framework
-              designed to assess spiritual authenticity and doctrinal soundness.
+              Select a category to begin your theological evaluation with our specialized AI assistants.
+              Each circle represents a distinct area of discernment.
             </CardDescription>
           </CardHeader>
         </Card>
 
-        {/* Circle Selector */}
-        <div className="grid grid-cols-3 gap-6 mb-6">
+        {/* Three Circles */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 max-w-5xl mx-auto">
           {discernOptions.map((option) => {
             const Icon = option.icon;
-            const isSelected = selectedCategory === option.id;
             return (
               <button
-                key={`circle-${option.id}`}
+                key={option.id}
                 type="button"
-                aria-label={`Select ${option.name}`}
-                onClick={() => setSelectedCategory(option.id)}
-                className={`group mx-auto flex flex-col items-center gap-3 focus:outline-none`}
+                onClick={() => handleCircleClick(option.id)}
+                className="group flex flex-col items-center gap-6 focus:outline-none"
               >
-                <div
-                  className={`w-24 h-24 rounded-full flex items-center justify-center transition-all border-2 ${
-                    isSelected
-                      ? "border-primary ring-4 ring-primary/20 bg-primary/5"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                >
-                  <Icon className={`w-8 h-8 ${option.color}`} />
+                <div className="relative">
+                  {/* Outer ring */}
+                  <div className="absolute inset-0 rounded-full border-4 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-110" />
+                  
+                  {/* Main circle */}
+                  <div className="w-40 h-40 rounded-full bg-gradient-to-br from-background to-card border-4 border-primary flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <Icon className={`w-16 h-16 ${option.color}`} />
+                  </div>
                 </div>
-                <span className="text-sm font-medium text-secondary text-center leading-tight">
-                  {option.name}
-                </span>
+                
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-secondary mb-2">{option.name}</h3>
+                  <p className="text-sm text-muted-foreground max-w-xs">
+                    {option.description}
+                  </p>
+                </div>
               </button>
             );
           })}
-        </div>
-
-
-        {/* Input Form - Only show after category is selected */}
-        {selectedCategory && (
-          <Card className="mb-8 border-primary/20 animate-fade-in">
-            <CardHeader>
-              <CardTitle>What would you like to evaluate?</CardTitle>
-              <CardDescription>
-                Provide the name and any additional context for evaluation
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-secondary mb-2 block">
-                  Name / Title *
-                </label>
-                <Input
-                  placeholder={
-                    selectedCategory === "churches" 
-                      ? "e.g., First Baptist Church of Springfield"
-                      : selectedCategory === "belief-systems"
-                      ? "e.g., Mormonism, Jehovah's Witnesses, Eastern Orthodox"
-                      : "e.g., Book of Mormon, Quran, Bhagavad Gita"
-                  }
-                  value={subjectName}
-                  onChange={(e) => setSubjectName(e.target.value)}
-                  className="text-base"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-secondary mb-2 block">
-                  Additional Context (Optional)
-                </label>
-                <Textarea
-                  placeholder="Provide any additional information that might help with the evaluation..."
-                  value={additionalContext}
-                  onChange={(e) => setAdditionalContext(e.target.value)}
-                  className="min-h-[100px] text-base"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Action Button */}
-        <div className="flex justify-center">
-          <Button
-            size="lg"
-            onClick={handleStartEvaluation}
-            disabled={!canStartEvaluation}
-            className="px-8"
-          >
-            Start Evaluation
-          </Button>
         </div>
       </div>
     </div>
