@@ -62,7 +62,7 @@ const Discern = () => {
   const handleStartEvaluation = () => {
     if (selectedCategory && subjectName.trim()) {
       const category = discernOptions.find(opt => opt.id === selectedCategory);
-      navigate(`/chat?discern=${selectedCategory}&subject=${encodeURIComponent(subjectName)}&context=${encodeURIComponent(additionalContext)}&categoryName=${encodeURIComponent(category?.name || '')}`);
+      navigate(`/chat?discern=${selectedCategory}&subject=${encodeURIComponent(subjectName)}&discernContext=${encodeURIComponent(additionalContext)}&categoryName=${encodeURIComponent(category?.name || '')}`);
     }
   };
 

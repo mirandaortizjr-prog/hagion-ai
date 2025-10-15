@@ -27,6 +27,11 @@ const Chat = () => {
   const voice = searchParams.get("voice") || locationState?.context || "elohim";
   const context = searchParams.get("context") || "throne";
   const historyId = searchParams.get("history");
+  // Discernment params (from Discern page)
+  const discern = searchParams.get("discern");
+  const subject = searchParams.get("subject");
+  const categoryName = searchParams.get("categoryName") || "";
+  const discernContext = searchParams.get("discernContext") || "";
   const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -54,6 +59,54 @@ const Chat = () => {
         {
           role: "assistant",
           content: locationState.question,
+        },
+      ];
+    }
+
+    // Discernment flow: seed with evaluation intro if coming from Discern page
+    if (discern && subject) {
+      const evaluationConfig: Record<string, { label: string; tests: string[] }> = {
+        "churches": {
+          label: "Churches",
+          tests: [
+            "Creedal and doctrinal alignment",
+            "Salvation clarity (grace vs. works)",
+            "Emotional atmosphere and fruit",
+            "Witness and mission integrity",
+            "Leadership humility and restoration culture",
+          ],
+        },
+        "belief-systems": {
+          label: "Belief Systems & Religions",
+          tests: [
+            "Christology (Who is Jesus?)",
+            "Trinitarian theology",
+            "Path to salvation",
+            "Scriptural authority and additions",
+            "Cultural fruit and emotional impact",
+          ],
+        },
+        "texts": {
+          label: "Religious Texts & Books",
+          tests: [
+            "Alignment with Scripture",
+            "Christ-centeredness",
+            "Doctrinal clarity or distortion",
+            "Emotional and spiritual impact",
+            "Historical and canonical context",
+          ],
+        },
+      };
+
+      const cfg = evaluationConfig[discern as keyof typeof evaluationConfig];
+      const label = categoryName || cfg?.label || discern;
+      const bullets = (cfg?.tests || []).map(t => `• ${t}`).join("\n");
+      const intro = `Starting Discernment: ${label} → ${subject}\n\nEvaluation criteria:\n${bullets}${discernContext ? `\n\nAdditional context: ${discernContext}` : ""}\n\nWhen you're ready, say "Begin" or ask a specific question to start the evaluation.`;
+
+      return [
+        {
+          role: "assistant",
+          content: intro,
         },
       ];
     }
@@ -307,6 +360,11 @@ const Chat = () => {
                 </span>
               )}
             </p>
+            {discern && subject && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Discernment: {(categoryName || discern).toString()} — {subject}
+              </p>
+            )}
           </div>
         </div>
       </header>
