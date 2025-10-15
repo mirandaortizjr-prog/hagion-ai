@@ -15,6 +15,7 @@ import Notifications from "./pages/Notifications";
 import Support from "./pages/Support";
 import ApologeticsDebate from "./pages/ApologeticsDebate";
 import DivineGuidance from "./pages/DivineGuidance";
+import Discern from "./pages/Discern";
 import DivineChat from "./pages/DivineChat";
 import Chat from "./pages/Chat";
 import Premium from "./pages/Premium";
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/support" element={<Support />} />
             <Route path="/history" element={<History />} />
             <Route path="/saved" element={<Saved />} />
+            <Route path="/discern" element={<Discern />} />
             <Route path="/divine-guidance" element={<DivineGuidance />} />
             <Route path="/divine/:voiceId" element={<DivineChat />} />
             <Route path="/chat" element={<Chat />} />

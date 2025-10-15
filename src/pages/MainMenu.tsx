@@ -436,7 +436,7 @@ const MainMenu = () => {
                   return (
                     <div
                       key={opt.id}
-                      onClick={() => navigate('/divine-guidance')}
+                      onClick={() => navigate('/discern')}
                       className="p-4 rounded-xl border-2 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer"
                     >
                       <div className="flex items-center gap-3 mb-2">
