@@ -129,48 +129,6 @@ const Discern = () => {
           })}
         </div>
 
-        {/* Category Cards */}
-        <div className="grid gap-6 mb-8">
-          {discernOptions.map((option) => {
-            const Icon = option.icon;
-            const isSelected = selectedCategory === option.id;
-            return (
-              <Card
-                key={option.id}
-                className={`cursor-pointer transition-all hover:shadow-lg ${
-                  isSelected ? "border-primary border-2 shadow-lg" : "border-border"
-                }`}
-                onClick={() => setSelectedCategory(option.id)}
-              >
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0`}>
-                      <Icon className={`w-6 h-6 ${option.color}`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-xl">{option.name}</CardTitle>
-                        {isSelected && <CheckCircle2 className="w-5 h-5 text-primary" />}
-                      </div>
-                      <CardDescription className="mt-1">{option.description}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <h4 className="text-sm font-semibold text-secondary mb-2">Evaluation Criteria:</h4>
-                  <ul className="space-y-2">
-                    {option.tests.map((test, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="text-primary mt-1">•</span>
-                        <span>{test}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
 
         {/* Input Form - Only show after category is selected */}
         {selectedCategory && (
