@@ -466,6 +466,24 @@ const MainMenu = () => {
                             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600 transition-all">
                               <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                             </div>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <button
+                                  aria-label={`About ${item.name}`}
+                                  className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Info className="w-3 h-3" />
+                                </button>
+                              </PopoverTrigger>
+                              <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                                <p className="text-sm">
+                                  {item.id === 'biblical-stories' && t('biblical_stories_info')}
+                                  {item.id === 'martyrs' && t('martyrs_faith_info')}
+                                  {item.id === 'history-christianity' && t('history_christianity_info')}
+                                </p>
+                              </PopoverContent>
+                            </Popover>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                                 <span>★</span> PRO

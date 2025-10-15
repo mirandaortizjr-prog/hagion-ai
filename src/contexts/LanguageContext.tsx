@@ -40,8 +40,11 @@ const translations: Record<Language, Record<string, string>> = {
     'trinity': 'Trinity',
     'divine_guidance_info': 'These divine voices are for seeking wise counsel in difficult situations. Speak your heart and receive spiritual guidance.',
     'biblical_stories': 'Biblical Stories',
+    'biblical_stories_info': 'Explore the timeless narratives of Scripture and discover how God\'s word comes alive through powerful storytelling',
     'martyrs_faith': 'Martyrs for the Faith',
+    'martyrs_faith_info': 'Draw inspiration from the courageous witnesses who gave everything for their faith and learn from their unwavering devotion',
     'history_christianity': 'History of Christianity',
+    'history_christianity_info': 'Journey through two millennia of church history and understand how God has guided His people through the ages',
     
     // Navigation
     'chat': 'Chat',
@@ -233,8 +236,11 @@ const translations: Record<Language, Record<string, string>> = {
     'trinity': 'Trinidad',
     'divine_guidance_info': 'Estas voces divinas son para buscar consejo sabio en situaciones difíciles. Habla de tu corazón y recibe guía espiritual.',
     'biblical_stories': 'Historias Bíblicas',
+    'biblical_stories_info': 'Explora las narrativas atemporales de las Escrituras y descubre cómo la palabra de Dios cobra vida a través de poderosas historias',
     'martyrs_faith': 'Mártires de la Fe',
+    'martyrs_faith_info': 'Inspírate con los valientes testigos que lo dieron todo por su fe y aprende de su devoción inquebrantable',
     'history_christianity': 'Historia del Cristianismo',
+    'history_christianity_info': 'Recorre dos milenios de historia de la iglesia y comprende cómo Dios ha guiado a Su pueblo a través de las edades',
     
     // Navigation
     'chat': 'Chat',
