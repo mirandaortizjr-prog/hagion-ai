@@ -101,8 +101,8 @@ const MainMenu = () => {
     // Curriculum Tracks
     {
       id: "foundations",
-      name: "Foundations of Logos",
-      subtitle: "Logic principles & reasoning",
+      name: t('foundations_logos'),
+      subtitle: t('foundations_logos_desc'),
       image: undefined,
       icon: BookOpen,
       isPro: false,
@@ -111,8 +111,8 @@ const MainMenu = () => {
     },
     {
       id: "fallacies",
-      name: "Fallacies & Shadows",
-      subtitle: "Identifying logical fallacies",
+      name: t('fallacies_shadows'),
+      subtitle: t('fallacies_shadows_desc'),
       image: undefined,
       icon: Shield,
       isPro: false,
@@ -121,8 +121,8 @@ const MainMenu = () => {
     },
     {
       id: "apologetics",
-      name: "Apologetics Logic",
-      subtitle: "Theological arguments",
+      name: t('apologetics_logic'),
+      subtitle: t('apologetics_logic_desc'),
       image: undefined,
       icon: Scroll,
       isPro: true,
@@ -131,8 +131,8 @@ const MainMenu = () => {
     },
     {
       id: "witnessing",
-      name: "Witnessing with Wisdom",
-      subtitle: "Conversational discernment",
+      name: t('witnessing_wisdom'),
+      subtitle: t('witnessing_wisdom_desc'),
       image: undefined,
       icon: MessageCircle,
       isPro: false,
@@ -141,8 +141,8 @@ const MainMenu = () => {
     },
     {
       id: "scripture",
-      name: "Logic in Scripture",
-      subtitle: "Biblical logic & structure",
+      name: t('logic_scripture'),
+      subtitle: t('logic_scripture_desc'),
       image: undefined,
       icon: Scroll,
       isPro: true,
@@ -151,8 +151,8 @@ const MainMenu = () => {
     },
     {
       id: "emotional",
-      name: "Emotional Logic",
-      subtitle: "Feelings & truth",
+      name: t('emotional_logic'),
+      subtitle: t('emotional_logic_desc'),
       image: undefined,
       icon: Heart,
       isPro: false,
@@ -162,8 +162,8 @@ const MainMenu = () => {
     // Teaching Paths
     {
       id: "apologetics-path",
-      name: "Apologetics Path",
-      subtitle: "Defend with reasoning",
+      name: t('apologetics_path'),
+      subtitle: t('apologetics_path_desc'),
       image: undefined,
       icon: Shield,
       isPro: false,
@@ -172,8 +172,8 @@ const MainMenu = () => {
     },
     {
       id: "witnessing-path",
-      name: "Witnessing Path",
-      subtitle: "Emotional discernment",
+      name: t('witnessing_path'),
+      subtitle: t('witnessing_path_desc'),
       image: undefined,
       icon: MessageCircle,
       isPro: false,
@@ -182,8 +182,8 @@ const MainMenu = () => {
     },
     {
       id: "logic-path",
-      name: "Logic Path",
-      subtitle: "Scaffolding of truth",
+      name: t('logic_path'),
+      subtitle: t('logic_path_desc'),
       image: undefined,
       icon: Brain,
       isPro: false,
@@ -192,8 +192,8 @@ const MainMenu = () => {
     },
     {
       id: "scriptural-path",
-      name: "Scriptural Path",
-      subtitle: "Biblical structure",
+      name: t('scriptural_path'),
+      subtitle: t('scriptural_path_desc'),
       image: undefined,
       icon: Scroll,
       isPro: false,
@@ -202,8 +202,8 @@ const MainMenu = () => {
     },
     {
       id: "ceremonial-path",
-      name: "Ceremonial Path",
-      subtitle: "Ritualize truth",
+      name: t('ceremonial_path'),
+      subtitle: t('ceremonial_path_desc'),
       image: undefined,
       icon: Heart,
       isPro: true,
@@ -434,7 +434,7 @@ const MainMenu = () => {
                 <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Scroll className="w-5 h-5 text-teal-500" />
-                    Storytelling
+                    {t('storytelling')}
                   </h3>
                   <ChevronDown className={`w-5 h-5 transition-transform ${openSections.storytelling ? 'rotate-180' : ''}`} />
                 </CollapsibleTrigger>
@@ -474,7 +474,7 @@ const MainMenu = () => {
                 <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-violet-500" />
-                    Curriculum Tracks
+                    {t('curriculum_tracks')}
                   </h3>
                   <ChevronDown className={`w-5 h-5 transition-transform ${openSections.tracks ? 'rotate-180' : ''}`} />
                 </CollapsibleTrigger>
@@ -514,7 +514,7 @@ const MainMenu = () => {
                 <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Brain className="w-5 h-5 text-violet-500" />
-                    Teaching Paths
+                    {t('teaching_paths')}
                   </h3>
                   <ChevronDown className={`w-5 h-5 transition-transform ${openSections.paths ? 'rotate-180' : ''}`} />
                 </CollapsibleTrigger>

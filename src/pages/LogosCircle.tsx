@@ -4,6 +4,7 @@ import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart } from
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useLanguage } from "@/contexts/LanguageContext";
 import sophiaAvatar from "@/assets/sophia-avatar.jpg";
 import raphaelAvatar from "@/assets/raphael-avatar.jpg";
 import thaddeuAvatar from "@/assets/thaddeus-avatar.jpg";
@@ -13,60 +14,61 @@ import mirandaAvatar from "@/assets/miranda-avatar.jpg";
 
 const LogosCircle = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const curriculumTracks = [
     {
       id: "foundations",
-      name: "Foundations of Logos",
-      description: "Basic logic principles, deductive/inductive reasoning",
+      name: t('foundations_logos'),
+      description: t('foundations_logos_desc'),
       icon: BookOpen,
       avatar: sophiaAvatar,
-      tone: "Grounding, clear",
+      tone: t('tone_grounding'),
       isPro: false,
     },
     {
       id: "fallacies",
-      name: "Fallacies & Shadows",
-      description: "Identifying and ritualizing logical fallacies",
+      name: t('fallacies_shadows'),
+      description: t('fallacies_shadows_desc'),
       icon: Shield,
       avatar: raphaelAvatar,
-      tone: "Protective, revealing",
+      tone: t('tone_protective'),
       isPro: false,
     },
     {
       id: "apologetics",
-      name: "Apologetics Logic",
-      description: "Structuring theological arguments",
+      name: t('apologetics_logic'),
+      description: t('apologetics_logic_desc'),
       icon: Scroll,
       avatar: thaddeuAvatar,
-      tone: "Bold, reverent",
+      tone: t('tone_bold'),
       isPro: true,
     },
     {
       id: "witnessing",
-      name: "Witnessing with Wisdom",
-      description: "Emotional logic, conversational discernment",
+      name: t('witnessing_wisdom'),
+      description: t('witnessing_wisdom_desc'),
       icon: MessageSquare,
       avatar: brookeAvatar,
-      tone: "Gentle, strategic",
+      tone: t('tone_gentle'),
       isPro: false,
     },
     {
       id: "scripture",
-      name: "Logic in Scripture",
-      description: "How biblical texts use logic and structure",
+      name: t('logic_scripture'),
+      description: t('logic_scripture_desc'),
       icon: Scroll,
       avatar: kenanAvatar,
-      tone: "Mystical, analytical",
+      tone: t('tone_mystical'),
       isPro: true,
     },
     {
       id: "emotional",
-      name: "Emotional Logic",
-      description: "How feelings and truth interact",
+      name: t('emotional_logic'),
+      description: t('emotional_logic_desc'),
       icon: Heart,
       avatar: mirandaAvatar,
-      tone: "Reflective, intimate",
+      tone: t('tone_reflective'),
       isPro: false,
     },
   ];
@@ -74,36 +76,36 @@ const LogosCircle = () => {
   const teachingPaths = [
     {
       id: "apologetics-path",
-      name: "Apologetics Path",
-      description: "Defend the faith with layered reasoning",
+      name: t('apologetics_path'),
+      description: t('apologetics_path_desc'),
       color: "from-purple-500 to-indigo-600",
       icon: Shield,
     },
     {
       id: "witnessing-path",
-      name: "Witnessing Path",
-      description: "Learn emotional discernment and conversational clarity",
+      name: t('witnessing_path'),
+      description: t('witnessing_path_desc'),
       color: "from-blue-500 to-cyan-600",
       icon: MessageSquare,
     },
     {
       id: "logic-path",
-      name: "Logic Path",
-      description: "Build the scaffolding of truth",
+      name: t('logic_path'),
+      description: t('logic_path_desc'),
       color: "from-amber-500 to-orange-600",
       icon: Brain,
     },
     {
       id: "scriptural-path",
-      name: "Scriptural Path",
-      description: "Study the structure and rhetoric of biblical texts",
+      name: t('scriptural_path'),
+      description: t('scriptural_path_desc'),
       color: "from-emerald-500 to-teal-600",
       icon: Scroll,
     },
     {
       id: "ceremonial-path",
-      name: "Ceremonial Path",
-      description: "Learn to ritualize truth through prayer, poetry, and proclamation",
+      name: t('ceremonial_path'),
+      description: t('ceremonial_path_desc'),
       color: "from-rose-500 to-pink-600",
       icon: Heart,
     },
@@ -117,8 +119,8 @@ const LogosCircle = () => {
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">Hagion University Lite</h1>
-          <p className="text-sm text-muted-foreground">Logic as Sacred Structure</p>
+          <h1 className="text-2xl font-bold">{t('hagion_university')}</h1>
+          <p className="text-sm text-muted-foreground">{t('logic_sacred_structure')}</p>
         </div>
       </header>
 
@@ -126,16 +128,16 @@ const LogosCircle = () => {
       <div className="flex-1 overflow-auto px-4 py-6">
         <Tabs defaultValue="tracks" className="max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="tracks">Curriculum Tracks</TabsTrigger>
-            <TabsTrigger value="paths">Teaching Paths</TabsTrigger>
+            <TabsTrigger value="tracks">{t('curriculum_tracks')}</TabsTrigger>
+            <TabsTrigger value="paths">{t('teaching_paths')}</TabsTrigger>
           </TabsList>
 
           {/* Curriculum Tracks */}
           <TabsContent value="tracks" className="space-y-4">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2">Curriculum Tracks</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('curriculum_tracks')}</h2>
               <p className="text-muted-foreground">
-                Learn logic principles, fallacy identification, argument construction, and spiritual reasoning
+                {t('curriculum_tracks_subtitle')}
               </p>
             </div>
 
@@ -176,7 +178,7 @@ const LogosCircle = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="font-medium">Tone:</span>
+                        <span className="font-medium">{t('tone')}:</span>
                         <span className="italic">{track.tone}</span>
                       </div>
                     </CardContent>
@@ -187,50 +189,50 @@ const LogosCircle = () => {
 
             {/* Interactive Features Section */}
             <div className="mt-8 p-6 bg-muted/30 rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">Interactive Features</h3>
+              <h3 className="text-lg font-semibold mb-4">{t('interactive_features')}</h3>
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
                   <div>
-                    <p className="font-medium">Logic Toolkits</p>
+                    <p className="font-medium">{t('logic_toolkits')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Visual breakdowns of argument structures
+                      {t('logic_toolkits_desc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
                   <div>
-                    <p className="font-medium">Fallacy Ritualizer</p>
+                    <p className="font-medium">{t('fallacy_ritualizer')}</p>
                     <p className="text-sm text-muted-foreground">
-                      AI detects fallacies and offers poetic corrections
+                      {t('fallacy_ritualizer_desc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
                   <div>
-                    <p className="font-medium">Debate Builder</p>
+                    <p className="font-medium">{t('debate_builder')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Construct and test arguments against personas
+                      {t('debate_builder_desc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
                   <div>
-                    <p className="font-medium">Trinity Commentary</p>
+                    <p className="font-medium">{t('trinity_commentary')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Three perspectives on logical reasoning
+                      {t('trinity_commentary_desc')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
                   <div>
-                    <p className="font-medium">Legacy Scrolls</p>
+                    <p className="font-medium">{t('legacy_scrolls')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Save completed lessons as scrolls of reason
+                      {t('legacy_scrolls_desc')}
                     </p>
                   </div>
                 </div>
@@ -241,9 +243,9 @@ const LogosCircle = () => {
           {/* Teaching Paths */}
           <TabsContent value="paths" className="space-y-4">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2">Sanctuary of Teaching</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('sanctuary_teaching')}</h2>
               <p className="text-muted-foreground">
-                Choose your path through self-guided sanctuaries of learning
+                {t('sanctuary_teaching_subtitle')}
               </p>
             </div>
 
@@ -272,7 +274,7 @@ const LogosCircle = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>Includes: Lessons • Quizzes • AI Practice • Emotional Debriefs</span>
+                        <span>{t('path_includes')}</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -282,16 +284,16 @@ const LogosCircle = () => {
 
             {/* Path Features */}
             <div className="mt-8 p-6 bg-muted/30 rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">What Each Path Includes</h3>
+              <h3 className="text-lg font-semibold mb-4">{t('what_path_includes')}</h3>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center">
                     <BookOpen className="w-4 h-4 text-violet-500" />
                   </div>
                   <div>
-                    <p className="font-medium">Structured Lessons</p>
+                    <p className="font-medium">{t('structured_lessons')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Progressive curriculum with clear learning objectives
+                      {t('structured_lessons_desc')}
                     </p>
                   </div>
                 </div>
@@ -300,9 +302,9 @@ const LogosCircle = () => {
                     <Brain className="w-4 h-4 text-violet-500" />
                   </div>
                   <div>
-                    <p className="font-medium">AI-Guided Practice</p>
+                    <p className="font-medium">{t('ai_guided_practice')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Interactive exercises with intelligent feedback
+                      {t('ai_guided_practice_desc')}
                     </p>
                   </div>
                 </div>
@@ -311,9 +313,9 @@ const LogosCircle = () => {
                     <Heart className="w-4 h-4 text-violet-500" />
                   </div>
                   <div>
-                    <p className="font-medium">Emotional Debriefs</p>
+                    <p className="font-medium">{t('emotional_debriefs')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Reflect on how logic connects with your spiritual journey
+                      {t('emotional_debriefs_desc')}
                     </p>
                   </div>
                 </div>
