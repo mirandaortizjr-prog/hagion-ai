@@ -394,13 +394,7 @@ const MainMenu = () => {
             >
               <div className="relative">
                 <div
-                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
-                    assistant.isPro
-                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
-                      : assistant.isSpecial
-                      ? "border-primary shadow-lg shadow-primary/20 group-hover:shadow-primary/40"
-                      : "border-cyan-500 shadow-lg shadow-cyan-500/20 group-hover:border-cyan-600"
-                  }`}
+                  className="w-24 h-24 rounded-full overflow-hidden border-4 border-orange-500 shadow-lg shadow-orange-500/20 group-hover:border-orange-600 transition-all"
                 >
                   <img
                     src={assistant.image}
