@@ -77,41 +77,20 @@ const DivineGuidance = () => {
       id: "churches",
       name: "Churches",
       icon: Church,
-      description: "Evaluate individual churches for alignment with the true Christian faith",
-      tests: [
-        "Creedal and doctrinal alignment",
-        "Salvation clarity (grace vs. works)",
-        "Emotional atmosphere and fruit",
-        "Witness and mission integrity",
-        "Leadership humility and restoration culture"
-      ]
+      description: "Evaluate individual churches",
     },
     {
       id: "belief-systems",
-      name: "Belief Systems & Religions",
+      name: "Belief Systems",
       icon: Search,
-      description: "Evaluate entire belief systems, denominations, or religions for theological soundness",
-      tests: [
-        "Christology (Who is Jesus?)",
-        "Trinitarian theology",
-        "Path to salvation",
-        "Scriptural authority and additions",
-        "Cultural fruit and emotional impact"
-      ]
+      description: "Evaluate religions and denominations",
     },
     {
       id: "texts",
-      name: "Religious Texts & Books",
+      name: "Religious Texts",
       icon: BookOpen,
-      description: "Evaluate sacred or spiritual texts for theological integrity and resonance",
-      tests: [
-        "Alignment with Scripture",
-        "Christ-centeredness",
-        "Doctrinal clarity or distortion",
-        "Emotional and spiritual impact",
-        "Historical and canonical context"
-      ]
-    }
+      description: "Evaluate sacred texts and books",
+    },
   ];
 
   const canStartConversation = selectedVoice && selectedContext;
