@@ -359,6 +359,20 @@ const MainMenu = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      aria-label={`About ${guide.name}`}
+                      className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Info className="w-3 h-3" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                    <p className="text-sm">{t('divine_guidance_info')}</p>
+                  </PopoverContent>
+                </Popover>
                 {guide.isPro && (
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                     <span>★</span> PRO
