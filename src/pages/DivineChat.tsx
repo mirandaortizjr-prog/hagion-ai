@@ -23,7 +23,7 @@ const DivineChat = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { voiceId } = useParams();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -153,6 +153,7 @@ const DivineChat = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice: voiceMap[voiceId || "elohim"],
           context: "spirit",
+          language,
         }),
       });
 
