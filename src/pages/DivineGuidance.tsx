@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Sparkles, Cross, Wind, Flame } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Voice {
   id: string;
@@ -16,39 +17,40 @@ interface Voice {
 
 const DivineGuidance = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [selectedContext, setSelectedContext] = useState<string>("");
 
   const voices: Voice[] = [
     {
       id: "elohim",
-      name: "Elohim",
-      persona: "The Voice of God",
-      description: "Authority, wisdom, sovereignty, and timeless love from the Father's perspective.",
+      name: t('elohim'),
+      persona: t('voice_of_god'),
+      description: t('elohim_desc'),
       icon: Sparkles,
       color: "from-blue-600 to-indigo-700",
     },
     {
       id: "emmanuel",
-      name: "Emmanuel",
-      persona: "The Voice of Christ",
-      description: "Compassionate guidance rooted in Jesus' teachings, grace, and mercy.",
+      name: t('christ'),
+      persona: t('voice_of_christ'),
+      description: t('christ_desc'),
       icon: Cross,
       color: "from-rose-500 to-red-600",
     },
     {
       id: "ruach",
-      name: "Ruach",
-      persona: "The Voice of the Spirit",
-      description: "Gentle direction and conviction, inspiring understanding and transformation.",
+      name: t('holy_spirit'),
+      persona: t('voice_of_spirit'),
+      description: t('spirit_desc'),
       icon: Wind,
       color: "from-cyan-500 to-teal-600",
     },
     {
       id: "trinity",
-      name: "The Trinity",
-      persona: "All Three as One",
-      description: "Unified expression of the Father, Son, and Holy Spirit's love and wisdom.",
+      name: t('trinity'),
+      persona: t('all_three_as_one'),
+      description: t('trinity_desc'),
       icon: Flame,
       color: "from-primary to-accent",
     },
@@ -57,18 +59,18 @@ const DivineGuidance = () => {
   const contexts = [
     {
       id: "throne",
-      name: "Before the Throne",
-      description: "Encounters emphasizing God's sovereignty and majesty",
+      name: t('before_throne'),
+      description: t('before_throne_desc'),
     },
     {
       id: "cross",
-      name: "At the Cross",
-      description: "Moments centered on grace, redemption, and sacrifice",
+      name: t('at_cross'),
+      description: t('at_cross_desc'),
     },
     {
       id: "spirit",
-      name: "Led by the Spirit",
-      description: "Guidance for ongoing discipleship and transformation",
+      name: t('led_by_spirit'),
+      description: t('led_by_spirit_desc'),
     },
   ];
 
@@ -86,23 +88,23 @@ const DivineGuidance = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold text-secondary">Divine Guidance</h1>
+          <h1 className="text-2xl font-bold text-secondary">{t('divine_guidance')}</h1>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-3xl font-bold text-secondary mb-3">
-            Choose Your Conversation Voice
+            {t('choose_voice')}
           </h2>
           <p className="text-muted-foreground">
-            Select who you'd like to hear from and the spiritual context for your conversation
+            {t('select_voice_context')}
           </p>
         </div>
 
         <div className="space-y-12">
           <section className="animate-slide-up">
-            <h3 className="text-xl font-semibold text-secondary mb-6">Divine Voice</h3>
+            <h3 className="text-xl font-semibold text-secondary mb-6">{t('divine_voice')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {voices.map((voice) => {
                 const Icon = voice.icon;
@@ -136,7 +138,7 @@ const DivineGuidance = () => {
                             </p>
                           </div>
                           {isSelected && (
-                            <Badge className="bg-primary">Selected</Badge>
+                            <Badge className="bg-primary">{t('selected')}</Badge>
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground">
@@ -152,7 +154,7 @@ const DivineGuidance = () => {
 
           <section className="animate-slide-up" style={{ animationDelay: "200ms" }}>
             <h3 className="text-xl font-semibold text-secondary mb-6">
-              Spiritual Context
+              {t('spiritual_context')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {contexts.map((context) => {
@@ -189,7 +191,7 @@ const DivineGuidance = () => {
               }
               className="bg-gradient-to-r from-primary to-accent text-white px-12 py-6 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
             >
-              Start Conversation
+              {t('start_conversation')}
             </Button>
           </div>
         </div>

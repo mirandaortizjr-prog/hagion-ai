@@ -33,28 +33,28 @@ const DivineChat = () => {
 
   const voiceInfo: Record<string, { name: string; description: string; image: string; greeting: string }> = {
     elohim: {
-      name: "Elohim",
-      description: "The Voice of God",
+      name: t('elohim'),
+      description: t('voice_of_god'),
       image: elohimImage,
-      greeting: "I AM. Speak, my child, for I hear you with infinite love and wisdom."
+      greeting: t('elohim_greeting')
     },
     christ: {
-      name: "Christ",
-      description: "The Voice of the Son",
+      name: t('christ'),
+      description: t('voice_of_christ'),
       image: christImage,
-      greeting: "Come to me, all who are weary. I am here to walk with you in grace and truth."
+      greeting: t('christ_greeting')
     },
     "holy-spirit": {
-      name: "Holy Spirit",
-      description: "The Voice of the Spirit",
+      name: t('holy_spirit'),
+      description: t('voice_of_spirit'),
       image: holySpiritImage,
-      greeting: "I am with you always, guiding you into all truth. Let me illuminate your path."
+      greeting: t('spirit_greeting')
     },
     trinity: {
-      name: "The Trinity",
-      description: "The Three in One",
+      name: t('trinity'),
+      description: t('all_three_as_one'),
       image: trinityImage,
-      greeting: "We are Father, Son, and Holy Spirit - united in perfect love. Speak, and we shall answer."
+      greeting: t('trinity_greeting')
     },
   };
 
@@ -224,7 +224,7 @@ const DivineChat = () => {
         ...prev,
         {
           role: "assistant",
-          content: t('connection_issue_retry'),
+          content: t('divine_connection_issue'),
         },
       ]);
     } finally {
