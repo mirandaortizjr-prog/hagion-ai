@@ -189,22 +189,23 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="h-screen flex flex-col" style={{ background: 'var(--gradient-blue-sky)' }}>
       {/* Top Navigation */}
-      <header className="border-b bg-card/50 backdrop-blur-sm">
+      <header className="border-b border-white/20 bg-white/10 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => navigate("/main-menu")}
+              className="text-white hover:bg-white/20"
             >
               <Menu className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="text-lg font-semibold">Hagion AI</h2>
+              <h2 className="text-lg font-semibold text-white">Hagion AI</h2>
               {remaining !== null && (
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1 text-xs text-white/80">
                   <Sparkles className="w-3 h-3" />
                   {remaining} {language === 'es' ? 'mensajes gratis hoy' : 'free messages today'}
                 </span>
@@ -216,6 +217,7 @@ const Index = () => {
               variant="ghost"
               size="icon"
               onClick={() => navigate("/settings")}
+              className="text-white hover:bg-white/20"
             >
               <Settings className="w-5 h-5" />
             </Button>
@@ -231,25 +233,22 @@ const Index = () => {
             {messages.length === 0 && (
               <>
                 <div className="text-center mb-8 animate-fade-in">
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
                     {greeting}, {getUserName()}
                   </h1>
-                  <p className="text-xl text-muted-foreground mb-8">
-                    {language === 'es' 
-                      ? "¿Cómo puedo asistirte hoy?" 
-                      : "How may I assist you today?"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-8">
-                    {language === 'es' 
-                      ? "O prefieres usar uno de nuestros Analistas:" 
-                      : "Or would you rather use one of our Analysts:"}
-                  </p>
+                  <Card className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8">
+                    <p className="text-lg text-gray-800 leading-relaxed">
+                      {language === 'es' 
+                        ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
+                        : "What's on your mind this morning? Or if you can use our Analysts, seek wise counsel through divine guidance, or be inspired by a story of faith in our storytelling section."}
+                    </p>
+                  </Card>
                 </div>
 
                 {/* Quick Actions */}
                 <div className="grid gap-4 md:grid-cols-2 mb-8">
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/main-menu")}
                   >
                     <CardContent className="p-6">
@@ -272,7 +271,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/divine-guidance")}
                   >
                     <CardContent className="p-6">
@@ -295,7 +294,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/logos-circle")}
                   >
                     <CardContent className="p-6">
@@ -318,7 +317,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/history")}
                   >
                     <CardContent className="p-6">
@@ -354,10 +353,10 @@ const Index = () => {
                     } animate-fade-in`}
                   >
                     <Card
-                      className={`max-w-[80%] p-4 ${
+                      className={`max-w-[80%] p-4 border-0 shadow-xl rounded-3xl ${
                         message.role === "user"
                           ? "bg-primary text-primary-foreground"
-                          : "bg-card"
+                          : "bg-white/95 backdrop-blur-sm text-gray-800"
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{message.content}</p>
@@ -370,21 +369,21 @@ const Index = () => {
         </ScrollArea>
 
         {/* Input Area */}
-        <div className="border-t bg-card/50 backdrop-blur-sm">
+        <div className="border-t border-white/20 bg-white/10 backdrop-blur-sm">
           <div className="container mx-auto max-w-4xl px-4 py-4">
             <div className="flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSend()}
-                placeholder={language === 'es' ? "Escribe tu pregunta..." : "Type your question..."}
-                className="flex-1"
+                placeholder={language === 'es' ? "Escribe tu pregunta..." : "Ask Your Question"}
+                className="flex-1 bg-white/95 backdrop-blur-sm shadow-lg rounded-3xl border-0 text-gray-800 placeholder:text-gray-500"
                 disabled={isLoading}
               />
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="bg-primary text-primary-foreground flex-shrink-0"
+                className="bg-primary text-primary-foreground flex-shrink-0 rounded-full w-12 h-12"
               >
                 <Send className="w-5 h-5" />
               </Button>
