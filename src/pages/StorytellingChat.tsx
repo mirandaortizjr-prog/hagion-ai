@@ -123,8 +123,8 @@ const StorytellingChat = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -167,8 +167,8 @@ const StorytellingChat = () => {
 
       if (response.status === 402) {
         toast({
-          title: "Credits required",
-          description: "Please add credits to continue.",
+          title: t('credits_required'),
+          description: t('credits_required_desc'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -178,8 +178,8 @@ const StorytellingChat = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -244,7 +244,7 @@ const StorytellingChat = () => {
         ...prev,
         {
           role: "assistant",
-          content: "I apologize, but there seems to be an issue connecting. Please try again.",
+          content: t('connection_issue_retry'),
         },
       ]);
     } finally {

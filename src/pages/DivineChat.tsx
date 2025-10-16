@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
@@ -22,6 +23,7 @@ const DivineChat = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { voiceId } = useParams();
+  const { t } = useLanguage();
   
   const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -131,8 +133,8 @@ const DivineChat = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -156,8 +158,8 @@ const DivineChat = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -222,7 +224,7 @@ const DivineChat = () => {
         ...prev,
         {
           role: "assistant",
-          content: "My child, there seems to be a disturbance in our connection. Please try speaking to me again.",
+          content: t('connection_issue_retry'),
         },
       ]);
     } finally {
@@ -309,7 +311,7 @@ const DivineChat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-              placeholder="Speak your heart..."
+              placeholder={t('speak_your_heart')}
               className="flex-1"
               disabled={isLoading}
             />

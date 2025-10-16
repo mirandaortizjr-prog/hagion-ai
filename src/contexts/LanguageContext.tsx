@@ -92,6 +92,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Chat
     'type_message': 'Type your message...',
+    'speak_your_heart': 'Speak your heart...',
     'send': 'Send',
     'guidance_disclaimer': 'All guidance is rooted in Scripture and designed to strengthen your faith',
     'messages_remaining': 'messages remaining today',
@@ -168,6 +169,10 @@ const translations: Record<Language, Record<string, string>> = {
     'logged_out_success': "You've been successfully logged out",
     'error': 'Error',
     'failed_logout': 'Failed to log out',
+    
+    // Assistant Chat
+    'assistant_intro': "Hello! I'm here to help answer your questions with evidence-based insights grounded in Scripture. What would you like to explore today?",
+    'connection_issue_retry': "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
     
     // Curriculum Tracks
     'foundations_logos': 'Foundations of Logos',
@@ -392,6 +397,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Chat
     'type_message': 'Escribe tu mensaje...',
+    'speak_your_heart': 'Habla desde tu corazón...',
     'send': 'Enviar',
     'guidance_disclaimer': 'Toda la guía está basada en las Escrituras y diseñada para fortalecer tu fe',
     'messages_remaining': 'mensajes restantes hoy',
@@ -468,6 +474,10 @@ const translations: Record<Language, Record<string, string>> = {
     'logged_out_success': 'Has cerrado sesión exitosamente',
     'error': 'Error',
     'failed_logout': 'Error al cerrar sesión',
+    
+    // Assistant Chat
+    'assistant_intro': '¡Hola! Estoy aquí para ayudarte a responder tus preguntas con ideas basadas en evidencia y fundamentadas en la Escritura. ¿Qué te gustaría explorar hoy?',
+    'connection_issue_retry': 'Disculpa, estoy teniendo problemas de conexión en este momento. Por favor, inténtalo de nuevo en un momento.',
     
     // Curriculum Tracks
     'foundations_logos': 'Fundamentos de Logos',

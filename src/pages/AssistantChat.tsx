@@ -26,7 +26,7 @@ const AssistantChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hello! I'm here to help answer your questions with evidence-based insights grounded in Scripture. What would you like to explore today?",
+      content: t('assistant_intro'),
     },
   ]);
   const [input, setInput] = useState("");
@@ -110,8 +110,8 @@ const AssistantChat = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -152,8 +152,8 @@ const AssistantChat = () => {
 
       if (response.status === 402) {
         toast({
-          title: "Credits required",
-          description: "Please add credits to continue.",
+          title: t('credits_required'),
+          description: t('credits_required_desc'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -162,8 +162,8 @@ const AssistantChat = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -230,7 +230,7 @@ const AssistantChat = () => {
         ...prev,
         {
           role: "assistant",
-          content: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
+          content: t('connection_issue_retry'),
         },
       ]);
     }

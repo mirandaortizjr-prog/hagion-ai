@@ -166,8 +166,8 @@ const Chat = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -192,8 +192,8 @@ const Chat = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -277,7 +277,7 @@ const Chat = () => {
         ...prev,
         {
           role: "assistant",
-          content: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
+          content: t('connection_issue_retry'),
         },
       ]);
     }
