@@ -189,7 +189,7 @@ const Index = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col" style={{ background: 'var(--gradient-blue-sky)' }}>
+    <div className="h-screen flex flex-col" style={{ background: 'var(--gradient-orange-warm)' }}>
       {/* Top Navigation */}
       <header className="border-b border-white/20 bg-white/10 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -236,8 +236,8 @@ const Index = () => {
                   <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
                     {greeting}, {getUserName()}
                   </h1>
-                  <Card className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8">
-                    <p className="text-lg text-gray-800 leading-relaxed">
+                  <Card className="max-w-2xl mx-auto bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8 border-0">
+                    <p className="text-lg text-gray-900 leading-relaxed">
                       {language === 'es' 
                         ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
                         : "What's on your mind this morning? Or if you can use our Analysts, seek wise counsel through divine guidance, or be inspired by a story of faith in our storytelling section."}
@@ -248,7 +248,7 @@ const Index = () => {
                 {/* Quick Actions */}
                 <div className="grid gap-4 md:grid-cols-2 mb-8">
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/main-menu")}
                   >
                     <CardContent className="p-6">
@@ -271,7 +271,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/divine-guidance")}
                   >
                     <CardContent className="p-6">
@@ -294,7 +294,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/logos-circle")}
                   >
                     <CardContent className="p-6">
@@ -317,7 +317,7 @@ const Index = () => {
                   </Card>
 
                   <Card 
-                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl border-0"
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105 bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl border-0"
                     onClick={() => navigate("/history")}
                   >
                     <CardContent className="p-6">
@@ -356,7 +356,7 @@ const Index = () => {
                       className={`max-w-[80%] p-4 border-0 shadow-xl rounded-3xl ${
                         message.role === "user"
                           ? "bg-primary text-primary-foreground"
-                          : "bg-white/95 backdrop-blur-sm text-gray-800"
+                          : "bg-gray-200 text-gray-900"
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{message.content}</p>
@@ -377,7 +377,7 @@ const Index = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSend()}
                 placeholder={language === 'es' ? "Escribe tu pregunta..." : "Ask Your Question"}
-                className="flex-1 bg-white/95 backdrop-blur-sm shadow-lg rounded-3xl border-0 text-gray-800 placeholder:text-gray-500"
+                className="flex-1 bg-gray-200 shadow-lg rounded-3xl border-0 text-gray-900 placeholder:text-gray-600"
                 disabled={isLoading}
               />
               <Button
