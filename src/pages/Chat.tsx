@@ -321,10 +321,15 @@ const Chat = () => {
           </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-secondary">
-              {voiceNames[voice]}
+              {discern ? "Discernment" : voiceNames[voice]}
             </h1>
             <p className="text-sm text-muted-foreground capitalize flex items-center gap-2">
-              {context.replace("-", " ")}
+              {discern ? (
+                discern === "churches" ? "Churches Evaluation" :
+                discern === "belief-systems" ? "Belief Systems Evaluation" :
+                discern === "texts" ? "Religious Texts Evaluation" :
+                "Theological Evaluation"
+              ) : context.replace("-", " ")}
               {remaining !== null && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                   <Sparkles className="w-3 h-3" />
