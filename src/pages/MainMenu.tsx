@@ -226,9 +226,9 @@ const MainMenu = () => {
     },
     {
       id: "discern",
-      name: "Discernment",
-      subtitle: "Spiritual Evaluation",
-      description: "Evaluate churches, belief systems, and religious texts for theological soundness and alignment with Christian truth.",
+      name: t('discernment'),
+      subtitle: t('discernment_subtitle'),
+      description: t('discernment_description'),
       image: discernmentFlameImage,
       isPro: false,
       isSpecial: false,
