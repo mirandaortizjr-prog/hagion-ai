@@ -228,7 +228,7 @@ const MainMenu = () => {
       name: "Discernment",
       subtitle: "Spiritual Evaluation",
       description: "Evaluate churches, belief systems, and religious texts for theological soundness and alignment with Christian truth.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      image: "https://images.unsplash.com/photo-1516528387618-afa90b13e000?w=200&h=200&fit=crop",
       isPro: false,
       isSpecial: false,
     },
