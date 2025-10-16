@@ -268,7 +268,7 @@ const StorytellingChat = () => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           {info.image && (
-            <Avatar className="w-10 h-10 border-2 border-primary">
+            <Avatar variant="hexagon" className="w-10 h-10 border-2 border-primary">
               <AvatarImage src={info.image} alt={info.name} />
               <AvatarFallback><BookOpen className="w-5 h-5" /></AvatarFallback>
             </Avatar>
@@ -298,7 +298,7 @@ const StorytellingChat = () => {
               } animate-fade-in`}
             >
               {message.role === "assistant" && info.image && (
-                <Avatar className="w-8 h-8 border border-primary/20 flex-shrink-0">
+                <Avatar variant="hexagon" className="w-8 h-8 border border-primary/20 flex-shrink-0">
                   <AvatarImage src={info.image} alt={info.name} />
                   <AvatarFallback><BookOpen className="w-4 h-4" /></AvatarFallback>
                 </Avatar>
@@ -317,7 +317,7 @@ const StorytellingChat = () => {
           {isLoading && (
             <div className="flex gap-3 justify-start animate-fade-in">
               {info.image && (
-                <Avatar className="w-8 h-8 border border-primary/20 flex-shrink-0">
+                <Avatar variant="hexagon" className="w-8 h-8 border border-primary/20 flex-shrink-0">
                   <AvatarImage src={info.image} alt={info.name} />
                   <AvatarFallback><BookOpen className="w-4 h-4" /></AvatarFallback>
                 </Avatar>
