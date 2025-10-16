@@ -20,6 +20,7 @@ import raphaelImage from "@/assets/raphael-avatar.jpg";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 import historyChristianityImage from "@/assets/history-christianity.jpg";
 import atheistDebateImage from "@/assets/atheist-debate.jpg";
+import discernmentFlameImage from "@/assets/discernment-flame.jpg";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -228,7 +229,7 @@ const MainMenu = () => {
       name: "Discernment",
       subtitle: "Spiritual Evaluation",
       description: "Evaluate churches, belief systems, and religious texts for theological soundness and alignment with Christian truth.",
-      image: "https://images.unsplash.com/photo-1516528387618-afa90b13e000?w=200&h=200&fit=crop",
+      image: discernmentFlameImage,
       isPro: false,
       isSpecial: false,
     },
