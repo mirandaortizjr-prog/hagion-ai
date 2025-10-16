@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -222,6 +222,15 @@ const MainMenu = () => {
       image: atheistDebateImage,
       isPro: false,
       isSpecial: true,
+    },
+    {
+      id: "discern",
+      name: "Discernment",
+      subtitle: "Spiritual Evaluation",
+      description: "Evaluate churches, belief systems, and religious texts for theological soundness and alignment with Christian truth.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
+      isPro: false,
+      isSpecial: false,
     },
     {
       id: "apologetics",
