@@ -6,6 +6,7 @@ import { ArrowLeft, Send, Swords, RefreshCw, Lightbulb } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Card } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -21,60 +22,61 @@ interface Persona {
   color: string;
 }
 
-const personas: Persona[] = [
-  {
-    id: "atheist",
-    name: "The Void",
-    title: "Atheist",
-    tone: "Rational, blunt",
-    challenge: "Absence of sacred meaning",
-    color: "text-gray-400"
-  },
-  {
-    id: "agnostic",
-    name: "The Fog",
-    title: "Agnostic",
-    tone: "Curious, hesitant",
-    challenge: "Fear of unknowable truth",
-    color: "text-slate-400"
-  },
-  {
-    id: "secular-humanist",
-    name: "The Flame",
-    title: "Secular Humanist",
-    tone: "Ethical, confident",
-    challenge: "Morality without divinity",
-    color: "text-orange-400"
-  },
-  {
-    id: "skeptic",
-    name: "The Mirror",
-    title: "Skeptic",
-    tone: "Analytical, probing",
-    challenge: "Doubt as virtue",
-    color: "text-blue-400"
-  },
-  {
-    id: "pantheist",
-    name: "The River",
-    title: "Pantheist",
-    tone: "Mystical, poetic",
-    challenge: "Divinity in all things",
-    color: "text-emerald-400"
-  },
-  {
-    id: "alternative-spiritual",
-    name: "The Oracle",
-    title: "Alternative Spiritual",
-    tone: "Esoteric, symbolic",
-    challenge: "Truth through intuition",
-    color: "text-purple-400"
-  }
-];
-
 const ApologeticsDebate = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
+
+  const personas: Persona[] = [
+    {
+      id: "atheist",
+      name: t('persona_void'),
+      title: t('persona_void_title'),
+      tone: t('persona_void_tone'),
+      challenge: t('persona_void_challenge'),
+      color: "text-gray-400"
+    },
+    {
+      id: "agnostic",
+      name: t('persona_fog'),
+      title: t('persona_fog_title'),
+      tone: t('persona_fog_tone'),
+      challenge: t('persona_fog_challenge'),
+      color: "text-slate-400"
+    },
+    {
+      id: "secular-humanist",
+      name: t('persona_flame'),
+      title: t('persona_flame_title'),
+      tone: t('persona_flame_tone'),
+      challenge: t('persona_flame_challenge'),
+      color: "text-orange-400"
+    },
+    {
+      id: "skeptic",
+      name: t('persona_mirror'),
+      title: t('persona_mirror_title'),
+      tone: t('persona_mirror_tone'),
+      challenge: t('persona_mirror_challenge'),
+      color: "text-blue-400"
+    },
+    {
+      id: "pantheist",
+      name: t('persona_river'),
+      title: t('persona_river_title'),
+      tone: t('persona_river_tone'),
+      challenge: t('persona_river_challenge'),
+      color: "text-emerald-400"
+    },
+    {
+      id: "alternative-spiritual",
+      name: t('persona_oracle'),
+      title: t('persona_oracle_title'),
+      tone: t('persona_oracle_tone'),
+      challenge: t('persona_oracle_challenge'),
+      color: "text-purple-400"
+    }
+  ];
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +100,7 @@ const ApologeticsDebate = () => {
     
     const invocationMessage: Message = {
       role: 'assistant',
-      content: `⚔️ **Circle of Apologetics: Trial by Truth**\n\nYou have summoned **${persona.name}** to the arena.\n\n**Stance:** ${persona.title}\n**Tone:** ${persona.tone}\n**Challenge:** ${persona.challenge}\n\nPrepare yourself. The trial begins now.\n\n*Round 1: Opening Statement*\nState your position clearly. What truth do you defend?`
+      content: `${t('circle_of_apologetics')}: ${t('trial_by_truth_subtitle')}\n\n${t('summoned_to_arena').replace('{name}', persona.name)}\n\n**${t('stance')}:** ${persona.title}\n**${t('tone')}:** ${persona.tone}\n**${t('challenge')}:** ${persona.challenge}\n\n${t('prepare_yourself')}\n\n${t('round_1_opening')}`
     };
     
     setMessages([invocationMessage]);
@@ -124,8 +126,8 @@ const ApologeticsDebate = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to start the debate.",
+          title: t('login_required'),
+          description: t('login_required_desc'),
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
@@ -150,8 +152,8 @@ const ApologeticsDebate = () => {
 
       if (response.status === 429) {
         toast({
-          title: "Rate limit exceeded",
-          description: "Please try again in a moment.",
+          title: t('rate_limit_exceeded'),
+          description: t('rate_limit_exceeded_desc'),
           variant: "destructive",
         });
         return;
@@ -159,8 +161,8 @@ const ApologeticsDebate = () => {
 
       if (response.status === 402) {
         toast({
-          title: "Credits required",
-          description: "Please add credits to continue.",
+          title: t('credits_required'),
+          description: t('credits_required_desc'),
           variant: "destructive",
         });
         return;
@@ -168,8 +170,8 @@ const ApologeticsDebate = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         navigate('/auth');
@@ -221,8 +223,8 @@ const ApologeticsDebate = () => {
     } catch (error) {
       console.error("Error:", error);
       toast({
-        title: "Error",
-        description: "Failed to get response. Please try again.",
+        title: t('error'),
+        description: t('failed_get_response'),
         variant: "destructive",
       });
     } finally {
@@ -238,20 +240,20 @@ const ApologeticsDebate = () => {
       setRound(nextRound);
       
       const roundNames = {
-        'opening': 'Opening Statement',
-        'rebuttal': 'Rebuttal',
-        'cross-examination': 'Cross-Examination',
-        'closing': 'Closing Statement'
+        'opening': t('opening_statement'),
+        'rebuttal': t('rebuttal'),
+        'cross-examination': t('cross_examination'),
+        'closing': t('closing_statement')
       };
       
       toast({
-        title: `Round ${currentIndex + 2}: ${roundNames[nextRound]}`,
-        description: "The debate continues...",
+        title: `${t('round')} ${currentIndex + 2}: ${roundNames[nextRound]}`,
+        description: t('the_debate_continues'),
       });
     } else {
       toast({
-        title: "Debate Complete",
-        description: "The trial has concluded. Reflect on what was learned.",
+        title: t('debate_complete'),
+        description: t('debate_complete_desc'),
       });
     }
   };
@@ -279,8 +281,8 @@ const ApologeticsDebate = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         return;
@@ -302,8 +304,8 @@ const ApologeticsDebate = () => {
 
       if (response.status === 401) {
         toast({
-          title: "Login required",
-          description: "Please log in to continue.",
+          title: t('login_required'),
+          description: t('login_required_continue'),
           variant: "destructive",
         });
         navigate('/auth');
@@ -349,8 +351,8 @@ const ApologeticsDebate = () => {
     } catch (error) {
       console.error("Error getting suggestion:", error);
       toast({
-        title: "Error",
-        description: "Failed to get suggested response. Please try again.",
+        title: t('error'),
+        description: t('failed_get_response'),
         variant: "destructive",
       });
     } finally {
@@ -375,17 +377,17 @@ const ApologeticsDebate = () => {
         <div className="flex-1">
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Swords className="w-6 h-6 text-primary" />
-            Apologetics Arena
+            {t('apologetics_arena')}
           </h1>
-          <p className="text-sm text-muted-foreground">Trial by Truth</p>
+          <p className="text-sm text-muted-foreground">{t('trial_by_truth_subtitle')}</p>
         </div>
       </header>
 
         <div className="flex-1 flex flex-col items-center justify-center px-6 gap-8">
           <div className="text-center space-y-4 max-w-lg">
-            <h2 className="text-3xl font-bold">⚔️ Circle of Apologetics</h2>
+            <h2 className="text-3xl font-bold">{t('circle_of_apologetics')}</h2>
             <p className="text-lg text-muted-foreground">
-              Transform intellectual tension into spiritual clarity. Face a random challenger who will test your apologetics through respectful confrontation.
+              {t('arena_description')}
             </p>
             
             <div className="grid grid-cols-2 gap-3 mt-8">
@@ -410,10 +412,10 @@ const ApologeticsDebate = () => {
               onClick={selectRandomPersona}
             >
               <Swords className="w-5 h-5" />
-              Random Opponent
+              {t('random_opponent')}
             </Button>
             <p className="text-xs text-muted-foreground text-center">
-              Or click any opponent above to challenge them directly
+              {t('or_click_opponent')}
             </p>
           </div>
         </div>
@@ -430,14 +432,14 @@ const ApologeticsDebate = () => {
         <div className="flex-1">
           <h1 className="text-lg font-bold flex items-center gap-2">
             <Swords className="w-5 h-5 text-primary" />
-            Facing: {currentPersona?.name}
+            {t('facing')}: {currentPersona?.name}
           </h1>
           <p className="text-xs text-muted-foreground">
-            {currentPersona?.title} • Round: {round}
+            {currentPersona?.title} • {t('round')}: {round}
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={advanceRound} disabled={round === 'closing'}>
-          Next Round
+          {t('next_round')}
         </Button>
         <Button variant="ghost" size="icon" onClick={resetDebate}>
           <RefreshCw className="w-5 h-5" />
@@ -479,7 +481,7 @@ const ApologeticsDebate = () => {
                         disabled={loadingSuggestion === index}
                       >
                         <Lightbulb className="w-4 h-4" />
-                        {loadingSuggestion === index ? "Getting help..." : "Show Suggested Response"}
+                        {loadingSuggestion === index ? t('getting_help') : t('show_suggested_response')}
                       </Button>
                     )}
                     
@@ -487,7 +489,7 @@ const ApologeticsDebate = () => {
                       <Card className="p-4 bg-accent/50 border-primary/20">
                         <div className="flex items-start gap-2 mb-2">
                           <Lightbulb className="w-4 h-4 text-primary mt-0.5" />
-                          <p className="text-xs font-semibold text-primary">Suggested Apologetic Response</p>
+                          <p className="text-xs font-semibold text-primary">{t('suggested_apologetic_response')}</p>
                         </div>
                         <p className="text-sm whitespace-pre-wrap mb-3">{suggestedResponses[index]}</p>
                         <Button
@@ -495,7 +497,7 @@ const ApologeticsDebate = () => {
                           size="sm"
                           onClick={() => useSuggestedResponse(index)}
                         >
-                          Use This Response
+                          {t('use_this_response')}
                         </Button>
                       </Card>
                     )}
