@@ -84,18 +84,14 @@ const Discern = () => {
           <CardHeader>
             <CardTitle className="text-2xl flex items-center gap-2">
               <Search className="w-6 h-6 text-primary" />
-              Three Circles of Discernment
+              {text.subtitle}
             </CardTitle>
             <CardDescription className="text-base leading-relaxed mt-3">
-              <strong className="text-foreground">Spiritual discernment</strong> is the God-given ability to distinguish truth from deception, 
-              light from darkness, and sound doctrine from false teaching. As the Apostle John warned, 
-              <em className="text-muted-foreground"> "Beloved, do not believe every spirit, but test the spirits to see whether they are from God" (1 John 4:1)</em>.
+              {text.introPart1}{' '}
+              <em className="text-muted-foreground">{text.scriptureQuote}</em>.
             </CardDescription>
             <CardDescription className="text-base leading-relaxed mt-4">
-              These three circles represent distinct areas of theological evaluation, each designed to help you 
-              examine specific aspects of religious practice, doctrine, and teaching through the lens of biblical truth. 
-              Select a category below to begin your in-depth analysis with our specialized AI assistant trained in 
-              Christian apologetics, systematic theology, and scriptural interpretation.
+              {text.introPart2}
             </CardDescription>
           </CardHeader>
         </Card>
