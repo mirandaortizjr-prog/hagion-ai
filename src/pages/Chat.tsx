@@ -321,14 +321,21 @@ const Chat = () => {
           </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-secondary">
-              {discern ? "Discernment" : voiceNames[voice]}
+              {discern ? (language === 'es' ? 'Discernimiento' : 'Discernment') : voiceNames[voice]}
             </h1>
             <p className="text-sm text-muted-foreground capitalize flex items-center gap-2">
               {discern ? (
-                discern === "churches" ? "Churches Evaluation" :
-                discern === "belief-systems" ? "Belief Systems Evaluation" :
-                discern === "texts" ? "Religious Texts Evaluation" :
-                "Theological Evaluation"
+                language === 'es' ? (
+                  discern === "churches" ? "Evaluación de Iglesias" :
+                  discern === "belief-systems" ? "Evaluación de Sistemas de Creencias" :
+                  discern === "texts" ? "Evaluación de Textos Religiosos" :
+                  "Evaluación Teológica"
+                ) : (
+                  discern === "churches" ? "Churches Evaluation" :
+                  discern === "belief-systems" ? "Belief Systems Evaluation" :
+                  discern === "texts" ? "Religious Texts Evaluation" :
+                  "Theological Evaluation"
+                )
               ) : context.replace("-", " ")}
               {remaining !== null && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
