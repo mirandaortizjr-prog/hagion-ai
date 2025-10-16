@@ -2,8 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import Index from "./pages/Index";
 import Splash from "./pages/Splash";
 import MainMenu from "./pages/MainMenu";
 import Settings from "./pages/Settings";
@@ -37,7 +38,7 @@ const App = () => (
         <LanguageToggle />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/splash" replace />} />
+            <Route path="/" element={<Index />} />
             <Route path="/splash" element={<Splash />} />
             <Route path="/main-menu" element={<MainMenu />} />
             <Route path="/auth" element={<Auth />} />
