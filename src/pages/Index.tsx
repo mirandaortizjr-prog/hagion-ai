@@ -1,17 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { User } from "@supabase/supabase-js";
-import { Settings, MessageSquare, Users, BookOpen, Menu } from "lucide-react";
+import { Settings, MessageSquare, Users, BookOpen, Menu, Send, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { useMessageLimit } from "@/hooks/useMessageLimit";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
 
 const Index = () => {
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
+  const { toast } = useToast();
+  const { remaining, refetch: refetchUsage } = useMessageLimit();
   const [user, setUser] = useState<User | null>(null);
   const [greeting, setGreeting] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Get current user
@@ -30,15 +45,153 @@ const Index = () => {
     }
   }, [language]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const getUserName = () => {
     if (!user) return language === 'es' ? "Amigo" : "Friend";
     return user.user_metadata?.first_name || user.email?.split('@')[0] || (language === 'es' ? "Amigo" : "Friend");
   };
 
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      role: "user",
+      content: input,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast({
+          title: t('login_required'),
+          description: t('login_required_continue'),
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        navigate("/auth");
+        return;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
+          voice: "friend",
+          context: "general",
+          language,
+        }),
+      });
+
+      if (response.status === 401) {
+        toast({
+          title: t('login_required'),
+          description: t('login_required_continue'),
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        navigate("/auth");
+        return;
+      }
+
+      if (response.status === 429) {
+        toast({
+          title: t('daily_limit_reached'),
+          description: t('upgrade_unlimited'),
+          variant: "destructive",
+          action: (
+            <Button variant="outline" size="sm" onClick={() => navigate('/premium')}>
+              {t('upgrade')}
+            </Button>
+          ),
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        refetchUsage();
+        setIsLoading(false);
+        return;
+      }
+
+      if (!response.ok || !response.body) {
+        throw new Error("Failed to get response");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = "";
+      let textBuffer = "";
+
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        textBuffer += decoder.decode(value, { stream: true });
+        let newlineIndex: number;
+
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantContent += content;
+              setMessages((prev) => {
+                const newMessages = [...prev];
+                const lastMsg = newMessages[newMessages.length - 1];
+                if (lastMsg.role === "assistant") {
+                  lastMsg.content = assistantContent;
+                }
+                return newMessages;
+              });
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+      
+      refetchUsage();
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: t('connection_issue_retry'),
+        },
+      ]);
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="h-screen flex flex-col bg-gradient-to-b from-background via-background to-muted/20">
       {/* Top Navigation */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -48,7 +201,15 @@ const Index = () => {
             >
               <Menu className="w-5 h-5" />
             </Button>
-            <h2 className="text-lg font-semibold">Hagion AI</h2>
+            <div>
+              <h2 className="text-lg font-semibold">Hagion AI</h2>
+              {remaining !== null && (
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                  <Sparkles className="w-3 h-3" />
+                  {remaining} {language === 'es' ? 'mensajes gratis hoy' : 'free messages today'}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -62,117 +223,188 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
-          {/* Welcome Section */}
-          <div className="text-center mb-12 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {greeting}, {getUserName()}
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              {language === 'es' 
-                ? "¿Cómo puedo asistirte hoy?" 
-                : "How may I assist you today?"}
+      {/* Main Content Area with Chat */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <ScrollArea ref={scrollRef} className="flex-1">
+          <div className="container mx-auto max-w-4xl px-4 py-6">
+            {/* Welcome Section - only show when no messages */}
+            {messages.length === 0 && (
+              <>
+                <div className="text-center mb-8 animate-fade-in">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                    {greeting}, {getUserName()}
+                  </h1>
+                  <p className="text-xl text-muted-foreground mb-8">
+                    {language === 'es' 
+                      ? "¿Cómo puedo asistirte hoy?" 
+                      : "How may I assist you today?"}
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-8">
+                    {language === 'es' 
+                      ? "O prefieres usar uno de nuestros Analistas:" 
+                      : "Or would you rather use one of our Analysts:"}
+                  </p>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="grid gap-4 md:grid-cols-2 mb-8">
+                  <Card 
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    onClick={() => navigate("/main-menu")}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-lg bg-primary/10">
+                          <Users className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2">
+                            {language === 'es' ? "Nuestros Analistas" : "Our Analysts"}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'es' 
+                              ? "Accede a expertos especializados" 
+                              : "Access specialized experts"}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card 
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    onClick={() => navigate("/divine-guidance")}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-lg bg-secondary/10">
+                          <BookOpen className="w-6 h-6 text-secondary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2">
+                            {language === 'es' ? "Guía Divina" : "Divine Guidance"}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'es' 
+                              ? "Busca consejo espiritual" 
+                              : "Seek spiritual counsel"}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card 
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    onClick={() => navigate("/logos-circle")}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-lg bg-accent/10">
+                          <BookOpen className="w-6 h-6 text-accent" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2">
+                            {language === 'es' ? "Aprender" : "Learn"}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'es' 
+                              ? "Explora cursos y enseñanzas" 
+                              : "Explore courses and teachings"}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card 
+                    className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
+                    onClick={() => navigate("/history")}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="p-3 rounded-lg bg-muted">
+                          <MessageSquare className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2">
+                            {language === 'es' ? "Historial" : "History"}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'es' 
+                              ? "Ver conversaciones anteriores" 
+                              : "View previous conversations"}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            )}
+
+            {/* Chat Messages */}
+            {messages.length > 0 && (
+              <div className="space-y-6">
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex ${
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    } animate-fade-in`}
+                  >
+                    <Card
+                      className={`max-w-[80%] p-4 ${
+                        message.role === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-card"
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap">{message.content}</p>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+
+        {/* Input Area */}
+        <div className="border-t bg-card/50 backdrop-blur-sm">
+          <div className="container mx-auto max-w-4xl px-4 py-4">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSend()}
+                placeholder={language === 'es' ? "Escribe tu pregunta..." : "Type your question..."}
+                className="flex-1"
+                disabled={isLoading}
+              />
+              <Button
+                onClick={handleSend}
+                disabled={!input.trim() || isLoading}
+                className="bg-primary text-primary-foreground flex-shrink-0"
+              >
+                <Send className="w-5 h-5" />
+              </Button>
+            </div>
+            {remaining !== null && remaining <= 2 && remaining > 0 && (
+              <p className="text-xs text-center mt-2 text-muted-foreground">
+                {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
+              </p>
+            )}
+            {remaining === 0 && (
+              <p className="text-xs text-center mt-2 text-destructive">
+                {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              {t('guidance_disclaimer')}
             </p>
           </div>
-
-          {/* Quick Actions */}
-          <div className="grid gap-4 md:grid-cols-2 mb-8">
-            <Card 
-              className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
-              onClick={() => navigate("/chat")}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-primary/10">
-                    <MessageSquare className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">
-                      {language === 'es' ? "Iniciar Chat" : "Start a Chat"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {language === 'es' 
-                        ? "Chatea directamente conmigo" 
-                        : "Chat directly with me"}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card 
-              className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
-              onClick={() => navigate("/main-menu")}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-secondary/10">
-                    <Users className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">
-                      {language === 'es' ? "Nuestros Analistas" : "Our Analysts"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {language === 'es' 
-                        ? "Accede a expertos especializados" 
-                        : "Access specialized experts"}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card 
-              className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
-              onClick={() => navigate("/divine-guidance")}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <BookOpen className="w-6 h-6 text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">
-                      {language === 'es' ? "Guía Divina" : "Divine Guidance"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {language === 'es' 
-                        ? "Busca consejo espiritual" 
-                        : "Seek spiritual counsel"}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card 
-              className="cursor-pointer transition-all hover:shadow-lg hover:scale-105"
-              onClick={() => navigate("/logos-circle")}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-muted">
-                    <BookOpen className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">
-                      {language === 'es' ? "Aprender" : "Learn"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {language === 'es' 
-                        ? "Explora cursos y enseñanzas" 
-                        : "Explore courses and teachings"}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
