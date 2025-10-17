@@ -78,7 +78,7 @@ const LogosCircle = () => {
       id: "apologetics-path",
       name: t('apologetics_path'),
       description: t('apologetics_path_desc'),
-      color: "from-purple-500 to-indigo-600",
+      color: "from-[#3BB4F2] to-[#0052D4]",
       icon: Shield,
     },
     {
@@ -147,17 +147,17 @@ const LogosCircle = () => {
                 return (
                   <Card
                     key={track.id}
-                    className="cursor-pointer hover:shadow-lg transition-all hover:border-violet-500/50"
+                    className="cursor-pointer hover:shadow-lg transition-all hover:border-[#3BB4F2]/50"
                     onClick={() => navigate(`/logos-circle/track/${track.id}`)}
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-4">
                           <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
-                            <Avatar className="relative h-16 w-16 border-2 border-violet-500/20 ring-2 ring-violet-500/10 transition-all duration-300 group-hover:scale-110 group-hover:border-violet-500/40">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-[#3BB4F2] to-[#0052D4] rounded-full blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+                            <Avatar className="relative h-16 w-16 border-2 border-[#3BB4F2]/20 ring-2 ring-[#3BB4F2]/10 transition-all duration-300 group-hover:scale-110 group-hover:border-[#3BB4F2]/40">
                               <AvatarImage src={track.avatar} alt={track.name} className="object-cover" />
-                              <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-600">
+                              <AvatarFallback className="bg-gradient-to-br from-[#3BB4F2] to-[#0052D4]">
                                 <Icon className="w-8 h-8 text-white" />
                               </AvatarFallback>
                             </Avatar>
@@ -192,7 +192,7 @@ const LogosCircle = () => {
               <h3 className="text-lg font-semibold mb-4">{t('interactive_features')}</h3>
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
                   <div>
                     <p className="font-medium">{t('logic_toolkits')}</p>
                     <p className="text-sm text-muted-foreground">
@@ -201,7 +201,7 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
                   <div>
                     <p className="font-medium">{t('fallacy_ritualizer')}</p>
                     <p className="text-sm text-muted-foreground">
@@ -210,7 +210,7 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
                   <div>
                     <p className="font-medium">{t('debate_builder')}</p>
                     <p className="text-sm text-muted-foreground">
@@ -219,7 +219,7 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
                   <div>
                     <p className="font-medium">{t('trinity_commentary')}</p>
                     <p className="text-sm text-muted-foreground">
@@ -228,7 +228,7 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-violet-500 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
                   <div>
                     <p className="font-medium">{t('legacy_scrolls')}</p>
                     <p className="text-sm text-muted-foreground">
@@ -265,7 +265,7 @@ const LogosCircle = () => {
                           <Icon className="w-8 h-8 text-white" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-xl group-hover:text-violet-500 transition-colors">
+                          <CardTitle className="text-xl group-hover:text-[#3BB4F2] transition-colors">
                             {path.name}
                           </CardTitle>
                           <CardDescription className="mt-1">{path.description}</CardDescription>
@@ -287,8 +287,8 @@ const LogosCircle = () => {
               <h3 className="text-lg font-semibold mb-4">{t('what_path_includes')}</h3>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-violet-500" />
+                  <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
                   <div>
                     <p className="font-medium">{t('structured_lessons')}</p>
@@ -298,8 +298,8 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center">
-                    <Brain className="w-4 h-4 text-violet-500" />
+                  <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
                   <div>
                     <p className="font-medium">{t('ai_guided_practice')}</p>
@@ -309,8 +309,8 @@ const LogosCircle = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-violet-500/10 flex items-center justify-center">
-                    <Heart className="w-4 h-4 text-violet-500" />
+                  <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
+                    <Heart className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
                   <div>
                     <p className="font-medium">{t('emotional_debriefs')}</p>

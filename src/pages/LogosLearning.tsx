@@ -65,7 +65,7 @@ const LogosLearning = () => {
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="max-w-4xl mx-auto space-y-6">
           {!curriculum && (
-            <Card className="bg-violet-500/5 border-violet-500/20">
+            <Card className="bg-[#3BB4F2]/5 border-[#3BB4F2]/20">
               <CardContent className="pt-6">
                 <p className="text-center text-muted-foreground">
                   {t('coming_soon').replace('{title}', title)}
@@ -77,10 +77,10 @@ const LogosLearning = () => {
           {curriculum && (
             <>
               {/* Introduction Card */}
-              <Card className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 border-violet-500/20">
+              <Card className="bg-gradient-to-br from-[#3BB4F2]/10 to-[#0052D4]/10 border-[#3BB4F2]/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-violet-500" />
+                    <BookOpen className="w-5 h-5 text-[#3BB4F2]" />
                     {t('curriculum_overview')}
                   </CardTitle>
                   <CardDescription>
@@ -171,7 +171,7 @@ const LogosLearning = () => {
                                   <ul className="space-y-2">
                                     {lesson.exercises.map((exercise, idx) => (
                                       <li key={idx} className="flex items-start gap-2 text-sm">
-                                        <span className="text-violet-500 font-bold">•</span>
+                                        <span className="text-[#3BB4F2] font-bold">•</span>
                                         <span>{exercise}</span>
                                       </li>
                                     ))}

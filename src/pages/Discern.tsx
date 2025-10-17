@@ -46,7 +46,7 @@ const Discern = () => {
       id: "belief-systems",
       ...text.beliefSystems,
       icon: Search,
-      color: "text-purple-500",
+      color: "text-[#3BB4F2]",
     },
     {
       id: "texts",
