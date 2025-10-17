@@ -511,7 +511,7 @@ const MainMenu = () => {
               <Collapsible open={openSections.tracks} onOpenChange={() => toggleSection("tracks")}>
                 <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-violet-500" />
+                    <BookOpen className="w-5 h-5 text-[#3BB4F2]" />
                     {t('curriculum_tracks')}
                   </h3>
                   <ChevronDown className={`w-5 h-5 transition-transform ${openSections.tracks ? 'rotate-180' : ''}`} />
@@ -527,8 +527,8 @@ const MainMenu = () => {
                           onClick={() => navigate(`/logos-circle/track/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10 flex items-center justify-center transition-all">
-                              {Icon && <Icon className="w-10 h-10 text-violet-500" />}
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] bg-[#3BB4F2]/10 flex items-center justify-center transition-all">
+                              {Icon && <Icon className="w-10 h-10 text-[#3BB4F2]" />}
                             </div>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -551,7 +551,7 @@ const MainMenu = () => {
               <Collapsible open={openSections.paths} onOpenChange={() => toggleSection("paths")}>
                 <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                   <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-violet-500" />
+                    <Brain className="w-5 h-5 text-[#3BB4F2]" />
                     {t('teaching_paths')}
                   </h3>
                   <ChevronDown className={`w-5 h-5 transition-transform ${openSections.paths ? 'rotate-180' : ''}`} />
@@ -567,8 +567,8 @@ const MainMenu = () => {
                           onClick={() => navigate(`/logos-circle/path/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-violet-500 shadow-lg shadow-violet-500/20 group-hover:border-violet-600 bg-violet-500/10 flex items-center justify-center transition-all">
-                              {Icon && <Icon className="w-10 h-10 text-violet-500" />}
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] bg-[#3BB4F2]/10 flex items-center justify-center transition-all">
+                              {Icon && <Icon className="w-10 h-10 text-[#3BB4F2]" />}
                             </div>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
