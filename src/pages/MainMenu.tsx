@@ -469,14 +469,14 @@ const MainMenu = () => {
                           onClick={() => navigate(`/storytelling/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-teal-500 shadow-lg shadow-teal-500/20 group-hover:border-teal-600 transition-all">
+                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all">
                               <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                             </div>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <button
                                   aria-label={`About ${item.name}`}
-                                  className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                                  className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <Info className="w-3 h-3" />
