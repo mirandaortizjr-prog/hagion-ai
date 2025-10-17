@@ -374,7 +374,7 @@ const MainMenu = () => {
                   <PopoverTrigger asChild>
                     <button
                       aria-label={`About ${guide.name}`}
-                      className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                      className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Info className="w-3 h-3" />
@@ -418,7 +418,7 @@ const MainMenu = () => {
                   <PopoverTrigger asChild>
                     <button
                       aria-label={`About ${assistant.name}`}
-                      className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                      className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Info className="w-3 h-3" />
