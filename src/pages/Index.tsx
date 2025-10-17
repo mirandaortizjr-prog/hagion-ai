@@ -234,13 +234,13 @@ const Index = () => {
             {messages.length === 0 && (
               <>
                 <div className="text-center mb-8 animate-fade-in">
-                  <h1 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+                  <h1 className="text-2xl md:text-3xl font-bold mb-6 text-white">
                     {greeting}, {getUserName()}
                   </h1>
                   <p className="text-lg text-white/90 leading-relaxed max-w-2xl mx-auto">
                     {language === 'es' 
                       ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
-                      : "What's on your mind this morning? Or if you can use our Analysts, seek wise counsel through divine guidance, or be inspired by a story of faith in our storytelling section."}
+                      : "What's on your mind this morning? You're welcome to consult our Analysts, seek wise counsel through divine guidance, or find inspiration in a story of faith from our storytelling section."}
                   </p>
                 </div>
 
