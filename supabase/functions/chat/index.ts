@@ -1,5 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+
+// Input validation schema
+const chatRequestSchema = z.object({
+  messages: z.array(z.object({
+    role: z.enum(['user', 'assistant', 'system']),
+    content: z.string().max(10000).trim()
+  })).min(1).max(100),
+  voice: z.enum(['elohim', 'emmanuel', 'ruach', 'trinity', 'apologetics', 'science', 'medical', 'psychology', 'forensic', 'philosophical', 'historical', 'biblical-stories', 'martyrs', 'debate', 'friend']).optional(),
+  context: z.string().max(500).optional(),
+  language: z.enum(['en', 'es']).optional(),
+  debatePersona: z.enum(['atheist', 'agnostic', 'secular-humanist', 'skeptic', 'pantheist', 'alternative-spiritual']).optional(),
+  debateRound: z.enum(['opening', 'rebuttal', 'cross-examination', 'closing']).optional(),
+  discern: z.enum(['churches', 'belief-systems', 'texts']).optional()
+});
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
