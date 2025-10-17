@@ -204,9 +204,9 @@ const Index = () => {
               <Menu className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="text-lg font-semibold text-primary">Hagion AI</h2>
+              <h2 className="text-lg font-semibold text-white">Hagion AI</h2>
               {remaining !== null && (
-                <span className="inline-flex items-center gap-1 text-xs text-primary/80">
+                <span className="inline-flex items-center gap-1 text-xs text-white/90">
                   <Sparkles className="w-3 h-3" />
                   {remaining} {language === 'es' ? 'mensajes gratis hoy' : 'free messages today'}
                 </span>
@@ -234,11 +234,11 @@ const Index = () => {
             {messages.length === 0 && (
               <>
                 <div className="text-center mb-8 animate-fade-in">
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
                     {greeting}, {getUserName()}
                   </h1>
-                  <Card className="max-w-2xl mx-auto bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8 border-0">
-                    <p className="text-lg text-primary leading-relaxed">
+                  <Card className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8 border-0">
+                    <p className="text-lg text-gray-800 leading-relaxed">
                       {language === 'es' 
                         ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
                         : "What's on your mind this morning? Or if you can use our Analysts, seek wise counsel through divine guidance, or be inspired by a story of faith in our storytelling section."}
@@ -262,8 +262,8 @@ const Index = () => {
                     <Card
                       className={`max-w-[80%] p-4 border-0 shadow-xl rounded-3xl ${
                         message.role === "user"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-gray-200 text-primary"
+                          ? "bg-white/95 text-gray-800"
+                          : "bg-white/90 text-gray-800"
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{message.content}</p>
@@ -284,7 +284,7 @@ const Index = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSend()}
                 placeholder={language === 'es' ? "Escribe tu pregunta..." : "Ask Your Question"}
-                className="flex-1 bg-gray-200 shadow-lg rounded-3xl border-0 text-primary placeholder:text-primary/60"
+                className="flex-1 bg-white/95 shadow-lg rounded-3xl border-0 text-gray-800 placeholder:text-gray-500"
                 disabled={isLoading}
               />
               <Button
@@ -296,16 +296,16 @@ const Index = () => {
               </Button>
             </div>
             {remaining !== null && remaining <= 2 && remaining > 0 && (
-              <p className="text-xs text-center mt-2 text-primary/70">
-                {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
+              <p className="text-xs text-center mt-2 text-white/80">
+                {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-white hover:underline font-semibold">{t('upgrade')}</button>
               </p>
             )}
             {remaining === 0 && (
-              <p className="text-xs text-center mt-2 text-destructive">
-                {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
+              <p className="text-xs text-center mt-2 text-white">
+                {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-white hover:underline font-semibold">{t('upgrade')}</button>
               </p>
             )}
-            <p className="text-xs text-primary/70 text-center mt-2">
+            <p className="text-xs text-white/70 text-center mt-2">
               {t('guidance_disclaimer')}
             </p>
           </div>
