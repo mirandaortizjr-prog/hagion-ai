@@ -360,7 +360,7 @@ const MainMenu = () => {
                 <div
                   className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
                     guide.isPro
-                      ? "border-orange-500 shadow-lg shadow-orange-500/20"
+                      ? "border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20"
                       : "border-yellow-500 shadow-lg shadow-yellow-500/20 group-hover:border-yellow-600"
                   }`}
                 >
@@ -406,7 +406,7 @@ const MainMenu = () => {
             >
               <div className="relative">
                 <div
-                  className="w-24 h-24 rounded-full overflow-hidden border-4 border-orange-500 shadow-lg shadow-orange-500/20 group-hover:border-orange-600 transition-all"
+                  className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all"
                 >
                   <img
                     src={assistant.image}

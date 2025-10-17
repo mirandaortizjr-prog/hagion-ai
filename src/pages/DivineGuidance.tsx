@@ -120,7 +120,7 @@ const DivineGuidance = () => {
                     onClick={() => setSelectedVoice(voice.id)}
                   >
                     <div className="flex gap-4">
-                      <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center flex-shrink-0">
                         <div
                           className={`w-full h-full rounded-full bg-gradient-to-br ${voice.color} flex items-center justify-center`}
                         >
