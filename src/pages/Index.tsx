@@ -239,7 +239,7 @@ const Index = () => {
                   </h1>
                   <p className="text-lg text-white/90 leading-relaxed max-w-2xl mx-auto">
                     {language === 'es' 
-                      ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
+                      ? "¿Qué tienes en mente esta mañana? Te invitamos a consultar nuestros Analistas, buscar consejo sabio a través de la guía divina, o encontrar inspiración en una historia de fe en nuestra sección de narración." 
                       : "What's on your mind this morning? You're welcome to consult our Analysts, seek wise counsel through divine guidance, or find inspiration in a story of faith from our storytelling section."}
                   </p>
                 </div>
