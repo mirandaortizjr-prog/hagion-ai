@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { User } from "@supabase/supabase-js";
 import { Settings, MessageSquare, Users, BookOpen, Menu, Send, Sparkles } from "lucide-react";
-import logoImage from "@/assets/logo.jpg";
+import logoImage from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
