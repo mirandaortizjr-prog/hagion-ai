@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { User } from "@supabase/supabase-js";
 import { Settings, MessageSquare, Users, BookOpen, Menu, Send, Sparkles } from "lucide-react";
+import logoImage from "@/assets/logo.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
@@ -203,9 +204,9 @@ const Index = () => {
               <Menu className="w-5 h-5" />
             </Button>
             <div>
-              <h2 className="text-lg font-semibold text-white">Hagion AI</h2>
+              <h2 className="text-lg font-semibold text-primary">Hagion AI</h2>
               {remaining !== null && (
-                <span className="inline-flex items-center gap-1 text-xs text-white/80">
+                <span className="inline-flex items-center gap-1 text-xs text-primary/80">
                   <Sparkles className="w-3 h-3" />
                   {remaining} {language === 'es' ? 'mensajes gratis hoy' : 'free messages today'}
                 </span>
@@ -233,11 +234,11 @@ const Index = () => {
             {messages.length === 0 && (
               <>
                 <div className="text-center mb-8 animate-fade-in">
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
                     {greeting}, {getUserName()}
                   </h1>
                   <Card className="max-w-2xl mx-auto bg-gray-200 backdrop-blur-sm shadow-xl rounded-3xl p-8 mb-8 border-0">
-                    <p className="text-lg text-gray-900 leading-relaxed">
+                    <p className="text-lg text-primary leading-relaxed">
                       {language === 'es' 
                         ? "¿Qué tienes en mente esta mañana? O si puedes usar nuestros Analistas, busca consejo sabio a través de la guía divina, o inspírate con una historia de fe en nuestra sección de narración." 
                         : "What's on your mind this morning? Or if you can use our Analysts, seek wise counsel through divine guidance, or be inspired by a story of faith in our storytelling section."}
@@ -262,7 +263,7 @@ const Index = () => {
                       className={`max-w-[80%] p-4 border-0 shadow-xl rounded-3xl ${
                         message.role === "user"
                           ? "bg-primary text-primary-foreground"
-                          : "bg-gray-200 text-gray-900"
+                          : "bg-gray-200 text-primary"
                       }`}
                     >
                       <p className="whitespace-pre-wrap">{message.content}</p>
@@ -283,19 +284,19 @@ const Index = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSend()}
                 placeholder={language === 'es' ? "Escribe tu pregunta..." : "Ask Your Question"}
-                className="flex-1 bg-gray-200 shadow-lg rounded-3xl border-0 text-gray-900 placeholder:text-gray-600"
+                className="flex-1 bg-gray-200 shadow-lg rounded-3xl border-0 text-primary placeholder:text-primary/60"
                 disabled={isLoading}
               />
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="bg-primary text-primary-foreground flex-shrink-0 rounded-full w-12 h-12"
+                className="bg-primary text-primary-foreground flex-shrink-0 rounded-full w-12 h-12 p-0 overflow-hidden"
               >
-                <Send className="w-5 h-5" />
+                <img src={logoImage} alt="Send" className="w-full h-full object-cover" />
               </Button>
             </div>
             {remaining !== null && remaining <= 2 && remaining > 0 && (
-              <p className="text-xs text-center mt-2 text-muted-foreground">
+              <p className="text-xs text-center mt-2 text-primary/70">
                 {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
               </p>
             )}
@@ -304,7 +305,7 @@ const Index = () => {
                 {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button>
               </p>
             )}
-            <p className="text-xs text-muted-foreground text-center mt-2">
+            <p className="text-xs text-primary/70 text-center mt-2">
               {t('guidance_disclaimer')}
             </p>
           </div>
