@@ -42,7 +42,7 @@ All colors MUST be HSL.
     --gradient-sacred: linear-gradient(180deg, hsl(40 20% 97%) 0%, hsl(0 0% 100%) 100%);
     --gradient-radiant: radial-gradient(circle at center, hsl(32 95% 50% / 0.2) 0%, transparent 70%);
     --gradient-orange-warm: linear-gradient(180deg, hsl(32 100% 50%) 0%, hsl(38 100% 50%) 100%);
-    --gradient-splash: linear-gradient(180deg, hsl(24 100% 50%) 0%, hsl(45 100% 51%) 100%);
+    --gradient-splash: linear-gradient(180deg, hsl(210 80% 45%) 0%, hsl(190 75% 55%) 100%);
     
     --shadow-divine: 0 10px 40px -10px hsl(32 95% 50% / 0.3);
     --shadow-sacred: 0 4px 20px hsl(221 83% 25% / 0.1);
