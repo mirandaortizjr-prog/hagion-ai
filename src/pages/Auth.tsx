@@ -45,7 +45,16 @@ const Auth = () => {
   };
 
   const validatePassword = (password: string) => {
-    return password.length >= 6;
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return password.length >= minLength && 
+           hasUpperCase && 
+           hasLowerCase && 
+           (hasNumbers || hasSpecialChar);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,7 +72,7 @@ const Auth = () => {
     if (!validatePassword(password)) {
       toast({
         title: t('invalid_password'),
-        description: t('invalid_password_desc'),
+        description: "Password must be at least 8 characters with uppercase, lowercase, and numbers or symbols",
         variant: "destructive",
       });
       return;
@@ -88,19 +97,11 @@ const Auth = () => {
         });
 
         if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            toast({
-              title: t('login_failed'),
-              description: t('invalid_credentials'),
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: t('error'),
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+          toast({
+            title: t('login_failed'),
+            description: "Please check your email and password and try again",
+            variant: "destructive",
+          });
           return;
         }
 
@@ -120,19 +121,11 @@ const Auth = () => {
         });
 
         if (error) {
-          if (error.message.includes("already registered")) {
-            toast({
-              title: t('account_exists'),
-              description: t('account_exists_desc'),
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: t('error'),
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+          toast({
+            title: t('error'),
+            description: "Unable to create account. Please try again or contact support",
+            variant: "destructive",
+          });
           return;
         }
 
@@ -200,7 +193,7 @@ const Auth = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
@@ -243,7 +236,7 @@ const Auth = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
                 <div className="space-y-2">
@@ -256,7 +249,7 @@ const Auth = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
