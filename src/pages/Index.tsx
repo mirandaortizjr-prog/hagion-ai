@@ -288,9 +288,9 @@ const Index = () => {
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="bg-primary text-primary-foreground flex-shrink-0 rounded-full w-12 h-12 p-0 overflow-hidden"
+                className="bg-slate-500 hover:bg-slate-600 flex-shrink-0 rounded-full w-12 h-12 p-2"
               >
-                <img src={logoImage} alt="Send" className="w-full h-full object-cover" />
+                <img src={logoImage} alt="Send" className="w-full h-full object-contain" />
               </Button>
             </div>
             {remaining !== null && remaining <= 2 && remaining > 0 && (
