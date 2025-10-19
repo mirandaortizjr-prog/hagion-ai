@@ -13,7 +13,8 @@ const chatRequestSchema = z.object({
   language: z.enum(['en', 'es']).optional(),
   debatePersona: z.enum(['atheist', 'agnostic', 'secular-humanist', 'skeptic', 'pantheist', 'alternative-spiritual']).optional(),
   debateRound: z.enum(['opening', 'rebuttal', 'cross-examination', 'closing']).optional(),
-  discern: z.enum(['churches', 'belief-systems', 'texts']).optional()
+  discern: z.enum(['churches', 'belief-systems', 'texts']).optional(),
+  churchName: z.string().max(200).optional()
 });
 
 const corsHeaders = {
@@ -43,7 +44,7 @@ serve(async (req) => {
       );
     }
     
-    const { messages, voice, context, language, debatePersona, debateRound, discern } = validationResult.data;
+    const { messages, voice, context, language, debatePersona, debateRound, discern, churchName } = validationResult.data;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -124,6 +125,10 @@ Your task is to conduct thorough, biblically-grounded evaluations using these fi
 5. **Leadership Humility and Restoration Culture**: Is leadership characterized by humility, accountability, and servant-heartedness? Is there a culture of grace, forgiveness, and restoration for those who fall into sin?
 
 Provide thorough, honest, and biblically faithful evaluations. Be gracious but truthful. Cite Scripture references. If you don't have specific information about a church, acknowledge that and work with what the user provides or publicly known information.`;
+        
+        if (churchName) {
+          systemPrompt += `\n\nThe user is specifically asking about "${churchName}". Focus your analysis on this church, using any information you have about it while also being transparent about the limits of your knowledge.`;
+        }
       } else if (discern === "belief-systems") {
         systemPrompt = `You are a theological discernment specialist for evaluating BELIEF SYSTEMS AND RELIGIONS.
 

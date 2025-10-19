@@ -32,6 +32,7 @@ const Chat = () => {
   const subject = searchParams.get("subject");
   const categoryName = searchParams.get("categoryName") || "";
   const discernContext = searchParams.get("discernContext") || "";
+  const churchName = searchParams.get("church") || "";
   const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -72,7 +73,13 @@ const Chat = () => {
       };
 
       const label = categoryLabels[discern] || discern;
-      const intro = `Welcome to the ${label} Discernment Circle.\n\nI am your theological evaluation specialist. I will help you assess ${discern === "churches" ? "churches" : discern === "belief-systems" ? "belief systems, denominations, or religions" : "sacred or spiritual texts"} using biblical criteria.\n\nWhat would you like to evaluate? Please share the name and any context you have.`;
+      let intro = `Welcome to the ${label} Discernment Circle.\n\nI am your theological evaluation specialist. I will help you assess ${discern === "churches" ? "churches" : discern === "belief-systems" ? "belief systems, denominations, or religions" : "sacred or spiritual texts"} using biblical criteria.`;
+      
+      if (churchName) {
+        intro += `\n\nI see you'd like to evaluate "${churchName}". Please share any additional context you have, and I'll provide a thorough biblical analysis of this church.`;
+      } else {
+        intro += `\n\nWhat would you like to evaluate? Please share the name and any context you have.`;
+      }
 
       return [
         {
@@ -187,6 +194,7 @@ const Chat = () => {
           context,
           language,
           discern,
+          churchName,
         }),
       });
 

@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { ArrowLeft, Church, Search, BookOpen } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Discern = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const [churchName, setChurchName] = useState("");
 
 
   const text = language === 'es' ? {
@@ -20,7 +23,9 @@ const Discern = () => {
     religiousTexts: { name: 'Textos Religiosos', desc: 'Evalúa textos sagrados o espirituales para verificar su integridad teológica y resonancia.', detailed: 'Examina escritos religiosos, libros espirituales, revelaciones modernas o textos extrabíblicos que reclaman autoridad espiritual. Prueba sus afirmaciones contra las Escrituras, evalúa su coherencia teológica, identifica contradicciones con la revelación bíblica y determina si promueven la verdad o el engaño.', criteria: ['Alineación escritural', 'Coherencia teológica', 'Precisión histórica', 'Reclamos de autoridad espiritual', 'Consistencia interna'] },
     inDepthAnalysis: 'Análisis Profundo',
     evaluationCriteria: 'Criterios de Evaluación',
-    beginEvaluation: 'Comenzar Evaluación'
+    beginEvaluation: 'Comenzar Evaluación',
+    churchNamePlaceholder: 'Nombre de la iglesia (opcional)',
+    churchNameLabel: 'Nombre de la iglesia específica'
   } : {
     title: 'Discern',
     subtitle: 'Three Circles of Discernment',
@@ -32,7 +37,9 @@ const Discern = () => {
     religiousTexts: { name: 'Religious Texts', desc: 'Evaluate sacred or spiritual texts for theological integrity and resonance.', detailed: 'Examine religious writings, spiritual books, modern revelations, or extrabiblical texts claiming spiritual authority. Test their claims against Scripture, assess their theological coherence, identify contradictions with biblical revelation, and determine whether they promote truth or deception.', criteria: ['Scriptural alignment', 'Theological coherence', 'Historical accuracy', 'Spiritual authority claims', 'Internal consistency'] },
     inDepthAnalysis: 'In-Depth Analysis',
     evaluationCriteria: 'Evaluation Criteria',
-    beginEvaluation: 'Begin Evaluation'
+    beginEvaluation: 'Begin Evaluation',
+    churchNamePlaceholder: 'Church name (optional)',
+    churchNameLabel: 'Specific church name'
   };
 
   const discernOptions = [
@@ -56,8 +63,9 @@ const Discern = () => {
     },
   ];
 
-  const handleCircleClick = (categoryId: string) => {
-    navigate(`/chat?discern=${categoryId}`);
+  const handleCircleClick = (categoryId: string, specificChurch?: string) => {
+    const churchParam = specificChurch ? `&church=${encodeURIComponent(specificChurch)}` : '';
+    navigate(`/chat?discern=${categoryId}${churchParam}`);
   };
 
   return (
@@ -104,7 +112,12 @@ const Discern = () => {
               <Card 
                 key={option.id}
                 className="group flex flex-col overflow-hidden border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl cursor-pointer"
-                onClick={() => handleCircleClick(option.id)}
+                onClick={(e) => {
+                  // Only trigger navigation if not clicking on input
+                  if (!(e.target as HTMLElement).closest('input')) {
+                    handleCircleClick(option.id, option.id === 'churches' ? churchName : undefined);
+                  }
+                }}
               >
                 <CardHeader className="text-center pb-4">
                   <div className="flex justify-center mb-4">
@@ -145,10 +158,30 @@ const Discern = () => {
                     </ul>
                   </div>
 
+                  {option.id === 'churches' && (
+                    <div className="space-y-2">
+                      <label className="text-xs font-medium text-foreground">{text.churchNameLabel}</label>
+                      <Input
+                        type="text"
+                        placeholder={text.churchNamePlaceholder}
+                        value={churchName}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          setChurchName(e.target.value);
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-sm"
+                      />
+                    </div>
+                  )}
+
                   <Button 
                     variant="outline" 
                     className="w-full mt-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                    onClick={() => handleCircleClick(option.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCircleClick(option.id, option.id === 'churches' ? churchName : undefined);
+                    }}
                   >
                     {text.beginEvaluation}
                   </Button>
