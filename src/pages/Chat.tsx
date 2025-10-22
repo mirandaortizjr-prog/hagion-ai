@@ -416,12 +416,6 @@ const Chat = () => {
                   "Theological Evaluation"
                 )
               ) : context.replace("-", " ")}
-              {remaining !== null && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                  <Sparkles className="w-3 h-3" />
-                  {remaining} free {remaining === 1 ? 'message' : 'messages'} left today
-                </span>
-              )}
             </p>
           </div>
         </div>
