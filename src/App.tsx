@@ -10,6 +10,7 @@ import MainMenu from "./pages/MainMenu";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
 import Saved from "./pages/Saved";
+import SharedContent from "./pages/SharedContent";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/support" element={<Support />} />
             <Route path="/history" element={<History />} />
             <Route path="/saved" element={<Saved />} />
+            <Route path="/shared" element={<SharedContent />} />
             <Route path="/discern" element={<Discern />} />
             <Route path="/divine-guidance" element={<DivineGuidance />} />
             <Route path="/divine/:voiceId" element={<DivineChat />} />

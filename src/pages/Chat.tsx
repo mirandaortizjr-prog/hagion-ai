@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Mic, Bookmark, Sparkles } from "lucide-react";
+import { ArrowLeft, Send, Mic, Bookmark, Sparkles, Copy, Share2, Check, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
@@ -36,6 +36,8 @@ const Chat = () => {
   const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [sharingIndex, setSharingIndex] = useState<number | null>(null);
   
   const [messages, setMessages] = useState<Message[]>(() => {
     // Load from history if resuming a conversation
@@ -291,6 +293,75 @@ const Chat = () => {
     }
   };
 
+  const handleCopyMessage = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      toast({
+        title: "Copied!",
+        description: "Message copied to clipboard",
+      });
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to copy message",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShareMessage = async (text: string, index: number) => {
+    setSharingIndex(index);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please log in to share messages",
+          variant: "destructive",
+        });
+        navigate("/auth");
+        return;
+      }
+
+      const contextInfo = discern 
+        ? `Discernment on ${discern}`
+        : voiceNames[voice as keyof typeof voiceNames] || voice;
+
+      const { data, error } = await supabase
+        .from("shared_content")
+        .insert({
+          user_id: user.id,
+          content: text,
+          context: contextInfo,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const shareUrl = `${window.location.origin}/shared?token=${data.share_token}`;
+      
+      await navigator.clipboard.writeText(shareUrl);
+
+      toast({
+        title: "Share Link Created!",
+        description: "Link copied to clipboard. Recipients will need to sign up to view.",
+      });
+    } catch (error: any) {
+      console.error("Error sharing message:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create share link",
+        variant: "destructive",
+      });
+    } finally {
+      setSharingIndex(null);
+    }
+  };
+
   const handleSaveAnswer = (content: string, index: number) => {
     const questionMessage = messages[index - 1];
     const question = questionMessage?.role === "user" ? questionMessage.content : "";
@@ -379,15 +450,44 @@ const Chat = () => {
                   </p>
                 )}
                 {message.role === "assistant" && message.content && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="mt-2 gap-2"
-                    onClick={() => handleSaveAnswer(message.content, index)}
-                  >
-                    <Bookmark className="w-4 h-4" />
-                    Save
-                  </Button>
+                  <div className="flex gap-2 mt-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => handleCopyMessage(message.content, index)}
+                    >
+                      {copiedIndex === index ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                      {copiedIndex === index ? "Copied" : "Copy"}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => handleShareMessage(message.content, index)}
+                      disabled={sharingIndex === index}
+                    >
+                      {sharingIndex === index ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Share2 className="w-4 h-4" />
+                      )}
+                      Share
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => handleSaveAnswer(message.content, index)}
+                    >
+                      <Bookmark className="w-4 h-4" />
+                      Save
+                    </Button>
+                  </div>
                 )}
               </Card>
             </div>

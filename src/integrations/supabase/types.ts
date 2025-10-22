@@ -41,6 +41,36 @@ export type Database = {
         }
         Relationships: []
       }
+      shared_content: {
+        Row: {
+          content: string
+          context: string | null
+          created_at: string | null
+          id: string
+          share_token: string
+          user_id: string
+          view_count: number | null
+        }
+        Insert: {
+          content: string
+          context?: string | null
+          created_at?: string | null
+          id?: string
+          share_token?: string
+          user_id: string
+          view_count?: number | null
+        }
+        Update: {
+          content?: string
+          context?: string | null
+          created_at?: string | null
+          id?: string
+          share_token?: string
+          user_id?: string
+          view_count?: number | null
+        }
+        Relationships: []
+      }
       user_message_usage: {
         Row: {
           created_at: string

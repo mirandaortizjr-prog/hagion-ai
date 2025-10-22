@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,8 @@ import logo from "@/assets/logo.png";
 
 const Auth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectUrl = searchParams.get("redirect");
   const { toast } = useToast();
   const { t } = useLanguage();
   const [isLogin, setIsLogin] = useState(true);
@@ -109,6 +111,10 @@ const Auth = () => {
           title: t('welcome_back'),
           description: t('login_success'),
         });
+        
+        if (redirectUrl) {
+          navigate(redirectUrl);
+        }
       } else {
         const redirectUrl = `${window.location.origin}/`;
         
