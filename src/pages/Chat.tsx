@@ -491,15 +491,6 @@ const Chat = () => {
 
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-4xl px-4 py-4">
-          {remainingMessages !== null && (
-            <div className="text-xs text-center text-muted-foreground mb-2">
-              {remainingMessages > 0 ? (
-                `${remainingMessages} ${t('messages_remaining')}`
-              ) : (
-                <span className="text-destructive">{t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="underline">{t('upgrade_premium')}</button></span>
-              )}
-            </div>
-          )}
           <div className="flex gap-2">
             <Button variant="outline" size="icon" className="flex-shrink-0">
               <Mic className="w-5 h-5" />
@@ -519,16 +510,6 @@ const Chat = () => {
               <Send className="w-5 h-5" />
             </Button>
           </div>
-          {remaining !== null && remaining <= 2 && remaining > 0 && (
-            <p className="text-xs text-center mt-2 text-muted-foreground">
-              {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
-            </p>
-          )}
-          {remaining === 0 && (
-            <p className="text-xs text-center mt-2 text-destructive">
-              {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
-            </p>
-          )}
           <p className="text-xs text-muted-foreground text-center mt-2">
             {t('guidance_disclaimer')}
           </p>
