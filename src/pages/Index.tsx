@@ -273,6 +273,16 @@ const Index = () => {
                   </p>
                 </div>
               </section>
+
+              {/* Call to Action */}
+              <section className="animate-fade-in text-center mt-12 p-8 bg-white/10 rounded-lg backdrop-blur-sm border border-white/20">
+                <h3 className="text-2xl font-bold mb-4 text-white">
+                  Ready to Begin?
+                </h3>
+                <p className="text-lg text-white/90 mb-4">
+                  Press the three lines <Menu className="inline-block w-5 h-5 mx-1" /> on the top left of the page to access the menu and start your journey.
+                </p>
+              </section>
             </div>
           </article>
         </div>
