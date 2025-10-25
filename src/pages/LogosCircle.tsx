@@ -176,67 +176,9 @@ const LogosCircle = () => {
                       </div>
                       <CardDescription className="mt-2">{track.description}</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="font-medium">{t('tone')}:</span>
-                        <span className="italic">{track.tone}</span>
-                      </div>
-                    </CardContent>
                   </Card>
                 );
               })}
-            </div>
-
-            {/* Interactive Features Section */}
-            <div className="mt-8 p-6 bg-muted/30 rounded-lg">
-              <h3 className="text-lg font-semibold mb-4">{t('interactive_features')}</h3>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
-                  <div>
-                    <p className="font-medium">{t('logic_toolkits')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('logic_toolkits_desc')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
-                  <div>
-                    <p className="font-medium">{t('fallacy_ritualizer')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('fallacy_ritualizer_desc')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
-                  <div>
-                    <p className="font-medium">{t('debate_builder')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('debate_builder_desc')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
-                  <div>
-                    <p className="font-medium">{t('trinity_commentary')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('trinity_commentary_desc')}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#3BB4F2] mt-2" />
-                  <div>
-                    <p className="font-medium">{t('legacy_scrolls')}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {t('legacy_scrolls_desc')}
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </TabsContent>
 
