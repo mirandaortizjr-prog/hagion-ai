@@ -19,7 +19,16 @@ export interface Curriculum {
   modules: Module[];
 }
 
-export const curriculumData: Record<string, Curriculum> = {
+type Language = 'en' | 'es';
+
+export const getCurriculumData = (language: Language = 'en'): Record<string, Curriculum> => {
+  if (language === 'es') {
+    return curriculumDataEs;
+  }
+  return curriculumDataEn;
+};
+
+const curriculumDataEn: Record<string, Curriculum> = {
   // Curriculum Tracks
   foundations: {
     id: "foundations",
@@ -1074,4 +1083,77 @@ export const curriculumData: Record<string, Curriculum> = {
       }
     ]
   }
+};
+
+// Spanish curriculum data
+const curriculumDataEs: Record<string, Curriculum> = {
+  fallacies: {
+    id: "fallacies",
+    modules: [
+      {
+        id: "module-1",
+        title: "Introducción a las Falacias",
+        description: "Reconociendo el engaño en el razonamiento y los argumentos",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "¿Qué es una Falacia?",
+            description: "Comprendiendo los errores en el razonamiento",
+            duration: "20 min",
+            content: [
+              "📖 DEFINICIÓN: Una falacia es un error en el razonamiento que hace que un argumento sea defectuoso. Puede parecer persuasiva, pero viola las reglas de la lógica. Las falacias son las 'sombras'—parecen argumentos reales pero carecen de sustancia.",
+              "2 Timoteo 4:3-4 advierte: 'Porque vendrá tiempo cuando no soportarán la sana doctrina, sino que teniendo comezón de oír, se amontonarán maestros conforme a sus propias pasiones, y apartarán sus oídos de la verdad.' Las falacias son herramientas del engaño espiritual.",
+              "💡 IDEA CLAVE: Identificar falacias no se trata de ganar debates—se trata de proteger la verdad. Cuando alguien usa razonamiento falaz para atacar la fe, no es mezquino señalarlo. Es defenderloya claridad y la verdad.",
+              "Las falacias vienen en dos categorías principales: (1) FALACIAS FORMALES—violan las reglas de la estructura lógica, (2) FALACIAS INFORMALES—usan lenguaje engañoso, emoción inapropiada o información irrelevante.",
+              "🎯 POR QUÉ IMPORTA EN APOLOGÉTICA: Los oponentes de la fe a menudo usan razonamiento falaz, a veces sin darse cuenta. Ser capaz de identificar falacias te protege de ser desviado y te ayuda a guiar conversaciones de vuelta a la verdad.",
+              "Proverbios 26:4-5 da una instrucción aparentemente contradictoria: 'No respondas al necio según su necedad... Responde al necio según su necedad.' El punto: a veces ignoramos argumentos tontos, otras veces los refutamos. El discernimiento requiere saber cuándo hacer cada cosa—y reconocer falacias ayuda."
+            ],
+            exercises: [
+              "REFLEXIÓN: Piensa en un momento en que alguien usó razonamiento defectuoso para desafiar tu fe. ¿Puedes identificar ahora qué estuvo mal en su argumento?",
+              "BÚSQUEDA ESCRITURAL: Lee 2 Corintios 10:5. ¿Cómo se relaciona 'derribar argumentos' con identificar falacias?",
+              "PRÁCTICA: Escucha un debate o discusión (en línea o en persona). Anota argumentos que parezcan 'incorrectos' de alguna manera. ¿Puedes empezar a notar cuándo el razonamiento se descarrila?"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  foundations: {
+    id: "foundations",
+    modules: [
+      {
+        id: "module-1",
+        title: "Introducción a Logos",
+        description: "Entendiendo la lógica como estructura divina y razonamiento sagrado",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "¿Qué es Logos?",
+            description: "El principio divino de razón y orden",
+            duration: "25 min",
+            content: [
+              "📖 FUNDAMENTO: El término 'Logos' (λόγος) aparece en Juan 1:1: 'En el principio era el Verbo (Logos), y el Verbo era con Dios, y el Verbo era Dios.' Este versículo revela que la lógica, la razón y el orden divino no son invenciones humanas—fluyen de la naturaleza misma de Dios.",
+              "Los antiguos griegos usaban 'Logos' para describir el principio racional que gobierna el cosmos. Cuando Juan lo usa para describir a Cristo, está declarando que Jesús es la encarnación de la razón divina misma.",
+              "💡 PERSPECTIVA CLAVE: La lógica no es un cálculo frío y mecánico. Es la estructura viva y cálida a través de la cual la verdad se hace visible a las mentes creadas.",
+              "🎯 APLICACIÓN PRÁCTICA: Desarrollar el pensamiento lógico es disciplina espiritual. Así como la oración nos conecta con el corazón de Dios, la lógica nos conecta con la mente de Dios."
+            ],
+            exercises: [
+              "MEDITACIÓN: Lee Juan 1:1-14 lentamente. Reflexiona sobre cómo ver a Cristo como 'Logos' cambia tu comprensión de la lógica.",
+              "ORACIÓN: Agradece a Dios por el regalo de la razón y pídele que te ayude a desarrollar claridad de pensamiento al servicio de la verdad."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  // Placeholder entries for other tracks
+  apologetics: { id: "apologetics", modules: [] },
+  witnessing: { id: "witnessing", modules: [] },
+  scripture: { id: "scripture", modules: [] },
+  emotional: { id: "emotional", modules: [] },
+  "apologetics-path": { id: "apologetics-path", modules: [] },
+  "witnessing-path": { id: "witnessing-path", modules: [] },
+  "logic-path": { id: "logic-path", modules: [] },
+  "scriptural-path": { id: "scriptural-path", modules: [] },
+  "ceremonial-path": { id: "ceremonial-path", modules: [] }
 };

@@ -5,13 +5,14 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { curriculumData } from "@/data/curriculumData";
+import { getCurriculumData } from "@/data/curriculumData";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const LogosLearning = () => {
   const navigate = useNavigate();
   const { type, id } = useParams<{ type: string; id: string }>();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const curriculumData = getCurriculumData(language);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
   const trackTitles: Record<string, string> = {
