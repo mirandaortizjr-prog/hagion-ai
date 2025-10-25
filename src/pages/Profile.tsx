@@ -8,12 +8,18 @@ import { ArrowLeft, Loader2, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState<string>("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,8 +32,53 @@ const Profile = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       setEmail(user.email || "");
+      
+      // Load profile data
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("name, gender")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      
+      if (profile) {
+        setName(profile.name || "");
+        setGender(profile.gender || "");
+      }
     } else {
       navigate("/auth");
+    }
+  };
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingProfile(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
+
+      const { error } = await supabase
+        .from("profiles")
+        .upsert({
+          user_id: user.id,
+          name,
+          gender,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: language === 'es' ? "Éxito" : "Success",
+        description: language === 'es' ? "Perfil actualizado exitosamente" : "Profile updated successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: language === 'es' ? "Error" : "Error",
+        description: error.message || (language === 'es' ? "No se pudo actualizar el perfil" : "Failed to update profile"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingProfile(false);
     }
   };
 
@@ -86,7 +137,7 @@ const Profile = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Profile</h1>
+        <h1 className="text-2xl font-bold">{language === 'es' ? 'Perfil' : 'Profile'}</h1>
       </header>
 
       <div className="flex-1 overflow-auto px-4 py-6">
@@ -101,28 +152,63 @@ const Profile = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <CardTitle>Account Information</CardTitle>
-                  <CardDescription>Manage your account details</CardDescription>
+                  <CardTitle>{language === 'es' ? 'Información de Cuenta' : 'Account Information'}</CardTitle>
+                  <CardDescription>{language === 'es' ? 'Administra los detalles de tu cuenta' : 'Manage your account details'}</CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Email</Label>
-                <Input value={email} disabled className="bg-muted" />
-              </div>
+            <CardContent>
+              <form onSubmit={handleUpdateProfile} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">{language === 'es' ? 'Nombre' : 'Profile Name'}</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={isSavingProfile}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="gender">{language === 'es' ? 'Género' : 'Gender'}</Label>
+                  <Select value={gender} onValueChange={setGender} disabled={isSavingProfile}>
+                    <SelectTrigger id="gender">
+                      <SelectValue placeholder={language === 'es' ? 'Selecciona género' : 'Select gender'} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="male">{language === 'es' ? 'Masculino' : 'Male'}</SelectItem>
+                      <SelectItem value="female">{language === 'es' ? 'Femenino' : 'Female'}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>{language === 'es' ? 'Correo Electrónico' : 'Email'}</Label>
+                  <Input value={email} disabled className="bg-muted" />
+                </div>
+                <Button type="submit" disabled={isSavingProfile}>
+                  {isSavingProfile ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {language === 'es' ? 'Guardando...' : 'Saving...'}
+                    </>
+                  ) : (
+                    language === 'es' ? 'Guardar Cambios' : 'Save Changes'
+                  )}
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>Update your password to keep your account secure</CardDescription>
+              <CardTitle>{language === 'es' ? 'Cambiar Contraseña' : 'Change Password'}</CardTitle>
+              <CardDescription>{language === 'es' ? 'Actualiza tu contraseña para mantener tu cuenta segura' : 'Update your password to keep your account secure'}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleUpdatePassword} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword">{language === 'es' ? 'Nueva Contraseña' : 'New Password'}</Label>
                   <Input
                     id="newPassword"
                     type="password"
@@ -134,7 +220,7 @@ const Profile = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmPassword">{language === 'es' ? 'Confirmar Nueva Contraseña' : 'Confirm New Password'}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -149,10 +235,10 @@ const Profile = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Updating...
+                      {language === 'es' ? 'Actualizando...' : 'Updating...'}
                     </>
                   ) : (
-                    "Update Password"
+                    language === 'es' ? 'Actualizar Contraseña' : 'Update Password'
                   )}
                 </Button>
               </form>
