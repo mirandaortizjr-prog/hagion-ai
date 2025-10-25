@@ -154,8 +154,8 @@ const LogosCircle = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-4">
                           <div className="relative group">
-                            <div className="p-4 rounded-xl bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
-                              <Icon className="w-8 h-8 text-white" />
+                            <div className="w-20 h-20 rounded-full bg-gradient-to-b from-white/80 to-white/60 dark:from-gray-800/80 dark:to-gray-800/60 border-4 border-[#3BB4F2] flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:border-[#0052D4]">
+                              <Icon className="w-10 h-10 text-[#3BB4F2]" />
                             </div>
                           </div>
                           <div>
