@@ -115,7 +115,7 @@ const LogosCircle = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="flex items-center gap-4 px-4 py-4 border-b">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
+        <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">

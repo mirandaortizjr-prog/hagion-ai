@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,13 +25,21 @@ import discernmentFlameImage from "@/assets/discernment-flame.jpg";
 const MainMenu = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("assistants");
+  const [searchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState(tabFromUrl || "assistants");
   const [inputValue, setInputValue] = useState("");
   const [openSections, setOpenSections] = useState({
     storytelling: true,
     tracks: true,
     paths: true,
   });
+
+  useEffect(() => {
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [tabFromUrl]);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
