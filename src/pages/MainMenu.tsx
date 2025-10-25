@@ -21,6 +21,11 @@ import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 import historyChristianityImage from "@/assets/history-christianity.jpg";
 import atheistDebateImage from "@/assets/atheist-debate.jpg";
 import discernmentFlameImage from "@/assets/discernment-flame.jpg";
+import megaphoneIcon from "@/assets/megaphone-icon.png";
+import lightbulbIcon from "@/assets/lightbulb-icon.png";
+import scrollIcon from "@/assets/scroll-icon.png";
+import brainIcon from "@/assets/brain-icon.png";
+import shieldIcon from "@/assets/shield-icon.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -113,7 +118,7 @@ const MainMenu = () => {
       id: "foundations",
       name: t('foundations_logos'),
       subtitle: t('foundations_logos_desc'),
-      image: undefined,
+      image: lightbulbIcon,
       icon: BookOpen,
       color: "bg-blue-500",
       isPro: false,
@@ -124,8 +129,8 @@ const MainMenu = () => {
       id: "fallacies",
       name: t('fallacies_shadows'),
       subtitle: t('fallacies_shadows_desc'),
-      image: undefined,
-      icon: Shield,
+      image: shieldIcon,
+      icon: undefined,
       color: "bg-orange-500",
       isPro: false,
       isSpecial: false,
@@ -135,8 +140,8 @@ const MainMenu = () => {
       id: "apologetics",
       name: t('apologetics_logic'),
       subtitle: t('apologetics_logic_desc'),
-      image: undefined,
-      icon: Scroll,
+      image: scrollIcon,
+      icon: undefined,
       color: "bg-teal-500",
       isPro: true,
       isSpecial: false,
@@ -146,8 +151,8 @@ const MainMenu = () => {
       id: "witnessing",
       name: t('witnessing_wisdom'),
       subtitle: t('witnessing_wisdom_desc'),
-      image: undefined,
-      icon: MessageCircle,
+      image: megaphoneIcon,
+      icon: undefined,
       color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
@@ -157,8 +162,8 @@ const MainMenu = () => {
       id: "scripture",
       name: t('logic_scripture'),
       subtitle: t('logic_scripture_desc'),
-      image: undefined,
-      icon: Scroll,
+      image: scrollIcon,
+      icon: undefined,
       color: "bg-teal-500",
       isPro: true,
       isSpecial: false,
@@ -180,8 +185,8 @@ const MainMenu = () => {
       id: "apologetics-path",
       name: t('apologetics_path'),
       subtitle: t('apologetics_path_desc'),
-      image: undefined,
-      icon: Shield,
+      image: shieldIcon,
+      icon: undefined,
       color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
@@ -191,8 +196,8 @@ const MainMenu = () => {
       id: "witnessing-path",
       name: t('witnessing_path'),
       subtitle: t('witnessing_path_desc'),
-      image: undefined,
-      icon: MessageCircle,
+      image: megaphoneIcon,
+      icon: undefined,
       color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
@@ -202,8 +207,8 @@ const MainMenu = () => {
       id: "logic-path",
       name: t('logic_path'),
       subtitle: t('logic_path_desc'),
-      image: undefined,
-      icon: Brain,
+      image: brainIcon,
+      icon: undefined,
       color: "bg-orange-500",
       isPro: false,
       isSpecial: false,
@@ -213,8 +218,8 @@ const MainMenu = () => {
       id: "scriptural-path",
       name: t('scriptural_path'),
       subtitle: t('scriptural_path_desc'),
-      image: undefined,
-      icon: Scroll,
+      image: scrollIcon,
+      icon: undefined,
       color: "bg-teal-500",
       isPro: false,
       isSpecial: false,
@@ -547,7 +552,11 @@ const MainMenu = () => {
                         >
                           <div className="relative">
                             <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
-                              {Icon && <Icon className="w-10 h-10 text-white" />}
+                              {item.image ? (
+                                <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                              ) : Icon ? (
+                                <Icon className="w-10 h-10 text-white" />
+                              ) : null}
                             </div>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -587,7 +596,11 @@ const MainMenu = () => {
                         >
                           <div className="relative">
                             <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
-                              {Icon && <Icon className="w-10 h-10 text-white" />}
+                              {item.image ? (
+                                <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                              ) : Icon ? (
+                                <Icon className="w-10 h-10 text-white" />
+                              ) : null}
                             </div>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
