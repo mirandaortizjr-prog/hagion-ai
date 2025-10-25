@@ -107,6 +107,7 @@ const MainMenu = () => {
       subtitle: t('foundations_logos_desc'),
       image: undefined,
       icon: BookOpen,
+      color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
       type: "track" as const,
@@ -117,6 +118,7 @@ const MainMenu = () => {
       subtitle: t('fallacies_shadows_desc'),
       image: undefined,
       icon: Shield,
+      color: "bg-orange-500",
       isPro: false,
       isSpecial: false,
       type: "track" as const,
@@ -127,6 +129,7 @@ const MainMenu = () => {
       subtitle: t('apologetics_logic_desc'),
       image: undefined,
       icon: Scroll,
+      color: "bg-teal-500",
       isPro: true,
       isSpecial: false,
       type: "track" as const,
@@ -137,6 +140,7 @@ const MainMenu = () => {
       subtitle: t('witnessing_wisdom_desc'),
       image: undefined,
       icon: MessageCircle,
+      color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
       type: "track" as const,
@@ -147,6 +151,7 @@ const MainMenu = () => {
       subtitle: t('logic_scripture_desc'),
       image: undefined,
       icon: Scroll,
+      color: "bg-teal-500",
       isPro: true,
       isSpecial: false,
       type: "track" as const,
@@ -157,6 +162,7 @@ const MainMenu = () => {
       subtitle: t('emotional_logic_desc'),
       image: undefined,
       icon: Heart,
+      color: "bg-rose-500",
       isPro: false,
       isSpecial: false,
       type: "track" as const,
@@ -168,6 +174,7 @@ const MainMenu = () => {
       subtitle: t('apologetics_path_desc'),
       image: undefined,
       icon: Shield,
+      color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
       type: "path" as const,
@@ -178,6 +185,7 @@ const MainMenu = () => {
       subtitle: t('witnessing_path_desc'),
       image: undefined,
       icon: MessageCircle,
+      color: "bg-blue-500",
       isPro: false,
       isSpecial: false,
       type: "path" as const,
@@ -188,6 +196,7 @@ const MainMenu = () => {
       subtitle: t('logic_path_desc'),
       image: undefined,
       icon: Brain,
+      color: "bg-orange-500",
       isPro: false,
       isSpecial: false,
       type: "path" as const,
@@ -198,6 +207,7 @@ const MainMenu = () => {
       subtitle: t('scriptural_path_desc'),
       image: undefined,
       icon: Scroll,
+      color: "bg-teal-500",
       isPro: false,
       isSpecial: false,
       type: "path" as const,
@@ -208,6 +218,7 @@ const MainMenu = () => {
       subtitle: t('ceremonial_path_desc'),
       image: undefined,
       icon: Heart,
+      color: "bg-rose-500",
       isPro: true,
       isSpecial: false,
       type: "path" as const,
@@ -527,7 +538,7 @@ const MainMenu = () => {
                           onClick={() => navigate(`/logos-circle/track/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105">
+                            <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
                               {Icon && <Icon className="w-10 h-10 text-white" />}
                             </div>
                             {item.isPro && (
@@ -567,7 +578,7 @@ const MainMenu = () => {
                           onClick={() => navigate(`/logos-circle/path/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105">
+                            <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
                               {Icon && <Icon className="w-10 h-10 text-white" />}
                             </div>
                             {item.isPro && (
