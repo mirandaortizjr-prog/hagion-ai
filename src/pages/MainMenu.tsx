@@ -527,8 +527,8 @@ const MainMenu = () => {
                           onClick={() => navigate(`/logos-circle/track/${item.id}`)}
                         >
                           <div className="relative">
-                            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] bg-[#3BB4F2]/10 flex items-center justify-center transition-all">
-                              {Icon && <Icon className="w-10 h-10 text-[#3BB4F2]" />}
+                            <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105">
+                              {Icon && <Icon className="w-10 h-10 text-white" />}
                             </div>
                             {item.isPro && (
                               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
