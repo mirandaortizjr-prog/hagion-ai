@@ -23,7 +23,23 @@ type Language = 'en' | 'es';
 
 export const getCurriculumData = (language: Language = 'en'): Record<string, Curriculum> => {
   if (language === 'es') {
-    return curriculumDataEs;
+    // Merge Spanish with English as fallback
+    const merged: Record<string, Curriculum> = {};
+    const allKeys = new Set([...Object.keys(curriculumDataEn), ...Object.keys(curriculumDataEs)]);
+    
+    allKeys.forEach(key => {
+      const esData = curriculumDataEs[key];
+      const enData = curriculumDataEn[key];
+      
+      // Use Spanish if it has content, otherwise fallback to English
+      if (esData && esData.modules.length > 0) {
+        merged[key] = esData;
+      } else if (enData) {
+        merged[key] = enData;
+      }
+    });
+    
+    return merged;
   }
   return curriculumDataEn;
 };
@@ -1146,14 +1162,4 @@ const curriculumDataEs: Record<string, Curriculum> = {
       }
     ]
   },
-  // Placeholder entries for other tracks
-  apologetics: { id: "apologetics", modules: [] },
-  witnessing: { id: "witnessing", modules: [] },
-  scripture: { id: "scripture", modules: [] },
-  emotional: { id: "emotional", modules: [] },
-  "apologetics-path": { id: "apologetics-path", modules: [] },
-  "witnessing-path": { id: "witnessing-path", modules: [] },
-  "logic-path": { id: "logic-path", modules: [] },
-  "scriptural-path": { id: "scriptural-path", modules: [] },
-  "ceremonial-path": { id: "ceremonial-path", modules: [] }
 };
