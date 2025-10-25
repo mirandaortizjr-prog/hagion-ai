@@ -113,8 +113,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Password updated successfully",
+        title: language === 'es' ? "Éxito" : "Success",
+        description: language === 'es' ? "Contraseña actualizada exitosamente" : "Password updated successfully",
       });
 
       setCurrentPassword("");
@@ -122,8 +122,8 @@ const Profile = () => {
       setConfirmPassword("");
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to update password",
+        title: language === 'es' ? "Error" : "Error",
+        description: error.message || (language === 'es' ? "Error al actualizar la contraseña" : "Failed to update password"),
         variant: "destructive",
       });
     } finally {
