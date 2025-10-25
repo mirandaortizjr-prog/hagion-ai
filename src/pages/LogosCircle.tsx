@@ -154,13 +154,9 @@ const LogosCircle = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-4">
                           <div className="relative group">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#3BB4F2] to-[#0052D4] rounded-full blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
-                            <Avatar className="relative h-16 w-16 border-2 border-[#3BB4F2]/20 ring-2 ring-[#3BB4F2]/10 transition-all duration-300 group-hover:scale-110 group-hover:border-[#3BB4F2]/40">
-                              <AvatarImage src={track.avatar} alt={track.name} className="object-cover" />
-                              <AvatarFallback className="bg-gradient-to-br from-[#3BB4F2] to-[#0052D4]">
-                                <Icon className="w-8 h-8 text-white" />
-                              </AvatarFallback>
-                            </Avatar>
+                            <div className="p-4 rounded-xl bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl">
+                              <Icon className="w-8 h-8 text-white" />
+                            </div>
                           </div>
                           <div>
                             <CardTitle className="text-lg flex items-center gap-2">
