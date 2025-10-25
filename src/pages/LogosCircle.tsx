@@ -22,7 +22,7 @@ const LogosCircle = () => {
       name: t('foundations_logos'),
       description: t('foundations_logos_desc'),
       icon: BookOpen,
-      avatar: sophiaAvatar,
+      avatar: mirandaAvatar,
       tone: t('tone_grounding'),
       isPro: false,
     },
