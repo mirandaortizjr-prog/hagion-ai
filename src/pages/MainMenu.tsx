@@ -479,8 +479,8 @@ const MainMenu = () => {
               ))}
 
               {/* Plan of Salvation Box */}
-              <div className="col-span-3 mt-4">
-                <Card className="relative overflow-hidden border-4 border-yellow-500 bg-gradient-to-br from-yellow-50 via-white to-yellow-50">
+              <div className="col-span-3 mt-4 flex justify-center">
+                <Card className="relative overflow-hidden border-4 border-yellow-500 bg-gradient-to-br from-yellow-50 via-white to-yellow-50 w-full max-w-md">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-500"></div>
                   
                   <div className="p-4">
@@ -491,7 +491,7 @@ const MainMenu = () => {
                       <h3 className="text-lg font-bold text-secondary">The Plan of Salvation</h3>
                     </div>
 
-                    <ScrollArea className="h-[300px] pr-2">
+                    <ScrollArea className="h-[400px] pr-2">
                       <div className="space-y-3 text-xs text-muted-foreground leading-relaxed">
                         <p className="font-semibold text-secondary">Did you know God created us to be in relationship with Him?</p>
                         <p>He gave us a name and a place in Him. He blessed us with eternal life in a beautiful garden and entrusted us with dominion over all creation on earth. We were designed to walk with Him, know Him intimately, and live in His presence forever.</p>
