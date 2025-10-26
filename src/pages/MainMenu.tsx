@@ -5,7 +5,11 @@ import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shiel
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
@@ -39,12 +43,65 @@ const MainMenu = () => {
     tracks: true,
     paths: true,
   });
+  const [yearlyCount, setYearlyCount] = useState<number>(0);
+  const [isAccepting, setIsAccepting] = useState(false);
 
   useEffect(() => {
     if (tabFromUrl) {
       setActiveTab(tabFromUrl);
     }
   }, [tabFromUrl]);
+
+  useEffect(() => {
+    if (activeTab === "divine") {
+      fetchYearlyCount();
+    }
+  }, [activeTab]);
+
+  const fetchYearlyCount = async () => {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    const { count, error } = await supabase
+      .from('salvation_acceptances')
+      .select('*', { count: 'exact', head: true })
+      .gte('accepted_at', oneYearAgo.toISOString());
+
+    if (!error && count !== null) {
+      setYearlyCount(count);
+    }
+  };
+
+  const handleAccept = async () => {
+    setIsAccepting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { error } = await supabase
+        .from('salvation_acceptances')
+        .insert({
+          user_id: user?.id || null
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Welcome to the Family! 🙏",
+        description: "Your decision has been recorded. May God bless your journey.",
+      });
+
+      await fetchYearlyCount();
+    } catch (error) {
+      console.error('Error recording acceptance:', error);
+      toast({
+        title: "Error",
+        description: "Could not record your acceptance. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAccepting(false);
+    }
+  };
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -375,24 +432,6 @@ const MainMenu = () => {
         <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
           {activeTab === "divine" && (
             <>
-              <div className="col-span-3">
-                <div
-                  className="w-full rounded-xl border bg-card text-card-foreground p-4 md:p-5 shadow-sm cursor-pointer hover:shadow-md transition"
-                  onClick={() => navigate("/divine-guidance")}
-                  aria-label="Open Divine Guidance (Plan of Salvation)"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-base md:text-lg font-semibold">{t('divine_guidance')}</p>
-                      <p className="text-xs md:text-sm text-muted-foreground">Plan of Salvation, voices, and context</p>
-                    </div>
-                    <Button size="sm" variant="default" className="hidden sm:inline-flex">
-                      Open
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
               {divineGuidance.map((guide) => (
                 <div
                   key={guide.id}
@@ -438,6 +477,72 @@ const MainMenu = () => {
                   </div>
                 </div>
               ))}
+
+              {/* Plan of Salvation Box */}
+              <div className="col-span-3 mt-4">
+                <Card className="relative overflow-hidden border-4 border-yellow-500 bg-gradient-to-br from-yellow-50 via-white to-yellow-50">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-500"></div>
+                  
+                  <div className="p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center flex-shrink-0">
+                        <Heart className="w-5 h-5 text-white fill-white" />
+                      </div>
+                      <h3 className="text-lg font-bold text-secondary">The Plan of Salvation</h3>
+                    </div>
+
+                    <ScrollArea className="h-[300px] pr-2">
+                      <div className="space-y-3 text-xs text-muted-foreground leading-relaxed">
+                        <p className="font-semibold text-secondary">Did you know God created us to be in relationship with Him?</p>
+                        <p>He gave us a name and a place in Him. He blessed us with eternal life in a beautiful garden and entrusted us with dominion over all creation on earth. We were designed to walk with Him, know Him intimately, and live in His presence forever.</p>
+
+                        <p className="font-semibold text-secondary">But everything changed with the disobedience of mankind.</p>
+                        <p>It wasn't just a bite of fruit or a simple act of rebellion—it was a spiritual exchange. When man gave in to Satan's deception, he didn't merely disobey God; he rejected Him and accepted Satan as king. In doing so, man renounced God's nature and took on the nature of the enemy. Satan, now lord over man, claimed ownership of all that God had given—including man's soul.</p>
+
+                        <p className="font-semibold text-secondary">For thousands of years, God's purpose has remained: to restore that broken relationship.</p>
+                        <p>Yet something stood in the way—sin. Sin didn't just separate us from God; it made us His enemies. Not because God turned against us, but because we turned against Him. Sin enslaved us—not just in what we do, but in who we are. We became transgressors by nature, not just by action.</p>
+
+                        <p className="font-semibold text-secondary">But God, in His mercy, gave us Christ.</p>
+                        <p>Jesus, the perfect and sinless Son of God, came to pay the price for the sins of the world. His sacrifice didn't just wash away our guilt—it settled our debt and rebuilt the bridge to the Father. Through Christ, anyone can come back into relationship with God.</p>
+
+                        <p className="font-semibold text-secondary">Being a Christian isn't about rituals or religion—it's about relationship.</p>
+                        <p>Just as we expect loyalty, love, and care in our relationships, God offers all of that first. He is faithful, loving, and always working for our good. And He invites us to respond—not out of obligation, but out of love. He doesn't demand our devotion; He desires it freely given.</p>
+
+                        <p className="font-semibold text-secondary">God has done everything to rekindle the relationship.</p>
+                        <p>Now the choice is yours. Will you receive Him today?</p>
+
+                        <div className="border-l-4 border-yellow-500 pl-3 my-4 bg-yellow-50 py-3 rounded-r">
+                          <p className="font-bold text-secondary mb-2">Prayer to Receive Christ</p>
+                          <p className="italic">"Lord Jesus, I come to You today because I recognize my need for You. I believe You are the Son of God, that You died for my sins, and that You rose again to give me new life. I confess that I have lived apart from You, and I ask for Your forgiveness. Wash me clean. Restore me. I surrender my heart to You. Be my Savior, my Lord, and my King. Fill me with Your Spirit and teach me to walk with You every day. Thank You for loving me first. Today, I choose You. Amen."</p>
+                        </div>
+
+                        <p className="font-semibold text-secondary">Welcome to the Family</p>
+                        <p>If you've made this decision and prayed this prayer, we rejoice with you and welcome you into Christ's family—and into our humble Hagion family. You are not alone. You've stepped into a journey of restoration, truth, and love.</p>
+
+                        <p>To help you grow, we encourage you to go to the Discernment icon in the Hagion app. Under "Churches," type in your hometown and state and search for churches with sound doctrine. Join one of our Christian families near you.</p>
+
+                        <p>At Hagion, we lovingly encourage you to test the spirit—not with suspicion, but with wisdom. We provide tools, information, and guidance to help you discern each church's vision and ensure it aligns with the heart of Christ. This is your journey, and we're honored to walk it with you.</p>
+                      </div>
+                    </ScrollArea>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t">
+                      <Button
+                        onClick={handleAccept}
+                        disabled={isAccepting}
+                        className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-6 font-semibold"
+                      >
+                        <Heart className="w-4 h-4 mr-2" />
+                        {isAccepting ? "Recording..." : "Accept"}
+                      </Button>
+                      
+                      <div className="text-center sm:text-right">
+                        <p className="text-xs text-muted-foreground">joined as of today</p>
+                        <p className="text-xl font-bold text-yellow-600">{yearlyCount.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
             </>
           )}
 
