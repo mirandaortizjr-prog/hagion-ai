@@ -373,52 +373,73 @@ const MainMenu = () => {
       {/* Grid of Assistants */}
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto">
-          {/* Divine Guidance Cards */}
-          {activeTab === "divine" && divineGuidance.map((guide) => (
-            <div
-              key={guide.id}
-              className="flex flex-col items-center gap-3 cursor-pointer group"
-              onClick={() => navigate(`/divine/${guide.id}`)}
-            >
-              <div className="relative">
+          {activeTab === "divine" && (
+            <>
+              <div className="col-span-3">
                 <div
-                  className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
-                    guide.isPro
-                      ? "border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20"
-                      : "border-yellow-500 shadow-lg shadow-yellow-500/20 group-hover:border-yellow-600"
-                  }`}
+                  className="w-full rounded-xl border bg-card text-card-foreground p-4 md:p-5 shadow-sm cursor-pointer hover:shadow-md transition"
+                  onClick={() => navigate("/divine-guidance")}
+                  aria-label="Open Divine Guidance (Plan of Salvation)"
                 >
-                  <img
-                    src={guide.image}
-                    alt={guide.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <button
-                      aria-label={`About ${guide.name}`}
-                      className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Info className="w-3 h-3" />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
-                    <p className="text-sm">{t('divine_guidance_info')}</p>
-                  </PopoverContent>
-                </Popover>
-                {guide.isPro && (
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <span>★</span> PRO
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-base md:text-lg font-semibold">{t('divine_guidance')}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">Plan of Salvation, voices, and context</p>
+                    </div>
+                    <Button size="sm" variant="default" className="hidden sm:inline-flex">
+                      Open
+                    </Button>
                   </div>
-                )}
+                </div>
               </div>
-              <div className="text-center">
-                <p className="text-sm font-medium">{guide.name}</p>
-              </div>
-            </div>
-          ))}
+
+              {divineGuidance.map((guide) => (
+                <div
+                  key={guide.id}
+                  className="flex flex-col items-center gap-3 cursor-pointer group"
+                  onClick={() => navigate(`/divine/${guide.id}`)}
+                >
+                  <div className="relative">
+                    <div
+                      className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                        guide.isPro
+                          ? "border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20"
+                          : "border-yellow-500 shadow-lg shadow-yellow-500/20 group-hover:border-yellow-600"
+                      }`}
+                    >
+                      <img
+                        src={guide.image}
+                        alt={guide.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          aria-label={`About ${guide.name}`}
+                          className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Info className="w-3 h-3" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                        <p className="text-sm">{t('divine_guidance_info')}</p>
+                      </PopoverContent>
+                    </Popover>
+                    {guide.isPro && (
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span>★</span> PRO
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-medium">{guide.name}</p>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
 
 
           {/* Assistant Cards */}

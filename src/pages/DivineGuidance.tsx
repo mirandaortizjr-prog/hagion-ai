@@ -138,7 +138,7 @@ const DivineGuidance = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate("/menu")}
+            onClick={() => navigate("/main-menu")}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
