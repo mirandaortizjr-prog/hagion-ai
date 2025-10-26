@@ -68,6 +68,27 @@ export type Database = {
         }
         Relationships: []
       }
+      salvation_acceptances: {
+        Row: {
+          accepted_at: string
+          created_at: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          accepted_at?: string
+          created_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          accepted_at?: string
+          created_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       shared_content: {
         Row: {
           content: string
