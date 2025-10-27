@@ -72,6 +72,7 @@ const translations: Record<Language, Record<string, string>> = {
     'trinity_greeting': 'We are Father, Son, and Holy Spirit - united in perfect love. Speak, and we shall answer.',
     'divine_connection_issue': 'My child, there seems to be a disturbance in our connection. Please try speaking to me again.',
     'selected': 'Selected',
+    'speak_your_heart': 'Speak your heart...',
     
     // Navigation
     'chat': 'Chat',
@@ -119,7 +120,6 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Chat
     'type_message': 'Type your message...',
-    'speak_your_heart': 'Speak your heart...',
     'send': 'Send',
     'guidance_disclaimer': 'All guidance is rooted in Scripture and designed to strengthen your faith',
     'messages_remaining': 'messages remaining today',
