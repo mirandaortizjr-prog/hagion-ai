@@ -86,16 +86,16 @@ const MainMenu = () => {
       if (error) throw error;
 
       toast({
-        title: "Welcome to the Family! 🙏",
-        description: "Your decision has been recorded. May God bless your journey.",
+        title: t('welcome_toast'),
+        description: t('decision_recorded'),
       });
 
       await fetchYearlyCount();
     } catch (error) {
       console.error('Error recording acceptance:', error);
       toast({
-        title: "Error",
-        description: "Could not record your acceptance. Please try again.",
+        title: t('acceptance_error'),
+        description: t('acceptance_error_desc'),
         variant: "destructive",
       });
     } finally {
@@ -536,7 +536,7 @@ const MainMenu = () => {
                       </Button>
                       
                       <div className="text-center sm:text-right">
-                        <p className="text-xs text-muted-foreground">{t('joined_today')}</p>
+                        <p className="text-xs text-muted-foreground">{t('acceptances_year')}</p>
                         <p className="text-xl font-bold text-yellow-600">{yearlyCount.toLocaleString()}</p>
                       </div>
                     </div>
