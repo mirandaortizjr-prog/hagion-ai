@@ -169,6 +169,17 @@ const DivineChat = () => {
         return;
       }
 
+      if (response.status === 429 || response.status === 402) {
+        toast({
+          title: t(response.status === 429 ? 'rate_limit_exceeded' : 'credits_required'),
+          description: t(response.status === 429 ? 'rate_limit_exceeded_desc' : 'credits_required_desc'),
+          variant: "destructive",
+        });
+        setMessages((prev) => prev.slice(0, -1));
+        setIsLoading(false);
+        return;
+      }
+
       if (!response.ok || !response.body) {
         throw new Error("Failed to get response");
       }
