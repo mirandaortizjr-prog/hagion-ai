@@ -62,12 +62,15 @@ const DivineChat = () => {
 
   useEffect(() => {
     if (info) {
-      setMessages([{
-        role: "assistant",
-        content: info.greeting,
-      }]);
+      setMessages((prev) => {
+        // Only reset the greeting if no conversation yet or it's just the initial greeting
+        if (prev.length === 0 || (prev.length === 1 && prev[0].role === "assistant")) {
+          return [{ role: "assistant", content: info.greeting }];
+        }
+        return prev;
+      });
     }
-  }, [voiceId]);
+  }, [voiceId, language]);
 
   useEffect(() => {
     if (scrollRef.current) {
