@@ -363,6 +363,11 @@ const translations: Record<Language, Record<string, string>> = {
     'accepting': 'Recording...',
     'joined_today': 'joined as of today',
     'failed_get_response': 'Failed to get response. Please try again.',
+    'welcome_toast': 'Welcome to the Family! 🙏',
+    'decision_recorded': 'Your decision has been recorded. May God bless your journey.',
+    'acceptance_error': 'Error',
+    'acceptance_error_desc': 'Could not record your acceptance. Please try again.',
+    'acceptances_year': 'Acceptances this year',
     
   },
   es: {
@@ -719,6 +724,11 @@ const translations: Record<Language, Record<string, string>> = {
     'accept': 'Aceptar',
     'accepting': 'Registrando...',
     'joined_today': 'se unieron hoy',
+    'welcome_toast': '¡Bienvenido a la Familia! 🙏',
+    'decision_recorded': 'Tu decisión ha sido registrada. Que Dios bendiga tu camino.',
+    'acceptance_error': 'Error',
+    'acceptance_error_desc': 'No se pudo registrar tu aceptación. Por favor intenta de nuevo.',
+    'acceptances_year': 'Aceptaciones este año',
   }
 };
 
