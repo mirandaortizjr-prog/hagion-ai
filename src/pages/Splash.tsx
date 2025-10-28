@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.gif";
 
 const Splash = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,7 +30,7 @@ const Splash = () => {
           Hagion AI
         </h1>
         <p className="mt-2 text-sm sm:text-base text-muted-foreground animate-slide-up">
-          Divine Wisdom • Biblical Truth
+          {t('divine_wisdom')}
         </p>
       </div>
     </div>

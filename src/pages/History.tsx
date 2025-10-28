@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, MessageCircle, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ConversationHistory {
   id: string;
@@ -16,6 +17,7 @@ interface ConversationHistory {
 
 const History = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [conversations, setConversations] = useState<ConversationHistory[]>([]);
 
   useEffect(() => {
@@ -48,19 +50,19 @@ const History = () => {
     const diff = now.getTime() - date.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-    if (days === 0) return "Today";
-    if (days === 1) return "Yesterday";
-    if (days < 7) return `${days} days ago`;
+    if (days === 0) return t('today');
+    if (days === 1) return t('yesterday');
+    if (days < 7) return `${days} ${t('days_ago')}`;
     return date.toLocaleDateString();
   };
 
   const voiceNames: Record<string, string> = {
-    elohim: "Elohim",
-    christ: "Christ",
-    "holy-spirit": "Holy Spirit",
-    trinity: "Trinity",
-    "biblical-stories": "Biblical Stories",
-    martyrs: "Martyrs",
+    elohim: t('elohim'),
+    christ: t('christ'),
+    "holy-spirit": t('holy_spirit'),
+    trinity: t('trinity'),
+    "biblical-stories": t('biblical_stories'),
+    martyrs: t('martyrs_faith'),
     apologetics: "Miranda-Ortiz",
     science: "Sophia",
     medical: "Asher",
@@ -76,7 +78,7 @@ const History = () => {
           <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
             <ArrowLeft className="w-6 h-6" />
           </Button>
-          <h1 className="text-2xl font-bold">Chat History</h1>
+          <h1 className="text-2xl font-bold">{t('chat_history')}</h1>
         </div>
         {conversations.length > 0 && (
           <Button
@@ -85,7 +87,7 @@ const History = () => {
             onClick={clearAllHistory}
             className="text-destructive hover:text-destructive"
           >
-            Clear All
+            {t('clear_all')}
           </Button>
         )}
       </header>
@@ -96,9 +98,9 @@ const History = () => {
           {conversations.length === 0 ? (
             <div className="text-center py-12">
               <MessageCircle className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
-              <h2 className="text-xl font-semibold mb-2">No conversations yet</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('no_conversations')}</h2>
               <p className="text-muted-foreground">
-                Start a conversation to see your history here
+                {t('start_conversation_see_history')}
               </p>
             </div>
           ) : (
@@ -123,7 +125,7 @@ const History = () => {
                       {conversation.preview}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {conversation.messages.length} messages
+                      {conversation.messages.length} {t('messages')}
                     </p>
                   </div>
                   <Button

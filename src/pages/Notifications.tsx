@@ -6,10 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Notifications = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   const [notifications, setNotifications] = useState({
     chatResponses: true,
@@ -26,8 +28,8 @@ const Notifications = () => {
       localStorage.setItem("notification_preferences", JSON.stringify(newState));
       
       toast({
-        title: "Preference updated",
-        description: `Notifications ${newState[key] ? "enabled" : "disabled"}`,
+        title: t('preference_updated'),
+        description: `${t('notifications')} ${newState[key] ? t('enabled') : t('disabled')}`,
       });
       
       return newState;
@@ -37,23 +39,23 @@ const Notifications = () => {
   const notificationSettings = [
     {
       key: "chatResponses" as const,
-      title: "Chat Responses",
-      description: "Get notified when your chat receives a response",
+      title: t('chat_responses'),
+      description: t('chat_responses_desc'),
     },
     {
       key: "newFeatures" as const,
-      title: "New Features",
-      description: "Stay updated about new features and improvements",
+      title: t('new_features'),
+      description: t('new_features_desc'),
     },
     {
       key: "systemUpdates" as const,
-      title: "System Updates",
-      description: "Important updates about the app",
+      title: t('system_updates'),
+      description: t('system_updates_desc'),
     },
     {
       key: "dailyReminders" as const,
-      title: "Daily Reminders",
-      description: "Receive daily spiritual reminders and verses",
+      title: t('daily_reminders'),
+      description: t('daily_reminders_desc'),
     },
   ];
 
@@ -63,16 +65,16 @@ const Notifications = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Notifications</h1>
+        <h1 className="text-2xl font-bold">{t('notifications')}</h1>
       </header>
 
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader>
-              <CardTitle>Notification Preferences</CardTitle>
+              <CardTitle>{t('notification_preferences')}</CardTitle>
               <CardDescription>
-                Choose what notifications you want to receive
+                {t('notification_preferences_desc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

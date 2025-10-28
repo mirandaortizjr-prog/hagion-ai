@@ -2,47 +2,49 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Mail, MessageCircle, Book, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Support = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const supportOptions = [
     {
       icon: Book,
-      title: "Documentation",
-      description: "Browse our comprehensive guides and tutorials",
+      title: t('documentation'),
+      description: t('documentation_desc'),
       action: () => window.open("https://docs.lovable.dev/", "_blank"),
     },
     {
       icon: MessageCircle,
-      title: "Community",
-      description: "Join our Discord community for help and discussions",
+      title: t('community'),
+      description: t('community_desc'),
       action: () => window.open("https://discord.com/channels/1119885301872070706/1280461670979993613", "_blank"),
     },
     {
       icon: Mail,
-      title: "Email Support",
-      description: "Contact us directly for assistance",
+      title: t('email_support'),
+      description: t('email_support_desc'),
       action: () => window.location.href = "mailto:support@hagionai.com",
     },
   ];
 
   const faqItems = [
     {
-      question: "How do I start a conversation?",
-      answer: "From the main menu, select any assistant, Divine Guidance voice, or Storytelling option to begin.",
+      question: t('faq_q1'),
+      answer: t('faq_a1'),
     },
     {
-      question: "Can I save my conversations?",
-      answer: "Yes! All your conversations are automatically saved and can be accessed from the History tab.",
+      question: t('faq_q2'),
+      answer: t('faq_a2'),
     },
     {
-      question: "How do I change the language?",
-      answer: "Go to Settings > Preferences and toggle between English and Spanish.",
+      question: t('faq_q3'),
+      answer: t('faq_a3'),
     },
     {
-      question: "What's the difference between assistants and Divine Guidance?",
-      answer: "Assistants provide evidence-based insights on specific topics, while Divine Guidance offers spiritual wisdom in the voice of God, Christ, or the Holy Spirit.",
+      question: t('faq_q4'),
+      answer: t('faq_a4'),
     },
   ];
 
@@ -52,15 +54,15 @@ const Support = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Help & Support</h1>
+        <h1 className="text-2xl font-bold">{t('help_support')}</h1>
       </header>
 
       <div className="flex-1 overflow-auto px-4 py-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Get Help</CardTitle>
-              <CardDescription>Choose how you'd like to get assistance</CardDescription>
+              <CardTitle>{t('get_help')}</CardTitle>
+              <CardDescription>{t('get_help_desc')}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
               {supportOptions.map((option, idx) => (
@@ -82,8 +84,8 @@ const Support = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Frequently Asked Questions</CardTitle>
-              <CardDescription>Quick answers to common questions</CardDescription>
+              <CardTitle>{t('faq')}</CardTitle>
+              <CardDescription>{t('faq_desc')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {faqItems.map((item, idx) => (
@@ -99,14 +101,14 @@ const Support = () => {
           <Card className="bg-muted/50">
             <CardContent className="pt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Can't find what you're looking for?
+                {t('cant_find')}
               </p>
               <Button
                 variant="link"
                 className="mt-2"
                 onClick={() => window.location.href = "mailto:support@hagionai.com"}
               >
-                Contact us directly
+                {t('contact_directly')}
               </Button>
             </CardContent>
           </Card>

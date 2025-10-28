@@ -74,7 +74,7 @@ const Auth = () => {
     if (!validatePassword(password)) {
       toast({
         title: t('invalid_password'),
-        description: "Password must be at least 8 characters with uppercase, lowercase, and numbers or symbols",
+        description: t('password_requirements'),
         variant: "destructive",
       });
       return;
@@ -101,7 +101,7 @@ const Auth = () => {
         if (error) {
           toast({
             title: t('login_failed'),
-            description: "Please check your email and password and try again",
+            description: t('check_credentials'),
             variant: "destructive",
           });
           return;
@@ -129,7 +129,7 @@ const Auth = () => {
         if (error) {
           toast({
             title: t('error'),
-            description: "Unable to create account. Please try again or contact support",
+            description: t('account_creation_failed'),
             variant: "destructive",
           });
           return;
@@ -143,7 +143,7 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: t('error'),
-        description: error.message || "An unexpected error occurred",
+        description: error.message || t('unexpected_error'),
         variant: "destructive",
       });
     } finally {

@@ -5,11 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function SharedContent() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [content, setContent] = useState<string>("");
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -32,8 +34,8 @@ export default function SharedContent() {
     
     if (!user) {
       toast({
-        title: "Authentication Required",
-        description: "Please sign up or log in to view shared content.",
+        title: t('login_required'),
+        description: t('shared_content_login_required'),
         variant: "destructive",
       });
       navigate(`/auth?redirect=/shared?token=${token}`);
@@ -46,8 +48,8 @@ export default function SharedContent() {
   const loadSharedContent = async () => {
     if (!token) {
       toast({
-        title: "Invalid Link",
-        description: "This shared content link is invalid.",
+        title: t('invalid_link'),
+        description: t('invalid_shared_link'),
         variant: "destructive",
       });
       navigate("/");
@@ -65,8 +67,8 @@ export default function SharedContent() {
 
       if (!data) {
         toast({
-          title: "Content Not Found",
-          description: "This shared content no longer exists.",
+          title: t('content_not_found'),
+          description: t('content_not_found_desc'),
           variant: "destructive",
         });
         navigate("/");
@@ -85,8 +87,8 @@ export default function SharedContent() {
     } catch (error: any) {
       console.error("Error loading shared content:", error);
       toast({
-        title: "Error",
-        description: "Failed to load shared content.",
+        title: t('error'),
+        description: t('failed_load_shared'),
         variant: "destructive",
       });
       navigate("/");
@@ -112,7 +114,7 @@ export default function SharedContent() {
           className="mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
+          {t('back_home')}
         </Button>
 
         <Card className="border-primary/20">
@@ -129,7 +131,7 @@ export default function SharedContent() {
         </Card>
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>Shared via Hagion AI</p>
+          <p>{t('shared_via_hagion')}</p>
         </div>
       </div>
     </div>
