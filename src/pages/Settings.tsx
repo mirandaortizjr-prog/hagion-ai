@@ -93,15 +93,15 @@ const Settings = () => {
 
   const getVoiceLabel = (voice: string) => {
     const labels: Record<string, string> = {
-      elohim: "Elohim",
-      christ: "Christ",
-      emmanuel: "Emmanuel",
-      "holy-spirit": "Holy Spirit",
-      ruach: "Ruach",
-      trinity: "Trinity",
-      "biblical-stories": "Biblical Stories",
-      martyrs: "Martyrs",
-      "history-christianity": "Christianity History",
+      elohim: t('elohim'),
+      christ: t('christ'),
+      emmanuel: t('christ'),
+      "holy-spirit": t('holy_spirit'),
+      ruach: t('holy_spirit'),
+      trinity: t('trinity'),
+      "biblical-stories": t('biblical_stories'),
+      martyrs: t('martyrs_faith'),
+      "history-christianity": t('history_christianity'),
     };
     return labels[voice] || voice;
   };

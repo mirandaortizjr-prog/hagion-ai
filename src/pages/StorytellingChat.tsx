@@ -37,35 +37,37 @@ const StorytellingChat = () => {
 
   const storyInfo: Record<string, { name: string; description: string; image?: string; greeting: string }> = {
     "biblical-stories": {
-      name: "Biblical Stories",
-      description: "Raw, Unfiltered Truth",
+      name: t('biblical_stories'),
+      description: t('biblical_stories_info'),
       image: biblicalScrollImage,
-      greeting: "I will tell you the stories of Scripture as they were written - unfiltered, raw, and true. These are not sanitized tales, but the real accounts of faith, struggle, sin, and redemption. What story would you like to hear?"
+      greeting: t('assistant_intro')
     },
     "martyrs": {
-      name: "Martyrs for the Faith",
-      description: "Stories of Ultimate Sacrifice",
+      name: t('martyrs_faith'),
+      description: t('martyrs_faith_info'),
       image: martyrsImage,
-      greeting: "These are the stories of those who gave everything for their faith - raw accounts of courage, suffering, and unwavering devotion. Their testimonies are not easy, but they are true. Which martyr's story calls to you?"
+      greeting: t('assistant_intro')
     },
     "history-christianity": {
       name: t('history_christianity'),
-      description: "2000 Years of Faith",
+      description: t('history_christianity_info'),
       image: historyChristianityImage,
-      greeting: "From the early church to the present day, I will share the remarkable journey of Christianity through the ages. These are the real events, movements, and figures that shaped the faith. What period of Christian history would you like to explore?"
+      greeting: t('assistant_intro')
     },
   };
-
   const info = storyInfo[storyId || "biblical-stories"];
 
   useEffect(() => {
     if (info) {
-      setMessages([{
-        role: "assistant",
-        content: info.greeting,
-      }]);
+      setMessages((prev) => {
+        // Only set greeting if starting or there is only the initial assistant message
+        if (prev.length === 0 || (prev.length === 1 && prev[0].role === 'assistant')) {
+          return [{ role: 'assistant', content: info.greeting }];
+        }
+        return prev;
+      });
     }
-  }, [storyId]);
+  }, [storyId, language]);
 
   useEffect(() => {
     if (scrollRef.current) {

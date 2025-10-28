@@ -94,7 +94,7 @@ const Chat = () => {
     return [
       {
         role: "assistant",
-        content: "Peace be with you, beloved child. I am here to guide you with wisdom from Scripture. What weighs upon your heart today?",
+        content: t('assistant_intro'),
         scripture: "Psalm 46:1",
       },
     ];
@@ -143,12 +143,12 @@ const Chat = () => {
   }, [messages]);
 
   const voiceNames: Record<string, string> = {
-    elohim: "Elohim",
-    christ: "Christ",
-    "holy-spirit": "Holy Spirit",
-    trinity: "Trinity",
-    "biblical-stories": "Biblical Stories",
-    martyrs: "Martyrs for the Faith",
+    elohim: t('elohim'),
+    christ: t('christ'),
+    "holy-spirit": t('holy_spirit'),
+    trinity: t('trinity'),
+    "biblical-stories": t('biblical_stories'),
+    martyrs: t('martyrs_faith'),
     apologetics: "Miranda-Ortiz",
     science: "Sophia",
     medical: "Asher",
@@ -156,9 +156,8 @@ const Chat = () => {
     philosophical: "Thaddeus",
     psychology: "Caleb",
     historical: "Brooke",
-    friend: "Friend Chat",
+    friend: language === 'es' ? 'Chat de Amigo' : 'Friend Chat',
   };
-
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -298,14 +297,14 @@ const Chat = () => {
       await navigator.clipboard.writeText(text);
       setCopiedIndex(index);
       toast({
-        title: "Copied!",
-        description: "Message copied to clipboard",
+        title: t('copied'),
+        description: t('message_copied_clipboard'),
       });
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to copy message",
+        title: t('error'),
+        description: t('failed_copy_message'),
         variant: "destructive",
       });
     }
@@ -318,8 +317,8 @@ const Chat = () => {
       
       if (!user) {
         toast({
-          title: "Authentication Required",
-          description: "Please log in to share messages",
+          title: t('login_required'),
+          description: t('login_share_messages'),
           variant: "destructive",
         });
         navigate("/auth");
@@ -327,7 +326,7 @@ const Chat = () => {
       }
 
       const contextInfo = discern 
-        ? `Discernment on ${discern}`
+        ? `${t('theological_evaluation')}: ${discern}`
         : voiceNames[voice as keyof typeof voiceNames] || voice;
 
       const { data, error } = await supabase
@@ -347,14 +346,14 @@ const Chat = () => {
       await navigator.clipboard.writeText(shareUrl);
 
       toast({
-        title: "Share Link Created!",
-        description: "Link copied to clipboard. Recipients will need to sign up to view.",
+        title: t('share_link_created'),
+        description: t('share_link_copied'),
       });
     } catch (error: any) {
       console.error("Error sharing message:", error);
       toast({
-        title: "Error",
-        description: "Failed to create share link",
+        title: t('error'),
+        description: t('failed_create_share_link'),
         variant: "destructive",
       });
     } finally {
@@ -386,8 +385,8 @@ const Chat = () => {
     localStorage.setItem("saved_answers", JSON.stringify(savedAnswers));
 
     toast({
-      title: "Saved",
-      description: "Answer saved to your collection",
+      title: t('saved_toast'),
+      description: t('answer_saved_collection'),
     });
   };
 
@@ -400,21 +399,14 @@ const Chat = () => {
           </Button>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-secondary">
-              {discern ? (language === 'es' ? 'Discernimiento' : 'Discernment') : voiceNames[voice]}
+              {discern ? t('discernment') : voiceNames[voice]}
             </h1>
             <p className="text-sm text-muted-foreground capitalize flex items-center gap-2">
               {discern ? (
-                language === 'es' ? (
-                  discern === "churches" ? "Evaluación de Iglesias" :
-                  discern === "belief-systems" ? "Evaluación de Sistemas de Creencias" :
-                  discern === "texts" ? "Evaluación de Textos Religiosos" :
-                  "Evaluación Teológica"
-                ) : (
-                  discern === "churches" ? "Churches Evaluation" :
-                  discern === "belief-systems" ? "Belief Systems Evaluation" :
-                  discern === "texts" ? "Religious Texts Evaluation" :
-                  "Theological Evaluation"
-                )
+                discern === "churches" ? t('churches_evaluation') :
+                discern === "belief-systems" ? t('belief_systems_evaluation') :
+                discern === "texts" ? t('religious_texts_evaluation') :
+                t('theological_evaluation')
               ) : context.replace("-", " ")}
             </p>
           </div>
@@ -456,7 +448,7 @@ const Chat = () => {
                       ) : (
                         <Copy className="w-4 h-4" />
                       )}
-                      {copiedIndex === index ? "Copied" : "Copy"}
+                      {copiedIndex === index ? t('copied') : t('copy')}
                     </Button>
                     <Button
                       variant="ghost"
@@ -470,7 +462,7 @@ const Chat = () => {
                       ) : (
                         <Share2 className="w-4 h-4" />
                       )}
-                      Share
+                      {t('share')}
                     </Button>
                     <Button
                       variant="ghost"
@@ -479,7 +471,7 @@ const Chat = () => {
                       onClick={() => handleSaveAnswer(message.content, index)}
                     >
                       <Bookmark className="w-4 h-4" />
-                      Save
+                      {t('save')}
                     </Button>
                   </div>
                 )}
