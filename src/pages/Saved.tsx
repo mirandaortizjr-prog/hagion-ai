@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, Trash2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SavedAnswer {
   id: string;
@@ -17,6 +18,7 @@ interface SavedAnswer {
 const Saved = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [savedAnswers, setSavedAnswers] = useState<SavedAnswer[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -37,8 +39,8 @@ const Saved = () => {
     setSavedAnswers(updated);
     localStorage.setItem("saved_answers", JSON.stringify(updated));
     toast({
-      title: "Deleted",
-      description: "Saved answer removed",
+      title: t('deleted'),
+      description: t('conversation_deleted'),
     });
   };
 
@@ -48,13 +50,13 @@ const Saved = () => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
       toast({
-        title: "Copied",
-        description: "Answer copied to clipboard",
+        title: t('copied'),
+        description: t('message_copied_clipboard'),
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to copy to clipboard",
+        title: t('error'),
+        description: t('failed_copy_message'),
         variant: "destructive",
       });
     }
@@ -75,12 +77,12 @@ const Saved = () => {
   };
 
   const voiceNames: Record<string, string> = {
-    elohim: "Elohim",
-    christ: "Christ",
-    "holy-spirit": "Holy Spirit",
-    trinity: "Trinity",
-    "biblical-stories": "Biblical Stories",
-    martyrs: "Martyrs for the Faith",
+    elohim: t('elohim'),
+    christ: t('christ'),
+    "holy-spirit": t('holy_spirit'),
+    trinity: t('trinity'),
+    "biblical-stories": t('biblical_stories'),
+    martyrs: t('martyrs_faith'),
     apologetics: "Miranda-Ortiz",
     science: "Sophia",
     medical: "Asher",
@@ -88,7 +90,7 @@ const Saved = () => {
     philosophical: "Thaddeus",
     psychology: "Caleb",
     historical: "Brooke",
-    friend: "Friend Chat",
+    friend: t('friend'),
   };
 
   return (
@@ -98,9 +100,9 @@ const Saved = () => {
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-xl font-bold">Saved Answers</h1>
+          <h1 className="text-xl font-bold">{t('saved')}</h1>
           <p className="text-sm text-muted-foreground">
-            {savedAnswers.length} {savedAnswers.length === 1 ? 'answer' : 'answers'} saved
+            {savedAnswers.length} {savedAnswers.length === 1 ? t('answer_saved') : t('answers_saved')}
           </p>
         </div>
       </header>
@@ -109,9 +111,9 @@ const Saved = () => {
         <div className="max-w-3xl mx-auto space-y-4">
           {savedAnswers.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-2">No saved answers yet</p>
+              <p className="text-muted-foreground mb-2">{t('no_saved_answers')}</p>
               <p className="text-sm text-muted-foreground">
-                Save your favorite answers from any conversation
+                {t('save_favorite_answers')}
               </p>
             </div>
           ) : (
@@ -147,12 +149,12 @@ const Saved = () => {
                     {copiedId === answer.id ? (
                       <>
                         <Check className="w-4 h-4" />
-                        Copied
+                        {t('copied')}
                       </>
                     ) : (
                       <>
                         <Copy className="w-4 h-4" />
-                        Copy
+                        {t('copy')}
                       </>
                     )}
                   </Button>
@@ -163,7 +165,7 @@ const Saved = () => {
                     className="gap-2 text-destructive hover:text-destructive"
                   >
                     <Trash2 className="w-4 h-4" />
-                    Delete
+                    {t('delete')}
                   </Button>
                 </div>
               </Card>

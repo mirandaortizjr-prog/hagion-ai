@@ -14,7 +14,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [email, setEmail] = useState("");
@@ -68,13 +68,13 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: language === 'es' ? "Éxito" : "Success",
-        description: language === 'es' ? "Perfil actualizado exitosamente" : "Profile updated successfully",
+        title: t('success'),
+        description: t('profile_updated'),
       });
     } catch (error: any) {
       toast({
-        title: language === 'es' ? "Error" : "Error",
-        description: error.message || (language === 'es' ? "No se pudo actualizar el perfil" : "Failed to update profile"),
+        title: t('error'),
+        description: error.message || t('profile_update_failed'),
         variant: "destructive",
       });
     } finally {
@@ -87,8 +87,8 @@ const Profile = () => {
 
     if (newPassword !== confirmPassword) {
       toast({
-        title: "Error",
-        description: "New passwords don't match",
+        title: t('error'),
+        description: t('passwords_no_match_desc'),
         variant: "destructive",
       });
       return;
@@ -96,8 +96,8 @@ const Profile = () => {
 
     if (newPassword.length < 6) {
       toast({
-        title: "Error",
-        description: "Password must be at least 6 characters long",
+        title: t('error'),
+        description: t('invalid_password_desc'),
         variant: "destructive",
       });
       return;
@@ -113,8 +113,8 @@ const Profile = () => {
       if (error) throw error;
 
       toast({
-        title: language === 'es' ? "Éxito" : "Success",
-        description: language === 'es' ? "Contraseña actualizada exitosamente" : "Password updated successfully",
+        title: t('success'),
+        description: t('password_updated'),
       });
 
       setCurrentPassword("");
@@ -122,8 +122,8 @@ const Profile = () => {
       setConfirmPassword("");
     } catch (error: any) {
       toast({
-        title: language === 'es' ? "Error" : "Error",
-        description: error.message || (language === 'es' ? "Error al actualizar la contraseña" : "Failed to update password"),
+        title: t('error'),
+        description: error.message || t('password_update_failed'),
         variant: "destructive",
       });
     } finally {
@@ -137,7 +137,7 @@ const Profile = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">{language === 'es' ? 'Perfil' : 'Profile'}</h1>
+        <h1 className="text-2xl font-bold">{t('profile')}</h1>
       </header>
 
       <div className="flex-1 overflow-auto px-4 py-6">
@@ -152,48 +152,48 @@ const Profile = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <CardTitle>{language === 'es' ? 'Información de Cuenta' : 'Account Information'}</CardTitle>
-                  <CardDescription>{language === 'es' ? 'Administra los detalles de tu cuenta' : 'Manage your account details'}</CardDescription>
+                  <CardTitle>{t('account_info')}</CardTitle>
+                  <CardDescription>{t('account_info_desc')}</CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleUpdateProfile} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">{language === 'es' ? 'Nombre' : 'Profile Name'}</Label>
+                  <Label htmlFor="name">{t('name')}</Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder={language === 'es' ? 'Tu nombre' : 'Your name'}
+                    placeholder={t('your_name')}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isSavingProfile}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="gender">{language === 'es' ? 'Género' : 'Gender'}</Label>
+                  <Label htmlFor="gender">{t('gender')}</Label>
                   <Select value={gender} onValueChange={setGender} disabled={isSavingProfile}>
                     <SelectTrigger id="gender">
-                      <SelectValue placeholder={language === 'es' ? 'Selecciona género' : 'Select gender'} />
+                      <SelectValue placeholder={t('select_gender')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">{language === 'es' ? 'Masculino' : 'Male'}</SelectItem>
-                      <SelectItem value="female">{language === 'es' ? 'Femenino' : 'Female'}</SelectItem>
+                      <SelectItem value="male">{t('male')}</SelectItem>
+                      <SelectItem value="female">{t('female')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>{language === 'es' ? 'Correo Electrónico' : 'Email'}</Label>
+                  <Label>{t('email')}</Label>
                   <Input value={email} disabled className="bg-muted" />
                 </div>
                 <Button type="submit" disabled={isSavingProfile}>
                   {isSavingProfile ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {language === 'es' ? 'Guardando...' : 'Saving...'}
+                      {t('saving')}
                     </>
                   ) : (
-                    language === 'es' ? 'Guardar Cambios' : 'Save Changes'
+                    t('save_changes')
                   )}
                 </Button>
               </form>
@@ -202,13 +202,13 @@ const Profile = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>{language === 'es' ? 'Cambiar Contraseña' : 'Change Password'}</CardTitle>
-              <CardDescription>{language === 'es' ? 'Actualiza tu contraseña para mantener tu cuenta segura' : 'Update your password to keep your account secure'}</CardDescription>
+              <CardTitle>{t('change_password')}</CardTitle>
+              <CardDescription>{t('change_password_desc')}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleUpdatePassword} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">{language === 'es' ? 'Nueva Contraseña' : 'New Password'}</Label>
+                  <Label htmlFor="newPassword">{t('new_password')}</Label>
                   <Input
                     id="newPassword"
                     type="password"
@@ -220,7 +220,7 @@ const Profile = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">{language === 'es' ? 'Confirmar Nueva Contraseña' : 'Confirm New Password'}</Label>
+                  <Label htmlFor="confirmPassword">{t('confirm_new_password')}</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -235,10 +235,10 @@ const Profile = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {language === 'es' ? 'Actualizando...' : 'Updating...'}
+                      {t('updating')}
                     </>
                   ) : (
-                    language === 'es' ? 'Actualizar Contraseña' : 'Update Password'
+                    t('update_password')
                   )}
                 </Button>
               </form>
