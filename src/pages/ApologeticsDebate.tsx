@@ -82,7 +82,10 @@ const ApologeticsDebate = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPersona, setCurrentPersona] = useState<Persona | null>(null);
   const [debateStarted, setDebateStarted] = useState(false);
-  const [round, setRound] = useState<'opening' | 'rebuttal' | 'cross-examination' | 'closing'>('opening');
+  const [round, setRound] = useState<number>(1);
+  const [rebuttalsInRound, setRebuttalsInRound] = useState<number>(0);
+  const [maxRebuttalsPerRound] = useState<number>(3);
+  const [mirandaUsesLeft, setMirandaUsesLeft] = useState<number>(3);
   const [suggestedResponses, setSuggestedResponses] = useState<Record<number, string>>({});
   const [loadingSuggestion, setLoadingSuggestion] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -93,17 +96,107 @@ const ApologeticsDebate = () => {
     }
   }, [messages]);
 
-  const selectPersona = (persona: Persona) => {
+  const selectPersona = async (persona: Persona) => {
     setCurrentPersona(persona);
     setDebateStarted(true);
-    setRound('opening');
+    setRound(1);
+    setRebuttalsInRound(0);
+    setMirandaUsesLeft(3);
     
-    const invocationMessage: Message = {
+    // Host introduction
+    const hostMessage: Message = {
       role: 'assistant',
-      content: `${t('circle_of_apologetics')}: ${t('trial_by_truth_subtitle')}\n\n${t('summoned_to_arena').replace('{name}', persona.name)}\n\n**${t('stance')}:** ${persona.title}\n**${t('tone')}:** ${persona.tone}\n**${t('challenge')}:** ${persona.challenge}\n\n${t('prepare_yourself')}\n\n${t('round_1_opening')}`
+      content: `🎭 **${t('debate_host')}**\n\n${t('host_welcome')}\n\n${t('host_intro_opponent').replace('{name}', persona.name).replace('{title}', persona.title)}\n\n**${t('stance')}:** ${persona.title}\n**${t('tone')}:** ${persona.tone}\n**${t('challenge')}:** ${persona.challenge}\n\n${t('host_round_1')}`
     };
     
-    setMessages([invocationMessage]);
+    setMessages([hostMessage]);
+    
+    // Opponent asks the first question
+    setTimeout(() => {
+      getOpponentOpeningQuestion(persona);
+    }, 1000);
+  };
+
+  const getOpponentOpeningQuestion = async (persona: Persona) => {
+    setIsLoading(true);
+    try {
+      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) return;
+
+      const response = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          messages: [{ 
+            role: 'user', 
+            content: `You are ${persona.name}, a ${persona.title}. Start the debate with your opening challenge or question. Be ${persona.tone} in your approach. Focus on: ${persona.challenge}. Ask a thought-provoking question or present a challenging argument that Round 1 difficulty - moderately challenging but not too complex.`
+          }],
+          voice: "debate",
+          debatePersona: persona.id,
+          debateRound: round,
+        }),
+      });
+
+      if (!response.ok || !response.body) return;
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let opponentMessage = "";
+
+      setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n");
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6);
+            if (data === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                opponentMessage += content;
+                setMessages((prev) => {
+                  const newMessages = [...prev];
+                  newMessages[newMessages.length - 1] = {
+                    role: "assistant",
+                    content: opponentMessage,
+                  };
+                  return newMessages;
+                });
+              }
+            } catch (e) {
+              // Invalid JSON, skip
+            }
+          }
+        }
+      }
+      
+      // Add host prompt for user to respond
+      setTimeout(() => {
+        const hostPrompt: Message = {
+          role: 'assistant',
+          content: `🎭 **${t('debate_host')}**\n\n${t('host_your_turn')}`
+        };
+        setMessages((prev) => [...prev, hostPrompt]);
+      }, 500);
+      
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const selectRandomPersona = () => {
@@ -119,6 +212,7 @@ const ApologeticsDebate = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    setRebuttalsInRound(prev => prev + 1);
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
@@ -136,6 +230,8 @@ const ApologeticsDebate = () => {
         return;
       }
 
+      const difficultyLevel = round === 1 ? 'moderate' : round === 2 ? 'challenging' : 'highly complex';
+
       const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
@@ -146,7 +242,7 @@ const ApologeticsDebate = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice: "debate",
           debatePersona: currentPersona.id,
-          debateRound: round,
+          debateRound: `round-${round}-${difficultyLevel}`,
         }),
       });
 
@@ -233,23 +329,28 @@ const ApologeticsDebate = () => {
   };
 
   const advanceRound = () => {
-    const rounds: Array<'opening' | 'rebuttal' | 'cross-examination' | 'closing'> = ['opening', 'rebuttal', 'cross-examination', 'closing'];
-    const currentIndex = rounds.indexOf(round);
-    if (currentIndex < rounds.length - 1) {
-      const nextRound = rounds[currentIndex + 1];
+    if (round < 3) {
+      const nextRound = round + 1;
       setRound(nextRound);
+      setRebuttalsInRound(0);
       
-      const roundNames = {
-        'opening': t('opening_statement'),
-        'rebuttal': t('rebuttal'),
-        'cross-examination': t('cross_examination'),
-        'closing': t('closing_statement')
+      const roundDifficulty = {
+        1: t('difficulty_moderate'),
+        2: t('difficulty_challenging'),
+        3: t('difficulty_expert')
       };
       
       toast({
-        title: `${t('round')} ${currentIndex + 2}: ${roundNames[nextRound]}`,
-        description: t('the_debate_continues'),
+        title: `${t('round')} ${nextRound}`,
+        description: `${t('difficulty')}: ${roundDifficulty[nextRound as keyof typeof roundDifficulty]}`,
       });
+      
+      // Host announces new round
+      const hostMessage: Message = {
+        role: 'assistant',
+        content: `🎭 **${t('debate_host')}**\n\n${t('host_round_advance').replace('{round}', nextRound.toString()).replace('{difficulty}', roundDifficulty[nextRound as keyof typeof roundDifficulty])}\n\n${t('host_continue')}`
+      };
+      setMessages((prev) => [...prev, hostMessage]);
     } else {
       toast({
         title: t('debate_complete'),
@@ -262,15 +363,18 @@ const ApologeticsDebate = () => {
     setDebateStarted(false);
     setCurrentPersona(null);
     setMessages([]);
-    setRound('opening');
+    setRound(1);
+    setRebuttalsInRound(0);
+    setMirandaUsesLeft(3);
     setSuggestedResponses({});
     setLoadingSuggestion(null);
   };
 
   const getSuggestedResponse = async (messageIndex: number) => {
-    if (!currentPersona) return;
+    if (!currentPersona || mirandaUsesLeft <= 0) return;
     
     setLoadingSuggestion(messageIndex);
+    setMirandaUsesLeft(prev => prev - 1);
 
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
@@ -435,15 +539,18 @@ const ApologeticsDebate = () => {
             {t('facing')}: {currentPersona?.name}
           </h1>
           <p className="text-xs text-muted-foreground">
-            {currentPersona?.title} • {t('round')}: {round}
+            {currentPersona?.title} • {t('round')} {round} • {rebuttalsInRound}/{maxRebuttalsPerRound} {t('rebuttals')}
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={advanceRound} disabled={round === 'closing'}>
-          {t('next_round')}
-        </Button>
-        <Button variant="ghost" size="icon" onClick={resetDebate}>
-          <RefreshCw className="w-5 h-5" />
-        </Button>
+        <div className="flex gap-2 items-center">
+          <span className="text-xs text-muted-foreground">{t('miranda_uses')}: {mirandaUsesLeft}</span>
+          <Button variant="outline" size="sm" onClick={advanceRound} disabled={round === 3 || rebuttalsInRound < maxRebuttalsPerRound}>
+            {t('next_round')}
+          </Button>
+          <Button variant="ghost" size="icon" onClick={resetDebate}>
+            <RefreshCw className="w-5 h-5" />
+          </Button>
+        </div>
       </header>
 
       <ScrollArea className="flex-1 px-4 py-6">
@@ -469,10 +576,10 @@ const ApologeticsDebate = () => {
                 </div>
               </div>
               
-              {message.role === "assistant" && index > 0 && (
+              {message.role === "assistant" && index > 0 && !message.content.includes(t('debate_host')) && (
                 <div className="flex justify-start">
                   <div className="max-w-[80%] space-y-2">
-                    {!suggestedResponses[index] && (
+                    {!suggestedResponses[index] && mirandaUsesLeft > 0 && (
                       <Button
                         variant="outline"
                         size="sm"
@@ -481,15 +588,18 @@ const ApologeticsDebate = () => {
                         disabled={loadingSuggestion === index}
                       >
                         <Lightbulb className="w-4 h-4" />
-                        {loadingSuggestion === index ? t('getting_help') : t('show_suggested_response')}
+                        {loadingSuggestion === index ? t('miranda_thinking') : t('miranda_will_answer')}
                       </Button>
+                    )}
+                    {mirandaUsesLeft === 0 && !suggestedResponses[index] && (
+                      <p className="text-xs text-muted-foreground italic">{t('miranda_exhausted')}</p>
                     )}
                     
                     {suggestedResponses[index] && (
                       <Card className="p-4 bg-accent/50 border-primary/20">
                         <div className="flex items-start gap-2 mb-2">
                           <Lightbulb className="w-4 h-4 text-primary mt-0.5" />
-                          <p className="text-xs font-semibold text-primary">{t('suggested_apologetic_response')}</p>
+                          <p className="text-xs font-semibold text-primary">📖 {t('miranda_ortiz_response')}</p>
                         </div>
                         <p className="text-sm whitespace-pre-wrap mb-3">{suggestedResponses[index]}</p>
                         <Button
