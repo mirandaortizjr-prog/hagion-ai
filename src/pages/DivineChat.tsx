@@ -337,10 +337,10 @@ const DivineChat = () => {
     savedAnswers.push(savedAnswer);
     localStorage.setItem("saved_answers", JSON.stringify(savedAnswers));
 
-    toast({
-      title: t('saved'),
-      description: t('answer_saved_collection'),
-    });
+      toast({
+        title: t('saved_toast'),
+        description: t('answer_saved_collection'),
+      });
   };
 
   if (!info) {

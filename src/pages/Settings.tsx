@@ -1,16 +1,110 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut } from "lucide-react";
+import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut, History, MessageSquare, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+interface ChatHistory {
+  id: string;
+  voice: string;
+  context: string;
+  timestamp: number;
+  messages: Array<{ role: string; content: string }>;
+  preview: string;
+}
+
 const Settings = () => {
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
   const { toast } = useToast();
+  const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
+
+  useEffect(() => {
+    loadChatHistory();
+  }, []);
+
+  const loadChatHistory = () => {
+    const stored = localStorage.getItem("chat_history");
+    if (stored) {
+      try {
+        const history = JSON.parse(stored);
+        // Sort by timestamp, most recent first
+        const sorted = history.sort((a: ChatHistory, b: ChatHistory) => b.timestamp - a.timestamp);
+        setChatHistory(sorted);
+      } catch (error) {
+        console.error("Failed to load chat history:", error);
+      }
+    }
+  };
+
+  const handleDeleteConversation = (id: string) => {
+    const stored = localStorage.getItem("chat_history");
+    if (stored) {
+      try {
+        const history = JSON.parse(stored);
+        const filtered = history.filter((c: ChatHistory) => c.id !== id);
+        localStorage.setItem("chat_history", JSON.stringify(filtered));
+        setChatHistory(filtered);
+        toast({
+          title: t('deleted'),
+          description: t('conversation_deleted'),
+        });
+      } catch (error) {
+        console.error("Failed to delete conversation:", error);
+      }
+    }
+  };
+
+  const handleClearAllHistory = () => {
+    localStorage.removeItem("chat_history");
+    setChatHistory([]);
+    toast({
+      title: t('cleared'),
+      description: t('all_history_cleared'),
+    });
+  };
+
+  const handleOpenConversation = (conversation: ChatHistory) => {
+    // Navigate to appropriate chat based on context
+    if (conversation.context === "divine") {
+      navigate(`/divine/${conversation.voice}?history=${conversation.id}`);
+    } else if (conversation.context === "storytelling") {
+      navigate(`/storytelling/${conversation.voice}?history=${conversation.id}`);
+    } else {
+      navigate(`/chat?voice=${conversation.voice}&context=${conversation.context}&history=${conversation.id}`);
+    }
+  };
+
+  const formatTimestamp = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    if (days === 0) return t('today');
+    if (days === 1) return t('yesterday');
+    if (days < 7) return `${days} ${t('days_ago')}`;
+    return date.toLocaleDateString();
+  };
+
+  const getVoiceLabel = (voice: string) => {
+    const labels: Record<string, string> = {
+      elohim: "Elohim",
+      christ: "Christ",
+      emmanuel: "Emmanuel",
+      "holy-spirit": "Holy Spirit",
+      ruach: "Ruach",
+      trinity: "Trinity",
+      "biblical-stories": "Biblical Stories",
+      martyrs: "Martyrs",
+      "history-christianity": "Christianity History",
+    };
+    return labels[voice] || voice;
+  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -87,6 +181,69 @@ const Settings = () => {
               </Card>
             </div>
           ))}
+
+          {/* Chat History Section */}
+          <div>
+            <div className="flex items-center justify-between mb-3 px-2">
+              <h2 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                <History className="w-4 h-4" />
+                {t('chat_history')}
+              </h2>
+              {chatHistory.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearAllHistory}
+                  className="text-xs text-destructive hover:text-destructive"
+                >
+                  {t('clear_all')}
+                </Button>
+              )}
+            </div>
+            {chatHistory.length === 0 ? (
+              <Card className="p-8 text-center">
+                <MessageSquare className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-50" />
+                <p className="text-muted-foreground">{t('no_chat_history')}</p>
+              </Card>
+            ) : (
+              <Card className="divide-y max-h-[400px] overflow-y-auto">
+                {chatHistory.map((conversation) => (
+                  <div
+                    key={conversation.id}
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-muted/50 transition-colors group"
+                  >
+                    <div
+                      className="flex-1 cursor-pointer"
+                      onClick={() => handleOpenConversation(conversation)}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm">
+                          {getVoiceLabel(conversation.voice)}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          • {formatTimestamp(conversation.timestamp)}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {conversation.preview}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteConversation(conversation.id);
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </Card>
+            )}
+          </div>
 
           <Separator className="my-6" />
 
