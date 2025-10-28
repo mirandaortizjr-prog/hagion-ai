@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, BookOpen, Sparkles } from "lucide-react";
+import { ArrowLeft, Send, BookOpen, Sparkles, Copy, Share2, Check, Loader2, Bookmark } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -31,6 +31,8 @@ const StorytellingChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [sharingIndex, setSharingIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const storyInfo: Record<string, { name: string; description: string; image?: string; greeting: string }> = {
@@ -252,6 +254,100 @@ const StorytellingChat = () => {
     }
   };
 
+  const handleCopyMessage = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      toast({
+        title: t('copied'),
+        description: t('message_copied_clipboard'),
+      });
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (error) {
+      toast({
+        title: t('error'),
+        description: t('failed_copy_message'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleShareMessage = async (text: string, index: number) => {
+    setSharingIndex(index);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: t('login_required'),
+          description: t('login_share_messages'),
+          variant: "destructive",
+        });
+        navigate("/auth");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("shared_content")
+        .insert({
+          user_id: user.id,
+          content: text,
+          context: info.name,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const shareUrl = `${window.location.origin}/shared?token=${data.share_token}`;
+      
+      await navigator.clipboard.writeText(shareUrl);
+
+      toast({
+        title: t('share_link_created'),
+        description: t('share_link_copied'),
+      });
+    } catch (error: any) {
+      console.error("Error sharing message:", error);
+      toast({
+        title: t('error'),
+        description: t('failed_create_share_link'),
+        variant: "destructive",
+      });
+    } finally {
+      setSharingIndex(null);
+    }
+  };
+
+  const handleSaveAnswer = (content: string, index: number) => {
+    const questionMessage = messages[index - 1];
+    const question = questionMessage?.role === "user" ? questionMessage.content : "";
+    
+    const savedAnswer = {
+      id: `saved_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      content,
+      question,
+      voice: storyId || "biblical-stories",
+      timestamp: Date.now(),
+    };
+
+    const stored = localStorage.getItem("saved_answers");
+    let savedAnswers = [];
+    try {
+      savedAnswers = stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error("Failed to parse saved answers:", error);
+    }
+
+    savedAnswers.push(savedAnswer);
+    localStorage.setItem("saved_answers", JSON.stringify(savedAnswers));
+
+    toast({
+      title: t('saved'),
+      description: t('answer_saved_collection'),
+    });
+  };
+
   if (!info) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -310,7 +406,47 @@ const StorytellingChat = () => {
                     : "bg-card"
                 }`}
               >
-                <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                <p className="whitespace-pre-wrap leading-relaxed select-text">{message.content}</p>
+                {message.role === "assistant" && message.content && (
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2 h-8 text-xs"
+                      onClick={() => handleCopyMessage(message.content, index)}
+                    >
+                      {copiedIndex === index ? (
+                        <Check className="w-3 h-3" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
+                      {copiedIndex === index ? t('copied') : t('copy')}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2 h-8 text-xs"
+                      onClick={() => handleShareMessage(message.content, index)}
+                      disabled={sharingIndex === index}
+                    >
+                      {sharingIndex === index ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Share2 className="w-3 h-3" />
+                      )}
+                      {t('share')}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2 h-8 text-xs"
+                      onClick={() => handleSaveAnswer(message.content, index)}
+                    >
+                      <Bookmark className="w-3 h-3" />
+                      {t('save')}
+                    </Button>
+                  </div>
+                )}
               </Card>
             </div>
           ))}
