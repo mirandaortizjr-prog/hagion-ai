@@ -752,9 +752,9 @@ const MainMenu = () => {
                           )}
                         </div>
                       ) : (
-                        <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
+                        <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105 overflow-hidden`}>
                           {item.image ? (
-                            <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                           ) : Icon ? (
                             <Icon className="w-10 h-10 text-white" />
                           ) : null}
