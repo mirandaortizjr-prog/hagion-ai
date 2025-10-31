@@ -620,10 +620,10 @@ const MainMenu = () => {
                     >
                       <div className="relative">
                         {item.type === 'storytelling' ? (
-                          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all flex items-center justify-center">
+                          <div className={`w-20 h-20 rounded-3xl border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
                             {Icon ? (
                               <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
-                                <Icon className="w-12 h-12 text-white" />
+                                <Icon className="w-10 h-10 text-white" />
                               </div>
                             ) : (
                               <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
