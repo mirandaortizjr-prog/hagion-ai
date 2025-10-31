@@ -138,6 +138,7 @@ const MainMenu = () => {
       subtitle: "",
       image: biblicalScrollImage,
       icon: undefined,
+      borderColor: "border-black",
       isPro: false,
       isSpecial: false,
       type: "storytelling" as const,
@@ -750,7 +751,7 @@ const MainMenu = () => {
                   >
                     <div className="relative">
                       {item.type === 'storytelling' ? (
-                        <div className={`w-20 h-20 rounded-3xl ${item.color ? '' : 'border-4 border-[#3BB4F2]'} ${item.color || ''} shadow-lg ${item.color ? '' : 'shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'} group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
+                        <div className={`w-20 h-20 rounded-3xl ${item.color ? '' : `border-4 ${(item as any).borderColor || 'border-[#3BB4F2]'}`} ${item.color || ''} shadow-lg ${item.color ? '' : 'shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'} group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
                           {Icon ? (
                             <div className={`w-full h-full ${item.color ? item.color : 'bg-gradient-to-br from-[#3BB4F2] to-[#0052D4]'} flex items-center justify-center`}>
                               <Icon className="w-10 h-10 text-white" />
