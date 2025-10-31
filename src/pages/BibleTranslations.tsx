@@ -37,24 +37,6 @@ const BibleTranslations = () => {
       about: t('web_about'),
       language: "en",
     },
-    {
-      id: "oeb-cw",
-      name: "OEB",
-      fullName: t('oeb_full'),
-      description: t('oeb_desc'),
-      year: "2010",
-      about: t('oeb_about'),
-      language: "en",
-    },
-    {
-      id: "clementine",
-      name: "Clementine",
-      fullName: t('clementine_full'),
-      description: t('clementine_desc'),
-      year: "1592",
-      about: t('clementine_about'),
-      language: "la",
-    },
   ];
 
   const bibleBooks = [
@@ -190,7 +172,7 @@ const BibleTranslations = () => {
         <div className="space-y-4">
           {/* Translation Selector */}
           <Tabs value={activeTranslation} onValueChange={setActiveTranslation} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-4">
+            <TabsList className="grid w-full grid-cols-2 mb-4">
               {translations.map((translation) => (
                 <TabsTrigger key={translation.id} value={translation.id}>
                   {translation.name}
