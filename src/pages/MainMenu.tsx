@@ -29,6 +29,7 @@ import lightbulbIcon from "@/assets/lightbulb-icon.png";
 import scrollIcon from "@/assets/scroll-icon.png";
 import brainIcon from "@/assets/brain-icon.png";
 import shieldIcon from "@/assets/shield-icon.png";
+import logicReasoningIcon from "@/assets/logic-reasoning-icon.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -301,7 +302,7 @@ const MainMenu = () => {
       id: "curriculum-tracks",
       name: "Logic & Reasoning",
       subtitle: "Structured Learning Paths",
-      image: undefined,
+      image: logicReasoningIcon,
       icon: BookOpen,
       color: "bg-indigo-500",
       isPro: false,
