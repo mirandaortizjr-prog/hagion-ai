@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search } from "lucide-react";
+import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
@@ -36,7 +36,6 @@ const MainMenu = () => {
   const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || "assistants");
-  const [inputValue, setInputValue] = useState("");
   const [yearlyCount, setYearlyCount] = useState<number>(0);
   const [isAccepting, setIsAccepting] = useState(false);
 
@@ -292,6 +291,17 @@ const MainMenu = () => {
       isPro: true,
       isSpecial: false,
       type: "path" as const,
+    },
+    {
+      id: "public-speaking",
+      name: "Public Speaking",
+      subtitle: "Sermon Writing & Analysis",
+      image: undefined,
+      icon: Mic,
+      color: "bg-purple-500",
+      isPro: false,
+      isSpecial: false,
+      type: "speaking" as const,
     },
   ];
 
@@ -609,6 +619,8 @@ const MainMenu = () => {
                       onClick={() => {
                         if (item.id === 'bible-translations') {
                           navigate('/bible-translations');
+                        } else if (item.id === 'public-speaking') {
+                          navigate('/public-speaking');
                         } else if (item.type === 'storytelling') {
                           navigate(`/storytelling/${item.id}`);
                         } else if (item.type === 'track') {
@@ -675,38 +687,6 @@ const MainMenu = () => {
               </div>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Bottom Input */}
-      <div className="px-4 py-4 border-t bg-muted/30">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 bg-background rounded-full px-4 py-3 shadow-sm">
-            <input
-              type="text"
-              placeholder={t('ask_question')}
-              className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && inputValue.trim()) {
-                  navigate('/chat', { state: { question: inputValue } });
-                }
-              }}
-            />
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="rounded-full h-8 w-8"
-              onClick={() => {
-                if (inputValue.trim()) {
-                  navigate('/chat', { state: { question: inputValue } });
-                }
-              }}
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
-          </div>
         </div>
       </div>
 

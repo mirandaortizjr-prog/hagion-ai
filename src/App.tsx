@@ -26,6 +26,7 @@ import StorytellingChat from "./pages/StorytellingChat";
 import LogosCircle from "./pages/LogosCircle";
 import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
+import PublicSpeaking from "./pages/PublicSpeaking";
 import NotFound from "./pages/NotFound";
 import LanguageToggle from "./components/LanguageToggle";
 
@@ -60,6 +61,7 @@ const App = () => (
           <Route path="/logos-circle" element={<LogosCircle />} />
           <Route path="/logos-circle/:type/:id" element={<LogosLearning />} />
             <Route path="/bible-translations" element={<BibleTranslations />} />
+            <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />
