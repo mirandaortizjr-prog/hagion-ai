@@ -6,8 +6,6 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, Send, BookOpen, Sparkles, Copy, Share2, Check, Loader2, Bookmark } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { VoiceInput } from "@/components/VoiceInput";
-import { TextToSpeech } from "@/components/TextToSpeech";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
@@ -413,7 +411,6 @@ const StorytellingChat = () => {
                 <p className="whitespace-pre-wrap leading-relaxed select-text">{message.content}</p>
                 {message.role === "assistant" && message.content && (
                   <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
-                    <TextToSpeech text={message.content} voice="fable" />
                     <Button
                       variant="ghost"
                       size="sm"
@@ -478,10 +475,6 @@ const StorytellingChat = () => {
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex gap-2">
-            <VoiceInput 
-              onTranscript={(text) => setInput(text)}
-              disabled={isLoading}
-            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}

@@ -5,8 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Send, Sparkles } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { VoiceInput } from "@/components/VoiceInput";
-import { TextToSpeech } from "@/components/TextToSpeech";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
@@ -285,11 +283,6 @@ const AssistantChat = () => {
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
-                {message.role === "assistant" && message.content && (
-                  <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
-                    <TextToSpeech text={message.content} voice="nova" />
-                  </div>
-                )}
               </Card>
             </div>
           ))}
@@ -299,10 +292,6 @@ const AssistantChat = () => {
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex gap-2">
-            <VoiceInput 
-              onTranscript={(text) => setInput(text)}
-              disabled={isLoading}
-            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}

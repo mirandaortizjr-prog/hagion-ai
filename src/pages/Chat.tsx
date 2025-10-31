@@ -9,8 +9,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
 import { supabase } from "@/integrations/supabase/client";
-import { VoiceInput } from "@/components/VoiceInput";
-import { TextToSpeech } from "@/components/TextToSpeech";
 
 interface Message {
   role: "user" | "assistant";
@@ -439,7 +437,6 @@ const Chat = () => {
                 )}
                 {message.role === "assistant" && message.content && (
                   <div className="flex gap-2 mt-2">
-                    <TextToSpeech text={message.content} voice="alloy" />
                     <Button
                       variant="ghost"
                       size="sm"
@@ -487,9 +484,6 @@ const Chat = () => {
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-4xl px-4 py-4">
           <div className="flex gap-2">
-            <VoiceInput 
-              onTranscript={(text) => setInput(text)}
-            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
