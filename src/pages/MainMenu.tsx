@@ -609,7 +609,7 @@ const MainMenu = () => {
           {activeTab === "hagion-university" && (
             <div className="col-span-3 space-y-6">
               {/* Storytelling Section */}
-              <div className="grid grid-cols-4 gap-6 mb-6">
+              <div className="grid grid-cols-3 gap-6 mb-6">
                 {hagionUniversity.filter(item => item.type === "storytelling").map((item) => {
                   const Icon = item.icon;
                   return (
