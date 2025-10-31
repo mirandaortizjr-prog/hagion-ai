@@ -132,7 +132,7 @@ const DivineGuidance = () => {
   const canStartConversation = selectedVoice && selectedContext;
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--bg-light-blue))]">
+    <div className="min-h-screen" style={{ background: 'var(--gradient-blue-sky)' }}>
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <Button

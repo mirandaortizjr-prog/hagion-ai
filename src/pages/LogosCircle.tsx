@@ -112,7 +112,7 @@ const LogosCircle = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--bg-light-blue))] flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--gradient-blue-sky)' }}>
       {/* Header */}
       <header className="flex items-center gap-4 px-4 py-4 border-b">
         <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>

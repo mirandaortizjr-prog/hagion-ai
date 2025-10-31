@@ -45,6 +45,7 @@ All colors MUST be HSL.
     --gradient-radiant: radial-gradient(circle at center, hsl(32 95% 50% / 0.2) 0%, transparent 70%);
     --gradient-orange-warm: linear-gradient(180deg, hsl(32 100% 50%) 0%, hsl(38 100% 50%) 100%);
     --gradient-splash: linear-gradient(180deg, hsl(210 80% 45%) 0%, hsl(190 75% 55%) 100%);
+    --gradient-blue-sky: linear-gradient(180deg, hsl(205 60% 85%) 0%, hsl(210 90% 55%) 100%);
     
     --shadow-divine: 0 10px 40px -10px hsl(32 95% 50% / 0.3);
     --shadow-sacred: 0 4px 20px hsl(221 83% 25% / 0.1);
@@ -98,6 +99,7 @@ All colors MUST be HSL.
     --ring: 32 95% 50%;
     
     --bg-light-blue: 197 88% 20%;
+    --gradient-blue-sky: linear-gradient(180deg, hsl(210 60% 25%) 0%, hsl(210 80% 35%) 100%);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
