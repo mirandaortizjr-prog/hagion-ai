@@ -12,7 +12,7 @@ import { toast } from "@/hooks/use-toast";
 const BibleTranslations = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
-  const [activeTranslation, setActiveTranslation] = useState("asv");
+  const [activeTranslation, setActiveTranslation] = useState("kjv");
   const [selectedBook, setSelectedBook] = useState("Genesis");
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [bibleText, setBibleText] = useState<any[]>([]);
@@ -20,21 +20,12 @@ const BibleTranslations = () => {
 
   const translations = [
     {
-      id: "asv",
-      name: "ASV",
-      fullName: t('asv_full'),
-      description: t('asv_desc'),
-      year: "1901",
-      about: t('asv_about'),
-      language: "en",
-    },
-    {
-      id: "ylt",
-      name: "YLT",
-      fullName: t('ylt_full'),
-      description: t('ylt_desc'),
-      year: "1862",
-      about: t('ylt_about'),
+      id: "kjv",
+      name: "KJV",
+      fullName: t('kjv_full'),
+      description: t('kjv_desc'),
+      year: "1611",
+      about: t('kjv_about'),
       language: "en",
     },
     {
@@ -47,22 +38,22 @@ const BibleTranslations = () => {
       language: "en",
     },
     {
-      id: "kjv",
-      name: "KJV",
-      fullName: t('kjv_full'),
-      description: t('kjv_desc'),
-      year: "1611",
-      about: t('kjv_about'),
+      id: "oeb-cw",
+      name: "OEB",
+      fullName: t('oeb_full'),
+      description: t('oeb_desc'),
+      year: "2010",
+      about: t('oeb_about'),
       language: "en",
     },
     {
-      id: "rvr",
-      name: "RVR",
-      fullName: t('rvr_full'),
-      description: t('rvr_desc'),
-      year: "1909",
-      about: t('rvr_about'),
-      language: "es",
+      id: "clementine",
+      name: "Clementine",
+      fullName: t('clementine_full'),
+      description: t('clementine_desc'),
+      year: "1592",
+      about: t('clementine_about'),
+      language: "la",
     },
   ];
 
@@ -199,7 +190,7 @@ const BibleTranslations = () => {
         <div className="space-y-4">
           {/* Translation Selector */}
           <Tabs value={activeTranslation} onValueChange={setActiveTranslation} className="w-full">
-            <TabsList className="grid w-full grid-cols-5 mb-4">
+            <TabsList className="grid w-full grid-cols-4 mb-4">
               {translations.map((translation) => (
                 <TabsTrigger key={translation.id} value={translation.id}>
                   {translation.name}
