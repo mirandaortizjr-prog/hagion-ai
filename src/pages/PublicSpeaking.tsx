@@ -117,7 +117,7 @@ const PublicSpeaking = () => {
         <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>
           <ArrowLeft className="w-6 h-6" />
         </Button>
-        <h1 className="text-2xl font-bold">Public Speaking</h1>
+        <h1 className="text-2xl font-bold">Sermon Lab</h1>
       </header>
 
       <ScrollArea className="h-[calc(100vh-73px)]">
