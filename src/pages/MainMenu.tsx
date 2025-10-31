@@ -32,6 +32,9 @@ import shieldIcon from "@/assets/shield-icon.png";
 import logicReasoningIcon from "@/assets/logic-reasoning-icon.png";
 import martyrsIcon from "@/assets/martyrs-icon.png";
 import historyIcon from "@/assets/history-icon.png";
+import bibleIcon from "@/assets/bible-icon.png";
+import sermonIcon from "@/assets/sermon-icon.png";
+import apologeticsIcon from "@/assets/apologetics-icon.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -165,8 +168,9 @@ const MainMenu = () => {
       id: "bible-translations",
       name: t('bible_translations'),
       subtitle: "",
-      image: biblicalScrollImage,
-      icon: BookOpen,
+      image: bibleIcon,
+      icon: undefined,
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "storytelling" as const,
@@ -317,9 +321,9 @@ const MainMenu = () => {
       id: "teaching-paths",
       name: "Apologetics & Witness",
       subtitle: "Specialized Training",
-      image: undefined,
-      icon: Brain,
-      color: "bg-emerald-500",
+      image: apologeticsIcon,
+      icon: undefined,
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "group" as const,
@@ -328,9 +332,9 @@ const MainMenu = () => {
       id: "public-speaking",
       name: "Sermon Lab",
       subtitle: "Sermon Writing & Analysis",
-      image: undefined,
-      icon: Mic,
-      color: "bg-purple-500",
+      image: sermonIcon,
+      icon: undefined,
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "speaking" as const,
