@@ -11,11 +11,11 @@ import { toast } from "@/hooks/use-toast";
 
 const BibleTranslations = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [activeTranslation, setActiveTranslation] = useState("asv");
   const [selectedBook, setSelectedBook] = useState("Genesis");
   const [selectedChapter, setSelectedChapter] = useState(1);
-  const [bibleText, setBibleText] = useState<string>("");
+  const [bibleText, setBibleText] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const translations = [
@@ -26,6 +26,7 @@ const BibleTranslations = () => {
       description: t('asv_desc'),
       year: "1901",
       about: t('asv_about'),
+      language: "en",
     },
     {
       id: "ylt",
@@ -34,6 +35,7 @@ const BibleTranslations = () => {
       description: t('ylt_desc'),
       year: "1862",
       about: t('ylt_about'),
+      language: "en",
     },
     {
       id: "web",
@@ -42,6 +44,7 @@ const BibleTranslations = () => {
       description: t('web_desc'),
       year: "2000",
       about: t('web_about'),
+      language: "en",
     },
     {
       id: "kjv",
@@ -50,6 +53,16 @@ const BibleTranslations = () => {
       description: t('kjv_desc'),
       year: "1611",
       about: t('kjv_about'),
+      language: "en",
+    },
+    {
+      id: "rvr",
+      name: "RVR",
+      fullName: t('rvr_full'),
+      description: t('rvr_desc'),
+      year: "1909",
+      about: t('rvr_about'),
+      language: "es",
     },
   ];
 
@@ -127,7 +140,6 @@ const BibleTranslations = () => {
   const fetchBibleText = async () => {
     setIsLoading(true);
     try {
-      // Using Bible API - you can get a free API key at https://scripture.api.bible
       const response = await fetch(
         `https://bible-api.com/${selectedBook}+${selectedChapter}?translation=${activeTranslation}`
       );
@@ -137,7 +149,7 @@ const BibleTranslations = () => {
       }
 
       const data = await response.json();
-      setBibleText(data.text || "Text not available for this translation.");
+      setBibleText(data.verses || []);
     } catch (error) {
       console.error("Error fetching Bible text:", error);
       toast({
@@ -145,7 +157,7 @@ const BibleTranslations = () => {
         description: "Unable to load Bible text. Please try again.",
         variant: "destructive",
       });
-      setBibleText("Unable to load text. Please try again.");
+      setBibleText([]);
     } finally {
       setIsLoading(false);
     }
@@ -187,7 +199,7 @@ const BibleTranslations = () => {
         <div className="space-y-4">
           {/* Translation Selector */}
           <Tabs value={activeTranslation} onValueChange={setActiveTranslation} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-4">
+            <TabsList className="grid w-full grid-cols-5 mb-4">
               {translations.map((translation) => (
                 <TabsTrigger key={translation.id} value={translation.id}>
                   {translation.name}
@@ -256,8 +268,17 @@ const BibleTranslations = () => {
                     <div className="text-muted-foreground">{t('loading')}...</div>
                   </div>
                 ) : (
-                  <div className="prose prose-sm max-w-none whitespace-pre-wrap">
-                    {bibleText}
+                  <div className="space-y-2">
+                    {bibleText.length > 0 ? (
+                      bibleText.map((verse: any) => (
+                        <p key={verse.verse} className="text-sm leading-relaxed">
+                          <span className="font-semibold text-primary mr-2">{verse.verse}</span>
+                          <span>{verse.text}</span>
+                        </p>
+                      ))
+                    ) : (
+                      <p className="text-muted-foreground">No text available</p>
+                    )}
                   </div>
                 )}
               </ScrollArea>
