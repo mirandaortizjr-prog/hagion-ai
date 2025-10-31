@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, ChevronDown, Search } from "lucide-react";
+import { Settings, Plus, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -38,10 +37,6 @@ const MainMenu = () => {
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || "assistants");
   const [inputValue, setInputValue] = useState("");
-  const [openSections, setOpenSections] = useState({
-    tracks: true,
-    paths: true,
-  });
   const [yearlyCount, setYearlyCount] = useState<number>(0);
   const [isAccepting, setIsAccepting] = useState(false);
 
@@ -100,10 +95,6 @@ const MainMenu = () => {
     } finally {
       setIsAccepting(false);
     }
-  };
-
-  const toggleSection = (section: keyof typeof openSections) => {
-    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
   const divineGuidance = [
@@ -607,10 +598,9 @@ const MainMenu = () => {
 
           {/* Hagion University Cards */}
           {activeTab === "hagion-university" && (
-            <div className="col-span-3 space-y-6">
-              {/* Storytelling Section */}
-              <div className="grid grid-cols-3 gap-6 mb-6">
-                {hagionUniversity.filter(item => item.type === "storytelling").map((item) => {
+            <div className="col-span-3">
+              <div className="grid grid-cols-3 gap-6">
+                {hagionUniversity.map((item) => {
                   const Icon = item.icon;
                   return (
                     <div
@@ -619,40 +609,56 @@ const MainMenu = () => {
                       onClick={() => {
                         if (item.id === 'bible-translations') {
                           navigate('/bible-translations');
-                        } else {
+                        } else if (item.type === 'storytelling') {
                           navigate(`/storytelling/${item.id}`);
+                        } else if (item.type === 'track') {
+                          navigate(`/logos-circle/track/${item.id}`);
+                        } else if (item.type === 'path') {
+                          navigate(`/logos-circle/path/${item.id}`);
                         }
                       }}
                     >
                       <div className="relative">
-                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all flex items-center justify-center">
-                          {Icon ? (
-                            <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
-                              <Icon className="w-12 h-12 text-white" />
-                            </div>
-                          ) : (
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                          )}
-                        </div>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <button
-                              aria-label={`About ${item.name}`}
-                              className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Info className="w-3 h-3" />
-                            </button>
-                          </PopoverTrigger>
-                          <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
-                            <p className="text-sm">
-                              {item.id === 'biblical-stories' && t('biblical_stories_info')}
-                              {item.id === 'martyrs' && t('martyrs_faith_info')}
-                              {item.id === 'history-christianity' && t('history_christianity_info')}
-                              {item.id === 'bible-translations' && t('bible_translations_info')}
-                            </p>
-                          </PopoverContent>
-                        </Popover>
+                        {item.type === 'storytelling' ? (
+                          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all flex items-center justify-center">
+                            {Icon ? (
+                              <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
+                                <Icon className="w-12 h-12 text-white" />
+                              </div>
+                            ) : (
+                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            )}
+                          </div>
+                        ) : (
+                          <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
+                            {item.image ? (
+                              <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                            ) : Icon ? (
+                              <Icon className="w-10 h-10 text-white" />
+                            ) : null}
+                          </div>
+                        )}
+                        {item.type === 'storytelling' && (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <button
+                                aria-label={`About ${item.name}`}
+                                className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Info className="w-3 h-3" />
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                              <p className="text-sm">
+                                {item.id === 'biblical-stories' && t('biblical_stories_info')}
+                                {item.id === 'martyrs' && t('martyrs_faith_info')}
+                                {item.id === 'history-christianity' && t('history_christianity_info')}
+                                {item.id === 'bible-translations' && t('bible_translations_info')}
+                              </p>
+                            </PopoverContent>
+                          </Popover>
+                        )}
                         {item.isPro && (
                           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                             <span>★</span> PRO
@@ -667,94 +673,6 @@ const MainMenu = () => {
                   );
                 })}
               </div>
-
-              {/* Curriculum Tracks Section */}
-              <Collapsible open={openSections.tracks} onOpenChange={() => toggleSection("tracks")}>
-                <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
-                  <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-[#3BB4F2]" />
-                    {t('curriculum_tracks')}
-                  </h3>
-                  <ChevronDown className={`w-5 h-5 transition-transform ${openSections.tracks ? 'rotate-180' : ''}`} />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="pt-4">
-                  <div className="grid grid-cols-3 gap-6">
-                    {hagionUniversity.filter(item => item.type === "track").map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <div
-                          key={item.id}
-                          className="flex flex-col items-center gap-3 cursor-pointer group"
-                          onClick={() => navigate(`/logos-circle/track/${item.id}`)}
-                        >
-                          <div className="relative">
-                            <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
-                              {item.image ? (
-                                <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
-                              ) : Icon ? (
-                                <Icon className="w-10 h-10 text-white" />
-                              ) : null}
-                            </div>
-                            {item.isPro && (
-                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                                <span>★</span> PRO
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-center">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-
-              {/* Teaching Paths Section */}
-              <Collapsible open={openSections.paths} onOpenChange={() => toggleSection("paths")}>
-                <CollapsibleTrigger className="w-full flex items-center justify-between px-4 py-2 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
-                  <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <Brain className="w-5 h-5 text-[#3BB4F2]" />
-                    {t('teaching_paths')}
-                  </h3>
-                  <ChevronDown className={`w-5 h-5 transition-transform ${openSections.paths ? 'rotate-180' : ''}`} />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="pt-4">
-                  <div className="grid grid-cols-3 gap-6">
-                    {hagionUniversity.filter(item => item.type === "path").map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <div
-                          key={item.id}
-                          className="flex flex-col items-center gap-3 cursor-pointer group"
-                          onClick={() => navigate(`/logos-circle/path/${item.id}`)}
-                        >
-                          <div className="relative">
-                            <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
-                              {item.image ? (
-                                <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
-                              ) : Icon ? (
-                                <Icon className="w-10 h-10 text-white" />
-                              ) : null}
-                            </div>
-                            {item.isPro && (
-                              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                                <span>★</span> PRO
-                              </div>
-                            )}
-                          </div>
-                          <div className="text-center">
-                            <p className="text-sm font-medium">{item.name}</p>
-                            {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
             </div>
           )}
         </div>
