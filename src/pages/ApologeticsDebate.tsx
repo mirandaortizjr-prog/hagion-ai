@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { VoiceInput } from "@/components/VoiceInput";
+import { TextToSpeech } from "@/components/TextToSpeech";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -573,6 +575,11 @@ const ApologeticsDebate = () => {
                     </p>
                   )}
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  {message.role === "assistant" && message.content && !message.content.includes(t('debate_host')) && (
+                    <div className="flex gap-2 mt-2 pt-2 border-t border-border/50">
+                      <TextToSpeech text={message.content} voice="echo" />
+                    </div>
+                  )}
                 </div>
               </div>
               
@@ -633,6 +640,10 @@ const ApologeticsDebate = () => {
 
       <div className="p-4 border-t bg-muted/30">
         <div className="max-w-3xl mx-auto flex gap-2">
+          <VoiceInput 
+            onTranscript={(text) => setInput(text)}
+            disabled={isLoading}
+          />
           <input
             type="text"
             placeholder="Present your argument..."

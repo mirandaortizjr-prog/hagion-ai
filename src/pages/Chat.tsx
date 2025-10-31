@@ -3,12 +3,14 @@ import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Mic, Bookmark, Sparkles, Copy, Share2, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, Bookmark, Sparkles, Copy, Share2, Check, Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
 import { supabase } from "@/integrations/supabase/client";
+import { VoiceInput } from "@/components/VoiceInput";
+import { TextToSpeech } from "@/components/TextToSpeech";
 
 interface Message {
   role: "user" | "assistant";
@@ -437,6 +439,7 @@ const Chat = () => {
                 )}
                 {message.role === "assistant" && message.content && (
                   <div className="flex gap-2 mt-2">
+                    <TextToSpeech text={message.content} voice="alloy" />
                     <Button
                       variant="ghost"
                       size="sm"
@@ -484,9 +487,9 @@ const Chat = () => {
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-4xl px-4 py-4">
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" className="flex-shrink-0">
-              <Mic className="w-5 h-5" />
-            </Button>
+            <VoiceInput 
+              onTranscript={(text) => setInput(text)}
+            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}

@@ -9,6 +9,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { VoiceInput } from "@/components/VoiceInput";
+import { TextToSpeech } from "@/components/TextToSpeech";
 import elohimImage from "@/assets/elohim-crown.jpg";
 import christImage from "@/assets/christ-thorns.jpg";
 import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
@@ -396,6 +398,7 @@ const DivineChat = () => {
                 <p className="whitespace-pre-wrap leading-relaxed select-text">{message.content}</p>
                 {message.role === "assistant" && message.content && (
                   <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
+                    <TextToSpeech text={message.content} voice="shimmer" />
                     <Button
                       variant="ghost"
                       size="sm"
@@ -458,6 +461,10 @@ const DivineChat = () => {
       <div className="border-t bg-card/80 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex gap-2">
+            <VoiceInput 
+              onTranscript={(text) => setInput(text)}
+              disabled={isLoading}
+            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}

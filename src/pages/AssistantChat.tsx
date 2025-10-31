@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Mic, Sparkles } from "lucide-react";
+import { ArrowLeft, Send, Sparkles } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { VoiceInput } from "@/components/VoiceInput";
+import { TextToSpeech } from "@/components/TextToSpeech";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
@@ -30,6 +32,7 @@ const AssistantChat = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,6 +108,7 @@ const AssistantChat = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsLoading(true);
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -116,6 +120,7 @@ const AssistantChat = () => {
         });
         setMessages((prev) => prev.slice(0, -1));
         navigate("/auth");
+        setIsLoading(false);
         return;
       }
 
@@ -147,6 +152,7 @@ const AssistantChat = () => {
         });
         setMessages((prev) => prev.slice(0, -1));
         refetchUsage();
+        setIsLoading(false);
         return;
       }
 
@@ -157,6 +163,7 @@ const AssistantChat = () => {
           variant: "destructive",
         });
         setMessages((prev) => prev.slice(0, -1));
+        setIsLoading(false);
         return;
       }
 
@@ -168,6 +175,7 @@ const AssistantChat = () => {
         });
         setMessages((prev) => prev.slice(0, -1));
         navigate("/auth");
+        setIsLoading(false);
         return;
       }
 
@@ -224,6 +232,7 @@ const AssistantChat = () => {
       
       // Refetch usage after successful message
       refetchUsage();
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [
@@ -233,6 +242,7 @@ const AssistantChat = () => {
           content: t('connection_issue_retry'),
         },
       ]);
+      setIsLoading(false);
     }
   };
 
@@ -275,6 +285,11 @@ const AssistantChat = () => {
                 }`}
               >
                 <p className="whitespace-pre-wrap">{message.content}</p>
+                {message.role === "assistant" && message.content && (
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
+                    <TextToSpeech text={message.content} voice="nova" />
+                  </div>
+                )}
               </Card>
             </div>
           ))}
@@ -284,19 +299,21 @@ const AssistantChat = () => {
       <div className="border-t bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-4 py-4">
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" className="flex-shrink-0">
-              <Mic className="w-5 h-5" />
-            </Button>
+            <VoiceInput 
+              onTranscript={(text) => setInput(text)}
+              disabled={isLoading}
+            />
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder={t('type_message')}
               className="flex-1"
+              disabled={isLoading}
             />
             <Button
               onClick={handleSend}
-              disabled={!input.trim()}
+              disabled={!input.trim() || isLoading}
               className="bg-primary text-white flex-shrink-0"
             >
               <Send className="w-5 h-5" />
