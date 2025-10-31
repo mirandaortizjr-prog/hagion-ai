@@ -4,39 +4,45 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, BookOpen } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const BibleTranslations = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeTranslation, setActiveTranslation] = useState("asv");
 
   const translations = [
     {
       id: "asv",
       name: "ASV",
-      fullName: "American Standard Version",
-      description: "Closest to original manuscripts among public domain options.",
+      fullName: t('asv_full'),
+      description: t('asv_desc'),
       year: "1901",
+      about: t('asv_about'),
     },
     {
       id: "ylt",
       name: "YLT",
-      fullName: "Young's Literal Translation",
-      description: "Best for literal study.",
+      fullName: t('ylt_full'),
+      description: t('ylt_desc'),
       year: "1862",
+      about: t('ylt_about'),
     },
     {
       id: "web",
       name: "WEB",
-      fullName: "World English Bible",
-      description: "Modern, readable, and faithful.",
+      fullName: t('web_full'),
+      description: t('web_desc'),
       year: "2000",
+      about: t('web_about'),
     },
     {
       id: "kjv",
       name: "KJV",
-      fullName: "King James Version",
-      description: "Legacy-rich and poetic.",
+      fullName: t('kjv_full'),
+      description: t('kjv_desc'),
       year: "1611",
+      about: t('kjv_about'),
     },
   ];
 
@@ -57,8 +63,8 @@ const BibleTranslations = () => {
               <BookOpen className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Bible Translations</h1>
-              <p className="text-sm text-muted-foreground">Choose your preferred translation</p>
+              <h1 className="text-xl font-bold">{t('bible_translations')}</h1>
+              <p className="text-sm text-muted-foreground">{t('bible_translations_subtitle')}</p>
             </div>
           </div>
         </div>
@@ -84,29 +90,29 @@ const BibleTranslations = () => {
                     {translation.fullName}
                   </CardTitle>
                   <CardDescription>
-                    {translation.description} • Published in {translation.year}
+                    {translation.description} • {t('published_in')} {translation.year}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="prose prose-sm max-w-none">
                     <p className="text-muted-foreground">
-                      This translation provides a unique perspective on the Holy Scriptures.
-                      Select this version to explore the Bible with {translation.name}'s distinctive approach.
+                      {t('bible_translation_intro')}
                     </p>
                   </div>
 
                   <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                    <h3 className="font-semibold text-sm">About {translation.name}</h3>
+                    <h3 className="font-semibold text-sm">{t('about')} {translation.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {translation.id === "asv" && "The ASV aimed to improve upon the King James Version with more accurate translation from the original Hebrew, Aramaic, and Greek texts."}
-                      {translation.id === "ylt" && "Young's Literal Translation emphasizes a word-for-word approach, making it invaluable for serious Bible study and understanding the structure of original languages."}
-                      {translation.id === "web" && "A modern update of the American Standard Version, the WEB is freely available and offers clear, contemporary English while maintaining accuracy."}
-                      {translation.id === "kjv" && "The King James Version has been the most influential English Bible translation for over 400 years, known for its majestic language and literary excellence."}
+                      {translation.about}
                     </p>
                   </div>
 
-                  <Button className="w-full" size="lg">
-                    Read {translation.name}
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => window.open(`https://www.biblegateway.com/versions/${translation.name}/`, '_blank')}
+                  >
+                    {t('read')} {translation.name}
                   </Button>
                 </CardContent>
               </Card>

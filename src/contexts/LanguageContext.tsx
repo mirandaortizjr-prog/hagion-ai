@@ -311,6 +311,27 @@ const translations: Record<Language, Record<string, string>> = {
     'assistant_intro': "Hello! I'm here to help answer your questions with evidence-based insights grounded in Scripture. What would you like to explore today?",
     'connection_issue_retry': "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
     
+    // Bible Translations
+    'bible_translations': 'Bible Translations',
+    'bible_translations_subtitle': 'Choose your preferred translation',
+    'bible_translations_info': 'Access multiple Bible translations including ASV, YLT, WEB, and KJV for comprehensive study.',
+    'asv_full': 'American Standard Version',
+    'asv_desc': 'Closest to original manuscripts among public domain options.',
+    'asv_about': 'The ASV aimed to improve upon the King James Version with more accurate translation from the original Hebrew, Aramaic, and Greek texts.',
+    'ylt_full': "Young's Literal Translation",
+    'ylt_desc': 'Best for literal study.',
+    'ylt_about': "Young's Literal Translation emphasizes a word-for-word approach, making it invaluable for serious Bible study and understanding the structure of original languages.",
+    'web_full': 'World English Bible',
+    'web_desc': 'Modern, readable, and faithful.',
+    'web_about': 'A modern update of the American Standard Version, the WEB is freely available and offers clear, contemporary English while maintaining accuracy.',
+    'kjv_full': 'King James Version',
+    'kjv_desc': 'Legacy-rich and poetic.',
+    'kjv_about': 'The King James Version has been the most influential English Bible translation for over 400 years, known for its majestic language and literary excellence.',
+    'published_in': 'Published in',
+    'bible_translation_intro': 'This translation provides a unique perspective on the Holy Scriptures. Select this version to explore the Bible with its distinctive approach.',
+    'about': 'About',
+    'read': 'Read',
+    
     // Curriculum Tracks
     'foundations_logos': 'Foundations of Logos',
     'foundations_logos_desc': 'Basic logic principles, deductive/inductive reasoning',
@@ -798,6 +819,27 @@ const translations: Record<Language, Record<string, string>> = {
     // Assistant Chat
     'assistant_intro': '¡Hola! Estoy aquí para ayudarte a responder tus preguntas con ideas basadas en evidencia y fundamentadas en la Escritura. ¿Qué te gustaría explorar hoy?',
     'connection_issue_retry': 'Disculpa, estoy teniendo problemas de conexión en este momento. Por favor, inténtalo de nuevo en un momento.',
+    
+    // Bible Translations
+    'bible_translations': 'Traducciones de la Biblia',
+    'bible_translations_subtitle': 'Elige tu traducción preferida',
+    'bible_translations_info': 'Accede a múltiples traducciones de la Biblia incluyendo ASV, YLT, WEB y KJV para estudio completo.',
+    'asv_full': 'Versión Estándar Americana',
+    'asv_desc': 'Más cercana a los manuscritos originales entre las opciones de dominio público.',
+    'asv_about': 'La ASV tenía como objetivo mejorar la Versión King James con una traducción más precisa de los textos originales en hebreo, arameo y griego.',
+    'ylt_full': 'Traducción Literal de Young',
+    'ylt_desc': 'Mejor para estudio literal.',
+    'ylt_about': 'La Traducción Literal de Young enfatiza un enfoque palabra por palabra, haciéndola invaluable para el estudio bíblico serio y la comprensión de la estructura de los idiomas originales.',
+    'web_full': 'Biblia Mundial en Inglés',
+    'web_desc': 'Moderna, legible y fiel.',
+    'web_about': 'Una actualización moderna de la Versión Estándar Americana, la WEB está disponible gratuitamente y ofrece inglés contemporáneo claro mientras mantiene la precisión.',
+    'kjv_full': 'Versión King James',
+    'kjv_desc': 'Rica en legado y poética.',
+    'kjv_about': 'La Versión King James ha sido la traducción bíblica al inglés más influyente durante más de 400 años, conocida por su lenguaje majestuoso y excelencia literaria.',
+    'published_in': 'Publicada en',
+    'bible_translation_intro': 'Esta traducción proporciona una perspectiva única de las Sagradas Escrituras. Selecciona esta versión para explorar la Biblia con su enfoque distintivo.',
+    'about': 'Acerca de',
+    'read': 'Leer',
     
     // Curriculum Tracks
     'foundations_logos': 'Fundamentos de Logos',

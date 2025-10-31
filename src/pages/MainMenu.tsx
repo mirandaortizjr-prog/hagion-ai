@@ -167,7 +167,7 @@ const MainMenu = () => {
     },
     {
       id: "bible-translations",
-      name: "Bible Translations",
+      name: t('bible_translations'),
       subtitle: "",
       image: biblicalScrollImage,
       icon: BookOpen,
@@ -649,7 +649,7 @@ const MainMenu = () => {
                               {item.id === 'biblical-stories' && t('biblical_stories_info')}
                               {item.id === 'martyrs' && t('martyrs_faith_info')}
                               {item.id === 'history-christianity' && t('history_christianity_info')}
-                              {item.id === 'bible-translations' && 'Access multiple Bible translations including ASV, YLT, WEB, and KJV for comprehensive study.'}
+                              {item.id === 'bible-translations' && t('bible_translations_info')}
                             </p>
                           </PopoverContent>
                         </Popover>
