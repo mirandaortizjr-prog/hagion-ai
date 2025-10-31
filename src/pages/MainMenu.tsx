@@ -321,7 +321,7 @@ const MainMenu = () => {
     },
     {
       id: "public-speaking",
-      name: "Public Speaking",
+      name: "Sermon Lab",
       subtitle: "Sermon Writing & Analysis",
       image: undefined,
       icon: Mic,
