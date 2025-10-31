@@ -299,8 +299,8 @@ const MainMenu = () => {
     ...storytelling,
     {
       id: "curriculum-tracks",
-      name: "Curriculum Tracks",
-      subtitle: "Foundational Learning Paths",
+      name: "Logic & Reasoning",
+      subtitle: "Structured Learning Paths",
       image: undefined,
       icon: BookOpen,
       color: "bg-indigo-500",
@@ -310,8 +310,8 @@ const MainMenu = () => {
     },
     {
       id: "teaching-paths",
-      name: "Teaching Paths",
-      subtitle: "Specialized Instruction",
+      name: "Apologetics & Witness",
+      subtitle: "Specialized Training",
       image: undefined,
       icon: Brain,
       color: "bg-emerald-500",
