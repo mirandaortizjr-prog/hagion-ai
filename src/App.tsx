@@ -28,7 +28,6 @@ import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import NotFound from "./pages/NotFound";
-import LanguageToggle from "./components/LanguageToggle";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +37,6 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <LanguageToggle />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />

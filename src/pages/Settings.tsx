@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import LanguageToggle from "@/components/LanguageToggle";
 
 interface ChatHistory {
   id: string;
@@ -133,13 +134,7 @@ const Settings = () => {
     },
     {
       title: t('preferences'),
-      items: [
-        { 
-          icon: Shield, 
-          label: language === 'en' ? t('language_english') : t('language_spanish'),
-          action: () => setLanguage(language === 'en' ? 'es' : 'en')
-        },
-      ],
+      items: [],
     },
     {
       title: t('support'),
@@ -167,18 +162,27 @@ const Settings = () => {
               <h2 className="text-sm font-semibold text-muted-foreground mb-3 px-2">
                 {section.title}
               </h2>
-              <Card className="divide-y">
-                {section.items.map((item, itemIdx) => (
-                  <button
-                    key={itemIdx}
-                    onClick={item.action}
-                    className="w-full flex items-center gap-4 px-4 py-4 hover:bg-muted/50 transition-colors text-left"
-                  >
-                    <item.icon className="w-5 h-5 text-muted-foreground" />
-                    <span className="flex-1">{item.label}</span>
-                  </button>
-                ))}
-              </Card>
+              {section.title === t('preferences') ? (
+                <Card className="p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">{t('language')}</span>
+                    <LanguageToggle />
+                  </div>
+                </Card>
+              ) : (
+                <Card className="divide-y">
+                  {section.items.map((item, itemIdx) => (
+                    <button
+                      key={itemIdx}
+                      onClick={item.action}
+                      className="w-full flex items-center gap-4 px-4 py-4 hover:bg-muted/50 transition-colors text-left"
+                    >
+                      <item.icon className="w-5 h-5 text-muted-foreground" />
+                      <span className="flex-1">{item.label}</span>
+                    </button>
+                  ))}
+                </Card>
+              )}
             </div>
           ))}
 

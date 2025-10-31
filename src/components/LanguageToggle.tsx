@@ -11,7 +11,7 @@ const LanguageToggle = () => {
       variant="outline"
       size="sm"
       onClick={() => setLanguage(language === 'en' ? 'es' : 'en')}
-      className="fixed top-4 right-4 z-50 gap-2"
+      className="gap-2"
     >
       <Languages className="w-4 h-4" />
       {language === 'en' ? 'English' : 'Español'}
