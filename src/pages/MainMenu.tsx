@@ -304,7 +304,7 @@ const MainMenu = () => {
       subtitle: "Structured Learning Paths",
       image: logicReasoningIcon,
       icon: BookOpen,
-      color: "bg-indigo-500",
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "group" as const,
