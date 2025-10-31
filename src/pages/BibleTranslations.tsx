@@ -12,7 +12,7 @@ import { toast } from "@/hooks/use-toast";
 const BibleTranslations = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [activeTranslation, setActiveTranslation] = useState("kjv");
+  const [activeTranslation, setActiveTranslation] = useState("asv");
   const [selectedBook, setSelectedBook] = useState("Genesis");
   const [selectedChapter, setSelectedChapter] = useState(1);
   const [bibleText, setBibleText] = useState<string>("");
@@ -20,12 +20,20 @@ const BibleTranslations = () => {
 
   const translations = [
     {
-      id: "kjv",
-      name: "KJV",
-      fullName: t('kjv_full'),
-      description: t('kjv_desc'),
-      year: "1611",
-      about: t('kjv_about'),
+      id: "asv",
+      name: "ASV",
+      fullName: t('asv_full'),
+      description: t('asv_desc'),
+      year: "1901",
+      about: t('asv_about'),
+    },
+    {
+      id: "ylt",
+      name: "YLT",
+      fullName: t('ylt_full'),
+      description: t('ylt_desc'),
+      year: "1862",
+      about: t('ylt_about'),
     },
     {
       id: "web",
@@ -34,6 +42,14 @@ const BibleTranslations = () => {
       description: t('web_desc'),
       year: "2000",
       about: t('web_about'),
+    },
+    {
+      id: "kjv",
+      name: "KJV",
+      fullName: t('kjv_full'),
+      description: t('kjv_desc'),
+      year: "1611",
+      about: t('kjv_about'),
     },
   ];
 
@@ -171,7 +187,7 @@ const BibleTranslations = () => {
         <div className="space-y-4">
           {/* Translation Selector */}
           <Tabs value={activeTranslation} onValueChange={setActiveTranslation} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsList className="grid w-full grid-cols-4 mb-4">
               {translations.map((translation) => (
                 <TabsTrigger key={translation.id} value={translation.id}>
                   {translation.name}
