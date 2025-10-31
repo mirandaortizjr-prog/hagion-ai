@@ -30,6 +30,8 @@ import scrollIcon from "@/assets/scroll-icon.png";
 import brainIcon from "@/assets/brain-icon.png";
 import shieldIcon from "@/assets/shield-icon.png";
 import logicReasoningIcon from "@/assets/logic-reasoning-icon.png";
+import martyrsIcon from "@/assets/martyrs-icon.png";
+import historyIcon from "@/assets/history-icon.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -141,8 +143,9 @@ const MainMenu = () => {
       id: "martyrs",
       name: t('martyrs_faith'),
       subtitle: "",
-      image: martyrsImage,
+      image: martyrsIcon,
       icon: undefined,
+      color: "bg-black",
       isPro: true,
       isSpecial: false,
       type: "storytelling" as const,
@@ -151,8 +154,9 @@ const MainMenu = () => {
       id: "history-christianity",
       name: t('history_christianity'),
       subtitle: "",
-      image: historyChristianityImage,
+      image: historyIcon,
       icon: undefined,
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "storytelling" as const,
@@ -742,9 +746,9 @@ const MainMenu = () => {
                   >
                     <div className="relative">
                       {item.type === 'storytelling' ? (
-                        <div className={`w-20 h-20 rounded-3xl border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
+                        <div className={`w-20 h-20 rounded-3xl ${item.color ? '' : 'border-4 border-[#3BB4F2]'} ${item.color || ''} shadow-lg ${item.color ? '' : 'shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'} group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
                           {Icon ? (
-                            <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
+                            <div className={`w-full h-full ${item.color ? item.color : 'bg-gradient-to-br from-[#3BB4F2] to-[#0052D4]'} flex items-center justify-center`}>
                               <Icon className="w-10 h-10 text-white" />
                             </div>
                           ) : (
