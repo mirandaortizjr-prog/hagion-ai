@@ -38,6 +38,7 @@ const MainMenu = () => {
   const [activeTab, setActiveTab] = useState(tabFromUrl || "assistants");
   const [yearlyCount, setYearlyCount] = useState<number>(0);
   const [isAccepting, setIsAccepting] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   useEffect(() => {
     if (tabFromUrl) {
@@ -167,9 +168,7 @@ const MainMenu = () => {
     },
   ];
 
-  const hagionUniversity = [
-    ...storytelling,
-    // Curriculum Tracks
+  const curriculumTracks = [
     {
       id: "foundations",
       name: t('foundations_logos'),
@@ -236,7 +235,9 @@ const MainMenu = () => {
       isSpecial: false,
       type: "track" as const,
     },
-    // Teaching Paths
+  ];
+
+  const teachingPaths = [
     {
       id: "apologetics-path",
       name: t('apologetics_path'),
@@ -291,6 +292,32 @@ const MainMenu = () => {
       isPro: true,
       isSpecial: false,
       type: "path" as const,
+    },
+  ];
+
+  const hagionUniversity = [
+    ...storytelling,
+    {
+      id: "curriculum-tracks",
+      name: "Curriculum Tracks",
+      subtitle: "Foundational Learning Paths",
+      image: undefined,
+      icon: BookOpen,
+      color: "bg-indigo-500",
+      isPro: false,
+      isSpecial: false,
+      type: "group" as const,
+    },
+    {
+      id: "teaching-paths",
+      name: "Teaching Paths",
+      subtitle: "Specialized Instruction",
+      image: undefined,
+      icon: Brain,
+      color: "bg-emerald-500",
+      isPro: false,
+      isSpecial: false,
+      type: "group" as const,
     },
     {
       id: "public-speaking",
@@ -606,86 +633,167 @@ const MainMenu = () => {
             </div>
           ))}
 
-          {/* Hagion University Cards */}
-          {activeTab === "hagion-university" && (
-            <div className="col-span-3">
-              <div className="grid grid-cols-3 gap-6">
-                {hagionUniversity.map((item) => {
-                  const Icon = item.icon;
-                  return (
+          {/* Expanded Group View */}
+          {activeTab === "hagion-university" && expandedGroup === "curriculum-tracks" && (
+            <>
+              <div className="col-span-3 mb-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setExpandedGroup(null)}
+                  className="w-full"
+                >
+                  ← Back to Hagion University
+                </Button>
+              </div>
+              {curriculumTracks.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center gap-3 cursor-pointer group"
+                  onClick={() => navigate(`/logos-circle/track/${item.id}`)}
+                >
+                  <div className="relative">
                     <div
-                      key={item.id}
-                      className="flex flex-col items-center gap-3 cursor-pointer group"
-                      onClick={() => {
+                      className={`w-20 h-20 rounded-3xl overflow-hidden flex items-center justify-center ${item.color}`}
+                    >
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                      ) : item.icon && (
+                        <item.icon className="w-10 h-10 text-white" />
+                      )}
+                    </div>
+                    {item.isPro && (
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span>★</span> PRO
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs font-medium leading-tight">{item.name}</p>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {activeTab === "hagion-university" && expandedGroup === "teaching-paths" && (
+            <>
+              <div className="col-span-3 mb-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setExpandedGroup(null)}
+                  className="w-full"
+                >
+                  ← Back to Hagion University
+                </Button>
+              </div>
+              {teachingPaths.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center gap-3 cursor-pointer group"
+                  onClick={() => navigate(`/logos-circle/path/${item.id}`)}
+                >
+                  <div className="relative">
+                    <div
+                      className={`w-20 h-20 rounded-3xl overflow-hidden flex items-center justify-center ${item.color}`}
+                    >
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                      ) : item.icon && (
+                        <item.icon className="w-10 h-10 text-white" />
+                      )}
+                    </div>
+                    {item.isPro && (
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <span>★</span> PRO
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs font-medium leading-tight">{item.name}</p>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Hagion University Cards */}
+          {activeTab === "hagion-university" && !expandedGroup && (
+            <>
+              {hagionUniversity.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.id}
+                    className="flex flex-col items-center gap-3 cursor-pointer group"
+                    onClick={() => {
+                      if (item.type === 'storytelling') {
                         if (item.id === 'bible-translations') {
                           navigate('/bible-translations');
-                        } else if (item.id === 'public-speaking') {
-                          navigate('/public-speaking');
-                        } else if (item.type === 'storytelling') {
+                        } else {
                           navigate(`/storytelling/${item.id}`);
-                        } else if (item.type === 'track') {
-                          navigate(`/logos-circle/track/${item.id}`);
-                        } else if (item.type === 'path') {
-                          navigate(`/logos-circle/path/${item.id}`);
                         }
-                      }}
-                    >
-                      <div className="relative">
-                        {item.type === 'storytelling' ? (
-                          <div className={`w-20 h-20 rounded-3xl border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
-                            {Icon ? (
-                              <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
-                                <Icon className="w-10 h-10 text-white" />
-                              </div>
-                            ) : (
-                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                            )}
-                          </div>
-                        ) : (
-                          <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
-                            {item.image ? (
-                              <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
-                            ) : Icon ? (
+                      } else if (item.type === 'group') {
+                        setExpandedGroup(item.id);
+                      } else if (item.type === 'speaking') {
+                        navigate('/public-speaking');
+                      }
+                    }}
+                  >
+                    <div className="relative">
+                      {item.type === 'storytelling' ? (
+                        <div className={`w-20 h-20 rounded-3xl border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
+                          {Icon ? (
+                            <div className="w-full h-full bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center">
                               <Icon className="w-10 h-10 text-white" />
-                            ) : null}
-                          </div>
-                        )}
-                        {item.type === 'storytelling' && (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <button
-                                aria-label={`About ${item.name}`}
-                                className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <Info className="w-3 h-3" />
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
-                              <p className="text-sm">
-                                {item.id === 'biblical-stories' && t('biblical_stories_info')}
-                                {item.id === 'martyrs' && t('martyrs_faith_info')}
-                                {item.id === 'history-christianity' && t('history_christianity_info')}
-                                {item.id === 'bible-translations' && t('bible_translations_info')}
-                              </p>
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                        {item.isPro && (
-                          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <span>★</span> PRO
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-medium">{item.name}</p>
-                        {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
-                      </div>
+                            </div>
+                          ) : (
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          )}
+                        </div>
+                      ) : (
+                        <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105`}>
+                          {item.image ? (
+                            <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                          ) : Icon ? (
+                            <Icon className="w-10 h-10 text-white" />
+                          ) : null}
+                        </div>
+                      )}
+                      {item.type === 'storytelling' && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button
+                              aria-label={`About ${item.name}`}
+                              className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Info className="w-3 h-3" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
+                            <p className="text-sm">
+                              {item.id === 'biblical-stories' && t('biblical_stories_info')}
+                              {item.id === 'martyrs' && t('martyrs_faith_info')}
+                              {item.id === 'history-christianity' && t('history_christianity_info')}
+                              {item.id === 'bible-translations' && t('bible_translations_info')}
+                            </p>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                      {item.isPro && (
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                          <span>★</span> PRO
+                        </div>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </div>
+                    <div className="text-center">
+                      <p className="text-sm font-medium">{item.name}</p>
+                      {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
           )}
         </div>
       </div>
