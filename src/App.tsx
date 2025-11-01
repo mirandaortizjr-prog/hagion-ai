@@ -28,6 +28,7 @@ import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import PrayerWall from "./pages/PrayerWall";
+import DailyWisdom from "./pages/DailyWisdom";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/bible-translations" element={<BibleTranslations />} />
             <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/prayer-wall" element={<PrayerWall />} />
+            <Route path="/daily-wisdom" element={<DailyWisdom />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />

@@ -2,3 +2,6 @@ project_id = "psxkgfwizwpozfeygyza"
 
 [functions.chat]
 verify_jwt = true
+
+[functions.generate-daily-wisdom]
+verify_jwt = false

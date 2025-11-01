@@ -41,6 +41,33 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_wisdom_stories: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          moral_takeaway: string | null
+          theme: string
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          moral_takeaway?: string | null
+          theme: string
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          moral_takeaway?: string | null
+          theme?: string
+          title?: string
+        }
+        Relationships: []
+      }
       prayers: {
         Row: {
           author_name: string | null
@@ -118,6 +145,35 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      saved_stories: {
+        Row: {
+          id: string
+          saved_at: string
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          saved_at?: string
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          saved_at?: string
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_stories_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "daily_wisdom_stories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       shared_content: {
         Row: {
@@ -202,6 +258,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_story_views: {
+        Row: {
+          id: string
+          story_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          story_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          story_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_story_views_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "daily_wisdom_stories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

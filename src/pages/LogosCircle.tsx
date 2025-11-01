@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart, Info } from "lucide-react";
+import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart, Info, Sparkles } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -18,6 +18,15 @@ const LogosCircle = () => {
   const { t } = useLanguage();
 
   const curriculumTracks = [
+    {
+      id: "daily-wisdom",
+      name: "Daily Wisdom",
+      description: "A daily story to stir heart and mind—fables, parables, and allegories rooted in biblical reasoning and moral clarity",
+      icon: Sparkles,
+      avatar: mirandaAvatar,
+      tone: "Poetic & Thought-provoking",
+      isPro: false,
+    },
     {
       id: "foundations",
       name: t('foundations_logos'),
@@ -149,7 +158,7 @@ const LogosCircle = () => {
                   <Card
                     key={track.id}
                     className="cursor-pointer hover:shadow-lg transition-all hover:border-[#3BB4F2]/50"
-                    onClick={() => navigate(`/logos-circle/track/${track.id}`)}
+                    onClick={() => track.id === "daily-wisdom" ? navigate("/daily-wisdom") : navigate(`/logos-circle/track/${track.id}`)}
                   >
                     <CardHeader>
                       <div className="flex items-start justify-between">
