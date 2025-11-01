@@ -212,7 +212,7 @@ export default function PrayerWall() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-primary/10 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-blue-100/30 p-4">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center mb-6 gap-4">
           <Button
@@ -283,7 +283,7 @@ export default function PrayerWall() {
                   <Card key={prayer.id} className="p-6 bg-card/95 backdrop-blur">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-2">
-                        <Heart className="h-4 w-4 text-primary" />
+                        <Heart className="h-4 w-4 text-blue-500" />
                         <span className="font-semibold text-foreground">
                           {prayer.is_anonymous ? "Anonymous" : prayer.author_name || "Anonymous"}
                         </span>
@@ -359,7 +359,7 @@ export default function PrayerWall() {
                   <Card key={testimony.id} className="p-6 bg-card/95 backdrop-blur">
                     <div className="flex justify-between items-start mb-2">
                       <div className="flex items-center gap-2">
-                        <Heart className="h-4 w-4 text-primary" />
+                        <Heart className="h-4 w-4 text-blue-500" />
                         <span className="font-semibold text-foreground">
                           {testimony.is_anonymous ? "Anonymous" : testimony.author_name || "Anonymous"}
                         </span>
