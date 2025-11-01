@@ -310,7 +310,7 @@ const MainMenu = () => {
   const hagionUniversity = [
     {
       id: "daily-wisdom",
-      name: "Daily Wisdom",
+      name: t('daily_wisdom'),
       subtitle: "",
       image: dailyWisdomIcon,
       icon: undefined,

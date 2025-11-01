@@ -20,8 +20,8 @@ const LogosCircle = () => {
   const curriculumTracks = [
     {
       id: "daily-wisdom",
-      name: "Daily Wisdom",
-      description: "A daily story to stir heart and mind—fables, parables, and allegories rooted in biblical reasoning and moral clarity",
+      name: t('daily_wisdom'),
+      description: t('daily_wisdom_info'),
       icon: Sparkles,
       avatar: mirandaAvatar,
       tone: "Poetic & Thought-provoking",

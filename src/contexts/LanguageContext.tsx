@@ -335,6 +335,25 @@ const translations: Record<Language, Record<string, string>> = {
     'about': 'About',
     'read': 'Read',
     
+    // Daily Wisdom
+    'daily_wisdom': 'Daily Wisdom',
+    'daily_wisdom_subtitle': 'A story to stir heart and mind',
+    'daily_wisdom_info': 'Daily stories of wisdom—fables, parables, and allegories rooted in biblical reasoning and moral clarity',
+    'reflection': 'Reflection',
+    'no_story_available': 'No story available at this time',
+    'come_back_tomorrow': 'Come back tomorrow for a new story of wisdom',
+    'story_removed_saved': 'Story removed from saved',
+    'story_saved_reflection': 'Story saved for later reflection',
+    'failed_save_story': 'Failed to save story',
+    'story_shared_success': 'Story shared successfully',
+    'failed_share_story': 'Failed to share story',
+    'story_copied_clipboard': 'Story copied to clipboard',
+    'failed_copy_story': 'Failed to copy story',
+    'read_all_stories': "You've read all available stories! Check back later for new wisdom.",
+    'failed_load_wisdom': "Failed to load today's wisdom",
+    'last_viewed_not_found': 'Last viewed story not found',
+    'please_signin_view_wisdom': 'Please sign in to view Daily Wisdom',
+    
     // Curriculum Tracks
     'foundations_logos': 'Foundations of Logos',
     'foundations_logos_desc': 'Basic logic principles, deductive/inductive reasoning',
@@ -846,6 +865,25 @@ const translations: Record<Language, Record<string, string>> = {
     'bible_translation_intro': 'Esta traducción proporciona una perspectiva única de las Sagradas Escrituras. Selecciona esta versión para explorar la Biblia con su enfoque distintivo.',
     'about': 'Acerca de',
     'read': 'Leer',
+    
+    // Daily Wisdom
+    'daily_wisdom': 'Sabiduría Diaria',
+    'daily_wisdom_subtitle': 'Una historia para conmover corazón y mente',
+    'daily_wisdom_info': 'Historias diarias de sabiduría—fábulas, parábolas y alegorías arraigadas en razonamiento bíblico y claridad moral',
+    'reflection': 'Reflexión',
+    'no_story_available': 'No hay historia disponible en este momento',
+    'come_back_tomorrow': 'Vuelve mañana para una nueva historia de sabiduría',
+    'story_removed_saved': 'Historia eliminada de guardados',
+    'story_saved_reflection': 'Historia guardada para reflexión posterior',
+    'failed_save_story': 'Error al guardar historia',
+    'story_shared_success': 'Historia compartida exitosamente',
+    'failed_share_story': 'Error al compartir historia',
+    'story_copied_clipboard': 'Historia copiada al portapapeles',
+    'failed_copy_story': 'Error al copiar historia',
+    'read_all_stories': '¡Has leído todas las historias disponibles! Vuelve más tarde para nueva sabiduría.',
+    'failed_load_wisdom': 'Error al cargar la sabiduría de hoy',
+    'last_viewed_not_found': 'Historia vista por última vez no encontrada',
+    'please_signin_view_wisdom': 'Por favor inicia sesión para ver Sabiduría Diaria',
     
     // Curriculum Tracks
     'foundations_logos': 'Fundamentos de Logos',

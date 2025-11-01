@@ -33,7 +33,7 @@ const DailyWisdom = () => {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error("Please sign in to view Daily Wisdom");
+        toast.error(t('please_signin_view_wisdom'));
         navigate("/auth");
         return;
       }
@@ -92,7 +92,7 @@ const DailyWisdom = () => {
       if (error) throw error;
 
       if (!stories || stories.length === 0) {
-        toast.info("You've read all available stories! Check back later for new wisdom.");
+        toast.info(t('read_all_stories'));
         return;
       }
 
@@ -115,7 +115,7 @@ const DailyWisdom = () => {
       setIsSaved(!!savedData);
     } catch (error: any) {
       console.error("Error loading story:", error);
-      toast.error("Failed to load today's wisdom");
+      toast.error(t('failed_load_wisdom'));
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +129,7 @@ const DailyWisdom = () => {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        toast.error("Please sign in to save stories");
+        toast.error(t('please_signin_view_wisdom'));
         return;
       }
 
@@ -142,7 +142,7 @@ const DailyWisdom = () => {
           .eq("story_id", story.id);
         
         setIsSaved(false);
-        toast.success("Story removed from saved");
+        toast.success(t('story_removed_saved'));
       } else {
         // Save
         await supabase
@@ -150,11 +150,11 @@ const DailyWisdom = () => {
           .insert({ user_id: user.id, story_id: story.id });
         
         setIsSaved(true);
-        toast.success("Story saved for later reflection");
+        toast.success(t('story_saved_reflection'));
       }
     } catch (error: any) {
       console.error("Error saving story:", error);
-      toast.error("Failed to save story");
+      toast.error(t('failed_save_story'));
     } finally {
       setIsSaving(false);
     }
@@ -163,7 +163,7 @@ const DailyWisdom = () => {
   const handleShare = async () => {
     if (!story) return;
 
-    const shareText = `Daily Wisdom: ${story.title}\n\n${story.content}\n\n— From Hagion University`;
+    const shareText = `${t('daily_wisdom')}: ${story.title}\n\n${story.content}\n\n— From Hagion University`;
 
     if (navigator.share) {
       try {
@@ -171,19 +171,19 @@ const DailyWisdom = () => {
           title: story.title,
           text: shareText,
         });
-        toast.success("Story shared successfully");
+        toast.success(t('story_shared_success'));
       } catch (error) {
         if ((error as Error).name !== "AbortError") {
-          toast.error("Failed to share story");
+          toast.error(t('failed_share_story'));
         }
       }
     } else {
       // Fallback: copy to clipboard
       try {
         await navigator.clipboard.writeText(shareText);
-        toast.success("Story copied to clipboard");
+        toast.success(t('story_copied_clipboard'));
       } catch (error) {
-        toast.error("Failed to copy story");
+        toast.error(t('failed_copy_story'));
       }
     }
   };
@@ -196,8 +196,8 @@ const DailyWisdom = () => {
           <ArrowLeft className="w-6 h-6" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">Daily Wisdom</h1>
-          <p className="text-sm text-muted-foreground">A story to stir heart and mind</p>
+          <h1 className="text-2xl font-bold">{t('daily_wisdom')}</h1>
+          <p className="text-sm text-muted-foreground">{t('daily_wisdom_subtitle')}</p>
         </div>
       </header>
 
@@ -256,7 +256,7 @@ const DailyWisdom = () => {
                 
                 {story.moral_takeaway && (
                   <div className="mt-8 p-6 bg-muted/30 rounded-lg border-l-4 border-[#3BB4F2]">
-                    <h3 className="font-semibold text-lg mb-2">Reflection</h3>
+                    <h3 className="font-semibold text-lg mb-2">{t('reflection')}</h3>
                     <p className="text-muted-foreground italic">{story.moral_takeaway}</p>
                   </div>
                 )}
@@ -265,13 +265,13 @@ const DailyWisdom = () => {
           ) : (
             <Card>
               <CardContent className="py-12 text-center">
-                <p className="text-muted-foreground">No story available at this time</p>
+                <p className="text-muted-foreground">{t('no_story_available')}</p>
               </CardContent>
             </Card>
           )}
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Come back tomorrow for a new story of wisdom</p>
+            <p>{t('come_back_tomorrow')}</p>
           </div>
         </div>
       </div>
