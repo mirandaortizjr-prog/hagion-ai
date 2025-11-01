@@ -247,7 +247,7 @@ const DailyWisdom = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="prose prose-lg dark:prose-invert max-w-none">
-                  {story.content.split("\n\n").map((paragraph, idx) => (
+                  {story.content.replace(/\\n/g, '\n').split("\n\n").map((paragraph, idx) => (
                     <p key={idx} className="leading-relaxed">
                       {paragraph}
                     </p>
