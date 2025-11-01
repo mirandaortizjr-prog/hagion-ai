@@ -31,33 +31,64 @@ const DailyWisdom = () => {
     try {
       setIsLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
-      
+
       if (!user) {
         toast.error("Please sign in to view Daily Wisdom");
         navigate("/auth");
         return;
       }
 
-      // Get user's viewed stories
-      const { data: viewedStories } = await supabase
+      // Fetch all previous views (latest first)
+      const { data: allViews, error: viewsError } = await supabase
         .from("user_story_views")
-        .select("story_id")
-        .eq("user_id", user.id);
+        .select("story_id, viewed_at")
+        .eq("user_id", user.id)
+        .order("viewed_at", { ascending: false });
 
-      const viewedIds = viewedStories?.map(v => v.story_id) || [];
+      if (viewsError) throw viewsError;
 
-      // Get a story the user hasn't seen
+      const latestView = allViews?.[0];
+      const now = Date.now();
+      const within24h = latestView
+        ? now - new Date(latestView.viewed_at as string).getTime() < 24 * 60 * 60 * 1000
+        : false;
+
+      // If within 24h, show the same story as last time
+      if (within24h && latestView?.story_id) {
+        const { data: sameStory, error: sameErr } = await supabase
+          .from("daily_wisdom_stories")
+          .select("*")
+          .eq("id", latestView.story_id)
+          .maybeSingle();
+        if (sameErr) throw sameErr;
+        if (!sameStory) throw new Error("Last viewed story not found");
+        setStory(sameStory);
+
+        // Check if saved
+        const { data: savedData } = await supabase
+          .from("saved_stories")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("story_id", sameStory.id)
+          .maybeSingle();
+        setIsSaved(!!savedData);
+        return;
+      }
+
+      // Otherwise, pick a new unseen story and mark it viewed once
+      const viewedIds = (allViews || []).map(v => v.story_id);
+
       let query = supabase
         .from("daily_wisdom_stories")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .limit(1);
 
       if (viewedIds.length > 0) {
         query = query.not("id", "in", `(${viewedIds.join(",")})`);
       }
 
-      const { data: stories, error } = await query.limit(1);
-
+      const { data: stories, error } = await query;
       if (error) throw error;
 
       if (!stories || stories.length === 0) {
@@ -65,20 +96,20 @@ const DailyWisdom = () => {
         return;
       }
 
-      const todayStory = stories[0];
-      setStory(todayStory);
+      const nextStory = stories[0];
+      setStory(nextStory);
 
-      // Mark as viewed
+      // Mark as viewed (only when delivering a new story)
       await supabase
         .from("user_story_views")
-        .insert({ user_id: user.id, story_id: todayStory.id });
+        .insert({ user_id: user.id, story_id: nextStory.id });
 
       // Check if saved
       const { data: savedData } = await supabase
         .from("saved_stories")
         .select("id")
         .eq("user_id", user.id)
-        .eq("story_id", todayStory.id)
+        .eq("story_id", nextStory.id)
         .maybeSingle();
 
       setIsSaved(!!savedData);
