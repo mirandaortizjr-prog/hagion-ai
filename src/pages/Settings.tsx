@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut, History, MessageSquare, Trash2 } from "lucide-react";
+import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut, History, MessageSquare, Trash2, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -130,6 +130,7 @@ const Settings = () => {
       items: [
         { icon: User, label: t('profile'), action: () => navigate("/profile") },
         { icon: Bell, label: t('notifications'), action: () => navigate("/notifications") },
+        { icon: Star, label: t('pro'), action: () => navigate("/premium"), isPro: true },
       ],
     },
     {
@@ -177,8 +178,11 @@ const Settings = () => {
                       onClick={item.action}
                       className="w-full flex items-center gap-4 px-4 py-4 hover:bg-muted/50 transition-colors text-left"
                     >
-                      <item.icon className="w-5 h-5 text-muted-foreground" />
+                      <item.icon className={(item as any).isPro ? "w-5 h-5 text-orange-500" : "w-5 h-5 text-muted-foreground"} />
                       <span className="flex-1">{item.label}</span>
+                      {(item as any).isPro && (
+                        <span className="text-orange-500 text-sm">★</span>
+                      )}
                     </button>
                   ))}
                 </Card>
