@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic } from "lucide-react";
+import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
@@ -307,6 +307,17 @@ const MainMenu = () => {
   ];
 
   const hagionUniversity = [
+    {
+      id: "daily-wisdom",
+      name: "Daily Wisdom",
+      subtitle: "",
+      image: undefined,
+      icon: Sparkles,
+      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      isPro: false,
+      isSpecial: false,
+      type: "wisdom" as const,
+    },
     ...storytelling,
     {
       id: "curriculum-tracks",
@@ -756,6 +767,8 @@ const MainMenu = () => {
                         setExpandedGroup(item.id);
                       } else if (item.type === 'speaking') {
                         navigate('/public-speaking');
+                      } else if (item.type === 'wisdom') {
+                        navigate('/daily-wisdom');
                       }
                     }}
                   >
