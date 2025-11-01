@@ -13,6 +13,7 @@ import elohimSymbol from "@/assets/elohim-symbol.png";
 import christCross from "@/assets/christ-cross.png";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
 import triuneGod from "@/assets/triune-god.png";
+import hagionLogo from "@/assets/hagion-logo.png";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
@@ -447,17 +448,14 @@ const MainMenu = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-4 border-b">
+        <img 
+          src={hagionLogo} 
+          alt="Hagion AI" 
+          className="w-10 h-10 object-contain"
+        />
+        <h1 className="text-2xl font-bold">Hagion AI</h1>
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <Settings className="w-6 h-6" />
-        </Button>
-        <h1 className="text-2xl font-bold">Hagion AI</h1>
-        <Button
-          variant="outline"
-          size="sm"
-          className="rounded-full gap-1"
-          onClick={() => navigate("/premium")}
-        >
-          <span className="text-orange-500">★</span> {t('pro')}
         </Button>
       </header>
 

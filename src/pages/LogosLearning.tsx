@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookOpen, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Settings } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { getCurriculumData } from "@/data/curriculumData";
 import { useLanguage } from "@/contexts/LanguageContext";
+import hagionLogo from "@/assets/hagion-logo.png";
 
 const LogosLearning = () => {
   const navigate = useNavigate();
@@ -50,16 +51,26 @@ const LogosLearning = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="flex items-center gap-4 px-4 py-4 border-b">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>
-          <ArrowLeft className="w-6 h-6" />
-        </Button>
-        <div className="flex-1">
+      <header className="flex items-center justify-between gap-4 px-4 py-4 border-b">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>
+            <ArrowLeft className="w-6 h-6" />
+          </Button>
+          <img 
+            src={hagionLogo} 
+            alt="Hagion AI" 
+            className="w-8 h-8 object-contain"
+          />
+        </div>
+        <div className="flex-1 text-center">
           <h1 className="text-xl font-bold">{title}</h1>
           <p className="text-sm text-muted-foreground">
             {type === "track" ? t('curriculum_track') : t('teaching_path_label')}
           </p>
         </div>
+        <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
+          <Settings className="w-6 h-6" />
+        </Button>
       </header>
 
       {/* Curriculum Content */}

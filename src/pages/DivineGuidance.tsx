@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Heart } from "lucide-react";
+import { ArrowLeft, Heart, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,6 +12,7 @@ import holySpirItFire from "@/assets/holy-spirit-fire.png";
 import christCross from "@/assets/christ-cross.png";
 import elohimSymbol from "@/assets/elohim-symbol.png";
 import triuneGod from "@/assets/triune-god.png";
+import hagionLogo from "@/assets/hagion-logo.png";
 
 interface Voice {
   id: string;
@@ -138,15 +139,25 @@ const DivineGuidance = () => {
   return (
     <div className="min-h-screen blue-sky-gradient">
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/main-menu")}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/main-menu")}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <img 
+              src={hagionLogo} 
+              alt="Hagion AI" 
+              className="w-8 h-8 object-contain"
+            />
+          </div>
           <h1 className="text-2xl font-bold text-secondary">{t('divine_guidance')}</h1>
+          <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
+            <Settings className="w-5 h-5" />
+          </Button>
         </div>
       </header>
 
