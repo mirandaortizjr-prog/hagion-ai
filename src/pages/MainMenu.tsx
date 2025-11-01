@@ -512,11 +512,16 @@ const MainMenu = () => {
                   }}
                 >
                   <div className="relative">
+                    {guide.id === 'faithful-friend' && (
+                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg z-20 whitespace-nowrap">
+                        Bonus App
+                      </div>
+                    )}
                     <div className="w-20 h-20 rounded-3xl bg-black flex items-center justify-center overflow-hidden">
                       <img
                         src={guide.image}
                         alt={guide.name}
-                        className="w-18 h-18 object-contain"
+                        className={guide.id === 'faithful-friend' ? 'w-16 h-16 object-contain' : 'w-18 h-18 object-contain'}
                       />
                     </div>
                     <Popover>
