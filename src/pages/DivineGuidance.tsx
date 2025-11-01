@@ -2,19 +2,23 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Sparkles, Cross, Wind, Flame, Heart } from "lucide-react";
+import { ArrowLeft, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import holySpirItFire from "@/assets/holy-spirit-fire.png";
+import christCross from "@/assets/christ-cross.png";
+import elohimSymbol from "@/assets/elohim-symbol.png";
+import triuneGod from "@/assets/triune-god.png";
 
 interface Voice {
   id: string;
   name: string;
   persona: string;
   description: string;
-  icon: any;
+  icon: string;
   color: string;
 }
 
@@ -81,7 +85,7 @@ const DivineGuidance = () => {
       name: t('elohim'),
       persona: t('voice_of_god'),
       description: t('elohim_desc'),
-      icon: Sparkles,
+      icon: elohimSymbol,
       color: "from-blue-600 to-indigo-700",
     },
     {
@@ -89,7 +93,7 @@ const DivineGuidance = () => {
       name: t('christ'),
       persona: t('voice_of_christ'),
       description: t('christ_desc'),
-      icon: Cross,
+      icon: christCross,
       color: "from-rose-500 to-red-600",
     },
     {
@@ -97,15 +101,15 @@ const DivineGuidance = () => {
       name: t('holy_spirit'),
       persona: t('voice_of_spirit'),
       description: t('spirit_desc'),
-      icon: Wind,
+      icon: holySpirItFire,
       color: "from-cyan-500 to-teal-600",
     },
     {
       id: "trinity",
-      name: t('trinity'),
+      name: t('triune_god'),
       persona: t('all_three_as_one'),
       description: t('trinity_desc'),
-      icon: Flame,
+      icon: triuneGod,
       color: "from-primary to-accent",
     },
   ];
@@ -161,7 +165,6 @@ const DivineGuidance = () => {
             <h3 className="text-xl font-semibold text-secondary mb-6">{t('divine_voice')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {voices.map((voice) => {
-                const Icon = voice.icon;
                 const isSelected = selectedVoice === voice.id;
                 return (
                   <Card
@@ -174,11 +177,11 @@ const DivineGuidance = () => {
                     onClick={() => setSelectedVoice(voice.id)}
                   >
                     <div className="flex gap-4">
-                      <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center flex-shrink-0">
+                      <div className="w-16 h-16 rounded-lg p-0.5 bg-gradient-to-br from-[#3BB4F2] to-[#0052D4] flex items-center justify-center flex-shrink-0">
                         <div
-                          className={`w-full h-full rounded-full bg-gradient-to-br ${voice.color} flex items-center justify-center`}
+                          className={`w-full h-full rounded-lg bg-black flex items-center justify-center p-2`}
                         >
-                          <Icon className="w-8 h-8 text-white" />
+                          <img src={voice.icon} alt={voice.name} className="w-full h-full object-contain" />
                         </div>
                       </div>
                       <div className="flex-1">
