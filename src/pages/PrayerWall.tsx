@@ -273,9 +273,9 @@ export default function PrayerWall() {
               </div>
             </Card>
 
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground">Community Prayer Requests</h3>
-              <ScrollArea className="h-[500px] pr-4">
+            <Card className="p-6 bg-card/95 backdrop-blur">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Community Prayer Requests</h3>
+              <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-4">
                   {prayers.length === 0 ? (
                     <Card className="p-6 text-center text-muted-foreground">
@@ -283,7 +283,7 @@ export default function PrayerWall() {
                     </Card>
                   ) : (
                     prayers.map((prayer) => (
-                      <Card key={prayer.id} className="p-6 bg-card/95 backdrop-blur">
+                      <Card key={prayer.id} className="p-4 bg-background/50">
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex items-center gap-2">
                             <Heart className="h-4 w-4 text-blue-500" />
@@ -313,7 +313,7 @@ export default function PrayerWall() {
                   )}
                 </div>
               </ScrollArea>
-            </div>
+            </Card>
           </TabsContent>
 
           <TabsContent value="testimonies" className="space-y-6">
@@ -353,9 +353,9 @@ export default function PrayerWall() {
               </div>
             </Card>
 
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground">Community Testimonies</h3>
-              <ScrollArea className="h-[500px] pr-4">
+            <Card className="p-6 bg-card/95 backdrop-blur">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Community Testimonies</h3>
+              <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-4">
                   {testimonies.length === 0 ? (
                     <Card className="p-6 text-center text-muted-foreground">
@@ -363,7 +363,7 @@ export default function PrayerWall() {
                     </Card>
                   ) : (
                     testimonies.map((testimony) => (
-                      <Card key={testimony.id} className="p-6 bg-card/95 backdrop-blur">
+                      <Card key={testimony.id} className="p-4 bg-background/50">
                         <div className="flex justify-between items-start mb-2">
                           <div className="flex items-center gap-2">
                             <Heart className="h-4 w-4 text-blue-500" />
@@ -393,7 +393,7 @@ export default function PrayerWall() {
                   )}
                 </div>
               </ScrollArea>
-            </div>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
