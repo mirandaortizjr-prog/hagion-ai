@@ -5,6 +5,7 @@ import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scr
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
+import dailyWisdomIcon from "@/assets/daily-wisdom-icon.png";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -311,9 +312,9 @@ const MainMenu = () => {
       id: "daily-wisdom",
       name: "Daily Wisdom",
       subtitle: "",
-      image: undefined,
-      icon: Sparkles,
-      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      image: dailyWisdomIcon,
+      icon: undefined,
+      color: "bg-black",
       isPro: false,
       isSpecial: false,
       type: "wisdom" as const,
