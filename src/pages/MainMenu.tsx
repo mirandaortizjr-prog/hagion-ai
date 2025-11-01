@@ -135,7 +135,7 @@ const MainMenu = () => {
       id: "faithful-friend",
       name: "Faithful Friend",
       image: faithfulFriendIcon,
-      isPro: true,
+      isPro: false,
       externalLink: "https://faithfulfriend.app",
     },
   ];
