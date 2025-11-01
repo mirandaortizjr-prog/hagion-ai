@@ -9,10 +9,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import elohimImage from "@/assets/elohim-crown.jpg";
-import christImage from "@/assets/christ-thorns.jpg";
-import holySpiritImage from "@/assets/holy-spirit-dove.jpg";
-import trinityImage from "@/assets/trinity-symbol.jpg";
+import elohimSymbol from "@/assets/elohim-symbol.png";
+import christCross from "@/assets/christ-cross.png";
+import holySpirItFire from "@/assets/holy-spirit-fire.png";
+import triuneGod from "@/assets/triune-god.png";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
@@ -107,25 +107,25 @@ const MainMenu = () => {
     {
       id: "elohim",
       name: t('elohim'),
-      image: elohimImage,
+      image: elohimSymbol,
       isPro: false,
     },
     {
       id: "christ",
       name: t('christ'),
-      image: christImage,
+      image: christCross,
       isPro: false,
     },
     {
       id: "holy-spirit",
       name: t('holy_spirit'),
-      image: holySpiritImage,
+      image: holySpirItFire,
       isPro: false,
     },
     {
       id: "trinity",
-      name: t('trinity'),
-      image: trinityImage,
+      name: t('triune_god'),
+      image: triuneGod,
       isPro: false,
     },
   ];
@@ -486,17 +486,11 @@ const MainMenu = () => {
                   onClick={() => navigate(`/divine/${guide.id}`)}
                 >
                   <div className="relative">
-                    <div
-                      className={`w-24 h-24 rounded-lg overflow-hidden border-4 transition-all ${
-                        guide.isPro
-                          ? "border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20"
-                          : "border-yellow-500 shadow-lg shadow-yellow-500/20 group-hover:border-yellow-600"
-                      }`}
-                    >
+                    <div className="w-20 h-20 rounded-3xl bg-black flex items-center justify-center overflow-hidden">
                       <img
                         src={guide.image}
                         alt={guide.name}
-                        className="w-full h-full object-cover"
+                        className="w-12 h-12 object-contain"
                       />
                     </div>
                     <Popover>
@@ -520,7 +514,7 @@ const MainMenu = () => {
                     )}
                   </div>
                   <div className="text-center">
-                    <p className="text-sm font-medium">{guide.name}</p>
+                    <p className="text-xs font-medium leading-tight">{guide.name}</p>
                   </div>
                 </div>
               ))}
