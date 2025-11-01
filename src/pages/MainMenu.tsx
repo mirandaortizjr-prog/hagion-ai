@@ -520,16 +520,16 @@ const MainMenu = () => {
               {/* Prayer & Testimony Wall Button */}
               <div className="col-span-3 mt-4 mb-2 flex justify-center">
                 <Card 
-                  className="relative overflow-hidden border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5 hover:from-primary/20 hover:to-primary/10 transition-all cursor-pointer w-full max-w-md"
+                  className="relative overflow-hidden border-4 border-black blue-sky-gradient hover:opacity-90 transition-all cursor-pointer w-full max-w-md"
                   onClick={() => navigate("/prayer-wall")}
                 >
                   <div className="p-4 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                      <Heart className="w-6 h-6 text-primary-foreground" />
+                    <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                      <Heart className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base font-bold text-foreground">Prayer & Testimony Wall</h3>
-                      <p className="text-xs text-muted-foreground">Share prayers and testimonies with the community</p>
+                      <h3 className="text-base font-bold text-secondary">Prayer & Testimony Wall</h3>
+                      <p className="text-xs text-secondary/80">Share prayers and testimonies with the community</p>
                     </div>
                   </div>
                 </Card>
