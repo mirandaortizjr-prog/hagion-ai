@@ -490,7 +490,7 @@ const MainMenu = () => {
                       <img
                         src={guide.image}
                         alt={guide.name}
-                        className="w-16 h-16 object-contain"
+                        className="w-18 h-18 object-contain"
                       />
                     </div>
                     <Popover>
