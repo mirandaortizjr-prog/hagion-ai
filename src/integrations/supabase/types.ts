@@ -41,6 +41,36 @@ export type Database = {
         }
         Relationships: []
       }
+      prayers: {
+        Row: {
+          author_name: string | null
+          content: string
+          created_at: string
+          id: string
+          is_anonymous: boolean
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -116,6 +146,36 @@ export type Database = {
           share_token?: string
           user_id?: string
           view_count?: number | null
+        }
+        Relationships: []
+      }
+      testimonies: {
+        Row: {
+          author_name: string | null
+          content: string
+          created_at: string
+          id: string
+          is_anonymous: boolean
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_anonymous?: boolean
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
