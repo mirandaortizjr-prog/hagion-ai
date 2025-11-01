@@ -26,6 +26,18 @@ const Premium = () => {
       t('feature_support_dev'),
       "✨ Full Bible access (always free)",
     ],
+    premiumPlus: [
+      "🎁 3-day free trial included",
+      t('feature_unlimited'),
+      t('feature_priority'),
+      t('feature_saved_history'),
+      t('feature_offline'),
+      t('feature_early_access'),
+      t('feature_ad_free'),
+      t('feature_support_dev'),
+      "✨ Full Bible access (always free)",
+      "🎯 Bonus: Faithful Friend app access",
+    ],
   };
 
   return (
@@ -55,7 +67,7 @@ const Premium = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           <Card className="p-8 border-2 animate-slide-up">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-secondary mb-2">{t('free')}</h3>
@@ -72,11 +84,8 @@ const Premium = () => {
             </ul>
           </Card>
 
-          <Card className="p-8 border-4 border-primary relative overflow-hidden animate-slide-up shadow-xl" style={{ animationDelay: "100ms" }}>
-            <div className="absolute top-0 right-0 bg-gradient-to-br from-primary to-accent text-white px-4 py-1 text-sm font-semibold">
-              {t('most_popular')}
-            </div>
-            <div className="text-center mb-6 mt-6">
+          <Card className="p-6 border-2 border-primary relative overflow-hidden animate-slide-up shadow-lg" style={{ animationDelay: "100ms" }}>
+            <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-secondary mb-2">{t('premium')}</h3>
               <div className="flex items-baseline justify-center gap-2">
                 <span className="text-2xl text-muted-foreground line-through">$9.99</span>
@@ -87,17 +96,48 @@ const Premium = () => {
                 Billed monthly after trial. Cancel anytime - takes effect next billing cycle.
               </p>
             </div>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-2 mb-6">
               {features.premium.map((feature, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-secondary font-medium">{feature}</span>
+                <li key={index} className="flex items-start gap-2">
+                  <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-secondary text-sm">{feature}</span>
                 </li>
               ))}
             </ul>
             <Button
               size="lg"
-              className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold text-lg shadow-lg hover:shadow-xl"
+              className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold shadow-lg hover:shadow-xl"
+            >
+              Start 3-Day Free Trial
+            </Button>
+          </Card>
+
+          <Card className="p-6 border-4 border-blue-500 relative overflow-hidden animate-slide-up shadow-xl" style={{ animationDelay: "200ms" }}>
+            <div className="absolute top-0 right-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-4 py-1 text-sm font-semibold">
+              {t('most_popular')}
+            </div>
+            <div className="text-center mb-6 mt-6">
+              <h3 className="text-2xl font-bold text-secondary mb-2">Premium Plus</h3>
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-2xl text-muted-foreground line-through">$15.99</span>
+                <span className="text-4xl font-bold text-blue-600">FREE</span>
+              </div>
+              <p className="text-sm font-semibold text-blue-600 mt-1">for 3 days, then $15.99/month</p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Billed monthly after trial. Cancel anytime - takes effect next billing cycle.
+              </p>
+            </div>
+            <ul className="space-y-2 mb-6">
+              {features.premiumPlus.map((feature, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <Check className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-secondary font-medium text-sm">{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              size="lg"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl"
             >
               Start 3-Day Free Trial
             </Button>
@@ -106,7 +146,7 @@ const Premium = () => {
 
         <div className="text-center text-sm text-muted-foreground animate-fade-in space-y-2">
           <p className="font-medium">✨ Start your free trial today - no payment required for 3 days</p>
-          <p>After trial ends, you'll be charged $9.99/month. Cancel anytime during trial at no cost.</p>
+          <p>Choose Premium ($9.99/month) or Premium Plus ($15.99/month with Faithful Friend). Cancel anytime during trial at no cost.</p>
           <p className="text-xs">No refunds after billing. Cancellations take effect at the end of your billing period.</p>
         </div>
       </main>
