@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, Send, Heart, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -243,7 +244,7 @@ export default function PrayerWall() {
                   placeholder="Enter your prayer request..."
                   value={newPrayer}
                   onChange={(e) => setNewPrayer(e.target.value)}
-                  rows={4}
+                  rows={3}
                   className="resize-none"
                 />
                 <div className="flex items-center space-x-2">
@@ -274,40 +275,44 @@ export default function PrayerWall() {
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-foreground">Community Prayer Requests</h3>
-              {prayers.length === 0 ? (
-                <Card className="p-6 text-center text-muted-foreground">
-                  No prayers yet. Be the first to share!
-                </Card>
-              ) : (
-                prayers.map((prayer) => (
-                  <Card key={prayer.id} className="p-6 bg-card/95 backdrop-blur">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-2">
-                        <Heart className="h-4 w-4 text-blue-500" />
-                        <span className="font-semibold text-foreground">
-                          {prayer.is_anonymous ? "Anonymous" : prayer.author_name || "Anonymous"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(prayer.created_at).toLocaleDateString()}
-                        </span>
-                        {currentUser?.id === prayer.user_id && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleDeletePrayer(prayer.id)}
-                            className="h-8 w-8"
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-foreground whitespace-pre-wrap">{prayer.content}</p>
-                  </Card>
-                ))
-              )}
+              <ScrollArea className="h-[500px] pr-4">
+                <div className="space-y-4">
+                  {prayers.length === 0 ? (
+                    <Card className="p-6 text-center text-muted-foreground">
+                      No prayers yet. Be the first to share!
+                    </Card>
+                  ) : (
+                    prayers.map((prayer) => (
+                      <Card key={prayer.id} className="p-6 bg-card/95 backdrop-blur">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="flex items-center gap-2">
+                            <Heart className="h-4 w-4 text-blue-500" />
+                            <span className="font-semibold text-foreground">
+                              {prayer.is_anonymous ? "Anonymous" : prayer.author_name || "Anonymous"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(prayer.created_at).toLocaleDateString()}
+                            </span>
+                            {currentUser?.id === prayer.user_id && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDeletePrayer(prayer.id)}
+                                className="h-8 w-8"
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-foreground whitespace-pre-wrap">{prayer.content}</p>
+                      </Card>
+                    ))
+                  )}
+                </div>
+              </ScrollArea>
             </div>
           </TabsContent>
 
@@ -319,7 +324,7 @@ export default function PrayerWall() {
                   placeholder="Share how God has blessed you..."
                   value={newTestimony}
                   onChange={(e) => setNewTestimony(e.target.value)}
-                  rows={4}
+                  rows={3}
                   className="resize-none"
                 />
                 <div className="flex items-center space-x-2">
@@ -350,40 +355,44 @@ export default function PrayerWall() {
 
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-foreground">Community Testimonies</h3>
-              {testimonies.length === 0 ? (
-                <Card className="p-6 text-center text-muted-foreground">
-                  No testimonies yet. Be the first to share!
-                </Card>
-              ) : (
-                testimonies.map((testimony) => (
-                  <Card key={testimony.id} className="p-6 bg-card/95 backdrop-blur">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="flex items-center gap-2">
-                        <Heart className="h-4 w-4 text-blue-500" />
-                        <span className="font-semibold text-foreground">
-                          {testimony.is_anonymous ? "Anonymous" : testimony.author_name || "Anonymous"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(testimony.created_at).toLocaleDateString()}
-                        </span>
-                        {currentUser?.id === testimony.user_id && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleDeleteTestimony(testimony.id)}
-                            className="h-8 w-8"
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-foreground whitespace-pre-wrap">{testimony.content}</p>
-                  </Card>
-                ))
-              )}
+              <ScrollArea className="h-[500px] pr-4">
+                <div className="space-y-4">
+                  {testimonies.length === 0 ? (
+                    <Card className="p-6 text-center text-muted-foreground">
+                      No testimonies yet. Be the first to share!
+                    </Card>
+                  ) : (
+                    testimonies.map((testimony) => (
+                      <Card key={testimony.id} className="p-6 bg-card/95 backdrop-blur">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="flex items-center gap-2">
+                            <Heart className="h-4 w-4 text-blue-500" />
+                            <span className="font-semibold text-foreground">
+                              {testimony.is_anonymous ? "Anonymous" : testimony.author_name || "Anonymous"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(testimony.created_at).toLocaleDateString()}
+                            </span>
+                            {currentUser?.id === testimony.user_id && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDeleteTestimony(testimony.id)}
+                                className="h-8 w-8"
+                              >
+                                <Trash2 className="h-4 w-4 text-destructive" />
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-foreground whitespace-pre-wrap">{testimony.content}</p>
+                      </Card>
+                    ))
+                  )}
+                </div>
+              </ScrollArea>
             </div>
           </TabsContent>
         </Tabs>
