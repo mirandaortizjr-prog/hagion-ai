@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart } from "lucide-react";
+import { ArrowLeft, BookOpen, Shield, MessageSquare, Scroll, Brain, Heart, Info } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "sonner";
 import sophiaAvatar from "@/assets/sophia-avatar.jpg";
 import raphaelAvatar from "@/assets/raphael-avatar.jpg";
 import thaddeuAvatar from "@/assets/thaddeus-avatar.jpg";
@@ -228,8 +229,18 @@ const LogosCircle = () => {
                   <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
                     <BookOpen className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
-                  <div>
-                    <p className="font-medium">{t('structured_lessons')}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{t('structured_lessons')}</p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => toast.info("Structured lessons provide step-by-step learning paths with organized content, biblical references, and progressive difficulty levels to help you master each topic thoroughly.")}
+                      >
+                        <Info className="w-4 h-4 text-[#3BB4F2]" />
+                      </Button>
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       {t('structured_lessons_desc')}
                     </p>
@@ -239,8 +250,18 @@ const LogosCircle = () => {
                   <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
                     <Brain className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
-                  <div>
-                    <p className="font-medium">{t('ai_guided_practice')}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{t('ai_guided_practice')}</p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => toast.info("AI-guided practice sessions adapt to your learning pace, provide instant feedback, simulate real conversations, and help you develop confidence in applying biblical principles.")}
+                      >
+                        <Info className="w-4 h-4 text-[#3BB4F2]" />
+                      </Button>
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       {t('ai_guided_practice_desc')}
                     </p>
@@ -250,8 +271,18 @@ const LogosCircle = () => {
                   <div className="w-8 h-8 rounded-full bg-[#3BB4F2]/10 flex items-center justify-center">
                     <Heart className="w-4 h-4 text-[#3BB4F2]" />
                   </div>
-                  <div>
-                    <p className="font-medium">{t('emotional_debriefs')}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{t('emotional_debriefs')}</p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        onClick={() => toast.info("Emotional debriefs help you process challenging conversations, manage spiritual warfare, maintain healthy boundaries, and grow in compassion while staying grounded in truth.")}
+                      >
+                        <Info className="w-4 h-4 text-[#3BB4F2]" />
+                      </Button>
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       {t('emotional_debriefs_desc')}
                     </p>
