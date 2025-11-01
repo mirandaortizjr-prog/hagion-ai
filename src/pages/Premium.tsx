@@ -13,17 +13,18 @@ const Premium = () => {
     free: [
       t('feature_daily_limit'),
       t('feature_all_assistants'),
-      t('feature_basic_scripture'),
+      "✨ Full Bible access (always free)",
     ],
     premium: [
+      "🎁 3-day free trial included",
       t('feature_unlimited'),
       t('feature_priority'),
       t('feature_saved_history'),
-      t('feature_advanced_scripture'),
       t('feature_offline'),
       t('feature_early_access'),
       t('feature_ad_free'),
       t('feature_support_dev'),
+      "✨ Full Bible access (always free)",
     ],
   };
 
@@ -47,7 +48,10 @@ const Premium = () => {
             {t('unlimited_guidance')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {t('premium_description')}
+            Start your 3-day free trial and unlock unlimited spiritual guidance. Cancel anytime during the trial at no charge.
+          </p>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-2">
+            📖 <strong>The Bible is always free</strong> - No premium required for scripture access
           </p>
         </div>
 
@@ -75,10 +79,13 @@ const Premium = () => {
             <div className="text-center mb-6 mt-6">
               <h3 className="text-2xl font-bold text-secondary mb-2">{t('premium')}</h3>
               <div className="flex items-baseline justify-center gap-2">
-                <span className="text-4xl font-bold text-primary">$9.99</span>
-                <span className="text-muted-foreground">{t('per_month')}</span>
+                <span className="text-2xl text-muted-foreground line-through">$9.99</span>
+                <span className="text-4xl font-bold text-primary">FREE</span>
               </div>
-              <p className="text-sm text-muted-foreground mt-1">{t('or_yearly')}</p>
+              <p className="text-sm font-semibold text-primary mt-1">for 3 days, then $9.99/month</p>
+              <p className="text-xs text-muted-foreground mt-2">
+                Billed monthly after trial. Cancel anytime - takes effect next billing cycle.
+              </p>
             </div>
             <ul className="space-y-3 mb-8">
               {features.premium.map((feature, index) => (
@@ -92,13 +99,15 @@ const Premium = () => {
               size="lg"
               className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold text-lg shadow-lg hover:shadow-xl"
             >
-              {t('upgrade_now')}
+              Start 3-Day Free Trial
             </Button>
           </Card>
         </div>
 
-        <div className="text-center text-sm text-muted-foreground animate-fade-in">
-          <p>{t('cancel_anytime')}</p>
+        <div className="text-center text-sm text-muted-foreground animate-fade-in space-y-2">
+          <p className="font-medium">✨ Start your free trial today - no payment required for 3 days</p>
+          <p>After trial ends, you'll be charged $9.99/month. Cancel anytime during trial at no cost.</p>
+          <p className="text-xs">No refunds after billing. Cancellations take effect at the end of your billing period.</p>
         </div>
       </main>
     </div>
