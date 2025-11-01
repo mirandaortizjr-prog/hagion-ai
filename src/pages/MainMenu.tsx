@@ -130,6 +130,13 @@ const MainMenu = () => {
       image: triuneGod,
       isPro: false,
     },
+    {
+      id: "faithful-friend",
+      name: "Faithful Friend",
+      image: holySpirItFire,
+      isPro: true,
+      externalLink: "https://faithfulfriend.app",
+    },
   ];
 
 
@@ -493,7 +500,15 @@ const MainMenu = () => {
                 <div
                   key={guide.id}
                   className="flex flex-col items-center gap-3 cursor-pointer group"
-                  onClick={() => navigate(`/divine/${guide.id}`)}
+                  onClick={() => {
+                    if (guide.isPro) {
+                      navigate('/premium');
+                    } else if ((guide as any).externalLink) {
+                      window.open((guide as any).externalLink, '_blank');
+                    } else {
+                      navigate(`/divine/${guide.id}`);
+                    }
+                  }}
                 >
                   <div className="relative">
                     <div className="w-20 h-20 rounded-3xl bg-black flex items-center justify-center overflow-hidden">
@@ -519,6 +534,7 @@ const MainMenu = () => {
                           {guide.id === 'christ' && t('christ_info')}
                           {guide.id === 'holy-spirit' && t('holy_spirit_info')}
                           {guide.id === 'trinity' && t('trinity_info')}
+                          {guide.id === 'faithful-friend' && 'Your personal AI spiritual companion available 24/7. Access deep theological conversations and personalized guidance.'}
                         </p>
                       </PopoverContent>
                     </Popover>
