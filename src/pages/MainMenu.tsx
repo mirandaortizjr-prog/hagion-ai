@@ -487,7 +487,7 @@ const MainMenu = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`w-24 h-24 rounded-full overflow-hidden border-4 transition-all ${
+                      className={`w-24 h-24 rounded-lg overflow-hidden border-4 transition-all ${
                         guide.isPro
                           ? "border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20"
                           : "border-yellow-500 shadow-lg shadow-yellow-500/20 group-hover:border-yellow-600"
