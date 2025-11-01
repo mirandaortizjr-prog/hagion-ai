@@ -514,7 +514,12 @@ const MainMenu = () => {
                         </button>
                       </PopoverTrigger>
                       <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
-                        <p className="text-sm">{t('divine_guidance_info')}</p>
+                        <p className="text-sm">
+                          {guide.id === 'elohim' && t('elohim_info')}
+                          {guide.id === 'christ' && t('christ_info')}
+                          {guide.id === 'holy-spirit' && t('holy_spirit_info')}
+                          {guide.id === 'trinity' && t('trinity_info')}
+                        </p>
                       </PopoverContent>
                     </Popover>
                     {guide.isPro && (
