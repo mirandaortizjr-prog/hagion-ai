@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logo from "@/assets/logo.gif";
+import logo from "@/assets/faithful-friend-logo.png";
 
 const Splash = () => {
   const navigate = useNavigate();
@@ -16,14 +16,14 @@ const Splash = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-background to-white">
+    <div className="min-h-screen flex items-center justify-center bg-[#000000]">
       <div className="text-center animate-fade-in px-4">
         <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto">
-          <div className="absolute inset-0 animate-glow-pulse rounded-3xl" />
+          <div className="absolute inset-0 animate-glow-pulse" />
           <img
             src={logo}
             alt="Hagion AI"
-            className="w-full h-full object-cover rounded-3xl animate-scale-in shadow-2xl"
+            className="w-full h-full object-contain animate-scale-in"
           />
         </div>
         <h1 className="mt-6 sm:mt-8 text-3xl sm:text-4xl font-bold text-secondary animate-slide-up">
