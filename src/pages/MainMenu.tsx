@@ -14,6 +14,7 @@ import elohimSymbol from "@/assets/elohim-symbol.png";
 import christCross from "@/assets/christ-cross.png";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
 import triuneGod from "@/assets/triune-god.png";
+import faithfulFriendIcon from "@/assets/faithful-friend-icon.png";
 import hagionLogo from "@/assets/hagion-logo.png";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
@@ -133,7 +134,7 @@ const MainMenu = () => {
     {
       id: "faithful-friend",
       name: "Faithful Friend",
-      image: holySpirItFire,
+      image: faithfulFriendIcon,
       isPro: true,
       externalLink: "https://faithfulfriend.app",
     },
@@ -501,10 +502,10 @@ const MainMenu = () => {
                   key={guide.id}
                   className="flex flex-col items-center gap-3 cursor-pointer group"
                   onClick={() => {
-                    if (guide.isPro) {
-                      navigate('/premium');
-                    } else if ((guide as any).externalLink) {
+                    if ((guide as any).externalLink) {
                       window.open((guide as any).externalLink, '_blank');
+                    } else if (guide.isPro) {
+                      navigate('/premium');
                     } else {
                       navigate(`/divine/${guide.id}`);
                     }
