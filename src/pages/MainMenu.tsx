@@ -519,7 +519,7 @@ const MainMenu = () => {
 
               {/* Plan of Salvation Box */}
               <div className="col-span-3 mt-4 flex justify-center">
-                <Card className="relative overflow-hidden border-4 border-black bg-gradient-to-b from-background to-card w-full max-w-md">
+                <Card className="relative overflow-hidden border-4 border-black bg-gradient-to-b from-background to-muted/20 w-full max-w-md">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-black"></div>
                   
                   <div className="p-4">
