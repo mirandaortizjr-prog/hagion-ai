@@ -135,7 +135,7 @@ const MainMenu = () => {
       id: "faithful-friend",
       name: "Faithful Friend",
       image: faithfulFriendIcon,
-      isPro: false,
+      isPro: true,
       externalLink: "https://faithfulfriend.app",
     },
   ];
@@ -160,7 +160,7 @@ const MainMenu = () => {
       image: martyrsIcon,
       icon: undefined,
       color: "bg-black",
-      isPro: true,
+      isPro: false,
       isSpecial: false,
       type: "storytelling" as const,
     },
@@ -218,7 +218,7 @@ const MainMenu = () => {
       image: scrollIcon,
       icon: undefined,
       color: "bg-teal-500",
-      isPro: true,
+      isPro: false,
       isSpecial: false,
       type: "track" as const,
     },
@@ -240,7 +240,7 @@ const MainMenu = () => {
       image: scrollIcon,
       icon: undefined,
       color: "bg-teal-500",
-      isPro: true,
+      isPro: false,
       isSpecial: false,
       type: "track" as const,
     },
@@ -309,7 +309,7 @@ const MainMenu = () => {
       image: undefined,
       icon: Heart,
       color: "bg-rose-500",
-      isPro: true,
+      isPro: false,
       isSpecial: false,
       type: "path" as const,
     },
@@ -396,7 +396,7 @@ const MainMenu = () => {
       subtitle: t('science_evidence'),
       description: t('science_desc'),
       image: sophiaImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "medical",
@@ -412,7 +412,7 @@ const MainMenu = () => {
       subtitle: t('forensic_evidence'),
       description: t('forensic_desc'),
       image: kenanImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "philosophical",
@@ -428,7 +428,7 @@ const MainMenu = () => {
       subtitle: t('psychological_evidence'),
       description: t('psychological_desc'),
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
-      isPro: true,
+      isPro: false,
     },
     {
       id: "historical",
@@ -444,7 +444,7 @@ const MainMenu = () => {
       subtitle: t('artistic_evidence'),
       description: t('artistic_desc'),
       image: raphaelImage,
-      isPro: true,
+      isPro: false,
     },
     {
       id: "linguistic",
@@ -460,7 +460,7 @@ const MainMenu = () => {
       subtitle: t('cultural_evidence'),
       description: t('cultural_desc'),
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
-      isPro: true,
+      isPro: false,
     },
   ];
 
@@ -545,7 +545,7 @@ const MainMenu = () => {
                       </PopoverContent>
                     </Popover>
                     {guide.isPro && (
-                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${guide.id === 'faithful-friend' ? 'bg-sky-500' : 'bg-orange-500'}`}>
                         <span>★</span> PRO
                       </div>
                     )}
