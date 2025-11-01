@@ -793,7 +793,7 @@ const MainMenu = () => {
                           ) : null}
                         </div>
                       )}
-                      {item.type === 'storytelling' && (
+                      {(item.type === 'storytelling' || item.type === 'wisdom' || item.type === 'group' || item.type === 'speaking') && (
                         <Popover>
                           <PopoverTrigger asChild>
                             <button
@@ -810,6 +810,10 @@ const MainMenu = () => {
                               {item.id === 'martyrs' && t('martyrs_faith_info')}
                               {item.id === 'history-christianity' && t('history_christianity_info')}
                               {item.id === 'bible-translations' && t('bible_translations_info')}
+                              {item.id === 'daily-wisdom' && t('daily_wisdom_info')}
+                              {item.id === 'curriculum-tracks' && t('logic_reasoning_info')}
+                              {item.id === 'teaching-paths' && t('apologetics_witness_info')}
+                              {item.id === 'public-speaking' && t('sermon_lab_info')}
                             </p>
                           </PopoverContent>
                         </Popover>

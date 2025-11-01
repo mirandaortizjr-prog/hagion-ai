@@ -353,6 +353,9 @@ const translations: Record<Language, Record<string, string>> = {
     'failed_load_wisdom': "Failed to load today's wisdom",
     'last_viewed_not_found': 'Last viewed story not found',
     'please_signin_view_wisdom': 'Please sign in to view Daily Wisdom',
+    'logic_reasoning_info': 'Master critical thinking and logical reasoning through structured learning paths.',
+    'apologetics_witness_info': 'Develop skills in defending your faith and sharing the Gospel effectively.',
+    'sermon_lab_info': 'Create, analyze, and refine powerful sermons with AI-powered assistance.',
     
     // Curriculum Tracks
     'foundations_logos': 'Foundations of Logos',
@@ -884,6 +887,9 @@ const translations: Record<Language, Record<string, string>> = {
     'failed_load_wisdom': 'Error al cargar la sabiduría de hoy',
     'last_viewed_not_found': 'Historia vista por última vez no encontrada',
     'please_signin_view_wisdom': 'Por favor inicia sesión para ver Sabiduría Diaria',
+    'logic_reasoning_info': 'Domina el pensamiento crítico y el razonamiento lógico a través de rutas de aprendizaje estructuradas.',
+    'apologetics_witness_info': 'Desarrolla habilidades para defender tu fe y compartir el Evangelio de manera efectiva.',
+    'sermon_lab_info': 'Crea, analiza y perfecciona sermones poderosos con asistencia impulsada por IA.',
     
     // Curriculum Tracks
     'foundations_logos': 'Fundamentos de Logos',
