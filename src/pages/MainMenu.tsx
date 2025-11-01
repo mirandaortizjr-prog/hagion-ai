@@ -576,7 +576,7 @@ const MainMenu = () => {
                       
                       <div className="text-center sm:text-right">
                         <p className="text-xs text-muted-foreground">{t('acceptances_year')}</p>
-                        <p className="text-xl font-bold text-primary">{yearlyCount.toLocaleString()}</p>
+                        <p className="text-xl font-bold text-white">{yearlyCount.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
