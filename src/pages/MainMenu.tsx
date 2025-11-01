@@ -519,18 +519,18 @@ const MainMenu = () => {
 
               {/* Plan of Salvation Box */}
               <div className="col-span-3 mt-4 flex justify-center">
-                <Card className="relative overflow-hidden border-4 border-yellow-500 bg-gradient-to-br from-yellow-50 via-white to-yellow-50 w-full max-w-md">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-500"></div>
+                <Card className="relative overflow-hidden border-4 border-black bg-gradient-to-b from-background to-card w-full max-w-md">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-black"></div>
                   
                   <div className="p-4">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center flex-shrink-0">
                         <Heart className="w-5 h-5 text-white fill-white" />
                       </div>
                       <h3 className="text-lg font-bold text-secondary">{t('plan_of_salvation')}</h3>
                     </div>
 
-                    <ScrollArea className="h-[400px] pr-2">
+                    <ScrollArea className="h-[200px] pr-2">
                       <div className="space-y-3 text-xs text-muted-foreground leading-relaxed">
                         <p className="font-semibold text-secondary">{t('salvation_intro')}</p>
                         <p>{t('salvation_p1')}</p>
@@ -550,7 +550,7 @@ const MainMenu = () => {
                         <p className="font-semibold text-secondary">{t('salvation_done')}</p>
                         <p>{t('salvation_choice')}</p>
 
-                        <div className="border-l-4 border-yellow-500 pl-3 my-4 bg-yellow-50 py-3 rounded-r">
+                        <div className="border-l-4 border-black pl-3 my-4 bg-muted py-3 rounded-r">
                           <p className="font-bold text-secondary mb-2">{t('prayer_header')}</p>
                           <p className="italic">{t('salvation_prayer')}</p>
                         </div>
@@ -568,7 +568,7 @@ const MainMenu = () => {
                       <Button
                         onClick={handleAccept}
                         disabled={isAccepting}
-                        className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-6 font-semibold"
+                        className="w-full sm:w-auto bg-black hover:bg-black/90 text-white px-6 font-semibold"
                       >
                         <Heart className="w-4 h-4 mr-2" />
                         {isAccepting ? t('accepting') : t('accept')}
@@ -576,7 +576,7 @@ const MainMenu = () => {
                       
                       <div className="text-center sm:text-right">
                         <p className="text-xs text-muted-foreground">{t('acceptances_year')}</p>
-                        <p className="text-xl font-bold text-yellow-600">{yearlyCount.toLocaleString()}</p>
+                        <p className="text-xl font-bold text-primary">{yearlyCount.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
