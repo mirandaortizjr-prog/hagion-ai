@@ -1119,7 +1119,7 @@ const curriculumDataEs: Record<string, Curriculum> = {
             content: [
               "📖 DEFINICIÓN: Una falacia es un error en el razonamiento que hace que un argumento sea defectuoso. Puede parecer persuasiva, pero viola las reglas de la lógica. Las falacias son las 'sombras'—parecen argumentos reales pero carecen de sustancia.",
               "2 Timoteo 4:3-4 advierte: 'Porque vendrá tiempo cuando no soportarán la sana doctrina, sino que teniendo comezón de oír, se amontonarán maestros conforme a sus propias pasiones, y apartarán sus oídos de la verdad.' Las falacias son herramientas del engaño espiritual.",
-              "💡 IDEA CLAVE: Identificar falacias no se trata de ganar debates—se trata de proteger la verdad. Cuando alguien usa razonamiento falaz para atacar la fe, no es mezquino señalarlo. Es defenderloya claridad y la verdad.",
+              "💡 IDEA CLAVE: Identificar falacias no se trata de ganar debates—se trata de proteger la verdad. Cuando alguien usa razonamiento falaz para atacar la fe, no es mezquino señalarlo. Es defender la claridad y la verdad.",
               "Las falacias vienen en dos categorías principales: (1) FALACIAS FORMALES—violan las reglas de la estructura lógica, (2) FALACIAS INFORMALES—usan lenguaje engañoso, emoción inapropiada o información irrelevante.",
               "🎯 POR QUÉ IMPORTA EN APOLOGÉTICA: Los oponentes de la fe a menudo usan razonamiento falaz, a veces sin darse cuenta. Ser capaz de identificar falacias te protege de ser desviado y te ayuda a guiar conversaciones de vuelta a la verdad.",
               "Proverbios 26:4-5 da una instrucción aparentemente contradictoria: 'No respondas al necio según su necedad... Responde al necio según su necedad.' El punto: a veces ignoramos argumentos tontos, otras veces los refutamos. El discernimiento requiere saber cuándo hacer cada cosa—y reconocer falacias ayuda."
@@ -1156,6 +1156,280 @@ const curriculumDataEs: Record<string, Curriculum> = {
             exercises: [
               "MEDITACIÓN: Lee Juan 1:1-14 lentamente. Reflexiona sobre cómo ver a Cristo como 'Logos' cambia tu comprensión de la lógica.",
               "ORACIÓN: Agradece a Dios por el regalo de la razón y pídele que te ayude a desarrollar claridad de pensamiento al servicio de la verdad."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  apologetics: {
+    id: "apologetics",
+    modules: [
+      {
+        id: "module-1",
+        title: "Fundamentos de Apologética Cristiana",
+        description: "Comprendiendo la base bíblica y el propósito de defender la fe",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "¿Qué es la Apologética?",
+            description: "Aprender el propósito fundamental y los métodos",
+            duration: "20 min",
+            content: [
+              "📖 DEFINICIÓN: La apologética es la defensa razonada de la fe cristiana. Viene del griego 'apologia', que significa 'dar una respuesta o defensa'.",
+              "1 Pedro 3:15 nos manda: 'Estén siempre preparados para responder a todo el que les pida razón de la esperanza que hay en ustedes'",
+              "💡 IDEA CLAVE: La apologética no se trata de ganar argumentos, sino de guiar a las personas a la verdad con amor y claridad.",
+            ],
+            exercises: [
+              "REFLEXIÓN: ¿Por qué es importante estar preparado para defender tu fe?",
+              "ESCRITURA: Memoriza 1 Pedro 3:15"
+            ]
+          },
+          {
+            id: "lesson-2",
+            title: "El Argumento Cosmológico",
+            description: "Comprendiendo los argumentos de Dios como la Primera Causa",
+            duration: "30 min",
+            content: [
+              "📖 CONCEPTO: El argumento cosmológico sostiene que todo lo que comienza a existir tiene una causa, y el universo comenzó a existir, por lo tanto el universo tiene una causa.",
+              "Esta causa debe ser eterna, poderosa, y personal—atributos que apuntan a Dios.",
+            ],
+            exercises: [
+              "PRÁCTICA: Explica el argumento cosmológico en tus propias palabras"
+            ]
+          },
+          {
+            id: "lesson-3",
+            title: "El Argumento Teleológico (Diseño)",
+            description: "Evidencia de propósito y diseño en la creación",
+            duration: "30 min",
+            content: [
+              "📖 CONCEPTO: El argumento del diseño observa la complejidad y el orden en la naturaleza como evidencia de un Diseñador inteligente.",
+              "El Salmo 19:1 declara: 'Los cielos cuentan la gloria de Dios; el firmamento proclama la obra de sus manos'",
+            ],
+            exercises: [
+              "OBSERVACIÓN: Lista 3 ejemplos de diseño en la naturaleza que señalan a un Creador"
+            ]
+          }
+        ]
+      },
+      {
+        id: "module-2",
+        title: "Fundamentos de Apologética",
+        description: "Dando razones para la esperanza que hay en ti",
+        lessons: [
+          {
+            id: "lesson-4",
+            title: "¿Qué es la Apologética?",
+            description: "Defendiendo la fe con razón y reverencia",
+            duration: "30 min",
+            content: [
+              "📖 FUNDAMENTO: 1 Pedro 3:15 es el versículo fundamental de la apologética: 'Estén siempre preparados para responder a todo el que les pida razón de la esperanza que hay en ustedes. Pero háganlo con gentileza y respeto'",
+              "La palabra 'apologética' viene del griego 'apologia' que significa 'defensa razonada'. No es pedir disculpas—es presentar evidencia.",
+            ],
+            exercises: [
+              "MEMORIZACIÓN: Memoriza 1 Pedro 3:15 completo",
+              "REFLEXIÓN: ¿Qué diferencia hay entre defender la fe y discutir?"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  witnessing: {
+    id: "witnessing",
+    modules: [
+      {
+        id: "module-1",
+        title: "Fundamentos del Testimonio Efectivo",
+        description: "Principios bíblicos para compartir tu fe con sabiduría y amor",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "El Modelo de Jesús para Testificar",
+            description: "Aprendiendo de cómo Cristo compartió la verdad",
+            duration: "25 min",
+            content: [
+              "📖 FUNDAMENTO: Jesús es nuestro modelo supremo de testimonio. Él conocía a su audiencia, usaba historias, hacía preguntas, y siempre hablaba con amor y verdad.",
+              "En Juan 4, Jesús se encuentra con la mujer samaritana. Nota cómo: (1) Inicia con una necesidad común (agua), (2) Hace preguntas que revelan necesidades espirituales más profundas, (3) Ofrece verdad transformadora.",
+              "💡 IDEA CLAVE: El testimonio efectivo comienza con escuchar, no con hablar. Jesús hizo más preguntas que declaraciones.",
+            ],
+            exercises: [
+              "ESTUDIO: Lee Juan 4:1-26. Lista 3 técnicas que Jesús usó para testificar",
+              "PRÁCTICA: Esta semana, haz una pregunta a alguien sobre su vida espiritual en lugar de solo hacer declaraciones",
+              "REFLEXIÓN: ¿Cuándo has visto a alguien compartir el evangelio de manera efectiva? ¿Qué hicieron bien?"
+            ]
+          },
+          {
+            id: "lesson-2",
+            title: "Discernimiento Emocional en el Testimonio",
+            description: "Leyendo y respondiendo a las barreras emocionales",
+            duration: "30 min",
+            content: [
+              "📖 CONCEPTO: Las personas a menudo rechazan el evangelio no por razones intelectuales, sino por razones emocionales—heridas pasadas, miedo, orgullo, vergüenza.",
+              "Proverbios 20:5 dice: 'Los pensamientos del corazón humano son aguas profundas; el que es inteligente los capta fácilmente.'",
+              "💡 IDEA CLAVE: Antes de responder objeciones intelectuales, identifica las emocionales. La gente necesita sentirse segura antes de poder ser honesta.",
+            ],
+            exercises: [
+              "IDENTIFICACIÓN: Piensa en alguien que conoces que resiste el evangelio. ¿Qué heridas o miedos emocionales podrían estar en juego?",
+              "PRÁCTICA: Escribe cómo podrías abordar con empatía una barrera emocional común (ej. 'He sido herido por la iglesia')"
+            ]
+          }
+        ]
+      },
+      {
+        id: "module-2",
+        title: "Comunicación Efectiva del Evangelio",
+        description: "Técnicas prácticas para compartir el mensaje con claridad",
+        lessons: [
+          {
+            id: "lesson-3",
+            title: "Tu Historia Personal",
+            description: "Usando tu testimonio efectivamente",
+            duration: "25 min",
+            content: [
+              "📖 PODER DEL TESTIMONIO: Hechos 26 muestra a Pablo compartiendo su historia personal ante el rey Agripa. Los testimonios personales son poderosos porque nadie puede discutir tu experiencia.",
+              "ESTRUCTURA: Un testimonio efectivo tiene tres partes: (1) Cómo era mi vida antes de Cristo, (2) Cómo conocí a Cristo, (3) Cómo Cristo ha cambiado mi vida.",
+            ],
+            exercises: [
+              "ESCRITURA: Escribe tu testimonio usando la estructura de tres partes. Mantenlo en 3-5 minutos",
+              "PRÁCTICA: Comparte tu testimonio con un amigo cristiano y pide retroalimentación"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  scripture: {
+    id: "scripture",
+    modules: [
+      {
+        id: "module-1",
+        title: "Lógica en Textos Bíblicos",
+        description: "Viendo la estructura divina de las Escrituras",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "Estructuras de Argumentos en las Epístolas de Pablo",
+            description: "Romanos como una obra maestra de lógica",
+            duration: "25 min",
+            content: [
+              "📖 FUNDAMENTO: Pablo era un maestro de la argumentación lógica. Sus epístolas están estructuradas como casos legales, construyendo premisa sobre premisa hacia conclusiones ineludibles.",
+              "Romanos 1-8 es quizás el argumento teológico más perfectamente construido jamás escrito. Pablo establece: (1) La humanidad es culpable ante Dios, (2) La justificación viene por fe, (3) Por lo tanto, tenemos paz con Dios.",
+              "💡 IDEA CLAVE: Cuando estudias las epístolas de Pablo, no solo estás leyendo teología—estás observando lógica sagrada en acción.",
+            ],
+            exercises: [
+              "ANÁLISIS: Lee Romanos 3:21-26. Identifica las premisas y la conclusión en el argumento de Pablo",
+              "APLICACIÓN: Toma una verdad teológica que creas y escríbela como un argumento lógico con premisas y conclusión"
+            ]
+          },
+          {
+            id: "lesson-2",
+            title: "El Uso de Lógica por Jesús",
+            description: "Cómo Cristo razonó con los oponentes",
+            duration: "25 min",
+            content: [
+              "📖 EJEMPLOS: Jesús frecuentemente usó argumentos lógicos para desmantelar la oposición y revelar la verdad.",
+              "En Mateo 22:41-46, Jesús usa lógica para probar su deidad: Si David llama al Mesías 'Señor', ¿cómo puede el Mesías ser meramente el hijo de David? Esto forzó a los fariseos a confrontar su error.",
+              "💡 TÉCNICA: Jesús a menudo usó el método socrático—haciendo preguntas que llevaban a las personas a conclusiones verdaderas por sí mismas.",
+            ],
+            exercises: [
+              "ESTUDIO: Lee Mateo 22:15-46. Identifica 3 ejemplos donde Jesús usa lógica para responder desafíos",
+              "PRÁCTICA: Piensa en una objeción común a la fe. ¿Cómo podrías responder usando preguntas al estilo de Jesús?"
+            ]
+          },
+          {
+            id: "lesson-3",
+            title: "Lógica Profética",
+            description: "Patrones si-entonces en la profecía del Antiguo Testamento",
+            duration: "20 min",
+            content: [
+              "📖 ESTRUCTURA: Gran parte de la profecía del Antiguo Testamento sigue una estructura lógica 'si-entonces': 'Si obedeces, entonces serás bendecido. Si desobedeces, entonces serás disciplinado.'",
+              "Deuteronomio 28 es el ejemplo clásico—bendiciones detalladas por obediencia (vv. 1-14) y maldiciones por desobediencia (vv. 15-68).",
+              "Esta es lógica condicional: IF (condición) THEN (resultado). Dios es consistente y predecible en sus tratos con su pueblo.",
+            ],
+            exercises: [
+              "BÚSQUEDA: Encuentra 3 ejemplos de lógica 'si-entonces' en los profetas",
+              "APLICACIÓN: ¿Cómo te ayuda ver esta lógica a confiar en las promesas de Dios?"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  emotional: {
+    id: "emotional",
+    modules: [
+      {
+        id: "module-1",
+        title: "Comprendiendo la Lógica Emocional",
+        description: "Cómo los sentimientos y la verdad se intersectan",
+        lessons: [
+          {
+            id: "lesson-1",
+            title: "Emociones como Datos",
+            description: "Los sentimientos revelan lo que creemos",
+            duration: "15 min",
+            content: [
+              "📖 FUNDAMENTO: Las emociones no son irracionales—son respuestas lógicas a lo que creemos ser verdad. Si crees que estás en peligro, sentirás miedo. Si crees que has sido injuriado, sentirás enojo.",
+              "Proverbios 4:23 dice: 'Por sobre todas las cosas cuida tu corazón, porque de él mana la vida.' El 'corazón' en la Escritura incluye tanto sentimientos como creencias.",
+              "💡 IDEA CLAVE: Tus emociones son como el tablero de instrumentos de un auto—te dicen qué está pasando bajo el capó. No son la verdad en sí, pero señalan a lo que crees ser verdad.",
+            ],
+            exercises: [
+              "AUTOEXAMEN: Identifica una emoción fuerte que has sentido recientemente. ¿Qué creencia estaba impulsándola?",
+              "ESCRITURA: Lee Santiago 1:19-20. ¿Cómo se relaciona la ira emocional con creencias sobre la justicia?"
+            ]
+          },
+          {
+            id: "lesson-2",
+            title: "Verdad Sobre Sentimientos",
+            description: "Cuando las emociones y la realidad entran en conflicto",
+            duration: "20 min",
+            content: [
+              "📖 CONFLICTO: A veces nuestros sentimientos nos mienten. Podemos SENTIR que Dios nos ha abandonado cuando Él ha prometido nunca dejarnos (Hebreos 13:5).",
+              "El Salmo 42 muestra a David luchando con esto: '¿Por qué voy a inquietarme? ¿Por qué me voy a angustiar?' Luego se predica la verdad a sí mismo: 'En Dios pondré mi esperanza.'",
+              "💡 CLAVE: Cuando los sentimientos y la verdad chocan, debemos elegir creer la verdad mientras reconocemos los sentimientos. No niegues las emociones, pero no las dejes gobernar.",
+            ],
+            exercises: [
+              "IDENTIFICACIÓN: ¿Qué verdad de la Escritura choca más frecuentemente con tus sentimientos?",
+              "PRÁCTICA: Escribe una oración que reconozca tus sentimientos pero afirme la verdad de Dios"
+            ]
+          },
+          {
+            id: "lesson-3",
+            title: "Testimonio Emocional",
+            description: "Conectando corazón y mente en el evangelismo",
+            duration: "20 min",
+            content: [
+              "📖 EQUILIBRIO: El testimonio efectivo aborda tanto la mente como el corazón. Jesús dijo que debemos amar a Dios con todo nuestro corazón, alma, mente y fuerzas (Marcos 12:30).",
+              "Pablo en Atenas (Hechos 17) usó argumentos lógicos, pero también apeló a los anhelos más profundos de su audiencia.",
+              "💡 IDEA: Las personas necesitan tanto razones como esperanza. Ofrece argumentos lógicos, pero no ignores las necesidades emocionales—soledad, miedo, anhelo de significado.",
+            ],
+            exercises: [
+              "REFLEXIÓN: ¿Tiendes a enfocarte más en argumentos lógicos o en conexión emocional cuando testificas?",
+              "EQUILIBRIO: Piensa en alguien con quien quieres compartir el evangelio. ¿Qué necesidad emocional podrías abordar junto con la verdad?"
+            ]
+          }
+        ]
+      },
+      {
+        id: "module-2",
+        title: "Sanando a Través de la Verdad",
+        description: "Cómo el razonamiento correcto trae sanidad emocional",
+        lessons: [
+          {
+            id: "lesson-4",
+            title: "Renovación de la Mente",
+            description: "Transformación mediante el pensamiento correcto",
+            duration: "25 min",
+            content: [
+              "📖 FUNDAMENTO: Romanos 12:2 ordena: 'No se amolden al mundo actual, sino sean transformados mediante la renovación de su mente.'",
+              "La transformación emocional viene de pensar correctamente. Cuando reemplazas mentiras con verdad, tu vida emocional cambia.",
+              "💡 PROCESO: Identifica la mentira → Encuentra la verdad bíblica → Medita en la verdad → Experimenta libertad emocional",
+            ],
+            exercises: [
+              "APLICACIÓN: Identifica una mentira que has creído. Encuentra 3 versículos que hablen la verdad sobre esa área",
+              "MEMORIZACIÓN: Escoge un versículo que contrarreste esa mentira y memorízalo esta semana"
             ]
           }
         ]
