@@ -380,7 +380,7 @@ const MainMenu = () => {
       description: t('discernment_description'),
       image: discernmentFlameImage,
       isPro: false,
-      isSpecial: false,
+      isSpecial: true,
     },
     {
       id: "apologetics",
@@ -652,7 +652,13 @@ const MainMenu = () => {
             >
               <div className="relative">
                 <div
-                  className="w-24 h-24 rounded-full overflow-hidden border-4 border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4] transition-all"
+                  className={`w-24 h-24 rounded-full overflow-hidden border-4 ${
+                    assistant.id === 'discern' 
+                      ? 'border-amber-500 shadow-lg shadow-amber-500/30 group-hover:border-amber-400' 
+                      : assistant.id === 'apologetics-debate'
+                      ? 'border-red-500 shadow-lg shadow-red-500/30 group-hover:border-red-400'
+                      : 'border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'
+                  } transition-all group-hover:scale-105`}
                 >
                   <img
                     src={assistant.image}
@@ -677,6 +683,13 @@ const MainMenu = () => {
                 {assistant.isPro && (
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
                     <span>★</span> PRO
+                  </div>
+                )}
+                {assistant.isSpecial && (
+                  <div className={`absolute -top-2 left-1/2 -translate-x-1/2 ${
+                    assistant.id === 'discern' ? 'bg-amber-500' : 'bg-red-500'
+                  } text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg z-20 whitespace-nowrap`}>
+                    {assistant.id === 'discern' ? '🔥 SPECIAL' : '⚔️ SPECIAL'}
                   </div>
                 )}
               </div>
