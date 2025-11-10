@@ -60,8 +60,8 @@ const App = () => (
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />
             <Route path="/apologetics-debate" element={<ApologeticsDebate />} />
-          <Route path="/logos-circle" element={<LogosCircle />} />
-          <Route path="/logos-circle/:type/:id" element={<LogosLearning />} />
+            <Route path="/logos-circle" element={<LogosCircle />} />
+            <Route path="/logos-circle/:type/:id" element={<LogosLearning />} />
             <Route path="/bible-translations" element={<BibleTranslations />} />
             <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/prayer-wall" element={<PrayerWall />} />
