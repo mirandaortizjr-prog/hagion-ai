@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import Splash from "./pages/Splash";
+import Onboarding from "./pages/Onboarding";
 import MainMenu from "./pages/MainMenu";
 import Settings from "./pages/Settings";
 import History from "./pages/History";
@@ -43,6 +44,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/splash" element={<Splash />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/main-menu" element={<MainMenu />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/settings" element={<Settings />} />

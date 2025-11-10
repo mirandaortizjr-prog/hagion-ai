@@ -1,13 +1,48 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Check, Crown, ArrowLeft, X } from "lucide-react";
+import { Check, Crown, ArrowLeft, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { toast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
 
 const Premium = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handlePurchase = async (plan: 'premium' | 'premiumPlus') => {
+    setIsProcessing(true);
+    
+    try {
+      // TODO: Integrate with Google Play Billing when ready
+      // For now, show a message that payment integration is coming
+      toast({
+        title: language === 'es' ? 'Próximamente' : 'Coming Soon',
+        description: language === 'es' 
+          ? 'La integración de pagos se activará cuando la aplicación esté publicada en Google Play Store'
+          : 'Payment integration will be activated when the app is published on Google Play Store',
+      });
+      
+      // When ready, this will call Google Play Billing API:
+      // const purchase = await Purchases.purchaseProduct({
+      //   productId: plan === 'premium' ? 'hagion_premium_monthly' : 'hagion_premium_plus_monthly'
+      // });
+      
+    } catch (error) {
+      console.error('Purchase error:', error);
+      toast({
+        title: language === 'es' ? 'Error' : 'Error',
+        description: language === 'es' 
+          ? 'No se pudo procesar la compra. Por favor, inténtalo de nuevo.'
+          : 'Could not process purchase. Please try again.',
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const features = {
     free: [
@@ -106,9 +141,15 @@ const Premium = () => {
             </ul>
             <Button
               size="lg"
+              onClick={() => handlePurchase('premium')}
+              disabled={isProcessing}
               className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold shadow-lg hover:shadow-xl"
             >
-              Start 3-Day Free Trial
+              {isProcessing ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {language === 'es' ? 'Procesando...' : 'Processing...'}</>
+              ) : (
+                'Start 3-Day Free Trial'
+              )}
             </Button>
           </Card>
 
@@ -137,9 +178,15 @@ const Premium = () => {
             </ul>
             <Button
               size="lg"
+              onClick={() => handlePurchase('premiumPlus')}
+              disabled={isProcessing}
               className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold shadow-lg hover:shadow-xl"
             >
-              Start 3-Day Free Trial
+              {isProcessing ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {language === 'es' ? 'Procesando...' : 'Processing...'}</>
+              ) : (
+                'Start 3-Day Free Trial'
+              )}
             </Button>
           </Card>
         </div>

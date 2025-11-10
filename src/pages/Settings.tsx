@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut, History, MessageSquare, Trash2, Star } from "lucide-react";
+import { ArrowLeft, User, Bell, Shield, HelpCircle, LogOut, History, MessageSquare, Trash2, Star, BookOpen } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -124,6 +124,15 @@ const Settings = () => {
     }
   };
 
+  const handleResetOnboarding = () => {
+    localStorage.removeItem("onboardingCompleted");
+    toast({
+      title: language === 'es' ? 'Tutorial reiniciado' : 'Tutorial Reset',
+      description: language === 'es' ? 'Volverás a ver el tutorial en tu próxima visita' : 'You will see the tutorial on your next visit',
+    });
+    navigate("/onboarding");
+  };
+
   const settingsSections = [
     {
       title: t('account'),
@@ -141,6 +150,7 @@ const Settings = () => {
       title: t('support'),
       items: [
         { icon: HelpCircle, label: t('help_support'), action: () => navigate("/support") },
+        { icon: BookOpen, label: language === 'es' ? 'Ver Tutorial de Nuevo' : 'View Tutorial Again', action: handleResetOnboarding },
       ],
     },
   ];
