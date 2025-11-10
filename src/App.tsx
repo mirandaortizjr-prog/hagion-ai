@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import Splash from "./pages/Splash";
@@ -34,6 +35,23 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Component to handle onboarding redirect
+const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const onboardingCompleted = localStorage.getItem("onboardingCompleted");
+    const exemptRoutes = ["/", "/splash", "/onboarding", "/auth"];
+    
+    if (!onboardingCompleted && !exemptRoutes.includes(location.pathname)) {
+      navigate("/onboarding", { replace: true });
+    }
+  }, [location, navigate]);
+
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
@@ -41,7 +59,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
+          <OnboardingGuard>
+            <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/splash" element={<Splash />} />
             <Route path="/onboarding" element={<Onboarding />} />
@@ -70,6 +89,7 @@ const App = () => (
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </OnboardingGuard>
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>
