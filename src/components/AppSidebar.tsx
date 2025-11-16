@@ -113,33 +113,33 @@ export function AppSidebar() {
   const favoriteChats = chatHistory.filter(c => c.isFavorite);
 
   return (
-    <Sidebar className="w-[50vw] border-r bg-muted">
-      <div className="p-6 bg-black border-b-2 border-border">
-        <img src={hagionLogo} alt="Hagion AI" className="h-14 w-auto" />
+    <Sidebar className="w-[50vw] border-r border-black bg-muted/30">
+      <div className="p-8 bg-black border-b-0">
+        <img src={hagionLogo} alt="Hagion AI" className="h-20 w-auto" />
       </div>
 
-      <SidebarContent className="bg-muted">
+      <SidebarContent className="bg-muted/30">
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2 text-base">
+          <SidebarGroupLabel className="flex items-center gap-2 text-base font-semibold">
             <MessageSquare className="h-5 w-5" />
             {t('chat_history')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-2">
               {recentChats.length === 0 ? (
                 <div className="px-3 py-2 text-base text-muted-foreground">
                   {t('no_conversations')}
                 </div>
               ) : (
                 recentChats.map((chat) => (
-                  <SidebarMenuItem key={chat.id}>
+                  <SidebarMenuItem key={chat.id} className="mb-3">
                     <SidebarMenuButton
                       onClick={() => handleOpenConversation(chat)}
-                      className="w-full justify-between group"
+                      className="w-full justify-between group py-3"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="text-base font-medium truncate">{chat.preview}</div>
-                        <div className="text-sm text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
+                        <div className="text-xs text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
@@ -170,7 +170,7 @@ export function AppSidebar() {
         <Collapsible open={favoritesOpen} onOpenChange={setFavoritesOpen}>
           <SidebarGroup>
             <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 text-base">
+              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 text-base font-semibold">
                 <Star className="h-5 w-5" />
                 {t('favorite_chats')}
                 <ChevronDown className={`h-5 w-5 ml-auto transition-transform ${favoritesOpen ? 'rotate-180' : ''}`} />
@@ -178,21 +178,21 @@ export function AppSidebar() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarGroupContent>
-                <SidebarMenu>
+                <SidebarMenu className="space-y-2">
                   {favoriteChats.length === 0 ? (
                     <div className="px-3 py-2 text-base text-muted-foreground">
                       {t('no_favorites')}
                     </div>
                   ) : (
                     favoriteChats.map((chat) => (
-                      <SidebarMenuItem key={chat.id}>
+                      <SidebarMenuItem key={chat.id} className="mb-3">
                         <SidebarMenuButton
                           onClick={() => handleOpenConversation(chat)}
-                          className="w-full justify-between group"
+                          className="w-full justify-between group py-3"
                         >
                           <div className="flex-1 min-w-0">
                             <div className="text-base font-medium truncate">{chat.preview}</div>
-                            <div className="text-sm text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
+                            <div className="text-xs text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
                           </div>
                           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button
