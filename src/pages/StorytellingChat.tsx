@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -26,9 +26,28 @@ const StorytellingChat = () => {
   const { toast } = useToast();
   const { remaining, refetch: refetchUsage } = useMessageLimit();
   const { storyId } = useParams();
+  const [searchParams] = useSearchParams();
+  const historyId = searchParams.get("history");
   
-  const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load from history if resuming a conversation
+    if (historyId) {
+      const stored = localStorage.getItem("chat_history");
+      if (stored) {
+        try {
+          const history = JSON.parse(stored);
+          const conversation = history.find((c: any) => c.id === historyId);
+          if (conversation) {
+            return conversation.messages;
+          }
+        } catch (error) {
+          console.error("Failed to load conversation:", error);
+        }
+      }
+    }
+    return [];
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -58,7 +77,7 @@ const StorytellingChat = () => {
   const info = storyInfo[storyId || "biblical-stories"];
 
   useEffect(() => {
-    if (info) {
+    if (info && !historyId) {
       setMessages((prev) => {
         // Only set greeting if starting or there is only the initial assistant message
         if (prev.length === 0 || (prev.length === 1 && prev[0].role === 'assistant')) {
@@ -67,7 +86,7 @@ const StorytellingChat = () => {
         return prev;
       });
     }
-  }, [storyId, language]);
+  }, [storyId, language, historyId]);
 
   useEffect(() => {
     if (scrollRef.current) {

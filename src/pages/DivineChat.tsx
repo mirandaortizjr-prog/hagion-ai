@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -24,9 +24,28 @@ const DivineChat = () => {
   const { toast } = useToast();
   const { voiceId } = useParams();
   const { t, language } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const historyId = searchParams.get("history");
   
-  const [conversationId] = useState(() => `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load from history if resuming a conversation
+    if (historyId) {
+      const stored = localStorage.getItem("chat_history");
+      if (stored) {
+        try {
+          const history = JSON.parse(stored);
+          const conversation = history.find((c: any) => c.id === historyId);
+          if (conversation) {
+            return conversation.messages;
+          }
+        } catch (error) {
+          console.error("Failed to load conversation:", error);
+        }
+      }
+    }
+    return [];
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -63,7 +82,7 @@ const DivineChat = () => {
   const info = voiceInfo[voiceId || "elohim"];
 
   useEffect(() => {
-    if (info) {
+    if (info && !historyId) {
       setMessages((prev) => {
         // Only reset the greeting if no conversation yet or it's just the initial greeting
         if (prev.length === 0 || (prev.length === 1 && prev[0].role === "assistant")) {
@@ -72,7 +91,7 @@ const DivineChat = () => {
         return prev;
       });
     }
-  }, [voiceId, language]);
+  }, [voiceId, language, historyId]);
 
   useEffect(() => {
     if (scrollRef.current) {
