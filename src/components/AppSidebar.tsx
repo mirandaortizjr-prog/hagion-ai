@@ -113,29 +113,29 @@ export function AppSidebar() {
   const favoriteChats = chatHistory.filter(c => c.isFavorite);
 
   return (
-    <Sidebar className="w-[50vw] border-r-0 bg-muted">
+    <Sidebar className="w-[50vw] border-0 bg-muted shadow-none">
       <div className="p-4 bg-black">
         <img src={hagionLogo} alt="Hagion AI" className="h-20 w-auto" />
       </div>
 
       <SidebarContent className="bg-muted">
-        <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2 text-base font-semibold">
+        <SidebarGroup className="bg-muted">
+          <SidebarGroupLabel className="flex items-center gap-2 text-base font-semibold bg-muted">
             <MessageSquare className="h-5 w-5" />
             {t('chat_history')}
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
+          <SidebarGroupContent className="bg-muted">
+            <SidebarMenu className="space-y-2 bg-muted">
               {recentChats.length === 0 ? (
                 <div className="px-3 py-2 text-base text-muted-foreground">
                   {t('no_conversations')}
                 </div>
               ) : (
                 recentChats.map((chat) => (
-                  <SidebarMenuItem key={chat.id} className="mb-3">
+                  <SidebarMenuItem key={chat.id} className="mb-3 bg-muted">
                     <SidebarMenuButton
                       onClick={() => handleOpenConversation(chat)}
-                      className="w-full justify-between group py-3"
+                      className="w-full justify-between group py-3 bg-muted hover:bg-muted/80"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="text-base font-medium truncate">{chat.preview}</div>
@@ -168,27 +168,27 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <Collapsible open={favoritesOpen} onOpenChange={setFavoritesOpen}>
-          <SidebarGroup>
+          <SidebarGroup className="bg-muted">
             <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 text-base font-semibold">
+              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 text-base font-semibold bg-muted">
                 <Star className="h-5 w-5" />
                 {t('favorite_chats')}
                 <ChevronDown className={`h-5 w-5 ml-auto transition-transform ${favoritesOpen ? 'rotate-180' : ''}`} />
               </SidebarGroupLabel>
             </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu className="space-y-2">
+            <CollapsibleContent className="bg-muted">
+              <SidebarGroupContent className="bg-muted">
+                <SidebarMenu className="space-y-2 bg-muted">
                   {favoriteChats.length === 0 ? (
                     <div className="px-3 py-2 text-base text-muted-foreground">
                       {t('no_favorites')}
                     </div>
                   ) : (
                     favoriteChats.map((chat) => (
-                      <SidebarMenuItem key={chat.id} className="mb-3">
+                      <SidebarMenuItem key={chat.id} className="mb-3 bg-muted">
                         <SidebarMenuButton
                           onClick={() => handleOpenConversation(chat)}
-                          className="w-full justify-between group py-3"
+                          className="w-full justify-between group py-3 bg-muted hover:bg-muted/80"
                         >
                           <div className="flex-1 min-w-0">
                             <div className="text-base font-medium truncate">{chat.preview}</div>
