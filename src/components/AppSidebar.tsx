@@ -113,21 +113,21 @@ export function AppSidebar() {
   const favoriteChats = chatHistory.filter(c => c.isFavorite);
 
   return (
-    <Sidebar className="w-[50vw] border-r">
-      <div className="p-4">
-        <img src={hagionLogo} alt="Hagion AI" className="h-12 w-auto" />
+    <Sidebar className="w-[50vw] border-r bg-muted">
+      <div className="p-6 bg-black border-b-2 border-border">
+        <img src={hagionLogo} alt="Hagion AI" className="h-14 w-auto" />
       </div>
 
-      <SidebarContent>
+      <SidebarContent className="bg-muted">
         <SidebarGroup>
-          <SidebarGroupLabel className="flex items-center gap-2">
-            <MessageSquare className="h-4 w-4" />
+          <SidebarGroupLabel className="flex items-center gap-2 text-base">
+            <MessageSquare className="h-5 w-5" />
             {t('chat_history')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {recentChats.length === 0 ? (
-                <div className="px-3 py-2 text-sm text-muted-foreground">
+                <div className="px-3 py-2 text-base text-muted-foreground">
                   {t('no_conversations')}
                 </div>
               ) : (
@@ -138,8 +138,8 @@ export function AppSidebar() {
                       className="w-full justify-between group"
                     >
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium truncate">{chat.preview}</div>
-                        <div className="text-xs text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
+                        <div className="text-base font-medium truncate">{chat.preview}</div>
+                        <div className="text-sm text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
@@ -170,17 +170,17 @@ export function AppSidebar() {
         <Collapsible open={favoritesOpen} onOpenChange={setFavoritesOpen}>
           <SidebarGroup>
             <CollapsibleTrigger asChild>
-              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50">
-                <Star className="h-4 w-4" />
+              <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 text-base">
+                <Star className="h-5 w-5" />
                 {t('favorite_chats')}
-                <ChevronDown className={`h-4 w-4 ml-auto transition-transform ${favoritesOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-5 w-5 ml-auto transition-transform ${favoritesOpen ? 'rotate-180' : ''}`} />
               </SidebarGroupLabel>
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {favoriteChats.length === 0 ? (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                    <div className="px-3 py-2 text-base text-muted-foreground">
                       {t('no_favorites')}
                     </div>
                   ) : (
@@ -191,8 +191,8 @@ export function AppSidebar() {
                           className="w-full justify-between group"
                         >
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium truncate">{chat.preview}</div>
-                            <div className="text-xs text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
+                            <div className="text-base font-medium truncate">{chat.preview}</div>
+                            <div className="text-sm text-muted-foreground">{formatTimestamp(chat.timestamp)}</div>
                           </div>
                           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button
