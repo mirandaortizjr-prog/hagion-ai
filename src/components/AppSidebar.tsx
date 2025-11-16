@@ -113,12 +113,12 @@ export function AppSidebar() {
   const favoriteChats = chatHistory.filter(c => c.isFavorite);
 
   return (
-    <Sidebar className="w-[50vw] border-r border-black bg-muted/30">
-      <div className="p-8 bg-black border-b-0">
+    <Sidebar className="w-[50vw] border-r-0 bg-muted">
+      <div className="p-4 bg-black">
         <img src={hagionLogo} alt="Hagion AI" className="h-20 w-auto" />
       </div>
 
-      <SidebarContent className="bg-muted/30">
+      <SidebarContent className="bg-muted">
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2 text-base font-semibold">
             <MessageSquare className="h-5 w-5" />
