@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles } from "lucide-react";
+import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles, Menu } from "lucide-react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
@@ -465,19 +467,20 @@ const MainMenu = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 py-4 border-b">
-        <img 
-          src={hagionLogo} 
-          alt="Hagion AI" 
-          className="w-10 h-10 object-contain"
-        />
-        <h1 className="text-2xl font-bold">Hagion AI</h1>
-        <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
-          <Settings className="w-6 h-6" />
-        </Button>
-      </header>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar />
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="flex items-center justify-between px-4 py-4 border-b">
+            <SidebarTrigger>
+              <Menu className="w-6 h-6" />
+            </SidebarTrigger>
+            <h1 className="text-2xl font-bold">Hagion AI</h1>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
+              <Settings className="w-6 h-6" />
+            </Button>
+          </header>
 
       {/* Tabs */}
       <div className="px-4 pt-4">
@@ -900,7 +903,9 @@ const MainMenu = () => {
           <span className="text-xs">{t('history')}</span>
         </button>
       </nav>
-    </div>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
