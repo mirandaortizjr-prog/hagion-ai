@@ -116,10 +116,10 @@ export function AppSidebar() {
   const recentChats = chatHistory.filter(c => !c.isFavorite);
 
   const renderChatItem = (chat: ChatHistory) => (
-    <SidebarMenuItem key={chat.id} className="group bg-muted">
+    <SidebarMenuItem key={chat.id} className="group bg-transparent">
       <SidebarMenuButton
         onClick={() => handleOpenConversation(chat)}
-        className="w-full bg-muted hover:bg-muted/80"
+        className="w-full bg-transparent hover:bg-muted/20"
       >
         <MessageSquare className="h-4 w-4 flex-shrink-0" />
         <div className="flex-1 min-w-0">
@@ -149,10 +149,10 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar className="w-[50vw] border-0 bg-muted shadow-none flex flex-col">
+    <Sidebar className="w-[50vw] border-0 bg-sidebar-bg shadow-none flex flex-col">
       {/* Fixed Header */}
-      <div className="flex-shrink-0 bg-muted">
-        <div className="flex items-center gap-3 px-6 py-4 bg-muted">
+      <div className="flex-shrink-0 bg-sidebar-bg">
+        <div className="flex items-center gap-3 px-6 py-4 bg-sidebar-bg">
           <img src={hagionLogo} alt="Hagion AI" className="h-16 w-auto" />
           <h1 className="text-3xl font-playfair font-bold text-foreground">Hagion AI</h1>
         </div>
@@ -160,17 +160,17 @@ export function AppSidebar() {
       </div>
 
       {/* Scrollable Content */}
-      <ScrollArea className="flex-1 bg-muted">
-        <SidebarContent className="bg-muted">
+      <ScrollArea className="flex-1 bg-sidebar-bg">
+        <SidebarContent className="bg-sidebar-bg">
           {/* Saved Chats Section */}
           <Collapsible
             open={savedChatsOpen}
             onOpenChange={setSavedChatsOpen}
-            className="bg-muted"
+            className="bg-sidebar-bg"
           >
-            <SidebarGroup className="bg-muted">
+            <SidebarGroup className="bg-sidebar-bg">
               <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-playfair font-semibold py-4">
+                <SidebarGroupLabel className="bg-sidebar-bg hover:bg-sidebar-bg/80 cursor-pointer text-lg font-playfair font-semibold py-4">
                   <span>Saved Chats</span>
                   <ChevronDown
                     className={`ml-auto h-4 w-4 transition-transform ${
@@ -180,14 +180,14 @@ export function AppSidebar() {
                 </SidebarGroupLabel>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarGroupContent className="bg-muted">
+                <SidebarGroupContent className="bg-sidebar-bg px-4">
                   {favoriteChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-muted">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg">
                       {t('no_saved_chats')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[200px] bg-muted">
-                      <SidebarMenu className="bg-muted">
+                    <ScrollArea className="h-[200px] bg-sidebar-content rounded-lg p-2">
+                      <SidebarMenu className="bg-transparent">
                         {favoriteChats.map(renderChatItem)}
                       </SidebarMenu>
                     </ScrollArea>
@@ -201,11 +201,11 @@ export function AppSidebar() {
           <Collapsible
             open={historyOpen}
             onOpenChange={setHistoryOpen}
-            className="bg-muted"
+            className="bg-sidebar-bg"
           >
-            <SidebarGroup className="bg-muted">
+            <SidebarGroup className="bg-sidebar-bg">
               <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-playfair font-semibold py-4">
+                <SidebarGroupLabel className="bg-sidebar-bg hover:bg-sidebar-bg/80 cursor-pointer text-lg font-playfair font-semibold py-4">
                   <span>History</span>
                   <ChevronDown
                     className={`ml-auto h-4 w-4 transition-transform ${
@@ -215,14 +215,14 @@ export function AppSidebar() {
                 </SidebarGroupLabel>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarGroupContent className="bg-muted">
+                <SidebarGroupContent className="bg-sidebar-bg px-4">
                   {recentChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-muted">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg">
                       {t('no_history')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[400px] bg-muted">
-                      <SidebarMenu className="bg-muted">
+                    <ScrollArea className="h-[400px] bg-sidebar-content rounded-lg p-2">
+                      <SidebarMenu className="bg-transparent">
                         {recentChats.map(renderChatItem)}
                       </SidebarMenu>
                     </ScrollArea>
