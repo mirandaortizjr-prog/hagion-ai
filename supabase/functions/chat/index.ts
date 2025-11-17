@@ -8,7 +8,7 @@ const chatRequestSchema = z.object({
     role: z.enum(['user', 'assistant', 'system']),
     content: z.string().max(10000).trim()
   })).min(1).max(100),
-  voice: z.enum(['elohim', 'emmanuel', 'ruach', 'trinity', 'apologetics', 'science', 'medical', 'psychology', 'forensic', 'philosophical', 'historical', 'biblical-stories', 'martyrs', 'debate', 'friend']).optional(),
+  voice: z.enum(['elohim', 'emmanuel', 'ruach', 'trinity', 'apologetics', 'science', 'medical', 'psychology', 'forensic', 'philosophical', 'historical', 'artistic', 'linguistic', 'cultural', 'biblical-stories', 'martyrs', 'debate', 'friend', 'apologetics-helper']).optional(),
   context: z.string().max(500).optional(),
   language: z.enum(['en', 'es']).optional(),
   debatePersona: z.enum(['atheist', 'agnostic', 'secular-humanist', 'skeptic', 'pantheist', 'alternative-spiritual']).optional(),
