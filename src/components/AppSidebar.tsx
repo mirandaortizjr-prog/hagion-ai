@@ -116,54 +116,37 @@ export function AppSidebar() {
   const recentChats = chatHistory.filter(c => !c.isFavorite);
 
   const renderChatItem = (chat: ChatHistory) => (
-    <SidebarMenuItem key={chat.id} className="group bg-transparent relative mb-3">
-      <SidebarMenuButton
-        onClick={() => handleOpenConversation(chat)}
-        className="w-full bg-transparent hover:bg-muted/20 px-3 py-2.5 flex-col items-start h-auto"
-      >
-        <div className="flex items-start gap-3 w-full pr-16">
-          <MessageSquare className="h-4 w-4 flex-shrink-0 mt-0.5" />
-          <div className="flex-1 min-w-0">
-            <div className="text-xs text-muted-foreground mb-1">{formatTimestamp(chat.timestamp)}</div>
-            <div className="truncate text-sm font-medium">{chat.preview}</div>
-          </div>
+    <SidebarMenuItem key={chat.id} className="group">
+      <SidebarMenuButton onClick={() => handleOpenConversation(chat)} className="w-full justify-start hover:bg-gray-100 px-2 py-2">
+        <MessageSquare className="mr-2 h-4 w-4 flex-shrink-0 text-gray-600" />
+        <div className="flex-1 min-w-0">
+          <div className="text-sm truncate text-gray-900">{chat.preview}</div>
+          <div className="text-xs text-gray-500">{formatTimestamp(chat.timestamp)}</div>
         </div>
       </SidebarMenuButton>
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={(e) => handleToggleFavorite(chat.id, e)}
-        >
-          <Star className={`h-3 w-3 ${chat.isFavorite ? "fill-yellow-400 text-yellow-400" : ""}`} />
+      <div className="flex items-center gap-1 px-2">
+        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => handleToggleFavorite(chat.id, e)}>
+          <Star className={`h-3 w-3 ${chat.isFavorite ? "fill-yellow-500 text-yellow-500" : "text-gray-600"}`} />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          onClick={(e) => handleDeleteConversation(chat.id, e)}
-        >
-          <Trash2 className="h-3 w-3" />
+        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => handleDeleteConversation(chat.id, e)}>
+          <Trash2 className="h-3 w-3 text-red-500" />
         </Button>
       </div>
     </SidebarMenuItem>
   );
 
   return (
-    <Sidebar className="w-[50vw] max-w-full overflow-x-hidden border-0 bg-sidebar-bg shadow-none flex flex-col">
-      {/* Fixed Header */}
-      <div className="flex-shrink-0 bg-sidebar-bg">
-        <div className="flex items-center gap-3 px-6 py-4 bg-sidebar-bg">
-          <img src={hagionLogo} alt="Hagion AI" className="h-16 w-auto" />
-          <h1 className="text-3xl font-playfair font-bold text-foreground">Hagion AI</h1>
-        </div>
-        <Separator className="bg-border" />
-      </div>
-
-      {/* Scrollable Content */}
-      <ScrollArea className="flex-1 bg-sidebar-bg">
-        <SidebarContent className="bg-sidebar-bg overflow-x-hidden">
+    <Sidebar className="w-[280px] border-0 bg-[hsl(210,100%,20%)]">
+      <SidebarContent className="p-4 bg-[hsl(210,100%,20%)]">
+        {/* White Content Box */}
+        <div className="bg-white rounded-lg p-4 flex flex-col gap-0 max-h-[calc(100vh-32px)] overflow-y-auto">
+          {/* Fixed Header */}
+          <div className="pb-3 border-b border-gray-200 mb-3">
+            <div className="flex items-center gap-3">
+              <img src={hagionLogo} alt="Hagion AI" className="w-10 h-10 rounded-lg shadow-sm" />
+              <h2 className="text-lg font-semibold text-gray-900">Hagion AI</h2>
+            </div>
+          </div>
           {/* Saved Chats Section */}
           <Collapsible
             open={savedChatsOpen}
@@ -237,8 +220,8 @@ export function AppSidebar() {
               </CollapsibleContent>
             </SidebarGroup>
           </Collapsible>
-        </SidebarContent>
-      </ScrollArea>
+        </div>
+      </SidebarContent>
     </Sidebar>
   );
 }
