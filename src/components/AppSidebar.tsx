@@ -184,11 +184,11 @@ export function AppSidebar() {
               <CollapsibleContent>
                 <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
                   {favoriteChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-3">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-6">
                       {t('no_saved_chats')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[200px] bg-sidebar-content rounded-lg p-3 mx-3">
+                    <ScrollArea className="h-[200px] bg-sidebar-content rounded-lg p-3 mx-6">
                       <SidebarMenu className="bg-transparent">
                         {favoriteChats.map(renderChatItem)}
                       </SidebarMenu>
@@ -219,11 +219,11 @@ export function AppSidebar() {
               <CollapsibleContent>
                 <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
                   {recentChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-3">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-6">
                       {t('no_history')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[400px] bg-sidebar-content rounded-lg p-3 mx-3">
+                    <ScrollArea className="h-[400px] bg-sidebar-content rounded-lg p-3 mx-6">
                       <SidebarMenu className="bg-transparent">
                         {recentChats.map(renderChatItem)}
                       </SidebarMenu>
