@@ -151,7 +151,7 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar className="w-[50vw] border-0 bg-sidebar-bg shadow-none flex flex-col">
+    <Sidebar className="w-[50vw] max-w-full overflow-x-hidden border-0 bg-sidebar-bg shadow-none flex flex-col">
       {/* Fixed Header */}
       <div className="flex-shrink-0 bg-sidebar-bg">
         <div className="flex items-center gap-3 px-6 py-4 bg-sidebar-bg">
@@ -163,7 +163,7 @@ export function AppSidebar() {
 
       {/* Scrollable Content */}
       <ScrollArea className="flex-1 bg-sidebar-bg">
-        <SidebarContent className="bg-sidebar-bg">
+        <SidebarContent className="bg-sidebar-bg overflow-x-hidden">
           {/* Saved Chats Section */}
           <Collapsible
             open={savedChatsOpen}
@@ -188,11 +188,13 @@ export function AppSidebar() {
                       {t('no_saved_chats')}
                     </div>
                   ) : (
-                    <ScrollArea className="w-full max-w-[560px] mx-auto h-[200px] bg-sidebar-content rounded-2xl p-4">
-                      <SidebarMenu className="bg-transparent">
-                        {favoriteChats.map(renderChatItem)}
-                      </SidebarMenu>
-                    </ScrollArea>
+                      <div className="mx-auto w-full max-w-[560px]">
+                        <ScrollArea className="w-full h-[200px] bg-sidebar-content rounded-2xl p-4 overflow-x-hidden">
+                          <SidebarMenu className="bg-transparent">
+                            {favoriteChats.map(renderChatItem)}
+                          </SidebarMenu>
+                        </ScrollArea>
+                      </div>
                   )}
                 </SidebarGroupContent>
               </CollapsibleContent>
@@ -223,11 +225,13 @@ export function AppSidebar() {
                       {t('no_history')}
                     </div>
                   ) : (
-                    <ScrollArea className="w-full max-w-[560px] mx-auto h-[400px] bg-sidebar-content rounded-2xl p-4">
-                      <SidebarMenu className="bg-transparent">
-                        {recentChats.map(renderChatItem)}
-                      </SidebarMenu>
-                    </ScrollArea>
+                      <div className="mx-auto w-full max-w-[560px]">
+                        <ScrollArea className="w-full h-[400px] bg-sidebar-content rounded-2xl p-4 overflow-x-hidden">
+                          <SidebarMenu className="bg-transparent">
+                            {recentChats.map(renderChatItem)}
+                          </SidebarMenu>
+                        </ScrollArea>
+                      </div>
                   )}
                 </SidebarGroupContent>
               </CollapsibleContent>
