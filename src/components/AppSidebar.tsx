@@ -152,10 +152,8 @@ export function AppSidebar() {
     <Sidebar className="w-[50vw] border-0 bg-muted shadow-none flex flex-col">
       {/* Fixed Header */}
       <div className="flex-shrink-0 bg-muted">
-        <div className="p-4 bg-black">
-          <img src={hagionLogo} alt="Hagion AI" className="h-20 mx-auto" />
-        </div>
-        <div className="px-6 py-3 bg-muted">
+        <div className="flex items-center gap-3 px-6 py-4 bg-muted">
+          <img src={hagionLogo} alt="Hagion AI" className="h-16 w-auto" />
           <h1 className="text-3xl font-playfair font-bold text-foreground">Hagion AI</h1>
         </div>
         <Separator className="bg-border" />
