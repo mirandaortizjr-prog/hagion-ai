@@ -139,87 +139,83 @@ export function AppSidebar() {
     <Sidebar className="w-[280px] border-0 bg-[hsl(205,37%,78%)]">
       <SidebarContent className="p-4 bg-[hsl(205,37%,78%)]">
         {/* White Content Box */}
-        <div className="bg-white rounded-lg p-4 flex flex-col gap-0 max-h-[calc(100vh-32px)] overflow-y-auto">
+        <div className="bg-white rounded-lg flex flex-col max-h-[calc(100vh-32px)] overflow-hidden shadow-sm">
           {/* Fixed Header */}
-          <div className="pb-3 border-b border-gray-200 mb-3">
+          <div className="p-4 border-b border-gray-300 flex-shrink-0 bg-white">
             <div className="flex items-center gap-3">
               <img src={hagionLogo} alt="Hagion AI" className="w-10 h-10 rounded-lg shadow-sm" />
-              <h2 className="text-lg font-semibold text-gray-900">Hagion AI</h2>
+              <h2 className="text-lg font-semibold text-gray-900 font-playfair">Hagion AI</h2>
             </div>
           </div>
-          {/* Saved Chats Section */}
-          <Collapsible
-            open={savedChatsOpen}
-            onOpenChange={setSavedChatsOpen}
-            className="bg-sidebar-bg"
-          >
-            <SidebarGroup className="bg-sidebar-bg">
-              <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-sidebar-bg hover:bg-sidebar-bg/80 cursor-pointer text-lg font-playfair font-semibold py-4">
-                  <span>Saved Chats</span>
-                  <ChevronDown
-                    className={`ml-auto h-4 w-4 transition-transform ${
-                      savedChatsOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </SidebarGroupLabel>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
-                  {favoriteChats.length === 0 ? (
-                    <div className="w-full max-w-[560px] mx-auto px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-2xl">
-                      {t('no_saved_chats')}
-                    </div>
-                  ) : (
-                      <div className="mx-auto w-full max-w-[560px]">
-                        <ScrollArea className="w-full h-[200px] bg-sidebar-content rounded-2xl p-4 overflow-x-hidden">
-                          <SidebarMenu className="bg-transparent">
-                            {favoriteChats.map(renderChatItem)}
-                          </SidebarMenu>
-                        </ScrollArea>
+          
+          {/* Scrollable Chat Section */}
+          <div className="flex-grow overflow-y-auto bg-white">
+            {/* Saved Chats Section */}
+            <Collapsible
+              open={savedChatsOpen}
+              onOpenChange={setSavedChatsOpen}
+              className="p-4"
+            >
+              <SidebarGroup>
+                <CollapsibleTrigger asChild>
+                  <SidebarGroupLabel className="hover:bg-gray-50 cursor-pointer text-base font-playfair font-semibold py-3 text-gray-900">
+                    <span>Saved Chats</span>
+                    <ChevronDown
+                      className={`ml-auto h-4 w-4 transition-transform text-gray-900 ${
+                        savedChatsOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </SidebarGroupLabel>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarGroupContent className="px-0 py-2">
+                    {favoriteChats.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-sm text-gray-500">
+                        {t('no_saved_chats')}
                       </div>
-                  )}
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
+                    ) : (
+                      <SidebarMenu>
+                        {favoriteChats.map(renderChatItem)}
+                      </SidebarMenu>
+                    )}
+                  </SidebarGroupContent>
+                </CollapsibleContent>
+              </SidebarGroup>
+            </Collapsible>
 
-          {/* History Section */}
-          <Collapsible
-            open={historyOpen}
-            onOpenChange={setHistoryOpen}
-            className="bg-sidebar-bg"
-          >
-            <SidebarGroup className="bg-sidebar-bg">
-              <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-sidebar-bg hover:bg-sidebar-bg/80 cursor-pointer text-lg font-playfair font-semibold py-4">
-                  <span>History</span>
-                  <ChevronDown
-                    className={`ml-auto h-4 w-4 transition-transform ${
-                      historyOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </SidebarGroupLabel>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
-                  {recentChats.length === 0 ? (
-                    <div className="w-full max-w-[560px] mx-auto px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-2xl">
-                      {t('no_history')}
-                    </div>
-                  ) : (
-                      <div className="mx-auto w-full max-w-[560px]">
-                        <ScrollArea className="w-full h-[400px] bg-sidebar-content rounded-2xl p-4 overflow-x-hidden">
-                          <SidebarMenu className="bg-transparent">
-                            {recentChats.map(renderChatItem)}
-                          </SidebarMenu>
-                        </ScrollArea>
+            {/* History Section */}
+            <Collapsible
+              open={historyOpen}
+              onOpenChange={setHistoryOpen}
+              className="p-4 border-t border-gray-200"
+            >
+              <SidebarGroup>
+                <CollapsibleTrigger asChild>
+                  <SidebarGroupLabel className="hover:bg-gray-50 cursor-pointer text-base font-playfair font-semibold py-3 text-gray-900">
+                    <span>History</span>
+                    <ChevronDown
+                      className={`ml-auto h-4 w-4 transition-transform text-gray-900 ${
+                        historyOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </SidebarGroupLabel>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarGroupContent className="px-0 py-2">
+                    {recentChats.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-sm text-gray-500">
+                        {t('no_history')}
                       </div>
-                  )}
-                </SidebarGroupContent>
-              </CollapsibleContent>
-            </SidebarGroup>
-          </Collapsible>
+                    ) : (
+                      <SidebarMenu>
+                        {recentChats.map(renderChatItem)}
+                      </SidebarMenu>
+                    )}
+                  </SidebarGroupContent>
+                </CollapsibleContent>
+              </SidebarGroup>
+            </Collapsible>
+          </div>
         </div>
       </SidebarContent>
     </Sidebar>
