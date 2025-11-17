@@ -116,15 +116,17 @@ export function AppSidebar() {
   const recentChats = chatHistory.filter(c => !c.isFavorite);
 
   const renderChatItem = (chat: ChatHistory) => (
-    <SidebarMenuItem key={chat.id} className="group bg-transparent relative">
+    <SidebarMenuItem key={chat.id} className="group bg-transparent relative mb-3">
       <SidebarMenuButton
         onClick={() => handleOpenConversation(chat)}
-        className="w-full bg-transparent hover:bg-muted/20 px-3 py-2"
+        className="w-full bg-transparent hover:bg-muted/20 px-3 py-2.5 flex-col items-start h-auto"
       >
-        <MessageSquare className="h-4 w-4 flex-shrink-0" />
-        <div className="flex-1 min-w-0 pr-16">
-          <div className="truncate text-sm font-medium">{chat.preview}</div>
-          <div className="text-xs text-muted-foreground truncate">{formatTimestamp(chat.timestamp)}</div>
+        <div className="flex items-start gap-3 w-full pr-16">
+          <MessageSquare className="h-4 w-4 flex-shrink-0 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <div className="text-xs text-muted-foreground mb-1">{formatTimestamp(chat.timestamp)}</div>
+            <div className="truncate text-sm font-medium">{chat.preview}</div>
+          </div>
         </div>
       </SidebarMenuButton>
       <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -180,14 +182,14 @@ export function AppSidebar() {
                 </SidebarGroupLabel>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarGroupContent className="bg-sidebar-bg px-6 py-2">
+                <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
                   {favoriteChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-2">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-3">
                       {t('no_saved_chats')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[200px] bg-sidebar-content rounded-lg p-4 mx-2">
-                      <SidebarMenu className="bg-transparent space-y-1">
+                    <ScrollArea className="h-[200px] bg-sidebar-content rounded-lg p-3 mx-3">
+                      <SidebarMenu className="bg-transparent">
                         {favoriteChats.map(renderChatItem)}
                       </SidebarMenu>
                     </ScrollArea>
@@ -215,14 +217,14 @@ export function AppSidebar() {
                 </SidebarGroupLabel>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <SidebarGroupContent className="bg-sidebar-bg px-6 py-2">
+                <SidebarGroupContent className="bg-sidebar-bg px-4 py-2">
                   {recentChats.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-2">
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground bg-sidebar-content rounded-lg mx-3">
                       {t('no_history')}
                     </div>
                   ) : (
-                    <ScrollArea className="h-[400px] bg-sidebar-content rounded-lg p-4 mx-2">
-                      <SidebarMenu className="bg-transparent space-y-1">
+                    <ScrollArea className="h-[400px] bg-sidebar-content rounded-lg p-3 mx-3">
+                      <SidebarMenu className="bg-transparent">
                         {recentChats.map(renderChatItem)}
                       </SidebarMenu>
                     </ScrollArea>
