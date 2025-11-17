@@ -136,8 +136,8 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar className="w-[280px] border-0 bg-[hsl(210,100%,20%)]">
-      <SidebarContent className="p-4 bg-[hsl(210,100%,20%)]">
+    <Sidebar className="w-[280px] border-0 bg-[hsl(205,37%,78%)]">
+      <SidebarContent className="p-4 bg-[hsl(205,37%,78%)]">
         {/* White Content Box */}
         <div className="bg-white rounded-lg p-4 flex flex-col gap-0 max-h-[calc(100vh-32px)] overflow-y-auto">
           {/* Fixed Header */}
