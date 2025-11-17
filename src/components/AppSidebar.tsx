@@ -156,7 +156,7 @@ export function AppSidebar() {
           <img src={hagionLogo} alt="Hagion AI" className="h-20 mx-auto" />
         </div>
         <div className="px-6 py-3 bg-muted">
-          <h1 className="text-2xl font-bold text-foreground">Hagion AI</h1>
+          <h1 className="text-3xl font-playfair font-bold text-foreground">Hagion AI</h1>
         </div>
         <Separator className="bg-border" />
       </div>
@@ -172,8 +172,8 @@ export function AppSidebar() {
           >
             <SidebarGroup className="bg-muted">
               <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-semibold py-4">
-                  <span>{t('saved_chats')}</span>
+                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-playfair font-semibold py-4">
+                  <span>Saved Chats</span>
                   <ChevronDown
                     className={`ml-auto h-4 w-4 transition-transform ${
                       savedChatsOpen ? "rotate-180" : ""
@@ -207,8 +207,8 @@ export function AppSidebar() {
           >
             <SidebarGroup className="bg-muted">
               <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-semibold py-4">
-                  <span>{t('history')}</span>
+                <SidebarGroupLabel className="bg-muted hover:bg-muted/80 cursor-pointer text-lg font-playfair font-semibold py-4">
+                  <span>History</span>
                   <ChevronDown
                     className={`ml-auto h-4 w-4 transition-transform ${
                       historyOpen ? "rotate-180" : ""
