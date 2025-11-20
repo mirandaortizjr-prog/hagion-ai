@@ -138,7 +138,7 @@ const ApologeticsDebate = () => {
           }],
           voice: "debate",
           debatePersona: persona.id,
-          debateRound: round,
+          debateRound: "opening",
         }),
       });
 
@@ -230,7 +230,7 @@ const ApologeticsDebate = () => {
         return;
       }
 
-      const difficultyLevel = round === 1 ? 'moderate' : round === 2 ? 'challenging' : 'highly complex';
+      const debateStage = round === 1 ? 'opening' : round === 2 ? 'rebuttal' : 'cross-examination';
 
       const response = await fetch(CHAT_URL, {
         method: "POST",
@@ -242,7 +242,7 @@ const ApologeticsDebate = () => {
           messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })),
           voice: "debate",
           debatePersona: currentPersona.id,
-          debateRound: `round-${round}-${difficultyLevel}`,
+          debateRound: debateStage,
         }),
       });
 
@@ -392,6 +392,8 @@ const ApologeticsDebate = () => {
         return;
       }
 
+      const debateStage = round === 1 ? 'opening' : round === 2 ? 'rebuttal' : 'cross-examination';
+      
       const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
@@ -402,7 +404,7 @@ const ApologeticsDebate = () => {
           messages: conversationSoFar.map(m => ({ role: m.role, content: m.content })),
           voice: "apologetics-helper",
           debatePersona: currentPersona.id,
-          debateRound: round,
+          debateRound: debateStage,
         }),
       });
 
