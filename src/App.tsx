@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { PremiumProvider } from "@/contexts/PremiumContext";
 import { useNativeInit } from "@/hooks/useNativeFeatures";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
 import Index from "./pages/Index";
@@ -63,13 +64,14 @@ const NativeAppWrapper = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <OfflineIndicator />
-        <BrowserRouter>
-          <NativeAppWrapper>
-          <OnboardingGuard>
+      <PremiumProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <OfflineIndicator />
+          <BrowserRouter>
+            <NativeAppWrapper>
+            <OnboardingGuard>
             <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/splash" element={<Splash />} />
@@ -102,7 +104,8 @@ const App = () => (
           </OnboardingGuard>
           </NativeAppWrapper>
         </BrowserRouter>
-      </TooltipProvider>
+        </TooltipProvider>
+      </PremiumProvider>
     </LanguageProvider>
   </QueryClientProvider>
 );
