@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
+import { supabase } from '@/integrations/supabase/client';
 
 const isNative = Capacitor.isNativePlatform();
+const platform = Capacitor.getPlatform();
 
 export interface PushNotificationState {
   token: string | null;
@@ -77,6 +79,37 @@ export const usePushNotifications = () => {
   useEffect(() => {
     if (!isNative) return;
 
+    // Function to save token to database
+    const saveTokenToDatabase = async (token: string) => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          console.log('No user logged in, cannot save push token');
+          return;
+        }
+
+        // Upsert the token (insert or update if exists)
+        const { error } = await supabase
+          .from('push_tokens')
+          .upsert({
+            user_id: user.id,
+            token,
+            platform: platform as 'android' | 'ios' | 'web',
+            device_info: { registered_at: new Date().toISOString() },
+          }, {
+            onConflict: 'token',
+          });
+
+        if (error) {
+          console.error('Error saving push token:', error);
+        } else {
+          console.log('Push token saved to database');
+        }
+      } catch (err) {
+        console.error('Error saving push token:', err);
+      }
+    };
+
     // Registration success
     const registrationListener = PushNotifications.addListener(
       'registration',
@@ -84,8 +117,8 @@ export const usePushNotifications = () => {
         console.log('Push registration success, token:', token.value);
         setState(prev => ({ ...prev, token: token.value }));
         
-        // Here you would typically send this token to your backend
-        // to associate it with the user for targeted notifications
+        // Save token to database
+        saveTokenToDatabase(token.value);
       }
     );
 

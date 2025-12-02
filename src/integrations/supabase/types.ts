@@ -125,6 +125,36 @@ export type Database = {
         }
         Relationships: []
       }
+      push_tokens: {
+        Row: {
+          created_at: string
+          device_info: Json | null
+          id: string
+          platform: string
+          token: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_info?: Json | null
+          id?: string
+          platform: string
+          token: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_info?: Json | null
+          id?: string
+          platform?: string
+          token?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       salvation_acceptances: {
         Row: {
           accepted_at: string
