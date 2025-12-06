@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+// Demo account for Google Play review - gets unlimited messages
+const DEMO_EMAIL = "demo.hagionai@gmail.com";
+
 export const useMessageLimit = () => {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -10,6 +13,13 @@ export const useMessageLimit = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         setRemaining(null);
+        setLoading(false);
+        return;
+      }
+
+      // Demo account gets unlimited messages
+      if (user.email?.toLowerCase() === DEMO_EMAIL.toLowerCase()) {
+        setRemaining(999999);
         setLoading(false);
         return;
       }
