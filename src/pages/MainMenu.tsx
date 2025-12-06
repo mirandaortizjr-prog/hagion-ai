@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import dailyWisdomIcon from "@/assets/daily-wisdom-icon.png";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePremium } from "@/contexts/PremiumContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import elohimSymbol from "@/assets/elohim-symbol.png";
@@ -44,6 +45,7 @@ import apologeticsIcon from "@/assets/apologetics-icon.png";
 const MainMenu = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { isPremiumPlus } = usePremium();
   const [searchParams] = useSearchParams();
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || "assistants");
@@ -506,7 +508,12 @@ const MainMenu = () => {
                   className="flex flex-col items-center gap-3 cursor-pointer group"
                   onClick={() => {
                     if ((guide as any).externalLink) {
-                      window.open((guide as any).externalLink, '_blank');
+                      // Faithful Friend requires Premium Plus
+                      if (isPremiumPlus) {
+                        window.open((guide as any).externalLink, '_blank');
+                      } else {
+                        navigate('/premium');
+                      }
                     } else if (guide.isPro) {
                       navigate('/premium');
                     } else {
