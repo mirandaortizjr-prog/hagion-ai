@@ -100,18 +100,54 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          toast({
-            title: t('login_failed'),
-            description: t('check_credentials'),
-            variant: "destructive",
+        // Special handling for demo account - auto-create if doesn't exist
+        if (isDemoAccount && password === DEMO_PASSWORD) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
           });
-          return;
+
+          if (signInError) {
+            // Demo account doesn't exist, create it
+            const { error: signUpError } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                emailRedirectTo: `${window.location.origin}/`,
+              },
+            });
+
+            if (signUpError) {
+              // Try signing in again (might have been created)
+              const { error: retryError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+              });
+              
+              if (retryError) {
+                toast({
+                  title: t('login_failed'),
+                  description: t('check_credentials'),
+                  variant: "destructive",
+                });
+                return;
+              }
+            }
+          }
+        } else {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          if (error) {
+            toast({
+              title: t('login_failed'),
+              description: t('check_credentials'),
+              variant: "destructive",
+            });
+            return;
+          }
         }
 
         toast({
