@@ -59,8 +59,14 @@ const Auth = () => {
            (hasNumbers || hasSpecialChar);
   };
 
+  // Demo account for Google Play review
+  const DEMO_EMAIL = "demo.hagionai@gmail.com";
+  const DEMO_PASSWORD = "demo12345";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const isDemoAccount = email.toLowerCase() === DEMO_EMAIL.toLowerCase();
     
     if (!validateEmail(email)) {
       toast({
@@ -71,7 +77,8 @@ const Auth = () => {
       return;
     }
 
-    if (!validatePassword(password)) {
+    // Skip password validation for demo account
+    if (!isDemoAccount && !validatePassword(password)) {
       toast({
         title: t('invalid_password'),
         description: t('password_requirements'),
