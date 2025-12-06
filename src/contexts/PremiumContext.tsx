@@ -14,6 +14,9 @@ interface PremiumContextType {
 
 const PremiumContext = createContext<PremiumContextType | undefined>(undefined);
 
+// Demo account for Google Play review - gets full premium access
+const DEMO_EMAIL = "demo.hagionai@gmail.com";
+
 export const PremiumProvider = ({ children }: { children: ReactNode }) => {
   const {
     isPremium: nativeIsPremium,
@@ -32,23 +35,36 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
     isLoading: true,
   });
 
+  // Track if current user is the demo account
+  const [isDemoAccount, setIsDemoAccount] = useState(false);
+
   useEffect(() => {
-    if (!isNative) {
-      checkWebPremiumStatus();
-    }
+    checkUserAndPremiumStatus();
   }, [isNative]);
 
-  const checkWebPremiumStatus = async () => {
+  const checkUserAndPremiumStatus = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         setWebPremiumStatus({ isPremium: false, isPremiumPlus: false, isLoading: false });
+        setIsDemoAccount(false);
         return;
       }
 
-      // For now, web users don't have premium
-      // This would integrate with Stripe or another web payment provider
-      setWebPremiumStatus({ isPremium: false, isPremiumPlus: false, isLoading: false });
+      // Check if demo account - gets full premium access
+      if (user.email?.toLowerCase() === DEMO_EMAIL.toLowerCase()) {
+        setIsDemoAccount(true);
+        setWebPremiumStatus({ isPremium: true, isPremiumPlus: true, isLoading: false });
+        return;
+      }
+
+      setIsDemoAccount(false);
+      
+      if (!isNative) {
+        // For now, web users don't have premium
+        // This would integrate with Stripe or another web payment provider
+        setWebPremiumStatus({ isPremium: false, isPremiumPlus: false, isLoading: false });
+      }
     } catch (error) {
       console.error('Error checking premium status:', error);
       setWebPremiumStatus({ isPremium: false, isPremiumPlus: false, isLoading: false });
@@ -80,8 +96,8 @@ export const PremiumProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value: PremiumContextType = {
-    isPremium: isNative ? nativeIsPremium : webPremiumStatus.isPremium,
-    isPremiumPlus: isNative ? nativeIsPremiumPlus : webPremiumStatus.isPremiumPlus,
+    isPremium: isDemoAccount ? true : (isNative ? nativeIsPremium : webPremiumStatus.isPremium),
+    isPremiumPlus: isDemoAccount ? true : (isNative ? nativeIsPremiumPlus : webPremiumStatus.isPremiumPlus),
     isLoading: isNative ? nativeLoading : webPremiumStatus.isLoading,
     products,
     purchasePremium,
