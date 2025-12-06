@@ -65,12 +65,18 @@ When the demo credentials are used:
    - Enables access to all premium features including Faithful Friend
 
 3. **`src/hooks/useMessageLimit.ts`**
-   - Returns unlimited messages (999999) for demo account
-   - Bypasses the normal 5 messages/day limit
+   - Returns `null` for remaining messages (hides limit display entirely)
+   - Exposes `isDemoAccount` flag for UI components
+   - Prevents any "messages remaining" or "upgrade" prompts from appearing
 
 4. **`src/pages/MainMenu.tsx`**
    - Premium Plus check for Faithful Friend access
    - Demo account can open faithfulfriend.app directly
+   - Hides PRO badges for premium users (demo account has full access)
+
+5. **`src/pages/AssistantChat.tsx`** & **`src/pages/StorytellingChat.tsx`**
+   - Hides "messages remaining" badge in header for demo account
+   - Hides upgrade prompts and daily limit warnings for demo account
 
 ---
 

@@ -554,7 +554,7 @@ const MainMenu = () => {
                         </p>
                       </PopoverContent>
                     </Popover>
-                    {guide.isPro && (
+                    {guide.isPro && !isPremiumPlus && (
                       <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${guide.id === 'faithful-friend' ? 'bg-sky-500' : 'bg-orange-500'}`}>
                         <span>★</span> PRO
                       </div>

@@ -24,7 +24,7 @@ const StorytellingChat = () => {
   const navigate = useNavigate();
   const { language, t } = useLanguage();
   const { toast } = useToast();
-  const { remaining, refetch: refetchUsage } = useMessageLimit();
+  const { remaining, refetch: refetchUsage, isDemoAccount } = useMessageLimit();
   const { storyId } = useParams();
   const [searchParams] = useSearchParams();
   const historyId = searchParams.get("history");
@@ -394,7 +394,7 @@ const StorytellingChat = () => {
             <h1 className="text-xl font-bold text-secondary">{info.name}</h1>
             <p className="text-sm text-muted-foreground flex items-center gap-2">
               {info.description}
-              {remaining !== null && (
+              {!isDemoAccount && remaining !== null && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                   <Sparkles className="w-3 h-3" />
                   {remaining} {t('messages_remaining')}
@@ -510,12 +510,12 @@ const StorytellingChat = () => {
               <Send className="w-5 h-5" />
             </Button>
           </div>
-          {remaining !== null && remaining <= 2 && remaining > 0 && (
+          {!isDemoAccount && remaining !== null && remaining <= 2 && remaining > 0 && (
             <p className="text-xs text-center mt-2 text-muted-foreground">
               {remaining} {t('messages_remaining')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>
           )}
-          {remaining === 0 && (
+          {!isDemoAccount && remaining === 0 && (
             <p className="text-xs text-center mt-2 text-destructive">
               {t('daily_limit_reached')}. <button onClick={() => navigate('/premium')} className="text-primary hover:underline">{t('upgrade')}</button> {t('upgrade_unlimited')}
             </p>

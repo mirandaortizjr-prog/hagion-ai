@@ -7,22 +7,27 @@ const DEMO_EMAIL = "demo.hagionai@gmail.com";
 export const useMessageLimit = () => {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDemoAccount, setIsDemoAccount] = useState(false);
 
   const fetchUsage = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         setRemaining(null);
+        setIsDemoAccount(false);
         setLoading(false);
         return;
       }
 
-      // Demo account gets unlimited messages
+      // Demo account gets unlimited messages - return null to hide limit display
       if (user.email?.toLowerCase() === DEMO_EMAIL.toLowerCase()) {
-        setRemaining(999999);
+        setRemaining(null); // null hides the limit display entirely
+        setIsDemoAccount(true);
         setLoading(false);
         return;
       }
+
+      setIsDemoAccount(false);
 
       const { data, error } = await supabase
         .from('user_message_usage')
@@ -61,5 +66,5 @@ export const useMessageLimit = () => {
     fetchUsage();
   }, []);
 
-  return { remaining, loading, refetch: fetchUsage };
+  return { remaining, loading, refetch: fetchUsage, isDemoAccount };
 };
