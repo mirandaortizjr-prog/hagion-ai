@@ -61,7 +61,7 @@ const Auth = () => {
 
   // Demo account for Google Play review
   const DEMO_EMAIL = "demo.hagionai@gmail.com";
-  const DEMO_PASSWORD = "demo12345";
+  const DEMO_PASSWORD = "DemoReview2024!";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
