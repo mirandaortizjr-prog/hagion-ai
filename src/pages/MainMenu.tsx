@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import dailyWisdomIcon from "@/assets/daily-wisdom-icon.png";
 import planOfSalvation from "@/assets/plan-of-salvation.png";
+import prayerWallIcon from "@/assets/prayer-wall-icon.png";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePremium } from "@/contexts/PremiumContext";
@@ -634,23 +635,30 @@ const MainMenu = () => {
                 </p>
               </button>
 
-              {/* Prayer & Testimony Wall Button */}
-              <div className="col-span-3 mt-4 mb-2 flex justify-center">
-                <Card 
-                  className="relative overflow-hidden border-4 border-black blue-sky-gradient hover:opacity-90 transition-all cursor-pointer w-full max-w-md"
-                  onClick={() => navigate("/prayer-wall")}
-                >
-                  <div className="p-4 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-                      <Heart className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base font-bold text-secondary">Prayer & Testimony Wall</h3>
-                      <p className="text-xs text-secondary/80">Share prayers and testimonies with the community</p>
-                    </div>
+              {/* Prayer & Testimony Wall Circle — placed under Triune God */}
+              <button
+                type="button"
+                onClick={() => navigate("/prayer-wall")}
+                className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                aria-label="Prayer & Testimony Wall"
+              >
+                <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                    <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
+                    <img
+                      src={prayerWallIcon}
+                      alt="Prayer & Testimony Wall"
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      width={1024}
+                      height={1024}
+                    />
                   </div>
-                </Card>
-              </div>
+                </div>
+                <p className="text-xs font-medium leading-tight text-center max-w-[110px]">
+                  Prayer Wall
+                </p>
+              </button>
 
               <Dialog open={salvationOpen} onOpenChange={setSalvationOpen}>
                 <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden border-2 border-primary/30 bg-gradient-to-br from-background via-card to-primary/5">
