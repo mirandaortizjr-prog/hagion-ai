@@ -611,6 +611,29 @@ const MainMenu = () => {
                 </div>
               ))}
 
+              {/* Plan of Salvation Circle — placed next to Faithful Friend */}
+              <button
+                type="button"
+                onClick={() => setSalvationOpen(true)}
+                className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                aria-label={t('plan_of_salvation')}
+              >
+                <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                    <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
+                    <img
+                      src={planOfSalvation}
+                      alt={t('plan_of_salvation')}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+                <p className="text-xs font-medium leading-tight text-center max-w-[110px]">
+                  {t('plan_of_salvation')}
+                </p>
+              </button>
+
               {/* Prayer & Testimony Wall Button */}
               <div className="col-span-3 mt-4 mb-2 flex justify-center">
                 <Card 
@@ -627,31 +650,6 @@ const MainMenu = () => {
                     </div>
                   </div>
                 </Card>
-              </div>
-
-              {/* Plan of Salvation Circle */}
-              <div className="col-span-3 mt-6 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setSalvationOpen(true)}
-                  className="group flex flex-col items-center gap-1.5 focus:outline-none"
-                  aria-label={t('plan_of_salvation')}
-                >
-                  <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
-                    <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
-                      <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
-                      <img
-                        src={planOfSalvation}
-                        alt={t('plan_of_salvation')}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                  <p className="text-xs font-medium leading-tight text-center max-w-[110px]">
-                    {t('plan_of_salvation')}
-                  </p>
-                </button>
               </div>
 
               <Dialog open={salvationOpen} onOpenChange={setSalvationOpen}>
