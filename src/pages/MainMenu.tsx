@@ -543,7 +543,7 @@ const MainMenu = () => {
               {divineGuidance.map((guide) => (
                 <div
                   key={guide.id}
-                  className="flex flex-col items-center gap-3 cursor-pointer group"
+                  className="flex flex-col items-center gap-1.5 cursor-pointer group"
                   onClick={() => {
                     if ((guide as any).externalLink) {
                       // Faithful Friend requires Premium Plus
