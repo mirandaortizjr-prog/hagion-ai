@@ -531,11 +531,11 @@ const MainMenu = () => {
 
       {/* Grid of Assistants — fits viewport, no scroll on Assistants/Divine */}
       <div className={cn(
-        "flex-1 px-3 sm:px-4 py-3 sm:py-4 min-h-0",
+        "flex-1 px-2 sm:px-4 py-2 min-h-0",
         activeTab === "hagion-university" ? "overflow-auto" : "overflow-hidden flex items-center justify-center"
       )}>
         <div className={cn(
-          "grid grid-cols-3 gap-x-3 gap-y-3 sm:gap-x-5 sm:gap-y-4 max-w-2xl mx-auto w-full",
+          "grid grid-cols-3 gap-x-2 gap-y-2 sm:gap-x-4 sm:gap-y-3 max-w-2xl mx-auto w-full",
           activeTab !== "hagion-university" && "h-full content-evenly"
         )}>
           {activeTab === "divine" && (
