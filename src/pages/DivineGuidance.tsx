@@ -13,6 +13,7 @@ import christCross from "@/assets/christ-cross.png";
 import elohimSymbol from "@/assets/elohim-symbol.png";
 import triuneGod from "@/assets/triune-god.png";
 import hagionLogo from "@/assets/hagion-logo.png";
+import { BottomNav } from "@/components/BottomNav";
 
 interface Voice {
   id: string;
@@ -315,6 +316,7 @@ const DivineGuidance = () => {
           </section>
         </div>
       </main>
+      <BottomNav />
     </div>
   );
 };

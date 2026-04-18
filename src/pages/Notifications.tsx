@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BottomNav } from "@/components/BottomNav";
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -99,6 +100,7 @@ const Notifications = () => {
           </Card>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 };

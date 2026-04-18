@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, Trash2, Copy, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BottomNav } from "@/components/BottomNav";
 
 interface SavedAnswer {
   id: string;
@@ -173,6 +174,7 @@ const Saved = () => {
           )}
         </div>
       </ScrollArea>
+      <BottomNav />
     </div>
   );
 };

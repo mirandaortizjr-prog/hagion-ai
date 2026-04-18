@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
+import { BottomNav } from "@/components/BottomNav";
 
 const BibleTranslations = () => {
   const navigate = useNavigate();
@@ -311,6 +312,7 @@ const BibleTranslations = () => {
           </div>
         </div>
       </main>
+      <BottomNav />
     </div>
   );
 };

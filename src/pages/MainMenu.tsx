@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles, Menu } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { BottomNav } from "@/components/BottomNav";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
@@ -886,30 +887,7 @@ const MainMenu = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <nav className="flex items-center justify-around px-4 py-3 border-t bg-background">
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/chat')}
-        >
-          <MessageCircle className="w-6 h-6" />
-          <span className="text-xs">{t('chat')}</span>
-        </button>
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/saved')}
-        >
-          <FileText className="w-6 h-6" />
-          <span className="text-xs">{t('saved')}</span>
-        </button>
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/history')}
-        >
-          <Clock className="w-6 h-6" />
-          <span className="text-xs">{t('history')}</span>
-        </button>
-      </nav>
+      <BottomNav />
         </div>
       </div>
     </SidebarProvider>
