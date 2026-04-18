@@ -132,6 +132,10 @@ All colors MUST be HSL.
     min-height: 100vh;
   }
 
+  html {
+    background: #000000;
+  }
+
   body {
     @apply text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -139,6 +143,11 @@ All colors MUST be HSL.
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: hsl(0 0% 100%);
+  }
+
+  /* Make page wrappers transparent so the body gradient shows through */
+  .bg-background {
+    background-color: transparent !important;
   }
   
   h1, h2, h3, h4, h5, h6 {
