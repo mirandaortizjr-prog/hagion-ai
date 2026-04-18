@@ -1109,6 +1109,30 @@ const translations: Record<Language, Record<string, string>> = {
     'acceptance_error': 'Error',
     'acceptance_error_desc': 'No se pudo registrar tu aceptación. Por favor intenta de nuevo.',
     'acceptances_year': 'Aceptaciones este año',
+    'salvation_tap_to_open': 'Toca para leer',
+
+    // Full Plan of Salvation (Bible summary)
+    'sal_full_title': 'El Plan de Salvación',
+    'sal_full_subtitle': 'Toda la Biblia en un solo mensaje — el propósito eterno de Dios para ti',
+    'sal_full_h1': '1. En el Principio — El Propósito de Dios',
+    'sal_full_p1': 'Antes del tiempo, Dios existía en amor perfecto — Padre, Hijo y Espíritu Santo. Por amor, creó los cielos, la tierra y a ti. Formó a la humanidad a Su imagen, nos dio aliento, identidad y dominio, y caminó con nosotros en un jardín de vida. Nunca fuimos un accidente. Fuiste creado con propósito, para una relación con Aquel que es la Vida misma (Génesis 1–2).',
+    'sal_full_h2': '2. La Caída — Cómo se Rompió la Relación',
+    'sal_full_p2': 'Pero la humanidad escogió escuchar otra voz. En un acto de rebelión, el hombre rechazó a Dios como Rey y se alineó con el engañador. El pecado entró al mundo, y con él, la muerte, la vergüenza, el miedo y la separación. La imagen de Dios en nosotros fue herida. Ya no solo hacíamos el mal — nos volvimos quebrantados por naturaleza, incapaces de salvarnos (Génesis 3; Romanos 5:12).',
+    'sal_full_h3': '3. La Promesa — Dios No Nos Abandonó',
+    'sal_full_p3': 'Aun en nuestra rebelión, Dios prometió un Salvador. A través de Abraham, Moisés, David y los profetas, reveló Su corazón: un pacto de redención. La Ley expuso nuestra necesidad; los sacrificios apuntaban a un Cordero mayor; los profetas clamaban por un Rey venidero. Cada página del Antiguo Testamento susurra un Nombre por venir — Jesús (Génesis 3:15; Isaías 53).',
+    'sal_full_h4': '4. La Cruz — Dios Hizo lo que Nosotros No Pudimos',
+    'sal_full_p4': 'En el cumplimiento del tiempo, Dios envió a Su Hijo. Jesús, plenamente Dios y plenamente hombre, vivió la vida perfecta que no pudimos vivir, y murió la muerte que merecíamos. En la cruz, llevó tu pecado, tu vergüenza, tu deuda y tu juicio. No solo perdonó — pagó por completo. Tres días después, resucitó de la tumba, derrotando para siempre al pecado, la muerte y el infierno (Juan 3:16; Romanos 5:8; 1 Corintios 15).',
+    'sal_full_h5': '5. La Invitación — Salvación por Gracia, Mediante la Fe',
+    'sal_full_p5': 'La salvación no se gana. No puede comprarse, lograrse ni merecerse. Es un regalo — recibido por la fe en Jesucristo. “Si confiesas con tu boca que Jesús es el Señor y crees en tu corazón que Dios lo levantó de los muertos, serás salvo” (Romanos 10:9). Cristo es el único Camino, la única Verdad, la única Vida. Nadie viene al Padre sino por Él (Juan 14:6).',
+    'sal_full_h6': '6. La Nueva Vida — Renacido en la Familia de Dios',
+    'sal_full_p6': 'Cuando recibes a Jesús, no solo te vuelves religioso — naces de nuevo. El Espíritu Santo viene a vivir en ti, haciéndote una nueva creación. Tu pasado es lavado, tu culpa se va, tu nombre es escrito en el cielo. Te conviertes en hijo o hija de Dios, con vida eterna que comienza ahora y continúa para siempre (2 Corintios 5:17; Juan 1:12).',
+    'sal_full_h7': '7. El Final de la Historia — Restauración para Siempre',
+    'sal_full_p7': 'La Biblia termina donde comenzó: Dios habitando con Su pueblo. Cristo volverá, el mal terminará, y vendrán cielos nuevos y tierra nueva donde no habrá más muerte, llanto ni dolor. Dios mismo enjugará toda lágrima de tus ojos. Esta es la eternidad que preparó para los que le aman (Apocalipsis 21–22).',
+    'sal_full_decision': 'La Decisión es Tuya',
+    'sal_full_decision_p': 'Dios lo ha hecho todo. Te creó, te buscó, murió por ti, resucitó por ti y hoy te llama. Nunca te forzará — el amor debe darse libremente. Hoy puedes volver a casa. Hoy puedes ser hecho nuevo. Hoy puedes comenzar la eternidad con Él.',
+    'sal_full_prayer_title': 'Una Oración para Recibir a Cristo como Señor y Salvador',
+    'sal_full_prayer': '"Señor Jesús, vengo a Ti hoy. Confieso que soy pecador y que no puedo salvarme. Creo que eres el Hijo de Dios, que moriste en la cruz por mis pecados y que resucitaste de entre los muertos. En este momento, me aparto de mi pecado y me vuelvo a Ti. Te recibo como mi Salvador, mi Señor y mi Rey. Lávame, perdóname y hazme nuevo. Lléname con Tu Espíritu Santo. Escribe mi nombre en el Libro de la Vida. Desde este día en adelante, te pertenezco. Gracias, Jesús, por amarme, morir por mí y darme vida eterna. En Tu nombre oro, Amén."',
+    'sal_full_after': 'Si oraste esta oración de corazón — bienvenido a casa. Ahora eres hijo de Dios. Busca una iglesia que crea en la Biblia, comienza a orar a diario, lee la Palabra de Dios y cuéntale a alguien tu decisión. Hoy el cielo se regocija por ti (Lucas 15:10).',
   }
 };
 
