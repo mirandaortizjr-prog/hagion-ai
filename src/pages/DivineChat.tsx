@@ -372,20 +372,26 @@ const DivineChat = () => {
 
   return (
     <div className="h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">
-      <header className="border-b bg-card/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
+      <header className="border-b border-white/10 bg-black/40 backdrop-blur-xl">
+        <div className="container mx-auto px-4 py-3 flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/main-menu")}
+            aria-label="Back"
+            className="rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 shadow-md flex-shrink-0"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <Avatar className="w-10 h-10 border-2 border-primary">
             <AvatarImage src={info.image} alt={info.name} />
             <AvatarFallback><Sparkles className="w-5 h-5" /></AvatarFallback>
           </Avatar>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent truncate">
               {info.name}
             </h1>
-            <p className="text-sm text-muted-foreground">{info.description}</p>
+            <p className="text-sm text-white/70 truncate">{info.description}</p>
           </div>
         </div>
       </header>
