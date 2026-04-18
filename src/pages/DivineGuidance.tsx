@@ -6,6 +6,7 @@ import { ArrowLeft, Heart, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
@@ -13,6 +14,7 @@ import christCross from "@/assets/christ-cross.png";
 import elohimSymbol from "@/assets/elohim-symbol.png";
 import triuneGod from "@/assets/triune-god.png";
 import hagionLogo from "@/assets/hagion-logo.png";
+import planOfSalvation from "@/assets/plan-of-salvation.png";
 import { BottomNav } from "@/components/BottomNav";
 
 interface Voice {
