@@ -546,7 +546,31 @@ const translations: Record<Language, Record<string, string>> = {
     'acceptance_error': 'Error',
     'acceptance_error_desc': 'Could not record your acceptance. Please try again.',
     'acceptances_year': 'Acceptances this year',
-    
+    'salvation_tap_to_open': 'Tap to read',
+
+    // Full Plan of Salvation (Bible summary)
+    'sal_full_title': 'The Plan of Salvation',
+    'sal_full_subtitle': 'The whole Bible in one message — God’s eternal purpose for you',
+    'sal_full_h1': '1. In the Beginning — God’s Purpose',
+    'sal_full_p1': 'Before time began, God existed in perfect love — Father, Son, and Holy Spirit. Out of love, He created the heavens, the earth, and you. He formed humanity in His own image, gave us breath, identity, and dominion, and walked with us in a garden of life. We were never an accident. You were created on purpose, for relationship with the One who is Life itself (Genesis 1–2).',
+    'sal_full_h2': '2. The Fall — How the Relationship Broke',
+    'sal_full_p2': 'But humanity chose to listen to another voice. In one act of rebellion, mankind rejected God as King and aligned with the deceiver. Sin entered the world, and with it, death, shame, fear, and separation. The image of God in us was wounded. We were no longer just doing wrong — we became broken by nature, unable to save ourselves (Genesis 3; Romans 5:12).',
+    'sal_full_h3': '3. The Promise — God Refused to Abandon Us',
+    'sal_full_p3': 'Even in our rebellion, God promised a Savior. Through Abraham, Moses, David, and the prophets, He revealed His heart: a covenant of redemption. The Law exposed our need; the sacrifices pointed to a greater Lamb; the prophets cried out for a coming King. Every page of the Old Testament whispers one Name yet to come — Jesus (Genesis 3:15; Isaiah 53).',
+    'sal_full_h4': '4. The Cross — God Did What We Could Not',
+    'sal_full_p4': 'In the fullness of time, God sent His Son. Jesus, fully God and fully man, lived the perfect life we couldn’t live, and died the death we deserved. On the cross, He carried your sin, your shame, your debt, and your judgment. He didn’t just forgive — He paid in full. Three days later, He rose from the grave, defeating sin, death, and hell forever (John 3:16; Romans 5:8; 1 Corinthians 15).',
+    'sal_full_h5': '5. The Invitation — Salvation by Grace, Through Faith',
+    'sal_full_p5': 'Salvation is not earned. It cannot be bought, performed, or deserved. It is a gift — received by faith in Jesus Christ. “If you confess with your mouth that Jesus is Lord and believe in your heart that God raised Him from the dead, you will be saved” (Romans 10:9). Christ is the only Way, the only Truth, the only Life. No one comes to the Father except through Him (John 14:6).',
+    'sal_full_h6': '6. The New Life — Reborn into God’s Family',
+    'sal_full_p6': 'When you receive Jesus, you are not merely religious — you are reborn. The Holy Spirit comes to live in you, making you a new creation. Your past is washed, your guilt is gone, your name is written in heaven. You become a son or daughter of God, with eternal life beginning now and continuing forever (2 Corinthians 5:17; John 1:12).',
+    'sal_full_h7': '7. The End of the Story — Restoration Forever',
+    'sal_full_p7': 'The Bible ends where it began: God dwelling with His people. Christ will return, evil will end, and a new heaven and new earth will come where there will be no more death, mourning, or pain. God Himself will wipe every tear from your eyes. This is the eternity He prepared for those who love Him (Revelation 21–22).',
+    'sal_full_decision': 'The Decision Is Yours',
+    'sal_full_decision_p': 'God has done everything. He created you, pursued you, died for you, rose for you, and is calling you today. He will never force you — love must be freely given. Today, you can come home. Today, you can be made new. Today, you can begin eternity with Him.',
+    'sal_full_prayer_title': 'A Prayer to Receive Christ as Lord and Savior',
+    'sal_full_prayer': '"Lord Jesus, I come to You today. I confess that I am a sinner and that I cannot save myself. I believe You are the Son of God, that You died on the cross for my sins, and that You rose again from the dead. Right now, I turn from my sin and turn to You. I receive You as my Savior, my Lord, and my King. Wash me, forgive me, and make me new. Fill me with Your Holy Spirit. Write my name in the Book of Life. From this day forward, I belong to You. Thank You, Jesus, for loving me, dying for me, and giving me eternal life. In Your name I pray, Amen."',
+    'sal_full_after': 'If you prayed that prayer and meant it from your heart — welcome home. You are now a child of God. Find a Bible-believing church, begin to pray daily, read God’s Word, and tell someone about your decision. Heaven rejoices over you today (Luke 15:10).',
+
   },
   es: {
     // Main Menu
@@ -1085,6 +1109,30 @@ const translations: Record<Language, Record<string, string>> = {
     'acceptance_error': 'Error',
     'acceptance_error_desc': 'No se pudo registrar tu aceptación. Por favor intenta de nuevo.',
     'acceptances_year': 'Aceptaciones este año',
+    'salvation_tap_to_open': 'Toca para leer',
+
+    // Full Plan of Salvation (Bible summary)
+    'sal_full_title': 'El Plan de Salvación',
+    'sal_full_subtitle': 'Toda la Biblia en un solo mensaje — el propósito eterno de Dios para ti',
+    'sal_full_h1': '1. En el Principio — El Propósito de Dios',
+    'sal_full_p1': 'Antes del tiempo, Dios existía en amor perfecto — Padre, Hijo y Espíritu Santo. Por amor, creó los cielos, la tierra y a ti. Formó a la humanidad a Su imagen, nos dio aliento, identidad y dominio, y caminó con nosotros en un jardín de vida. Nunca fuimos un accidente. Fuiste creado con propósito, para una relación con Aquel que es la Vida misma (Génesis 1–2).',
+    'sal_full_h2': '2. La Caída — Cómo se Rompió la Relación',
+    'sal_full_p2': 'Pero la humanidad escogió escuchar otra voz. En un acto de rebelión, el hombre rechazó a Dios como Rey y se alineó con el engañador. El pecado entró al mundo, y con él, la muerte, la vergüenza, el miedo y la separación. La imagen de Dios en nosotros fue herida. Ya no solo hacíamos el mal — nos volvimos quebrantados por naturaleza, incapaces de salvarnos (Génesis 3; Romanos 5:12).',
+    'sal_full_h3': '3. La Promesa — Dios No Nos Abandonó',
+    'sal_full_p3': 'Aun en nuestra rebelión, Dios prometió un Salvador. A través de Abraham, Moisés, David y los profetas, reveló Su corazón: un pacto de redención. La Ley expuso nuestra necesidad; los sacrificios apuntaban a un Cordero mayor; los profetas clamaban por un Rey venidero. Cada página del Antiguo Testamento susurra un Nombre por venir — Jesús (Génesis 3:15; Isaías 53).',
+    'sal_full_h4': '4. La Cruz — Dios Hizo lo que Nosotros No Pudimos',
+    'sal_full_p4': 'En el cumplimiento del tiempo, Dios envió a Su Hijo. Jesús, plenamente Dios y plenamente hombre, vivió la vida perfecta que no pudimos vivir, y murió la muerte que merecíamos. En la cruz, llevó tu pecado, tu vergüenza, tu deuda y tu juicio. No solo perdonó — pagó por completo. Tres días después, resucitó de la tumba, derrotando para siempre al pecado, la muerte y el infierno (Juan 3:16; Romanos 5:8; 1 Corintios 15).',
+    'sal_full_h5': '5. La Invitación — Salvación por Gracia, Mediante la Fe',
+    'sal_full_p5': 'La salvación no se gana. No puede comprarse, lograrse ni merecerse. Es un regalo — recibido por la fe en Jesucristo. “Si confiesas con tu boca que Jesús es el Señor y crees en tu corazón que Dios lo levantó de los muertos, serás salvo” (Romanos 10:9). Cristo es el único Camino, la única Verdad, la única Vida. Nadie viene al Padre sino por Él (Juan 14:6).',
+    'sal_full_h6': '6. La Nueva Vida — Renacido en la Familia de Dios',
+    'sal_full_p6': 'Cuando recibes a Jesús, no solo te vuelves religioso — naces de nuevo. El Espíritu Santo viene a vivir en ti, haciéndote una nueva creación. Tu pasado es lavado, tu culpa se va, tu nombre es escrito en el cielo. Te conviertes en hijo o hija de Dios, con vida eterna que comienza ahora y continúa para siempre (2 Corintios 5:17; Juan 1:12).',
+    'sal_full_h7': '7. El Final de la Historia — Restauración para Siempre',
+    'sal_full_p7': 'La Biblia termina donde comenzó: Dios habitando con Su pueblo. Cristo volverá, el mal terminará, y vendrán cielos nuevos y tierra nueva donde no habrá más muerte, llanto ni dolor. Dios mismo enjugará toda lágrima de tus ojos. Esta es la eternidad que preparó para los que le aman (Apocalipsis 21–22).',
+    'sal_full_decision': 'La Decisión es Tuya',
+    'sal_full_decision_p': 'Dios lo ha hecho todo. Te creó, te buscó, murió por ti, resucitó por ti y hoy te llama. Nunca te forzará — el amor debe darse libremente. Hoy puedes volver a casa. Hoy puedes ser hecho nuevo. Hoy puedes comenzar la eternidad con Él.',
+    'sal_full_prayer_title': 'Una Oración para Recibir a Cristo como Señor y Salvador',
+    'sal_full_prayer': '"Señor Jesús, vengo a Ti hoy. Confieso que soy pecador y que no puedo salvarme. Creo que eres el Hijo de Dios, que moriste en la cruz por mis pecados y que resucitaste de entre los muertos. En este momento, me aparto de mi pecado y me vuelvo a Ti. Te recibo como mi Salvador, mi Señor y mi Rey. Lávame, perdóname y hazme nuevo. Lléname con Tu Espíritu Santo. Escribe mi nombre en el Libro de la Vida. Desde este día en adelante, te pertenezco. Gracias, Jesús, por amarme, morir por mí y darme vida eterna. En Tu nombre oro, Amén."',
+    'sal_full_after': 'Si oraste esta oración de corazón — bienvenido a casa. Ahora eres hijo de Dios. Busca una iglesia que crea en la Biblia, comienza a orar a diario, lee la Palabra de Dios y cuéntale a alguien tu decisión. Hoy el cielo se regocija por ti (Lucas 15:10).',
   }
 };
 
