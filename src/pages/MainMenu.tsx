@@ -886,30 +886,7 @@ const MainMenu = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <nav className="flex items-center justify-around px-4 py-3 border-t bg-background">
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/chat')}
-        >
-          <MessageCircle className="w-6 h-6" />
-          <span className="text-xs">{t('chat')}</span>
-        </button>
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/saved')}
-        >
-          <FileText className="w-6 h-6" />
-          <span className="text-xs">{t('saved')}</span>
-        </button>
-        <button 
-          className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => navigate('/history')}
-        >
-          <Clock className="w-6 h-6" />
-          <span className="text-xs">{t('history')}</span>
-        </button>
-      </nav>
+      <BottomNav />
         </div>
       </div>
     </SidebarProvider>
