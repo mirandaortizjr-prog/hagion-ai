@@ -488,12 +488,48 @@ const MainMenu = () => {
       {/* Tabs */}
       <div className="px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 bg-muted/30 h-auto">
-            <TabsTrigger value="assistants" className="text-sm py-2">{t('assistants')}</TabsTrigger>
-            <TabsTrigger value="divine" className="text-sm py-2">{t('divine_guidance')}</TabsTrigger>
-            <TabsTrigger value="hagion-university" className="text-sm py-2 whitespace-normal leading-tight">
-              Hagion University Lite
-            </TabsTrigger>
+          <TabsList
+            className={cn(
+              "relative w-full grid grid-cols-3 h-auto p-1.5 gap-1 rounded-2xl",
+              "border border-white/30",
+              "bg-white/10 backdrop-blur-xl backdrop-saturate-150",
+              "supports-[backdrop-filter]:bg-white/10",
+              "shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.25)]"
+            )}
+          >
+            {/* Subtle top highlight line */}
+            <div className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+
+            {[
+              { value: "assistants", label: t('assistants') },
+              { value: "divine", label: t('divine_guidance') },
+              { value: "hagion-university", label: "Hagion University Lite" },
+            ].map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className={cn(
+                  "group relative text-xs sm:text-sm py-2.5 px-2 rounded-xl whitespace-normal leading-tight font-medium",
+                  "transition-all duration-300 ease-out active:scale-95",
+                  "text-muted-foreground hover:text-foreground",
+                  "data-[state=active]:text-primary data-[state=active]:font-semibold",
+                  "data-[state=active]:bg-gradient-to-b data-[state=active]:from-primary/20 data-[state=active]:to-primary/5",
+                  "data-[state=active]:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.45)]",
+                  "data-[state=active]:drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                )}
+              >
+                {/* Press-light ripple */}
+                <span
+                  className="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-active:opacity-100 transition-opacity duration-150"
+                  style={{
+                    background:
+                      "radial-gradient(circle at center, hsl(var(--primary) / 0.35), transparent 70%)",
+                  }}
+                />
+                <span className="relative">{tab.label}</span>
+              </TabsTrigger>
+            ))}
           </TabsList>
         </Tabs>
       </div>
