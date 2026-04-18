@@ -857,7 +857,7 @@ const MainMenu = () => {
                 return (
                   <div
                     key={item.id}
-                    className="flex flex-col items-center gap-3 cursor-pointer group"
+                    className="flex flex-col items-center gap-1.5 cursor-pointer group"
                     onClick={() => {
                       if (item.type === 'storytelling') {
                         if (item.id === 'bible-translations') {
@@ -875,34 +875,35 @@ const MainMenu = () => {
                     }}
                   >
                     <div className="relative">
-                      {item.type === 'storytelling' ? (
-                        <div className={`w-20 h-20 rounded-3xl ${item.color ? '' : `border-4 ${(item as any).borderColor || 'border-[#3BB4F2]'}`} ${item.color || ''} shadow-lg ${item.color ? '' : 'shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'} group-hover:shadow-xl transition-all group-hover:scale-105 flex items-center justify-center overflow-hidden`}>
-                          {Icon ? (
-                            <div className={`w-full h-full ${item.color ? item.color : 'bg-gradient-to-br from-[#3BB4F2] to-[#0052D4]'} flex items-center justify-center`}>
-                              <Icon className="w-10 h-10 text-white" />
-                            </div>
-                          ) : (
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                          )}
-                        </div>
-                      ) : (
-                        <div className={`w-20 h-20 rounded-3xl ${item.color} shadow-lg group-hover:shadow-xl flex items-center justify-center transition-all group-hover:scale-105 overflow-hidden`}>
+                      <div
+                        className={cn(
+                          "relative rounded-full p-[2px] transition-all duration-300 group-hover:scale-105",
+                          "w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)]",
+                          "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4]",
+                          "shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]"
+                        )}
+                      >
+                        <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                          <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                           {item.image ? (
                             <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                           ) : Icon ? (
-                            <Icon className="w-10 h-10 text-white" />
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Icon className="w-8 h-8 text-white" />
+                            </div>
                           ) : null}
+                          <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_-12px_24px_-8px_rgba(0,0,0,0.55),inset_0_2px_6px_rgba(255,255,255,0.15)]" />
                         </div>
-                      )}
+                      </div>
                       {(item.type === 'storytelling' || item.type === 'wisdom' || item.type === 'group' || item.type === 'speaking') && (
                         <Popover>
                           <PopoverTrigger asChild>
                             <button
                               aria-label={`About ${item.name}`}
-                              className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                              className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-0.5 shadow-lg hover:scale-110 transition-transform z-10"
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Info className="w-3 h-3" />
+                              <Info className="w-2.5 h-2.5" />
                             </button>
                           </PopoverTrigger>
                           <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
@@ -920,14 +921,14 @@ const MainMenu = () => {
                         </Popover>
                       )}
                       {item.isPro && (
-                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[9px] px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                           <span>★</span> PRO
                         </div>
                       )}
                     </div>
-                    <div className="text-center">
-                      <p className="text-sm font-medium">{item.name}</p>
-                      {item.subtitle && <p className="text-xs text-muted-foreground">{item.subtitle}</p>}
+                    <div className="text-center px-0.5">
+                      <p className="text-[11px] sm:text-xs font-semibold leading-tight">{item.name}</p>
+                      {item.subtitle && <p className="text-[10px] sm:text-[11px] text-white/70 leading-tight">{item.subtitle}</p>}
                     </div>
                   </div>
                 );
