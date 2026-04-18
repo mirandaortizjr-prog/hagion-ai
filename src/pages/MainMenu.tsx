@@ -512,11 +512,11 @@ const MainMenu = () => {
                 className={cn(
                   "group relative text-xs sm:text-sm py-2.5 px-2 rounded-xl whitespace-normal leading-tight font-medium",
                   "transition-all duration-300 ease-out active:scale-95",
-                  "text-muted-foreground hover:text-foreground",
-                  "data-[state=active]:text-primary data-[state=active]:font-semibold",
-                  "data-[state=active]:bg-gradient-to-b data-[state=active]:from-primary/20 data-[state=active]:to-primary/5",
-                  "data-[state=active]:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.45)]",
-                  "data-[state=active]:drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
+                  "text-white/70 hover:text-white",
+                  "data-[state=active]:text-white data-[state=active]:font-semibold",
+                  "data-[state=active]:bg-gradient-to-b data-[state=active]:from-primary/30 data-[state=active]:to-primary/10",
+                  "data-[state=active]:shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.5)]",
+                  "data-[state=active]:drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 )}
               >
