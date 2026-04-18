@@ -474,7 +474,7 @@ const MainMenu = () => {
     <SidebarProvider>
       <div className="h-screen flex w-full overflow-hidden">
         <AppSidebar />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0">
           {/* Header */}
           <header className="flex items-center justify-between px-4 py-4 border-b">
             <SidebarTrigger>
