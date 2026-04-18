@@ -33,6 +33,7 @@ const DivineGuidance = () => {
   const [selectedContext, setSelectedContext] = useState<string>("");
   const [yearlyCount, setYearlyCount] = useState<number>(0);
   const [isAccepting, setIsAccepting] = useState(false);
+  const [salvationOpen, setSalvationOpen] = useState(false);
 
   useEffect(() => {
     fetchYearlyCount();
