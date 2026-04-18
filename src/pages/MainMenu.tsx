@@ -491,15 +491,9 @@ const MainMenu = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList
             className={cn(
-              "relative w-full grid grid-cols-3 h-auto p-1.5 gap-1 rounded-2xl",
-              "border border-white/30",
-              "bg-white/10 backdrop-blur-xl backdrop-saturate-150",
-              "supports-[backdrop-filter]:bg-white/10",
-              "shadow-[0_8px_30px_-12px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.25)]"
+              "relative w-full grid grid-cols-3 h-auto p-0 gap-2 rounded-none bg-transparent border-0 shadow-none"
             )}
           >
-            {/* Subtle top highlight line */}
-            <div className="pointer-events-none absolute inset-x-3 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
             {[
               { value: "assistants", label: t('assistants') },
