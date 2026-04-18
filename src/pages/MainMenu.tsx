@@ -629,71 +629,105 @@ const MainMenu = () => {
                 </Card>
               </div>
 
-              {/* Plan of Salvation Box */}
-              <div className="col-span-3 mt-4 flex justify-center">
-                <Card className="relative overflow-hidden border-4 border-black blue-sky-gradient w-full max-w-md">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-black"></div>
-                  
-                  <div className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-                        <Heart className="w-5 h-5 text-white fill-white" />
-                      </div>
-                      <h3 className="text-lg font-bold text-secondary">{t('plan_of_salvation')}</h3>
-                    </div>
-
-                    <ScrollArea className="h-[200px] pr-2">
-                      <div className="space-y-3 text-xs text-muted-foreground leading-relaxed">
-                        <p className="font-semibold text-secondary">{t('salvation_intro')}</p>
-                        <p>{t('salvation_p1')}</p>
-
-                        <p className="font-semibold text-secondary">{t('salvation_changed')}</p>
-                        <p>{t('salvation_p2')}</p>
-
-                        <p className="font-semibold text-secondary">{t('salvation_purpose')}</p>
-                        <p>{t('salvation_p3')}</p>
-
-                        <p className="font-semibold text-secondary">{t('salvation_mercy')}</p>
-                        <p>{t('salvation_p4')}</p>
-
-                        <p className="font-semibold text-secondary">{t('salvation_relationship')}</p>
-                        <p>{t('salvation_p5')}</p>
-
-                        <p className="font-semibold text-secondary">{t('salvation_done')}</p>
-                        <p>{t('salvation_choice')}</p>
-
-                        <div className="border-l-4 border-black pl-3 my-4 bg-muted py-3 rounded-r">
-                          <p className="font-bold text-secondary mb-2">{t('prayer_header')}</p>
-                          <p className="italic">{t('salvation_prayer')}</p>
-                        </div>
-
-                        <p className="font-semibold text-secondary">{t('welcome_family')}</p>
-                        <p>{t('salvation_welcome')}</p>
-
-                        <p>{t('salvation_grow')}</p>
-
-                        <p>{t('salvation_test')}</p>
-                      </div>
-                    </ScrollArea>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t">
-                      <Button
-                        onClick={handleAccept}
-                        disabled={isAccepting}
-                        className="w-full sm:w-auto bg-black hover:bg-black/90 text-white px-6 font-semibold"
-                      >
-                        <Heart className="w-4 h-4 mr-2" />
-                        {isAccepting ? t('accepting') : t('accept')}
-                      </Button>
-                      
-                      <div className="text-center sm:text-right">
-                        <p className="text-xs text-muted-foreground">{t('acceptances_year')}</p>
-                        <p className="text-xl font-bold text-white">{yearlyCount.toLocaleString()}</p>
-                      </div>
+              {/* Plan of Salvation Circle */}
+              <div className="col-span-3 mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setSalvationOpen(true)}
+                  className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                  aria-label={t('plan_of_salvation')}
+                >
+                  <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
+                    <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                      <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
+                      <img
+                        src={planOfSalvation}
+                        alt={t('plan_of_salvation')}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
                   </div>
-                </Card>
+                  <p className="text-xs font-medium leading-tight text-center max-w-[110px]">
+                    {t('plan_of_salvation')}
+                  </p>
+                </button>
               </div>
+
+              <Dialog open={salvationOpen} onOpenChange={setSalvationOpen}>
+                <DialogContent className="max-w-2xl max-h-[90vh] p-0 overflow-hidden border-2 border-primary/30 bg-gradient-to-br from-background via-card to-primary/5">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary z-10"></div>
+
+                  <DialogHeader className="px-6 pt-6 pb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
+                        <Heart className="w-6 h-6 text-white fill-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <DialogTitle className="text-2xl font-bold text-secondary leading-tight">
+                          {t('sal_full_title')}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-muted-foreground mt-1">
+                          {t('sal_full_subtitle')}
+                        </DialogDescription>
+                      </div>
+                    </div>
+                  </DialogHeader>
+
+                  <ScrollArea className="max-h-[60vh] px-6">
+                    <div className="space-y-5 text-sm text-muted-foreground leading-relaxed pb-4">
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h1')}</h4>
+                      <p>{t('sal_full_p1')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h2')}</h4>
+                      <p>{t('sal_full_p2')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h3')}</h4>
+                      <p>{t('sal_full_p3')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h4')}</h4>
+                      <p>{t('sal_full_p4')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h5')}</h4>
+                      <p>{t('sal_full_p5')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h6')}</h4>
+                      <p>{t('sal_full_p6')}</p>
+
+                      <h4 className="font-bold text-secondary text-base">{t('sal_full_h7')}</h4>
+                      <p>{t('sal_full_p7')}</p>
+
+                      <div className="border-l-4 border-primary pl-4 my-4 bg-primary/5 py-4 rounded-r">
+                        <p className="font-bold text-secondary mb-2">{t('sal_full_decision')}</p>
+                        <p>{t('sal_full_decision_p')}</p>
+                      </div>
+
+                      <div className="border-2 border-primary/30 rounded-xl p-5 bg-gradient-to-br from-primary/10 to-accent/10">
+                        <p className="font-bold text-secondary mb-3 text-base">{t('sal_full_prayer_title')}</p>
+                        <p className="italic text-foreground/90">{t('sal_full_prayer')}</p>
+                      </div>
+
+                      <p className="font-semibold text-secondary">{t('sal_full_after')}</p>
+                    </div>
+                  </ScrollArea>
+
+                  <div className="flex items-center justify-between gap-3 px-6 py-4 border-t bg-card/50">
+                    <Button
+                      onClick={handleAccept}
+                      disabled={isAccepting}
+                      className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white"
+                    >
+                      <Heart className="w-4 h-4 mr-2" />
+                      {isAccepting ? t('accepting') : t('accept')}
+                    </Button>
+
+                    <div className="text-right">
+                      <p className="text-[10px] text-muted-foreground mb-0.5">{t('acceptances_year')}</p>
+                      <p className="text-xl font-bold text-primary">{yearlyCount.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </>
           )}
 
