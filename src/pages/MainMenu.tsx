@@ -56,6 +56,7 @@ const MainMenu = () => {
   const [yearlyCount, setYearlyCount] = useState<number>(0);
   const [isAccepting, setIsAccepting] = useState(false);
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [salvationOpen, setSalvationOpen] = useState(false);
 
   useEffect(() => {
     if (tabFromUrl) {
