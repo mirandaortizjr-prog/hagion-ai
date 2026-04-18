@@ -117,105 +117,112 @@ export function AppSidebar() {
 
   const renderChatItem = (chat: ChatHistory) => (
     <SidebarMenuItem key={chat.id} className="group">
-      <SidebarMenuButton onClick={() => handleOpenConversation(chat)} className="w-full justify-start hover:bg-gray-100 px-2 py-2">
-        <MessageSquare className="mr-2 h-4 w-4 flex-shrink-0 text-gray-600" />
+      <SidebarMenuButton
+        onClick={() => handleOpenConversation(chat)}
+        className="w-full justify-start hover:bg-white/10 px-2 py-2 text-white"
+      >
+        <MessageSquare className="mr-2 h-4 w-4 flex-shrink-0 text-white/70" />
         <div className="flex-1 min-w-0">
-          <div className="text-sm truncate text-gray-900">{chat.preview}</div>
-          <div className="text-xs text-gray-500">{formatTimestamp(chat.timestamp)}</div>
+          <div className="text-sm truncate text-white">{chat.preview}</div>
+          <div className="text-xs text-white/60">{formatTimestamp(chat.timestamp)}</div>
         </div>
       </SidebarMenuButton>
       <div className="flex items-center gap-1 px-2">
-        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => handleToggleFavorite(chat.id, e)}>
-          <Star className={`h-3 w-3 ${chat.isFavorite ? "fill-yellow-500 text-yellow-500" : "text-gray-600"}`} />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/10"
+          onClick={(e) => handleToggleFavorite(chat.id, e)}
+        >
+          <Star className={`h-3 w-3 ${chat.isFavorite ? "fill-yellow-400 text-yellow-400" : "text-white/70"}`} />
         </Button>
-        <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => handleDeleteConversation(chat.id, e)}>
-          <Trash2 className="h-3 w-3 text-red-500" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/10"
+          onClick={(e) => handleDeleteConversation(chat.id, e)}
+        >
+          <Trash2 className="h-3 w-3 text-red-400" />
         </Button>
       </div>
     </SidebarMenuItem>
   );
 
   return (
-    <Sidebar className="w-[280px] border-0 bg-[hsl(205,37%,78%)]">
-      <SidebarContent className="p-4 bg-[hsl(205,37%,78%)]">
-        {/* White Content Box */}
-        <div className="bg-white rounded-lg flex flex-col max-h-[calc(100vh-32px)] overflow-hidden shadow-sm">
-          {/* Fixed Header */}
-          <div className="p-4 border-b border-gray-300 flex-shrink-0 bg-white">
-            <div className="flex items-center gap-3">
-              <img src={hagionLogo} alt="Hagion AI" className="w-10 h-10 rounded-lg shadow-sm" />
-              <h2 className="text-lg font-semibold text-gray-900 font-playfair">Hagion AI</h2>
-            </div>
-          </div>
-          
-          {/* Scrollable Chat Section */}
-          <div className="flex-grow overflow-y-auto bg-white">
-            {/* Saved Chats Section */}
-            <Collapsible
-              open={savedChatsOpen}
-              onOpenChange={setSavedChatsOpen}
-              className="p-4"
-            >
-              <SidebarGroup>
-                <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="hover:bg-gray-50 cursor-pointer text-base font-playfair font-semibold py-3 text-gray-900">
-                    <span>Saved Chats</span>
-                    <ChevronDown
-                      className={`ml-auto h-4 w-4 transition-transform text-gray-900 ${
-                        savedChatsOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </SidebarGroupLabel>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarGroupContent className="px-0 py-2">
-                    {favoriteChats.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-sm text-gray-500">
-                        {t('no_saved_chats')}
-                      </div>
-                    ) : (
-                      <SidebarMenu>
-                        {favoriteChats.map(renderChatItem)}
-                      </SidebarMenu>
-                    )}
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
+    <Sidebar
+      className="w-[280px] border-0"
+      style={{
+        background:
+          "radial-gradient(ellipse at center, #2B5681 0%, #000000 100%)",
+      }}
+    >
+      <SidebarContent
+        className="p-4"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, #2B5681 0%, #000000 100%)",
+        }}
+      >
+        {/* Header */}
+        <div className="px-2 pb-4 flex items-center gap-3">
+          <img src={hagionLogo} alt="Hagion AI" className="w-10 h-10 rounded-lg shadow-md" />
+          <h2 className="text-lg font-semibold text-white font-playfair">Hagion AI</h2>
+        </div>
 
-            {/* History Section */}
-            <Collapsible
-              open={historyOpen}
-              onOpenChange={setHistoryOpen}
-              className="p-4 border-t border-gray-200"
-            >
-              <SidebarGroup>
-                <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="hover:bg-gray-50 cursor-pointer text-base font-playfair font-semibold py-3 text-gray-900">
-                    <span>History</span>
-                    <ChevronDown
-                      className={`ml-auto h-4 w-4 transition-transform text-gray-900 ${
-                        historyOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </SidebarGroupLabel>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarGroupContent className="px-0 py-2">
-                    {recentChats.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-sm text-gray-500">
-                        {t('no_history')}
-                      </div>
-                    ) : (
-                      <SidebarMenu>
-                        {recentChats.map(renderChatItem)}
-                      </SidebarMenu>
-                    )}
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-          </div>
+        <div className="flex flex-col gap-2">
+          {/* Saved Chats Section */}
+          <Collapsible open={savedChatsOpen} onOpenChange={setSavedChatsOpen}>
+            <SidebarGroup className="p-0">
+              <CollapsibleTrigger asChild>
+                <SidebarGroupLabel className="cursor-pointer text-base font-playfair font-semibold py-3 px-2 text-white hover:bg-white/5 hover:text-white rounded-md">
+                  <span>Saved Chats</span>
+                  <ChevronDown
+                    className={`ml-auto h-4 w-4 transition-transform text-white ${
+                      savedChatsOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </SidebarGroupLabel>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarGroupContent className="px-0 py-2">
+                  {favoriteChats.length === 0 ? (
+                    <div className="px-4 py-6 text-center text-sm text-white/60">
+                      {t('no_saved_chats')}
+                    </div>
+                  ) : (
+                    <SidebarMenu>{favoriteChats.map(renderChatItem)}</SidebarMenu>
+                  )}
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+
+          {/* History Section */}
+          <Collapsible open={historyOpen} onOpenChange={setHistoryOpen}>
+            <SidebarGroup className="p-0">
+              <CollapsibleTrigger asChild>
+                <SidebarGroupLabel className="cursor-pointer text-base font-playfair font-semibold py-3 px-2 text-white hover:bg-white/5 hover:text-white rounded-md">
+                  <span>History</span>
+                  <ChevronDown
+                    className={`ml-auto h-4 w-4 transition-transform text-white ${
+                      historyOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </SidebarGroupLabel>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarGroupContent className="px-0 py-2">
+                  {recentChats.length === 0 ? (
+                    <div className="px-4 py-6 text-center text-sm text-white/60">
+                      {t('no_history')}
+                    </div>
+                  ) : (
+                    <SidebarMenu>{recentChats.map(renderChatItem)}</SidebarMenu>
+                  )}
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
         </div>
       </SidebarContent>
     </Sidebar>
