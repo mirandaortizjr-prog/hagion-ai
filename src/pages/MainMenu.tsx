@@ -702,29 +702,28 @@ const MainMenu = () => {
           {activeTab === "assistants" && assistants.map((assistant) => (
             <div
               key={assistant.id}
-              className="flex flex-col items-center gap-3 cursor-pointer group"
+              className="flex flex-col items-center gap-1.5 cursor-pointer group"
               onClick={() => navigate(`/${assistant.id}`)}
             >
               <div className="relative">
                 <div
                   className={cn(
-                    "relative w-24 h-24 rounded-full p-[3px] transition-all duration-300 group-hover:scale-105",
+                    "relative rounded-full p-[2px] transition-all duration-300 group-hover:scale-105",
+                    "w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)]",
                     assistant.id === 'discern'
-                      ? "bg-gradient-to-br from-amber-300 via-amber-500 to-orange-600 shadow-[0_12px_32px_-8px_rgba(251,191,36,0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_rgba(251,191,36,0.75)]"
+                      ? "bg-gradient-to-br from-amber-300 via-amber-500 to-orange-600 shadow-[0_8px_22px_-8px_rgba(251,191,36,0.55)] group-hover:shadow-[0_12px_30px_-10px_rgba(251,191,36,0.75)]"
                       : assistant.id === 'apologetics-debate'
-                      ? "bg-gradient-to-br from-rose-400 via-red-500 to-red-700 shadow-[0_12px_32px_-8px_rgba(239,68,68,0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_rgba(239,68,68,0.75)]"
-                      : "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_hsl(var(--primary)/0.75)]"
+                      ? "bg-gradient-to-br from-rose-400 via-red-500 to-red-700 shadow-[0_8px_22px_-8px_rgba(239,68,68,0.55)] group-hover:shadow-[0_12px_30px_-10px_rgba(239,68,68,0.75)]"
+                      : "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]"
                   )}
                 >
                   <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
-                    {/* Glass highlight */}
                     <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                     <img
                       src={assistant.image}
                       alt={assistant.name}
                       className="w-full h-full object-cover"
                     />
-                    {/* Inner vignette for contrast */}
                     <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_-12px_24px_-8px_rgba(0,0,0,0.55),inset_0_2px_6px_rgba(255,255,255,0.15)]" />
                   </div>
                 </div>
@@ -732,10 +731,10 @@ const MainMenu = () => {
                   <PopoverTrigger asChild>
                     <button
                       aria-label={`About ${assistant.name}`}
-                      className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-1 shadow-lg hover:scale-110 transition-transform z-10"
+                      className="absolute -top-1 -right-1 bg-slate-500 text-white rounded-full p-0.5 shadow-lg hover:scale-110 transition-transform z-10"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Info className="w-3 h-3" />
+                      <Info className="w-2.5 h-2.5" />
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="max-w-xs" align="end" sideOffset={6} onClick={(e) => e.stopPropagation()}>
@@ -743,25 +742,25 @@ const MainMenu = () => {
                   </PopoverContent>
                 </Popover>
                 {assistant.isPro && (
-                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[9px] px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                     <span>★</span> PRO
                   </div>
                 )}
                 {assistant.isSpecial && (
-                  <div className={`absolute -top-2 left-1/2 -translate-x-1/2 ${
+                  <div className={`absolute -top-1.5 left-1/2 -translate-x-1/2 ${
                     assistant.id === 'discern' ? 'bg-amber-500' : 'bg-red-500'
-                  } text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg z-20 whitespace-nowrap`}>
+                  } text-white text-[8px] font-semibold px-1.5 py-0.5 rounded-full shadow-lg z-20 whitespace-nowrap`}>
                     {assistant.id === 'discern' ? '🔥 SPECIAL' : '⚔️ SPECIAL'}
                   </div>
                 )}
               </div>
-              <div className="text-center">
-                <p className="text-sm font-medium flex items-center justify-center gap-1">
-                  {assistant.isSpecial && <Swords className="w-3 h-3 text-primary" />}
+              <div className="text-center px-0.5">
+                <p className="text-[11px] sm:text-xs font-semibold leading-tight flex items-center justify-center gap-1">
+                  {assistant.isSpecial && <Swords className="w-2.5 h-2.5 text-primary" />}
                   {assistant.name}
                 </p>
                 {assistant.subtitle && (
-                  <p className="text-xs text-muted-foreground">{assistant.subtitle}</p>
+                  <p className="text-[10px] sm:text-[11px] text-white/70 leading-tight">{assistant.subtitle}</p>
                 )}
               </div>
             </div>
