@@ -12,6 +12,7 @@ import thaddeuAvatar from "@/assets/thaddeus-avatar.jpg";
 import brookeAvatar from "@/assets/brooke-avatar.jpg";
 import kenanAvatar from "@/assets/kenan-avatar.jpg";
 import mirandaAvatar from "@/assets/miranda-avatar.jpg";
+import { BottomNav } from "@/components/BottomNav";
 
 const LogosCircle = () => {
   const navigate = useNavigate();
@@ -302,6 +303,7 @@ const LogosCircle = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <BottomNav />
     </div>
   );
 };

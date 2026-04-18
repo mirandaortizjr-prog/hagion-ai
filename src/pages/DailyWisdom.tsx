@@ -6,6 +6,7 @@ import { ArrowLeft, Share2, Bookmark, BookmarkCheck, Loader2 } from "lucide-reac
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { BottomNav } from "@/components/BottomNav";
 
 interface Story {
   id: string;
@@ -275,6 +276,7 @@ const DailyWisdom = () => {
           </div>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 };
