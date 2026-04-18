@@ -128,9 +128,26 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html, body, #root {
+    min-height: 100vh;
+  }
+
+  html {
+    background: #000000;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(ellipse at center, #2B5681 0%, #000000 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: hsl(0 0% 100%);
+  }
+
+  /* Make page wrappers transparent so the body gradient shows through */
+  .bg-background {
+    background-color: transparent !important;
   }
   
   h1, h2, h3, h4, h5, h6 {
