@@ -701,19 +701,26 @@ const MainMenu = () => {
             >
               <div className="relative">
                 <div
-                  className={`w-24 h-24 rounded-full overflow-hidden border-4 ${
-                    assistant.id === 'discern' 
-                      ? 'border-amber-500 shadow-lg shadow-amber-500/30 group-hover:border-amber-400' 
+                  className={cn(
+                    "relative w-24 h-24 rounded-full p-[3px] transition-all duration-300 group-hover:scale-105",
+                    assistant.id === 'discern'
+                      ? "bg-gradient-to-br from-amber-300 via-amber-500 to-orange-600 shadow-[0_12px_32px_-8px_rgba(251,191,36,0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_rgba(251,191,36,0.75)]"
                       : assistant.id === 'apologetics-debate'
-                      ? 'border-red-500 shadow-lg shadow-red-500/30 group-hover:border-red-400'
-                      : 'border-[#3BB4F2] shadow-lg shadow-[#3BB4F2]/20 group-hover:border-[#0052D4]'
-                  } transition-all group-hover:scale-105`}
+                      ? "bg-gradient-to-br from-rose-400 via-red-500 to-red-700 shadow-[0_12px_32px_-8px_rgba(239,68,68,0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_rgba(239,68,68,0.75)]"
+                      : "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_12px_32px_-8px_hsl(var(--primary)/0.55),0_0_0_1px_rgba(255,255,255,0.1)] group-hover:shadow-[0_16px_40px_-10px_hsl(var(--primary)/0.75)]"
+                  )}
                 >
-                  <img
-                    src={assistant.image}
-                    alt={assistant.name}
-                    className="w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                    {/* Glass highlight */}
+                    <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
+                    <img
+                      src={assistant.image}
+                      alt={assistant.name}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Inner vignette for contrast */}
+                    <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_-12px_24px_-8px_rgba(0,0,0,0.55),inset_0_2px_6px_rgba(255,255,255,0.15)]" />
+                  </div>
                 </div>
                 <Popover>
                   <PopoverTrigger asChild>
