@@ -1,28 +1,74 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Globe, Flame, BookOpen, User } from "lucide-react";
+import { Home, Globe, Flame, BookOpen, User, Plus, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface NavItem {
   id: string;
   labelEn: string;
   labelEs: string;
   icon: typeof Home;
-  path: string;
+  path?: string;
+  action?: "post";
 }
-
-const items: NavItem[] = [
-  { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
-  { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
-  { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Flame, path: "/discernment" },
-  { id: "learning", labelEn: "Learning", labelEs: "Aprendizaje", icon: BookOpen, path: "/learning" },
-  { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
-];
 
 export const PremiumNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { language } = useLanguage();
+  const { toast } = useToast();
+
+  const isCommunity = location.pathname === "/community";
+
+  const items: NavItem[] = [
+    { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+    { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
+    isCommunity
+      ? { id: "post", labelEn: "Post", labelEs: "Publicar", icon: Plus, action: "post" }
+      : { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Flame, path: "/discernment" },
+    { id: "learning", labelEn: "Learning", labelEs: "Aprendizaje", icon: BookOpen, path: "/learning" },
+    { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
+  ];
+
+  const [postOpen, setPostOpen] = useState(false);
+  const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
+  const [composer, setComposer] = useState("");
+  const [posting, setPosting] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+  }, [postOpen]);
+
+  const handlePost = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (!composer.trim()) return;
+    setPosting(true);
+    const { error } = await supabase.from("posts").insert({
+      user_id: user.id,
+      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      post_type: composerType,
+      content: composer.trim(),
+    });
+    setPosting(false);
+    if (error) {
+      toast({ title: "Could not post", description: error.message, variant: "destructive" });
+    } else {
+      setComposer("");
+      setPostOpen(false);
+      toast({ title: "Shared with the community" });
+      window.dispatchEvent(new CustomEvent("community:refresh"));
+    }
+  };
 
   return (
     <>
@@ -36,11 +82,7 @@ export const PremiumNav = () => {
         )}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        {/* Animated shimmer sweep */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
             className="absolute top-0 -left-1/2 h-full w-1/2 nav-shimmer"
             style={{
@@ -50,19 +92,21 @@ export const PremiumNav = () => {
           />
         </div>
 
-        {/* Top highlight line */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
         <ul className="relative flex items-stretch justify-around px-2 sm:px-4 py-2 max-w-2xl mx-auto">
           {items.map((item) => {
             const Icon = item.icon;
-            const active = location.pathname === item.path;
+            const active = item.path ? location.pathname === item.path : false;
             const label = language === "es" ? item.labelEs : item.labelEn;
             return (
               <li key={item.id} className="flex-1">
                 <button
                   type="button"
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    if (item.action === "post") setPostOpen(true);
+                    else if (item.path) navigate(item.path);
+                  }}
                   aria-current={active ? "page" : undefined}
                   className={cn(
                     "group relative w-full flex flex-col items-center justify-center gap-1",
@@ -103,12 +147,65 @@ export const PremiumNav = () => {
         </ul>
       </nav>
 
-      {/* Spacer */}
       <div
         aria-hidden
         className="w-full"
         style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
       />
+
+      <Sheet open={postOpen} onOpenChange={setPostOpen}>
+        <SheetContent
+          side="bottom"
+          className="bg-black/80 backdrop-blur-2xl border-t border-white/10 text-white rounded-t-3xl"
+        >
+          <SheetHeader>
+            <SheetTitle className="text-white font-playfair text-xl text-center">
+              {language === "es" ? "Compartir con la comunidad" : "Share with the community"}
+            </SheetTitle>
+          </SheetHeader>
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4">
+            <div className="flex gap-2 mb-3">
+              {(["post", "prayer", "testimony"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setComposerType(t)}
+                  className={cn(
+                    "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
+                    composerType === t
+                      ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
+                      : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
+                  )}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+            <Textarea
+              value={composer}
+              onChange={(e) => setComposer(e.target.value)}
+              placeholder={
+                composerType === "prayer"
+                  ? "Share a prayer request..."
+                  : composerType === "testimony"
+                  ? "Share what God has done..."
+                  : "Share with the community..."
+              }
+              rows={4}
+              className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
+            />
+            <div className="flex justify-end mt-3">
+              <Button
+                onClick={handlePost}
+                disabled={posting || !composer.trim()}
+                className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90 shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
+              >
+                <Send className="w-4 h-4 mr-1" />
+                {posting ? "Sharing..." : "Share"}
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
