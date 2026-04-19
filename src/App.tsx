@@ -9,6 +9,9 @@ import { PremiumProvider } from "@/contexts/PremiumContext";
 import { useNativeInit } from "@/hooks/useNativeFeatures";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
 import Index from "./pages/Index";
+import Home from "./pages/Home";
+import Discernment from "./pages/Discernment";
+import Learning from "./pages/Learning";
 import Splash from "./pages/Splash";
 import Onboarding from "./pages/Onboarding";
 import MainMenu from "./pages/MainMenu";
@@ -45,7 +48,7 @@ const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const onboardingCompleted = localStorage.getItem("onboardingCompleted");
-    const exemptRoutes = ["/", "/splash", "/onboarding", "/auth"];
+    const exemptRoutes = ["/", "/home", "/splash", "/onboarding", "/auth"];
     
     if (!onboardingCompleted && !exemptRoutes.includes(location.pathname)) {
       navigate("/onboarding", { replace: true });
@@ -73,7 +76,12 @@ const App = () => (
             <NativeAppWrapper>
             <OnboardingGuard>
             <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<Index />} />
+            <Route path="/discernment" element={<Discernment />} />
+            <Route path="/learning" element={<Learning />} />
+            <Route path="/community" element={<PrayerWall />} />
             <Route path="/splash" element={<Splash />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/main-menu" element={<MainMenu />} />

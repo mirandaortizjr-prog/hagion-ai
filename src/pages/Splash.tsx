@@ -9,7 +9,7 @@ const Splash = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/chat?voice=friend", { replace: true });
+      navigate("/home", { replace: true });
     }, 3500);
 
     return () => clearTimeout(timer);
