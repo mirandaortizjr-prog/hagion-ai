@@ -40,6 +40,7 @@ import DailyWisdom from "./pages/DailyWisdom";
 import PostDetailPage from "./pages/community/PostDetailPage";
 import ReelsPage from "./pages/community/ReelsPage";
 import VideosPage from "./pages/community/VideosPage";
+import LivePage from "./pages/community/LivePage";
 import TeachingDetailPage from "./pages/community/TeachingDetailPage";
 import GroupDetailPage from "./pages/community/GroupDetailPage";
 import EventDetailPage from "./pages/community/EventDetailPage";
