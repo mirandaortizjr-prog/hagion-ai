@@ -112,14 +112,72 @@ export default function PrayerWall() {
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
   const [posting, setPosting] = useState(false);
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
+  const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
+  const [bannerUploading, setBannerUploading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+      if (data.user) loadProfile(data.user.id);
+    });
     loadAll();
-    const onRefresh = () => loadAll();
+    const onRefresh = () => {
+      loadAll();
+      supabase.auth.getUser().then(({ data }) => data.user && loadProfile(data.user.id));
+    };
     window.addEventListener("community:refresh", onRefresh);
     return () => window.removeEventListener("community:refresh", onRefresh);
   }, []);
+
+  const loadProfile = async (uid: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("avatar_url, banner_url")
+      .eq("user_id", uid)
+      .maybeSingle();
+    if (data) setProfile(data as any);
+  };
+
+  const uploadBanner = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async () => {
+      const f = input.files?.[0];
+      if (!f) return;
+      if (f.size > 10 * 1024 * 1024) {
+        toast({ title: "File too large", description: "Max 10MB", variant: "destructive" });
+        return;
+      }
+      setBannerUploading(true);
+      const ext = f.name.split(".").pop() || "jpg";
+      const path = `${user.id}/banner-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("community-media")
+        .upload(path, f, { contentType: f.type, upsert: true });
+      if (upErr) {
+        setBannerUploading(false);
+        toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+        return;
+      }
+      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const { error: updErr } = await supabase
+        .from("profiles")
+        .upsert({ user_id: user.id, banner_url: pub.publicUrl }, { onConflict: "user_id" });
+      setBannerUploading(false);
+      if (updErr) {
+        toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
+      } else {
+        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl }));
+        toast({ title: "Banner updated" });
+      }
+    };
+    input.click();
+  };
 
   const loadAll = async () => {
     const [p, r, t, g, e, c] = await Promise.all([
