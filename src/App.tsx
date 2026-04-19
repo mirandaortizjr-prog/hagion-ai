@@ -48,7 +48,7 @@ const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const onboardingCompleted = localStorage.getItem("onboardingCompleted");
-    const exemptRoutes = ["/", "/home", "/splash", "/onboarding", "/auth"];
+    const exemptRoutes = ["/", "/index", "/home", "/splash", "/onboarding", "/auth"];
     
     if (!onboardingCompleted && !exemptRoutes.includes(location.pathname)) {
       navigate("/onboarding", { replace: true });
