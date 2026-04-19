@@ -43,6 +43,7 @@ import VideosPage from "./pages/community/VideosPage";
 import LivePage from "./pages/community/LivePage";
 import TeachingDetailPage from "./pages/community/TeachingDetailPage";
 import GroupDetailPage from "./pages/community/GroupDetailPage";
+import GroupsPage from "./pages/community/GroupsPage";
 import EventDetailPage from "./pages/community/EventDetailPage";
 import ChurchDetailPage from "./pages/community/ChurchDetailPage";
 import MessengerPage from "./pages/community/MessengerPage";
