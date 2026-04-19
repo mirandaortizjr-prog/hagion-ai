@@ -451,7 +451,7 @@ export default function PrayerWall() {
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(80% 50% at 50% 0%, hsl(215 85% 55% / 0.28) 0%, transparent 60%), radial-gradient(60% 40% at 100% 30%, hsl(220 90% 60% / 0.18) 0%, transparent 70%), radial-gradient(70% 50% at 0% 70%, hsl(210 80% 50% / 0.16) 0%, transparent 70%), linear-gradient(180deg, hsl(222 60% 8%) 0%, hsl(222 55% 5%) 100%)",
+            "radial-gradient(90% 60% at 50% 0%, hsl(215 95% 55% / 0.55) 0%, transparent 65%), radial-gradient(70% 50% at 100% 25%, hsl(220 95% 60% / 0.45) 0%, transparent 70%), radial-gradient(80% 60% at 0% 75%, hsl(210 90% 50% / 0.4) 0%, transparent 70%), radial-gradient(60% 40% at 50% 100%, hsl(225 85% 45% / 0.35) 0%, transparent 70%), linear-gradient(180deg, hsl(220 70% 12%) 0%, hsl(222 65% 8%) 100%)",
         }}
       />
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
