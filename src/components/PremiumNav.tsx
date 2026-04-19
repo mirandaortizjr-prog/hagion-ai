@@ -248,14 +248,57 @@ export const PremiumNav = () => {
               rows={4}
               className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
             />
-            <div className="flex justify-end mt-3">
+
+            {mediaPreview && (
+              <div className="relative mt-3 rounded-xl overflow-hidden border border-white/10 bg-black/40">
+                {mediaKind === "image" ? (
+                  <img src={mediaPreview} alt="preview" className="w-full max-h-64 object-cover" />
+                ) : (
+                  <video src={mediaPreview} controls className="w-full max-h-64" />
+                )}
+                <button
+                  type="button"
+                  onClick={clearMedia}
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md ring-1 ring-white/20 flex items-center justify-center text-white hover:bg-black/80"
+                  aria-label="Remove media"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between mt-3 gap-2">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => pickMedia("image")}
+                  disabled={posting}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
+                >
+                  <ImagePlus className="w-4 h-4" />
+                  {language === "es" ? "Foto" : "Photo"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => pickMedia("video")}
+                  disabled={posting}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
+                >
+                  <Video className="w-4 h-4" />
+                  {language === "es" ? "Video" : "Video"}
+                </button>
+              </div>
               <Button
                 onClick={handlePost}
-                disabled={posting || !composer.trim()}
+                disabled={posting || (!composer.trim() && !mediaFile)}
                 className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90 shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
               >
-                <Send className="w-4 h-4 mr-1" />
-                {posting ? "Sharing..." : "Share"}
+                {uploading ? (
+                  <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4 mr-1" />
+                )}
+                {posting ? (uploading ? "Uploading..." : "Sharing...") : "Share"}
               </Button>
             </div>
           </div>
