@@ -397,7 +397,10 @@ function ReelItem({
       )}
 
       {/* Right-side action rail */}
-      <div className="absolute right-3 bottom-32 z-30 flex flex-col items-center gap-5">
+      <div
+        className="absolute right-3 z-30 flex flex-col items-center gap-5"
+        style={{ bottom: "max(calc(env(safe-area-inset-bottom) + 20px), 20px)" }}
+      >
         <ActionButton
           icon={Heart}
           active={liked}
