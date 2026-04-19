@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { MessageCircle, Bookmark, History as HistoryIcon } from "lucide-react";
+import { Home as HomeIcon, MessageCircle, Bookmark, History as HistoryIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ interface BottomNavItem {
 }
 
 const items: BottomNavItem[] = [
+  { id: "home", labelKey: "home", icon: HomeIcon, path: "/home" },
   { id: "chat", labelKey: "chat", icon: MessageCircle, path: "/chat" },
   { id: "saved", labelKey: "saved", icon: Bookmark, path: "/saved" },
   { id: "history", labelKey: "history", icon: HistoryIcon, path: "/history" },
