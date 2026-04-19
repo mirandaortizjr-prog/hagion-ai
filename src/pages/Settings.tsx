@@ -179,7 +179,10 @@ const Settings = () => {
       >
         <div className="max-w-2xl mx-auto flex items-center gap-3 px-4 py-3">
           <button
-            onClick={() => navigate("/main-menu")}
+            onClick={() => {
+              if (window.history.length > 1) navigate(-1);
+              else navigate("/home");
+            }}
             className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 flex items-center justify-center transition"
             aria-label="Back"
           >
