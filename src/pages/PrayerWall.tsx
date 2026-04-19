@@ -140,6 +140,47 @@ export default function PrayerWall() {
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
   const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
   const [bannerUploading, setBannerUploading] = useState(false);
+  const [createGroupOpen, setCreateGroupOpen] = useState(false);
+  const [newGroupName, setNewGroupName] = useState("");
+  const [newGroupDesc, setNewGroupDesc] = useState("");
+  const [creatingGroup, setCreatingGroup] = useState(false);
+
+  const handleCreateGroup = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const name = newGroupName.trim();
+    if (!name) {
+      toast({ title: "Group name is required", variant: "destructive" });
+      return;
+    }
+    setCreatingGroup(true);
+    const { data, error } = await supabase
+      .from("groups")
+      .insert({
+        name,
+        description: newGroupDesc.trim() || null,
+        creator_id: user.id,
+      })
+      .select()
+      .single();
+    if (!error && data) {
+      // auto-join creator
+      await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id });
+    }
+    setCreatingGroup(false);
+    if (error) {
+      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+      return;
+    }
+    setNewGroupName("");
+    setNewGroupDesc("");
+    setCreateGroupOpen(false);
+    toast({ title: "Group created" });
+    loadAll();
+    navigate(`/community/group/${data!.id}`);
+  };
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
