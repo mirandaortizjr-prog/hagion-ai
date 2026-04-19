@@ -39,6 +39,48 @@ const formatCount = (n: number) => {
   return (n / 1_000_000).toFixed(1) + "M";
 };
 
+const SAMPLE_REELS: Reel[] = [
+  {
+    id: "sample-1",
+    user_id: "sample",
+    title: "Be still and know that I am God.",
+    description: "Psalm 46:10 — A breath of stillness for your day.",
+    video_url:
+      "https://cdn.coverr.co/videos/coverr-clouds-rolling-over-mountains-2633/1080p.mp4",
+    thumbnail_url: null,
+    author_name: "hagion",
+    like_count: 1284,
+    view_count: 22400,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "sample-2",
+    user_id: "sample",
+    title: "Light shines in the darkness.",
+    description: "John 1:5 — and the darkness has not overcome it.",
+    video_url:
+      "https://cdn.coverr.co/videos/coverr-a-candle-burning-in-the-dark-5244/1080p.mp4",
+    thumbnail_url: null,
+    author_name: "scripture_daily",
+    like_count: 902,
+    view_count: 15800,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "sample-3",
+    user_id: "sample",
+    title: "He restores my soul.",
+    description: "Psalm 23:3 — green pastures, still waters, peace.",
+    video_url:
+      "https://cdn.coverr.co/videos/coverr-a-stream-flowing-through-a-forest-2825/1080p.mp4",
+    thumbnail_url: null,
+    author_name: "stillwaters",
+    like_count: 2105,
+    view_count: 41200,
+    created_at: new Date().toISOString(),
+  },
+];
+
 export default function ReelsFeedPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -68,8 +110,10 @@ export default function ReelsFeedPage() {
       .select("*")
       .order("created_at", { ascending: false })
       .limit(50);
-    setReels((data as Reel[]) || []);
-    if (data && data.length) setActiveId((data[0] as any).id);
+    let list = (data as Reel[]) || [];
+    if (list.length === 0) list = SAMPLE_REELS;
+    setReels(list);
+    if (list.length) setActiveId(list[0].id);
     setLoading(false);
   };
 
