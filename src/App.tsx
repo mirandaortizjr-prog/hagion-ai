@@ -43,6 +43,7 @@ import VideosPage from "./pages/community/VideosPage";
 import LivePage from "./pages/community/LivePage";
 import TeachingDetailPage from "./pages/community/TeachingDetailPage";
 import GroupDetailPage from "./pages/community/GroupDetailPage";
+import GroupsPage from "./pages/community/GroupsPage";
 import EventDetailPage from "./pages/community/EventDetailPage";
 import ChurchDetailPage from "./pages/community/ChurchDetailPage";
 import MessengerPage from "./pages/community/MessengerPage";
@@ -122,6 +123,7 @@ const App = () => (
             <Route path="/community/videos" element={<VideosPage />} />
             <Route path="/community/live" element={<LivePage />} />
             <Route path="/community/teaching/:id" element={<TeachingDetailPage />} />
+            <Route path="/community/groups" element={<GroupsPage />} />
             <Route path="/community/group/:id" element={<GroupDetailPage />} />
             <Route path="/community/event/:id" element={<EventDetailPage />} />
             <Route path="/community/church/:id" element={<ChurchDetailPage />} />
