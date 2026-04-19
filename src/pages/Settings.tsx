@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -39,9 +39,6 @@ const Settings = () => {
   const [savingName, setSavingName] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [uploadingBanner, setUploadingBanner] = useState(false);
-
-  const avatarInputRef = useRef<HTMLInputElement>(null);
-  const bannerInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -101,16 +98,29 @@ const Settings = () => {
     }
   };
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) uploadImage(file, "avatar");
-    e.target.value = "";
-  };
+  const openImagePicker = (kind: "avatar" | "banner") => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.opacity = "0";
+    input.setAttribute("aria-hidden", "true");
+    document.body.appendChild(input);
 
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) uploadImage(file, "banner");
-    e.target.value = "";
+    const cleanup = () => {
+      try {
+        document.body.removeChild(input);
+      } catch {}
+    };
+
+    input.onchange = () => {
+      const file = input.files?.[0];
+      if (file) uploadImage(file, kind);
+      cleanup();
+    };
+
+    input.click();
   };
 
   const handleSaveName = async () => {
@@ -206,7 +216,7 @@ const Settings = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
             <button
-              onClick={() => bannerInputRef.current?.click()}
+              onClick={() => openImagePicker("banner")}
               disabled={uploadingBanner}
               className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/20 text-xs font-medium transition disabled:opacity-60"
             >
@@ -217,13 +227,6 @@ const Settings = () => {
               )}
               {profile.banner_url ? "Change cover" : "Add cover"}
             </button>
-            <input
-              ref={bannerInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleBannerChange}
-              className="hidden"
-            />
           </div>
 
           {/* Avatar + name */}
@@ -231,13 +234,13 @@ const Settings = () => {
             <div className="flex items-end gap-4 -mt-12">
               <div className="relative">
                 <Avatar className="w-24 h-24 ring-4 ring-black/40 shadow-[0_10px_30px_-8px_rgba(0,0,0,0.8)]">
-                  {profile.avatar_url && <AvatarImage src={profile.avatar_url} alt="Profile" />}
+                  {profile.avatar_url && <AvatarImage src={profile.avatar_url} alt="Profile" className="object-cover object-center" />}
                   <AvatarFallback className="bg-gradient-to-br from-primary/40 via-accent/30 to-white/10 text-2xl font-playfair text-white">
                     {initial}
                   </AvatarFallback>
                 </Avatar>
                 <button
-                  onClick={() => avatarInputRef.current?.click()}
+                  onClick={() => openImagePicker("avatar")}
                   disabled={uploadingAvatar}
                   className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-lg ring-2 ring-black/40 hover:scale-105 active:scale-95 transition disabled:opacity-60"
                   aria-label="Change profile photo"
@@ -248,13 +251,6 @@ const Settings = () => {
                     <Camera className="w-3.5 h-3.5" />
                   )}
                 </button>
-                <input
-                  ref={avatarInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                  className="hidden"
-                />
               </div>
               <div className="flex-1 min-w-0 pb-1">
                 <div className="text-base font-semibold truncate">
