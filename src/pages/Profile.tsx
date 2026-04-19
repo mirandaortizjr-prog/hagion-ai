@@ -215,7 +215,7 @@ const Profile = () => {
                   aria-label="Change profile picture"
                 >
                   <Avatar className="w-16 h-16 ring-2 ring-white/20">
-                    {avatarUrl && <AvatarImage src={avatarUrl} />}
+                    {avatarUrl && <AvatarImage src={avatarUrl} className="object-cover object-center" />}
                     <AvatarFallback>
                       <User className="w-8 h-8" />
                     </AvatarFallback>
