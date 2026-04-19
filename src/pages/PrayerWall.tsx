@@ -345,168 +345,40 @@ export default function PrayerWall() {
           </div>
           <div className="h-10" />
 
-          {/* Compact Reels under profile */}
+          {/* Three phone tiles: Reels, Videos, (reserved) */}
           <section className="w-full mt-2 mb-2 text-left">
-            <div className="flex items-end justify-between mb-2 px-1">
-              <h2 className="font-playfair text-sm text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                Reels
-              </h2>
-              <button
-                onClick={() => navigate("/community/reels")}
-                className="flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
-              >
-                See all <ChevronRight className="w-2.5 h-2.5" />
-              </button>
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
-              {reels.length === 0
-                ? Array.from({ length: 5 }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => navigate("/community/reels")}
-                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] flex items-center justify-center"
-                    >
-                      <Play className="w-5 h-5 text-white/40" />
-                    </button>
-                  ))
-                : reels.map((r) => (
-                    <button
-                      key={r.id}
-                      onClick={() => navigate(`/community/reels?start=${r.id}`)}
-                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.02] backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] group"
-                    >
-                      {r.thumbnail_url && (
-                        <img src={r.thumbnail_url} alt={r.title} className="w-full h-full object-cover" />
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {[
+                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels"), disabled: false },
+                { label: "Videos", icon: Video, onClick: () => navigate("/community/videos"), disabled: false },
+                { label: "", icon: null as any, onClick: () => {}, disabled: true },
+              ].map((t, i) => {
+                const Icon = t.icon;
+                return (
+                  <button
+                    key={i}
+                    onClick={t.onClick}
+                    disabled={t.disabled}
+                    className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden border border-white/15 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed group"
+                  >
+                    <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-black/60 ring-1 ring-white/10 z-10" />
+                    <div className="absolute inset-1.5 rounded-[1.1rem] bg-gradient-to-br from-black/40 via-black/20 to-black/40 border border-white/10 flex flex-col items-center justify-center gap-1.5">
+                      {Icon && (
+                        <div className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/30 flex items-center justify-center group-hover:scale-110 transition">
+                          <Icon className="w-4 h-4 text-white" />
+                        </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center group-hover:scale-110 transition">
-                          <Play className="w-2.5 h-2.5 text-white fill-white ml-0.5" />
+                      {t.label && (
+                        <div className="text-[9px] font-playfair tracking-[0.18em] uppercase text-white/90">
+                          {t.label}
                         </div>
-                      </div>
-                      <div className="absolute bottom-1 left-1 right-1 text-left">
-                        <div className="text-[9px] text-white font-semibold line-clamp-2 leading-tight">
-                          {r.title}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </section>
-        </header>
-
-        {/* Feed */}
-        <section className="mb-10 -mx-5 sm:-mx-8">
-          <div className="px-5 sm:px-8">
-            <SectionHeader title="Feed" />
-          </div>
-          <div className="divide-y divide-white/10 border-y border-white/10">
-            {posts.length === 0 ? (
-              <div className="px-5 sm:px-8 py-8 text-center text-white/60">
-                Be the first to share with the community.
-              </div>
-            ) : (
-              posts.map((post) => {
-                const isPrayer = post.post_type === "prayer";
-                const liked = myInteractions[post.id]?.has("like");
-                const prayed = myInteractions[post.id]?.has("pray");
-                const encouraged = myInteractions[post.id]?.has("encourage");
-                const saved = myInteractions[post.id]?.has("save");
-                return (
-                  <article
-                    key={post.id}
-                    onClick={() => navigate(`/community/post/${post.id}`)}
-                    className="px-5 sm:px-8 py-5 cursor-pointer hover:bg-white/[0.03] transition"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <Avatar className="h-10 w-10 ring-1 ring-white/20">
-                        <AvatarFallback className="bg-gradient-to-br from-white/20 to-white/5 text-white text-sm font-playfair">
-                          {(post.is_anonymous ? "A" : post.author_name?.[0] || "B").toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-white truncate">
-                          {post.is_anonymous ? "Anonymous" : post.author_name || "Believer"}
-                        </div>
-                        <div className="text-[11px] text-white/50">
-                          {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
-                          {post.post_type !== "post" && (
-                            <span className="ml-2 px-2 py-0.5 rounded-full bg-white/[0.08] border border-white/15 text-white/70 uppercase tracking-[0.14em] text-[9px]">
-                              {post.post_type}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">
-                      {post.content}
-                    </p>
-                    {post.media_url && post.media_type === "image" && (
-                      <img
-                        src={post.media_url}
-                        alt="post media"
-                        className="mt-3 rounded-xl border border-white/10 w-full"
-                      />
-                    )}
-                    {post.media_url && post.media_type === "video" && (
-                      <video
-                        src={post.media_url}
-                        controls
-                        onClick={(e) => e.stopPropagation()}
-                        className="mt-3 rounded-xl border border-white/10 w-full"
-                      />
-                    )}
-
-                    <div
-                      className="flex items-center gap-1 mt-4 pt-3 border-t border-white/10"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {isPrayer ? (
-                        <>
-                          <ActionBtn
-                            active={prayed}
-                            onClick={() => toggleInteraction(post.id, "pray")}
-                            icon={HandHeart}
-                            label="Pray"
-                            count={post.pray_count}
-                          />
-                          <ActionBtn
-                            active={encouraged}
-                            onClick={() => toggleInteraction(post.id, "encourage")}
-                            icon={Sparkles}
-                            label="Encourage"
-                            count={post.encourage_count}
-                          />
-                        </>
-                      ) : (
-                        <ActionBtn
-                          active={liked}
-                          onClick={() => toggleInteraction(post.id, "like")}
-                          icon={Heart}
-                          label="Like"
-                          count={post.like_count}
-                        />
-                      )}
-                      <ActionBtn
-                        onClick={() => navigate(`/community/post/${post.id}`)}
-                        icon={MessageCircle}
-                        label="Comment"
-                        count={post.comment_count}
-                      />
-                      <ActionBtn onClick={() => sharePost(post)} icon={Share2} label="Share" />
-                      <ActionBtn
-                        active={saved}
-                        onClick={() => toggleInteraction(post.id, "save")}
-                        icon={Bookmark}
-                        label="Save"
-                      />
-                    </div>
-                  </article>
-                );
-              })
-            )}
-          </div>
-        </section>
 
         {/* Teachings */}
         <section className="mb-10">
