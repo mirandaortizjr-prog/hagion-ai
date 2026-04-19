@@ -299,11 +299,13 @@ export default function PrayerWall() {
         </header>
 
         {/* Feed */}
-        <section className="mb-10">
-          <SectionHeader title="Feed" />
-          <div className="space-y-4">
+        <section className="mb-10 -mx-5 sm:-mx-8">
+          <div className="px-5 sm:px-8">
+            <SectionHeader title="Feed" />
+          </div>
+          <div className="divide-y divide-white/10 border-y border-white/10">
             {posts.length === 0 ? (
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-8 text-center text-white/60">
+              <div className="px-5 sm:px-8 py-8 text-center text-white/60">
                 Be the first to share with the community.
               </div>
             ) : (
@@ -317,7 +319,7 @@ export default function PrayerWall() {
                   <article
                     key={post.id}
                     onClick={() => navigate(`/community/post/${post.id}`)}
-                    className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4 cursor-pointer hover:bg-white/[0.06] transition"
+                    className="px-5 sm:px-8 py-5 cursor-pointer hover:bg-white/[0.03] transition"
                   >
                     <div className="flex items-center gap-3 mb-3">
                       <Avatar className="h-10 w-10 ring-1 ring-white/20">
