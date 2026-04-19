@@ -19,6 +19,8 @@ import {
   Calendar,
   Church,
   MessageSquare,
+  Loader2,
+  ImagePlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
