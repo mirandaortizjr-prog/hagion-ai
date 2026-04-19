@@ -347,8 +347,8 @@ export default function PrayerWall() {
           <div className="h-10" />
 
           {/* Three phone tiles: Reels, Videos, (reserved) */}
-          <section className="w-full mt-2 mb-2 text-left">
-            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 max-w-[50%]">
+          <section className="w-full mt-2 mb-2">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-[55%] mx-auto">
               {[
                 { label: "Reels", icon: Play, onClick: () => navigate("/community/reels"), disabled: false },
                 { label: "Videos", icon: Video, onClick: () => navigate("/community/videos"), disabled: false },
@@ -360,21 +360,18 @@ export default function PrayerWall() {
                     key={i}
                     onClick={t.onClick}
                     disabled={t.disabled}
-                    className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden border border-white/15 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed group"
+                    className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed group flex flex-col items-center justify-center gap-1.5"
                   >
-                    <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-black/60 ring-1 ring-white/10 z-10" />
-                    <div className="absolute inset-1.5 rounded-[1.1rem] bg-gradient-to-br from-black/40 via-black/20 to-black/40 border border-white/10 flex flex-col items-center justify-center gap-1.5">
-                      {Icon && (
-                        <div className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/30 flex items-center justify-center group-hover:scale-110 transition">
-                          <Icon className="w-4 h-4 text-white" />
-                        </div>
-                      )}
-                      {t.label && (
-                        <div className="text-[9px] font-playfair tracking-[0.18em] uppercase text-white/90">
-                          {t.label}
-                        </div>
-                      )}
-                    </div>
+                    {Icon && (
+                      <div className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/20 flex items-center justify-center group-hover:scale-110 transition">
+                        <Icon className="w-4 h-4 text-white" />
+                      </div>
+                    )}
+                    {t.label && (
+                      <div className="text-[9px] font-playfair tracking-[0.18em] uppercase text-white/90">
+                        {t.label}
+                      </div>
+                    )}
                   </button>
                 );
               })}
