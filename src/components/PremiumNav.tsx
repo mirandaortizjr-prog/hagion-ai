@@ -28,13 +28,13 @@ export const PremiumNav = () => {
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50",
-          "border-b border-white/10",
+          "fixed bottom-0 left-0 right-0 z-50",
+          "border-t border-white/10",
           "bg-black/30 backdrop-blur-2xl backdrop-saturate-150",
-          "shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6)]",
+          "shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.6)]",
           "overflow-hidden"
         )}
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         {/* Animated shimmer sweep */}
         <div
@@ -50,8 +50,8 @@ export const PremiumNav = () => {
           />
         </div>
 
-        {/* Bottom highlight line */}
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        {/* Top highlight line */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
         <ul className="relative flex items-stretch justify-around px-2 sm:px-4 py-2 max-w-2xl mx-auto">
           {items.map((item) => {
