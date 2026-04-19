@@ -99,9 +99,16 @@ const Profile = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    const cleanup = () => {
+      try { document.body.removeChild(input); } catch {}
+    };
     input.onchange = async () => {
       const f = input.files?.[0];
-      if (!f) return;
+      if (!f) { cleanup(); return; }
       if (f.size > 5 * 1024 * 1024) {
         toast({ title: t('error'), description: "Max 5MB", variant: "destructive" });
         return;
