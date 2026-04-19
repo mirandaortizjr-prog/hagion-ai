@@ -244,6 +244,55 @@ export default function PrayerWall() {
             </button>
           </div>
           <div className="h-10" />
+
+          {/* Compact Reels under profile */}
+          <section className="w-full mt-2 mb-2 text-left">
+            <div className="flex items-end justify-between mb-2 px-1">
+              <h2 className="font-playfair text-sm text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                Reels
+              </h2>
+              <button
+                onClick={() => navigate("/community/reels")}
+                className="flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
+              >
+                See all <ChevronRight className="w-2.5 h-2.5" />
+              </button>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+              {reels.length === 0
+                ? Array.from({ length: 5 }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => navigate("/community/reels")}
+                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] flex items-center justify-center"
+                    >
+                      <Play className="w-5 h-5 text-white/40" />
+                    </button>
+                  ))
+                : reels.map((r) => (
+                    <button
+                      key={r.id}
+                      onClick={() => navigate(`/community/reels?start=${r.id}`)}
+                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.02] backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] group"
+                    >
+                      {r.thumbnail_url && (
+                        <img src={r.thumbnail_url} alt={r.title} className="w-full h-full object-cover" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center group-hover:scale-110 transition">
+                          <Play className="w-2.5 h-2.5 text-white fill-white ml-0.5" />
+                        </div>
+                      </div>
+                      <div className="absolute bottom-1 left-1 right-1 text-left">
+                        <div className="text-[9px] text-white font-semibold line-clamp-2 leading-tight">
+                          {r.title}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+            </div>
+          </section>
         </header>
 
         {/* Composer */}
@@ -391,39 +440,6 @@ export default function PrayerWall() {
                 );
               })
             )}
-          </div>
-        </section>
-
-        {/* Reels */}
-        <section className="mb-10">
-          <SectionHeader title="Reels" onSeeAll={() => navigate("/community/reels")} />
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
-            {reels.length === 0
-              ? Array.from({ length: 4 }).map((_, i) => (
-                  <PlaceholderReel key={i} onClick={() => navigate("/community/reels")} />
-                ))
-              : reels.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => navigate(`/community/reels?start=${r.id}`)}
-                    className="relative shrink-0 w-32 h-52 rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.02] backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] group"
-                  >
-                    {r.thumbnail_url && (
-                      <img src={r.thumbnail_url} alt={r.title} className="w-full h-full object-cover" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center group-hover:scale-110 transition">
-                        <Play className="w-4 h-4 text-white fill-white ml-0.5" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-2 left-2 right-2 text-left">
-                      <div className="text-[11px] text-white font-semibold line-clamp-2 leading-tight">
-                        {r.title}
-                      </div>
-                    </div>
-                  </button>
-                ))}
           </div>
         </section>
 
