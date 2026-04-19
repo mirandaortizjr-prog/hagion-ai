@@ -495,40 +495,6 @@ export default function PrayerWall() {
           </div>
         </section>
 
-        {/* Teachings */}
-        <section className="mb-10">
-
-          <SectionHeader title="Teachings & Messages" onSeeAll={() => navigate("/community/teachings")} />
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
-            {teachings.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => navigate(`/community/teaching/${t.id}`)}
-                className="shrink-0 w-60 rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] hover:bg-white/[0.07] transition text-left"
-              >
-                <div className="relative aspect-video bg-gradient-to-br from-white/10 via-white/5 to-transparent">
-                  {t.thumbnail_url ? (
-                    <img src={t.thumbnail_url} alt={t.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Play className="w-8 h-8 text-white/40" />
-                    </div>
-                  )}
-                  {t.duration_seconds && (
-                    <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-[10px] text-white">
-                      {fmtDuration(t.duration_seconds)}
-                    </span>
-                  )}
-                </div>
-                <div className="p-3">
-                  <div className="text-sm font-semibold text-white line-clamp-2 leading-snug">{t.title}</div>
-                  <div className="mt-1 text-[11px] text-white/50">{t.author_name}</div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-
         {/* Groups */}
         <section className="mb-10">
           <SectionHeader title="Groups" onSeeAll={() => navigate("/community/groups")} />
