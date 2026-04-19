@@ -169,6 +169,27 @@ export type Database = {
         }
         Relationships: []
       }
+      follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           group_id: string
@@ -422,31 +443,40 @@ export type Database = {
           avatar_url: string | null
           banner_url: string | null
           created_at: string
+          follower_count: number
+          following_count: number
           gender: string | null
           id: string
           name: string | null
           updated_at: string
           user_id: string
+          username: string | null
         }
         Insert: {
           avatar_url?: string | null
           banner_url?: string | null
           created_at?: string
+          follower_count?: number
+          following_count?: number
           gender?: string | null
           id?: string
           name?: string | null
           updated_at?: string
           user_id: string
+          username?: string | null
         }
         Update: {
           avatar_url?: string | null
           banner_url?: string | null
           created_at?: string
+          follower_count?: number
+          following_count?: number
           gender?: string | null
           id?: string
           name?: string | null
           updated_at?: string
           user_id?: string
+          username?: string | null
         }
         Relationships: []
       }
