@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Heart,
   MessageCircle,
@@ -19,6 +19,8 @@ import {
   Calendar,
   Church,
   MessageSquare,
+  Loader2,
+  ImagePlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -112,14 +114,72 @@ export default function PrayerWall() {
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
   const [posting, setPosting] = useState(false);
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
+  const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
+  const [bannerUploading, setBannerUploading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+      if (data.user) loadProfile(data.user.id);
+    });
     loadAll();
-    const onRefresh = () => loadAll();
+    const onRefresh = () => {
+      loadAll();
+      supabase.auth.getUser().then(({ data }) => data.user && loadProfile(data.user.id));
+    };
     window.addEventListener("community:refresh", onRefresh);
     return () => window.removeEventListener("community:refresh", onRefresh);
   }, []);
+
+  const loadProfile = async (uid: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("avatar_url, banner_url")
+      .eq("user_id", uid)
+      .maybeSingle();
+    if (data) setProfile(data as any);
+  };
+
+  const uploadBanner = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async () => {
+      const f = input.files?.[0];
+      if (!f) return;
+      if (f.size > 10 * 1024 * 1024) {
+        toast({ title: "File too large", description: "Max 10MB", variant: "destructive" });
+        return;
+      }
+      setBannerUploading(true);
+      const ext = f.name.split(".").pop() || "jpg";
+      const path = `${user.id}/banner-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("community-media")
+        .upload(path, f, { contentType: f.type, upsert: true });
+      if (upErr) {
+        setBannerUploading(false);
+        toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+        return;
+      }
+      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const { error: updErr } = await supabase
+        .from("profiles")
+        .upsert({ user_id: user.id, banner_url: pub.publicUrl }, { onConflict: "user_id" });
+      setBannerUploading(false);
+      if (updErr) {
+        toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
+      } else {
+        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl }));
+        toast({ title: "Banner updated" });
+      }
+    };
+    input.click();
+  };
 
   const loadAll = async () => {
     const [p, r, t, g, e, c] = await Promise.all([
@@ -228,18 +288,40 @@ export default function PrayerWall() {
           </h1>
           <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
           <div className="mt-5 w-full max-w-md relative">
-            <div className="aspect-[16/9] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden flex items-center justify-center">
-              <div className="flex flex-col items-center gap-2 text-white/40">
-                <Sparkles className="w-6 h-6" />
-                <span className="text-[11px] tracking-[0.18em] uppercase">Add a picture</span>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={uploadBanner}
+              disabled={bannerUploading}
+              className="block w-full aspect-[16/9] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
+              aria-label="Upload community banner"
+            >
+              {profile?.banner_url ? (
+                <img src={profile.banner_url} alt="banner" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/40">
+                  {bannerUploading ? (
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  ) : (
+                    <ImagePlus className="w-6 h-6" />
+                  )}
+                  <span className="text-[11px] tracking-[0.18em] uppercase">
+                    {bannerUploading ? "Uploading..." : "Add a picture"}
+                  </span>
+                </div>
+              )}
+              {profile?.banner_url && (
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="text-[11px] tracking-[0.18em] uppercase text-white">Change</span>
+                </div>
+              )}
+            </button>
             <button
               onClick={() => navigate("/profile")}
               className="absolute left-1/2 -bottom-8 -translate-x-1/2 rounded-full ring-2 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
               aria-label="Open profile"
             >
               <Avatar className="h-16 w-16">
+                {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
                 <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-base">
                   {(user?.email?.[0] || "U").toUpperCase()}
                 </AvatarFallback>

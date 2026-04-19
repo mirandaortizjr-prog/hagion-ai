@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2, User } from "lucide-react";
+import { ArrowLeft, Loader2, User, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,6 +21,8 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [gender, setGender] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,13 +39,14 @@ const Profile = () => {
       // Load profile data
       const { data: profile } = await supabase
         .from("profiles")
-        .select("name, gender")
+        .select("name, gender, avatar_url")
         .eq("user_id", user.id)
         .maybeSingle();
       
       if (profile) {
         setName(profile.name || "");
         setGender(profile.gender || "");
+        setAvatarUrl((profile as any).avatar_url || "");
       }
     } else {
       navigate("/auth");
@@ -81,6 +84,45 @@ const Profile = () => {
     } finally {
       setIsSavingProfile(false);
     }
+  };
+
+  const handleAvatarUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async () => {
+      const f = input.files?.[0];
+      if (!f) return;
+      if (f.size > 5 * 1024 * 1024) {
+        toast({ title: t('error'), description: "Max 5MB", variant: "destructive" });
+        return;
+      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      setUploadingAvatar(true);
+      const ext = f.name.split(".").pop() || "jpg";
+      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("community-media")
+        .upload(path, f, { contentType: f.type, upsert: true });
+      if (upErr) {
+        setUploadingAvatar(false);
+        toast({ title: t('error'), description: upErr.message, variant: "destructive" });
+        return;
+      }
+      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const { error: updErr } = await supabase
+        .from("profiles")
+        .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
+      setUploadingAvatar(false);
+      if (updErr) {
+        toast({ title: t('error'), description: updErr.message, variant: "destructive" });
+      } else {
+        setAvatarUrl(pub.publicUrl);
+        toast({ title: t('success'), description: t('profile_updated') });
+      }
+    };
+    input.click();
   };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -146,12 +188,27 @@ const Profile = () => {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-4">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage src="" />
-                  <AvatarFallback>
-                    <User className="w-8 h-8" />
-                  </AvatarFallback>
-                </Avatar>
+                <button
+                  type="button"
+                  onClick={handleAvatarUpload}
+                  disabled={uploadingAvatar}
+                  className="relative group"
+                  aria-label="Change profile picture"
+                >
+                  <Avatar className="w-16 h-16 ring-2 ring-white/20">
+                    {avatarUrl && <AvatarImage src={avatarUrl} />}
+                    <AvatarFallback>
+                      <User className="w-8 h-8" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                    {uploadingAvatar ? (
+                      <Loader2 className="w-5 h-5 text-white animate-spin" />
+                    ) : (
+                      <Camera className="w-5 h-5 text-white" />
+                    )}
+                  </span>
+                </button>
                 <div>
                   <CardTitle>{t('account_info')}</CardTitle>
                   <CardDescription>{t('account_info_desc')}</CardDescription>
