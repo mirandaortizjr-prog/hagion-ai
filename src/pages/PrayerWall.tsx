@@ -444,7 +444,16 @@ export default function PrayerWall() {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white relative overflow-hidden">
+      {/* Blue ambient shading */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(80% 50% at 50% 0%, hsl(215 85% 55% / 0.28) 0%, transparent 60%), radial-gradient(60% 40% at 100% 30%, hsl(220 90% 60% / 0.18) 0%, transparent 70%), radial-gradient(70% 50% at 0% 70%, hsl(210 80% 50% / 0.16) 0%, transparent 70%), linear-gradient(180deg, hsl(222 60% 8%) 0%, hsl(222 55% 5%) 100%)",
+        }}
+      />
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
         {/* Header */}
         <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center relative">
@@ -462,10 +471,10 @@ export default function PrayerWall() {
           >
             <Settings className="w-4 h-4" />
           </button>
-          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight bg-gradient-to-b from-white via-white to-sky-200/90 bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(56,135,255,0.35)]">
             Christian Community
           </h1>
-          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
           <div className="mt-5 w-full max-w-md relative">
             <button
               type="button"
