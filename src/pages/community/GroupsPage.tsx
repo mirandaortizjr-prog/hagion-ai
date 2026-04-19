@@ -93,10 +93,16 @@ export default function GroupsPage() {
           (g.description || "").toLowerCase().includes(q),
       );
     }
+    // Avoid showing the same items twice when the Featured rail is visible
+    if (tab === "discover" && !q && groups.length > 3) {
+      const top = new Set(groups.slice(0, 3).map((g) => g.id));
+      list = list.filter((g) => !top.has(g.id));
+    }
     return list;
   }, [groups, tab, search, memberships, user]);
 
-  const featured = useMemo(() => groups.slice(0, 3), [groups]);
+  const featured = useMemo(() => (groups.length > 3 ? groups.slice(0, 3) : []), [groups]);
+  const featuredIds = useMemo(() => new Set(featured.map((g) => g.id)), [featured]);
   const totalMembers = useMemo(
     () => groups.reduce((s, g) => s + (g.member_count || 0), 0),
     [groups],
