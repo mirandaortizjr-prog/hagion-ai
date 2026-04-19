@@ -238,6 +238,24 @@ const Profile = () => {
                   />
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">@</span>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="your_handle"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24))}
+                      disabled={isSavingProfile}
+                      className="pl-7"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                    />
+                  </div>
+                  <p className="text-[11px] text-white/50">3-24 chars · letters, numbers, underscore. Used for search & your profile URL.</p>
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="gender">{t('gender')}</Label>
                   <Select value={gender} onValueChange={setGender} disabled={isSavingProfile}>
                     <SelectTrigger id="gender">
