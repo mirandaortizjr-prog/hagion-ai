@@ -471,10 +471,10 @@ export default function PrayerWall() {
           >
             <Settings className="w-4 h-4" />
           </button>
-          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight bg-gradient-to-b from-white via-white to-sky-200/90 bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(56,135,255,0.35)]">
             Christian Community
           </h1>
-          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
           <div className="mt-5 w-full max-w-md relative">
             <button
               type="button"
