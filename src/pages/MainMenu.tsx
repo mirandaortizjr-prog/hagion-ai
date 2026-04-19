@@ -71,6 +71,19 @@ const MainMenu = () => {
     }
   }, [activeTab]);
 
+  // Intercept hardware/browser back button while Plan of Salvation dialog is open
+  useEffect(() => {
+    if (!salvationOpen) return;
+    window.history.pushState({ salvationOpen: true }, "");
+    const handlePopState = () => {
+      setSalvationOpen(false);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [salvationOpen]);
+
   const fetchYearlyCount = async () => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
