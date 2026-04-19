@@ -355,13 +355,6 @@ export default function PrayerWall() {
           >
             <Settings className="w-5 h-5" />
           </button>
-          <button
-            onClick={() => navigate("/community/messenger")}
-            aria-label="Open messenger"
-            className="absolute right-0 top-6 w-10 h-10 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.5)]"
-          >
-            <MessageSquare className="w-5 h-5" />
-          </button>
           <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             Christian Community
           </h1>
