@@ -97,19 +97,30 @@ interface ChurchItem {
   image_url: string | null;
 }
 
-const SectionHeader = ({ title, onSeeAll }: { title: string; onSeeAll?: () => void }) => (
+const SectionHeader = ({
+  title,
+  onSeeAll,
+  action,
+}: {
+  title: string;
+  onSeeAll?: () => void;
+  action?: React.ReactNode;
+}) => (
   <div className="flex items-end justify-between mb-3 px-1">
     <h2 className="font-playfair text-xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
       {title}
     </h2>
-    {onSeeAll && (
-      <button
-        onClick={onSeeAll}
-        className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
-      >
-        See all <ChevronRight className="w-3 h-3" />
-      </button>
-    )}
+    <div className="flex items-center gap-3">
+      {action}
+      {onSeeAll && (
+        <button
+          onClick={onSeeAll}
+          className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
+        >
+          See all <ChevronRight className="w-3 h-3" />
+        </button>
+      )}
+    </div>
   </div>
 );
 
