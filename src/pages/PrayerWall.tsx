@@ -388,6 +388,13 @@ export default function PrayerWall() {
         {/* Header */}
         <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center relative">
           <button
+            onClick={() => navigate("/community/messenger")}
+            aria-label="Open messenger"
+            className="absolute left-0 top-6 w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.5)]"
+          >
+            <MessageSquare className="w-4 h-4" />
+          </button>
+          <button
             onClick={() => navigate("/settings")}
             aria-label="Open settings"
             className="absolute right-0 top-6 w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.5)]"
