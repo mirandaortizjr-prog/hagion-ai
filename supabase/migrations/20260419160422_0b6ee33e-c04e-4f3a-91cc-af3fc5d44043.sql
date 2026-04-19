@@ -1,0 +1,1 @@
+DELETE FROM public.events WHERE id IN ('f0860c63-5038-45f1-a882-8b679f025aea', 'ae484f62-d46f-4c06-b070-0a94d4b16594');
