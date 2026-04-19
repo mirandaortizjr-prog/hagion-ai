@@ -20,6 +20,7 @@ const Profile = () => {
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [gender, setGender] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -39,7 +40,7 @@ const Profile = () => {
       // Load profile data
       const { data: profile } = await supabase
         .from("profiles")
-        .select("name, gender, avatar_url")
+        .select("name, gender, avatar_url, username")
         .eq("user_id", user.id)
         .maybeSingle();
       
@@ -47,6 +48,7 @@ const Profile = () => {
         setName(profile.name || "");
         setGender(profile.gender || "");
         setAvatarUrl((profile as any).avatar_url || "");
+        setUsername((profile as any).username || "");
       }
     } else {
       navigate("/auth");
@@ -61,15 +63,22 @@ const Profile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
+      const cleanUsername = username.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
+      if (cleanUsername && (cleanUsername.length < 3 || cleanUsername.length > 24)) {
+        throw new Error("Username must be 3-24 characters (letters, numbers, underscore)");
+      }
+
       const { error } = await supabase
         .from("profiles")
         .upsert({
           user_id: user.id,
           name,
           gender,
-        });
+          username: cleanUsername || null,
+        }, { onConflict: "user_id" });
 
       if (error) throw error;
+      if (cleanUsername) setUsername(cleanUsername);
 
       toast({
         title: t('success'),
@@ -227,6 +236,24 @@ const Profile = () => {
                     onChange={(e) => setName(e.target.value)}
                     disabled={isSavingProfile}
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">@</span>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="your_handle"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24))}
+                      disabled={isSavingProfile}
+                      className="pl-7"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                    />
+                  </div>
+                  <p className="text-[11px] text-white/50">3-24 chars · letters, numbers, underscore. Used for search & your profile URL.</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="gender">{t('gender')}</Label>
