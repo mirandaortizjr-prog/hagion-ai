@@ -351,6 +351,14 @@ export default function PrayerWall() {
                         className="mt-3 rounded-xl border border-white/10 w-full"
                       />
                     )}
+                    {post.media_url && post.media_type === "video" && (
+                      <video
+                        src={post.media_url}
+                        controls
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-3 rounded-xl border border-white/10 w-full"
+                      />
+                    )}
 
                     <div
                       className="flex items-center gap-1 mt-4 pt-3 border-t border-white/10"
