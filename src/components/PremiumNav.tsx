@@ -24,16 +24,12 @@ export const PremiumNav = () => {
   const { language } = useLanguage();
   const { toast } = useToast();
 
-  const isCommunity = location.pathname === "/community";
-
   const items: NavItem[] = [
     { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
     { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
-    isCommunity
-      ? { id: "post", labelEn: "Post", labelEs: "Publicar", icon: Plus, action: "post" }
-      : { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Flame, path: "/discernment" },
-    { id: "learning", labelEn: "Learning", labelEs: "Aprendizaje", icon: BookOpen, path: "/learning" },
-    { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
+    { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
+    { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community?tab=groups" },
+    { id: "messenger", labelEn: "Messenger", labelEs: "Mensajes", icon: MessageCircle, path: "/community/messenger" },
   ];
 
   const [postOpen, setPostOpen] = useState(false);
