@@ -144,6 +144,44 @@ export default function PrayerWall() {
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupDesc, setNewGroupDesc] = useState("");
   const [creatingGroup, setCreatingGroup] = useState(false);
+  const [createEventOpen, setCreateEventOpen] = useState(false);
+  const [newEventTitle, setNewEventTitle] = useState("");
+  const [newEventDate, setNewEventDate] = useState("");
+  const [newEventLocation, setNewEventLocation] = useState("");
+  const [newEventDesc, setNewEventDesc] = useState("");
+  const [creatingEvent, setCreatingEvent] = useState(false);
+
+  const handleCreateEvent = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const title = newEventTitle.trim();
+    if (!title || !newEventDate) {
+      toast({ title: "Title and date are required", variant: "destructive" });
+      return;
+    }
+    setCreatingEvent(true);
+    const { error } = await supabase.from("events").insert({
+      title,
+      event_date: new Date(newEventDate).toISOString(),
+      location: newEventLocation.trim() || null,
+      description: newEventDesc.trim() || null,
+      creator_id: user.id,
+    });
+    setCreatingEvent(false);
+    if (error) {
+      toast({ title: "Could not create event", description: error.message, variant: "destructive" });
+      return;
+    }
+    setNewEventTitle("");
+    setNewEventDate("");
+    setNewEventLocation("");
+    setNewEventDesc("");
+    setCreateEventOpen(false);
+    toast({ title: "Event created" });
+    loadAll();
+  };
 
   const handleCreateGroup = async () => {
     if (!user) {
