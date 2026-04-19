@@ -522,7 +522,7 @@ export default function PrayerWall() {
           <section className="w-full mt-2 mb-2">
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {[
-                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels") },
+                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels/feed") },
                 { label: "Videos", icon: Video, onClick: () => navigate("/community/videos") },
                 { label: "Live", icon: Radio, onClick: () => navigate("/community/live") },
               ].map((t, i) => {
