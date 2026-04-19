@@ -40,7 +40,7 @@ const Profile = () => {
       // Load profile data
       const { data: profile } = await supabase
         .from("profiles")
-        .select("name, gender, avatar_url")
+        .select("name, gender, avatar_url, username")
         .eq("user_id", user.id)
         .maybeSingle();
       
@@ -48,6 +48,7 @@ const Profile = () => {
         setName(profile.name || "");
         setGender(profile.gender || "");
         setAvatarUrl((profile as any).avatar_url || "");
+        setUsername((profile as any).username || "");
       }
     } else {
       navigate("/auth");
