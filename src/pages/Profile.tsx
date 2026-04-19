@@ -99,9 +99,16 @@ const Profile = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    input.style.opacity = "0";
+    document.body.appendChild(input);
+    const cleanup = () => {
+      try { document.body.removeChild(input); } catch {}
+    };
     input.onchange = async () => {
       const f = input.files?.[0];
-      if (!f) return;
+      if (!f) { cleanup(); return; }
       if (f.size > 5 * 1024 * 1024) {
         toast({ title: t('error'), description: "Max 5MB", variant: "destructive" });
         return;
@@ -116,18 +123,21 @@ const Profile = () => {
         .upload(path, f, { contentType: f.type, upsert: true });
       if (upErr) {
         setUploadingAvatar(false);
+        cleanup();
         toast({ title: t('error'), description: upErr.message, variant: "destructive" });
         return;
       }
       const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const cacheBustedUrl = `${pub.publicUrl}?t=${Date.now()}`;
       const { error: updErr } = await supabase
         .from("profiles")
         .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
       setUploadingAvatar(false);
+      cleanup();
       if (updErr) {
         toast({ title: t('error'), description: updErr.message, variant: "destructive" });
       } else {
-        setAvatarUrl(pub.publicUrl);
+        setAvatarUrl(cacheBustedUrl);
         toast({ title: t('success'), description: t('profile_updated') });
       }
     };
@@ -205,7 +215,7 @@ const Profile = () => {
                   aria-label="Change profile picture"
                 >
                   <Avatar className="w-16 h-16 ring-2 ring-white/20">
-                    {avatarUrl && <AvatarImage src={avatarUrl} />}
+                    {avatarUrl && <AvatarImage src={avatarUrl} className="object-cover object-center" />}
                     <AvatarFallback>
                       <User className="w-8 h-8" />
                     </AvatarFallback>
