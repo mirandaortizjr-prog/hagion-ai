@@ -116,6 +116,9 @@ export default function PrayerWall() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     loadAll();
+    const onRefresh = () => loadAll();
+    window.addEventListener("community:refresh", onRefresh);
+    return () => window.removeEventListener("community:refresh", onRefresh);
   }, []);
 
   const loadAll = async () => {
@@ -294,51 +297,6 @@ export default function PrayerWall() {
             </div>
           </section>
         </header>
-
-        {/* Composer */}
-        <section className="mb-8 animate-fade-in">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4">
-            <div className="flex gap-2 mb-3">
-              {(["post", "prayer", "testimony"] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setComposerType(t)}
-                  className={cn(
-                    "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
-                    composerType === t
-                      ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-                      : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
-                  )}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-            <Textarea
-              value={composer}
-              onChange={(e) => setComposer(e.target.value)}
-              placeholder={
-                composerType === "prayer"
-                  ? "Share a prayer request..."
-                  : composerType === "testimony"
-                  ? "Share what God has done..."
-                  : "Share with the community..."
-              }
-              rows={3}
-              className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
-            />
-            <div className="flex justify-end mt-3">
-              <Button
-                onClick={handlePost}
-                disabled={posting || !composer.trim()}
-                className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90 shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-              >
-                <Send className="w-4 h-4 mr-1" />
-                {posting ? "Sharing..." : "Share"}
-              </Button>
-            </div>
-          </div>
-        </section>
 
         {/* Feed */}
         <section className="mb-10">
