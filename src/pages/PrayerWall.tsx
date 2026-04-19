@@ -371,6 +371,7 @@ export default function PrayerWall() {
               })}
             </div>
           </section>
+        </header>
 
         {/* Groups */}
         <section className="mb-10">
