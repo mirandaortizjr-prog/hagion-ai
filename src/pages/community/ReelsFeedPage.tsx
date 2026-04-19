@@ -41,6 +41,21 @@ const formatCount = (n: number) => {
 
 const SAMPLE_REELS: Reel[] = [
   {
+    id: "sample-0",
+    user_id: "sample",
+    title: "For God so loved the world.",
+    description:
+      "John 3:16 — that He gave His one and only Son, that whoever believes in Him shall not perish but have eternal life.",
+    video_url:
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    thumbnail_url:
+      "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&q=80",
+    author_name: "hagion",
+    like_count: 3420,
+    view_count: 58200,
+    created_at: new Date().toISOString(),
+  },
+  {
     id: "sample-1",
     user_id: "sample",
     title: "Be still and know that I am God.",
