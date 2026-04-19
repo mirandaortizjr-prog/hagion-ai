@@ -22,6 +22,7 @@ import {
   Loader2,
   ImagePlus,
   Settings,
+  Video,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -379,9 +380,124 @@ export default function PrayerWall() {
               })}
             </div>
           </section>
+        </header>
+
+        {/* Feed */}
+        <section className="mb-10 -mx-5 sm:-mx-8">
+          <div className="px-5 sm:px-8">
+            <SectionHeader title="Feed" />
+          </div>
+          <div className="divide-y divide-white/10 border-y border-white/10">
+            {posts.length === 0 ? (
+              <div className="px-5 sm:px-8 py-8 text-center text-white/60">
+                Be the first to share with the community.
+              </div>
+            ) : (
+              posts.map((post) => {
+                const isPrayer = post.post_type === "prayer";
+                const liked = myInteractions[post.id]?.has("like");
+                const prayed = myInteractions[post.id]?.has("pray");
+                const encouraged = myInteractions[post.id]?.has("encourage");
+                const saved = myInteractions[post.id]?.has("save");
+                return (
+                  <article
+                    key={post.id}
+                    onClick={() => navigate(`/community/post/${post.id}`)}
+                    className="px-5 sm:px-8 py-5 cursor-pointer hover:bg-white/[0.03] transition"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <Avatar className="h-10 w-10 ring-1 ring-white/20">
+                        <AvatarFallback className="bg-gradient-to-br from-white/20 to-white/5 text-white text-sm font-playfair">
+                          {(post.is_anonymous ? "A" : post.author_name?.[0] || "B").toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-white truncate">
+                          {post.is_anonymous ? "Anonymous" : post.author_name || "Believer"}
+                        </div>
+                        <div className="text-[11px] text-white/50">
+                          {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+                          {post.post_type !== "post" && (
+                            <span className="ml-2 px-2 py-0.5 rounded-full bg-white/[0.08] border border-white/15 text-white/70 uppercase tracking-[0.14em] text-[9px]">
+                              {post.post_type}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">
+                      {post.content}
+                    </p>
+                    {post.media_url && post.media_type === "image" && (
+                      <img
+                        src={post.media_url}
+                        alt="post media"
+                        className="mt-3 rounded-xl border border-white/10 w-full"
+                      />
+                    )}
+                    {post.media_url && post.media_type === "video" && (
+                      <video
+                        src={post.media_url}
+                        controls
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-3 rounded-xl border border-white/10 w-full"
+                      />
+                    )}
+
+                    <div
+                      className="flex items-center gap-1 mt-4 pt-3 border-t border-white/10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {isPrayer ? (
+                        <>
+                          <ActionBtn
+                            active={prayed}
+                            onClick={() => toggleInteraction(post.id, "pray")}
+                            icon={HandHeart}
+                            label="Pray"
+                            count={post.pray_count}
+                          />
+                          <ActionBtn
+                            active={encouraged}
+                            onClick={() => toggleInteraction(post.id, "encourage")}
+                            icon={Sparkles}
+                            label="Encourage"
+                            count={post.encourage_count}
+                          />
+                        </>
+                      ) : (
+                        <ActionBtn
+                          active={liked}
+                          onClick={() => toggleInteraction(post.id, "like")}
+                          icon={Heart}
+                          label="Like"
+                          count={post.like_count}
+                        />
+                      )}
+                      <ActionBtn
+                        onClick={() => navigate(`/community/post/${post.id}`)}
+                        icon={MessageCircle}
+                        label="Comment"
+                        count={post.comment_count}
+                      />
+                      <ActionBtn onClick={() => sharePost(post)} icon={Share2} label="Share" />
+                      <ActionBtn
+                        active={saved}
+                        onClick={() => toggleInteraction(post.id, "save")}
+                        icon={Bookmark}
+                        label="Save"
+                      />
+                    </div>
+                  </article>
+                );
+              })
+            )}
+          </div>
+        </section>
 
         {/* Teachings */}
         <section className="mb-10">
+
           <SectionHeader title="Teachings & Messages" onSeeAll={() => navigate("/community/teachings")} />
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
             {teachings.map((t) => (
