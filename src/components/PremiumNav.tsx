@@ -29,7 +29,7 @@ export const PremiumNav = () => {
     { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
     { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
     { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community?tab=groups" },
-    { id: "messenger", labelEn: "Messenger", labelEs: "Mensajes", icon: MessageCircle, path: "/community/messenger" },
+    { id: "friends", labelEn: "Friends", labelEs: "Amigos", icon: UserPlus, path: "/friends" },
   ];
 
   const [postOpen, setPostOpen] = useState(false);
