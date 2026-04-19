@@ -570,9 +570,116 @@ export default function PrayerWall() {
           </div>
         </section>
 
-
-
       </main>
+
+      {/* Edge-to-edge feed */}
+      <section className="w-full border-t border-white/10 bg-black/20">
+        <div className="max-w-3xl mx-auto px-0 sm:px-4 py-4">
+          <h2 className="font-playfair text-xl text-white tracking-tight px-4 sm:px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+            Feed
+          </h2>
+          {posts.length === 0 ? (
+            <div className="px-4 py-12 text-center text-white/50 text-sm">
+              No posts yet. Tap the + button to share something.
+            </div>
+          ) : (
+            <div className="divide-y divide-white/10 sm:space-y-4 sm:divide-y-0">
+              {posts.map((p) => {
+                const mine = myInteractions[p.id] || new Set();
+                const initial = (p.author_name?.[0] || "B").toUpperCase();
+                return (
+                  <article
+                    key={p.id}
+                    className="bg-white/[0.02] sm:bg-white/[0.04] sm:border sm:border-white/10 sm:rounded-2xl sm:backdrop-blur-2xl sm:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)]"
+                  >
+                    {/* Header */}
+                    <header className="flex items-center gap-3 px-4 sm:px-4 pt-4 pb-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center text-white text-sm font-semibold">
+                        {p.author_avatar ? (
+                          <img src={p.author_avatar} alt="" className="w-full h-full rounded-full object-cover" />
+                        ) : (
+                          initial
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-white truncate">
+                          {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
+                        </div>
+                        <div className="text-[11px] text-white/50">
+                          {new Date(p.created_at).toLocaleString(undefined, {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                          {p.post_type !== "post" && (
+                            <span className="ml-2 uppercase tracking-[0.14em] text-[10px] text-white/60">
+                              · {p.post_type}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </header>
+
+                    {/* Content */}
+                    {p.content && (
+                      <div className="px-4 pb-3 text-[15px] leading-relaxed text-white/90 whitespace-pre-wrap select-none">
+                        {p.content}
+                      </div>
+                    )}
+
+                    {/* Media — edge to edge */}
+                    {p.media_url && p.media_type === "image" && (
+                      <img
+                        src={p.media_url}
+                        alt=""
+                        draggable={false}
+                        onContextMenu={(e) => e.preventDefault()}
+                        className="w-full max-h-[600px] object-cover select-none pointer-events-none"
+                      />
+                    )}
+                    {p.media_url && p.media_type === "video" && (
+                      <video
+                        src={p.media_url}
+                        controls
+                        controlsList="nodownload noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
+                        className="w-full max-h-[600px] bg-black"
+                      />
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 px-2 py-2 border-t border-white/5">
+                      <ActionBtn
+                        icon={Heart}
+                        label="Like"
+                        active={mine.has("like")}
+                        count={p.like_count}
+                        onClick={() => toggleInteraction(p.id, "like")}
+                      />
+                      <ActionBtn
+                        icon={MessageCircle}
+                        label="Comment"
+                        count={p.comment_count}
+                        onClick={() => navigate(`/community/post/${p.id}`)}
+                      />
+                      <ActionBtn
+                        icon={HandHeart}
+                        label="Pray"
+                        active={mine.has("pray")}
+                        count={p.pray_count}
+                        onClick={() => toggleInteraction(p.id, "pray")}
+                      />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
 
       <PremiumNav />
     </div>
