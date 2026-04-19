@@ -46,7 +46,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen home-gradient text-white">
+    <div className="min-h-screen text-white">
       <PremiumNav />
 
       <main className="px-5 sm:px-8 pb-24 max-w-3xl mx-auto">
