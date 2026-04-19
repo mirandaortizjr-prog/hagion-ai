@@ -469,7 +469,67 @@ export default function PrayerWall() {
 
 
         <section className="mb-10">
-          <SectionHeader title="Events" onSeeAll={() => navigate("/community/events")} />
+          <SectionHeader
+            title="Events"
+            onSeeAll={() => navigate("/community/events")}
+            action={
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate("/auth");
+                    return;
+                  }
+                  setCreateEventOpen((v) => !v);
+                }}
+                aria-label={createEventOpen ? "Close create event" : "Create event"}
+                aria-expanded={createEventOpen}
+                className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition"
+              >
+                {createEventOpen ? <X className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+              </button>
+            }
+          />
+          {createEventOpen && (
+            <div className="mb-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4 space-y-3 animate-fade-in">
+              <Input
+                placeholder="Event title"
+                value={newEventTitle}
+                onChange={(e) => setNewEventTitle(e.target.value)}
+                maxLength={100}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+              />
+              <Input
+                type="datetime-local"
+                value={newEventDate}
+                onChange={(e) => setNewEventDate(e.target.value)}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+              />
+              <Input
+                placeholder="Location (optional)"
+                value={newEventLocation}
+                onChange={(e) => setNewEventLocation(e.target.value)}
+                maxLength={120}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+              />
+              <Textarea
+                placeholder="Description (optional)"
+                value={newEventDesc}
+                onChange={(e) => setNewEventDesc(e.target.value)}
+                rows={2}
+                maxLength={500}
+                className="bg-white/5 border-white/15 text-white placeholder:text-white/40 resize-none"
+              />
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleCreateEvent}
+                  disabled={creatingEvent || !newEventTitle.trim() || !newEventDate}
+                  className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90"
+                >
+                  {creatingEvent ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Event"}
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="space-y-3">
             {events.map((e) => (
               <div
