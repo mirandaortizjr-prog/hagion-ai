@@ -662,31 +662,74 @@ export default function PrayerWall() {
                   >
                     {/* Header */}
                     <header className="flex items-center gap-3 px-4 sm:px-4 pt-4 pb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center text-white text-sm font-semibold">
-                        {p.author_avatar ? (
-                          <img src={p.author_avatar} alt="" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          initial
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-white truncate">
-                          {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
-                        </div>
-                        <div className="text-[11px] text-white/50">
-                          {new Date(p.created_at).toLocaleString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                          })}
-                          {p.post_type !== "post" && (
-                            <span className="ml-2 uppercase tracking-[0.14em] text-[10px] text-white/60">
-                              · {p.post_type}
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                      {(() => {
+                        const meta = authorMeta[p.user_id];
+                        const handle = meta?.username || p.user_id;
+                        const followers = meta?.follower_count || 0;
+                        const isFollowing = myFollowing.has(p.user_id);
+                        const isMe = user?.id === p.user_id;
+                        const goProfile = () => !p.is_anonymous && navigate(`/u/${handle}`);
+                        return (
+                          <>
+                            <button
+                              onClick={goProfile}
+                              disabled={p.is_anonymous}
+                              className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center text-white text-sm font-semibold overflow-hidden disabled:cursor-default"
+                            >
+                              {p.author_avatar && !p.is_anonymous ? (
+                                <img src={p.author_avatar} alt="" className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                initial
+                              )}
+                            </button>
+                            <div className="flex-1 min-w-0">
+                              <button
+                                onClick={goProfile}
+                                disabled={p.is_anonymous}
+                                className="text-sm font-semibold text-white truncate text-left hover:underline disabled:no-underline disabled:cursor-default block max-w-full"
+                              >
+                                {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
+                              </button>
+                              <div className="text-[11px] text-white/50 flex items-center gap-1.5 flex-wrap">
+                                {!p.is_anonymous && (
+                                  <>
+                                    <span className="text-white/60">
+                                      {followers.toLocaleString()} {followers === 1 ? "follower" : "followers"}
+                                    </span>
+                                    <span>·</span>
+                                  </>
+                                )}
+                                <span>
+                                  {new Date(p.created_at).toLocaleString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "numeric",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                                {p.post_type !== "post" && (
+                                  <span className="uppercase tracking-[0.14em] text-[10px] text-white/60">
+                                    · {p.post_type}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {!p.is_anonymous && !isMe && (
+                              <button
+                                onClick={() => toggleFollowAuthor(p.user_id)}
+                                className={cn(
+                                  "shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wide transition",
+                                  isFollowing
+                                    ? "bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                                    : "bg-white text-black hover:bg-white/90 shadow-[0_4px_14px_-4px_rgba(255,255,255,0.4)]"
+                                )}
+                              >
+                                {isFollowing ? "Following" : "Follow"}
+                              </button>
+                            )}
+                          </>
+                        );
+                      })()}
                     </header>
 
                     {/* Content */}
