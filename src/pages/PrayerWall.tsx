@@ -25,6 +25,7 @@ import {
   Video,
   Radio,
   Plus,
+  X,
 } from "lucide-react";
 import {
   Dialog,
