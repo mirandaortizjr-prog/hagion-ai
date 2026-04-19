@@ -28,7 +28,7 @@ export const PremiumNav = () => {
     { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
     { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
     { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
-    { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community?tab=groups" },
+    { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community/groups" },
     { id: "friends", labelEn: "Friends", labelEs: "Amigos", icon: UserPlus, path: "/friends" },
   ];
 
