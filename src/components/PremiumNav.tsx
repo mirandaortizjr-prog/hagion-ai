@@ -107,7 +107,7 @@ export const PremiumNav = () => {
       <div
         aria-hidden
         className="w-full"
-        style={{ height: "calc(64px + env(safe-area-inset-top))" }}
+        style={{ height: "calc(64px + env(safe-area-inset-bottom))" }}
       />
     </>
   );
