@@ -23,6 +23,7 @@ import {
   ImagePlus,
   Settings,
   Video,
+  Radio,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -346,151 +347,31 @@ export default function PrayerWall() {
           </div>
           <div className="h-10" />
 
-          {/* Three phone tiles: Reels, Videos, (reserved) */}
+          {/* Pill chips: Reels, Videos, Live */}
           <section className="w-full mt-2 mb-2">
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-[55%] mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {[
-                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels"), disabled: false },
-                { label: "Videos", icon: Video, onClick: () => navigate("/community/videos"), disabled: false },
-                { label: "", icon: null as any, onClick: () => {}, disabled: true },
+                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels") },
+                { label: "Videos", icon: Video, onClick: () => navigate("/community/videos") },
+                { label: "Live", icon: Radio, onClick: () => navigate("/community/live") },
               ].map((t, i) => {
                 const Icon = t.icon;
                 return (
                   <button
                     key={i}
                     onClick={t.onClick}
-                    disabled={t.disabled}
-                    className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed group flex flex-col items-center justify-center gap-1.5"
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 bg-white/5 border border-white/15 backdrop-blur-xl shadow-[0_6px_20px_-10px_rgba(0,0,0,0.6)] hover:bg-white/10 hover:border-white/25 active:scale-95 transition-all"
                   >
-                    {Icon && (
-                      <div className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/20 flex items-center justify-center group-hover:scale-110 transition">
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
-                    )}
-                    {t.label && (
-                      <div className="text-[9px] font-playfair tracking-[0.18em] uppercase text-white/90">
-                        {t.label}
-                      </div>
-                    )}
+                    <Icon className="w-4 h-4 text-white/90" />
+                    <span className="text-xs font-playfair tracking-[0.2em] uppercase text-white/90">
+                      {t.label}
+                    </span>
                   </button>
                 );
               })}
             </div>
           </section>
         </header>
-
-        {/* Feed */}
-        <section className="mb-10 -mx-5 sm:-mx-8">
-          <div className="px-5 sm:px-8">
-            <SectionHeader title="Feed" />
-          </div>
-          <div className="divide-y divide-white/10 border-y border-white/10">
-            {posts.length === 0 ? (
-              <div className="px-5 sm:px-8 py-8 text-center text-white/60">
-                Be the first to share with the community.
-              </div>
-            ) : (
-              posts.map((post) => {
-                const isPrayer = post.post_type === "prayer";
-                const liked = myInteractions[post.id]?.has("like");
-                const prayed = myInteractions[post.id]?.has("pray");
-                const encouraged = myInteractions[post.id]?.has("encourage");
-                const saved = myInteractions[post.id]?.has("save");
-                return (
-                  <article
-                    key={post.id}
-                    onClick={() => navigate(`/community/post/${post.id}`)}
-                    className="px-5 sm:px-8 py-5 cursor-pointer hover:bg-white/[0.03] transition"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <Avatar className="h-10 w-10 ring-1 ring-white/20">
-                        <AvatarFallback className="bg-gradient-to-br from-white/20 to-white/5 text-white text-sm font-playfair">
-                          {(post.is_anonymous ? "A" : post.author_name?.[0] || "B").toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-white truncate">
-                          {post.is_anonymous ? "Anonymous" : post.author_name || "Believer"}
-                        </div>
-                        <div className="text-[11px] text-white/50">
-                          {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
-                          {post.post_type !== "post" && (
-                            <span className="ml-2 px-2 py-0.5 rounded-full bg-white/[0.08] border border-white/15 text-white/70 uppercase tracking-[0.14em] text-[9px]">
-                              {post.post_type}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">
-                      {post.content}
-                    </p>
-                    {post.media_url && post.media_type === "image" && (
-                      <img
-                        src={post.media_url}
-                        alt="post media"
-                        className="mt-3 rounded-xl border border-white/10 w-full"
-                      />
-                    )}
-                    {post.media_url && post.media_type === "video" && (
-                      <video
-                        src={post.media_url}
-                        controls
-                        onClick={(e) => e.stopPropagation()}
-                        className="mt-3 rounded-xl border border-white/10 w-full"
-                      />
-                    )}
-
-                    <div
-                      className="flex items-center gap-1 mt-4 pt-3 border-t border-white/10"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {isPrayer ? (
-                        <>
-                          <ActionBtn
-                            active={prayed}
-                            onClick={() => toggleInteraction(post.id, "pray")}
-                            icon={HandHeart}
-                            label="Pray"
-                            count={post.pray_count}
-                          />
-                          <ActionBtn
-                            active={encouraged}
-                            onClick={() => toggleInteraction(post.id, "encourage")}
-                            icon={Sparkles}
-                            label="Encourage"
-                            count={post.encourage_count}
-                          />
-                        </>
-                      ) : (
-                        <ActionBtn
-                          active={liked}
-                          onClick={() => toggleInteraction(post.id, "like")}
-                          icon={Heart}
-                          label="Like"
-                          count={post.like_count}
-                        />
-                      )}
-                      <ActionBtn
-                        onClick={() => navigate(`/community/post/${post.id}`)}
-                        icon={MessageCircle}
-                        label="Comment"
-                        count={post.comment_count}
-                      />
-                      <ActionBtn onClick={() => sharePost(post)} icon={Share2} label="Share" />
-                      <ActionBtn
-                        active={saved}
-                        onClick={() => toggleInteraction(post.id, "save")}
-                        icon={Bookmark}
-                        label="Save"
-                      />
-                    </div>
-                  </article>
-                );
-              })
-            )}
-          </div>
-        </section>
 
         {/* Groups */}
         <section className="mb-10">
