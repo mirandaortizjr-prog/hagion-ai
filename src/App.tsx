@@ -126,7 +126,8 @@ const App = () => (
             <Route path="/community/event/:id" element={<EventDetailPage />} />
             <Route path="/community/church/:id" element={<ChurchDetailPage />} />
             <Route path="/community/messenger" element={<MessengerPage />} />
-            <Route path="/:assistantId" element={<AssistantChat />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/u/:handle" element={<PublicProfile />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
