@@ -219,18 +219,22 @@ export default function PrayerWall() {
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
         {/* Header */}
-        <header className="pt-6 pb-6 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md text-[11px] tracking-[0.18em] uppercase text-white/70">
-            <Sparkles className="w-3 h-3" />
-            Community
-          </div>
-          <h1 className="mt-4 font-playfair text-4xl sm:text-5xl leading-[1.05] tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+        <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center">
+          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
             Christian Community
           </h1>
-          <div className="mt-3 h-px w-24 bg-gradient-to-r from-white/60 via-white/20 to-transparent" />
-          <p className="mt-3 text-white/65 text-[15px] leading-relaxed max-w-md">
-            Pray, share testimonies, learn, and walk together as the body of Christ.
-          </p>
+          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+          <button
+            onClick={() => navigate("/profile")}
+            className="mt-4 rounded-full ring-1 ring-white/20 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.6)] hover:ring-white/40 transition"
+            aria-label="Open profile"
+          >
+            <Avatar className="h-14 w-14">
+              <AvatarFallback className="bg-white/[0.06] backdrop-blur-md text-white/80 text-sm">
+                {(user?.email?.[0] || "U").toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </button>
         </header>
 
         {/* Composer */}
