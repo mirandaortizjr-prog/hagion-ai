@@ -296,12 +296,27 @@ export default function PrayerWall() {
       supabase.from("events").select("*").order("event_date", { ascending: true }).limit(20),
       supabase.from("churches").select("*").order("created_at", { ascending: false }).limit(20),
     ]);
-    setPosts((p.data as any) || []);
+    const postsData = (p.data as any[]) || [];
+    setPosts(postsData as any);
     setReels((r.data as any) || []);
     setTeachings((t.data as any) || []);
     setGroups((g.data as any) || []);
     setEvents((e.data as any) || []);
     setChurches((c.data as any) || []);
+
+    // Load author meta (username + follower_count) for everyone in the feed
+    const authorIds = Array.from(new Set(postsData.map((x: any) => x.user_id).filter(Boolean)));
+    if (authorIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, username, follower_count")
+        .in("user_id", authorIds);
+      const meta: Record<string, { username: string | null; follower_count: number }> = {};
+      (profs || []).forEach((pr: any) => {
+        meta[pr.user_id] = { username: pr.username, follower_count: pr.follower_count || 0 };
+      });
+      setAuthorMeta(meta);
+    }
 
     const { data: authData } = await supabase.auth.getUser();
     if (authData.user) {
@@ -315,6 +330,50 @@ export default function PrayerWall() {
         map[i.post_id].add(i.interaction_type);
       });
       setMyInteractions(map);
+
+      const { data: fws } = await supabase
+        .from("follows")
+        .select("following_id")
+        .eq("follower_id", authData.user.id);
+      setMyFollowing(new Set((fws || []).map((f: any) => f.following_id)));
+    }
+  };
+
+  const toggleFollowAuthor = async (targetId: string) => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (targetId === user.id) return;
+    const isFollowing = myFollowing.has(targetId);
+    if (isFollowing) {
+      await supabase.from("follows").delete().eq("follower_id", user.id).eq("following_id", targetId);
+      setMyFollowing((s) => {
+        const n = new Set(s);
+        n.delete(targetId);
+        return n;
+      });
+      setAuthorMeta((m) => ({
+        ...m,
+        [targetId]: {
+          username: m[targetId]?.username ?? null,
+          follower_count: Math.max((m[targetId]?.follower_count || 1) - 1, 0),
+        },
+      }));
+    } else {
+      const { error } = await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
+      if (error) {
+        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
+        return;
+      }
+      setMyFollowing((s) => new Set(s).add(targetId));
+      setAuthorMeta((m) => ({
+        ...m,
+        [targetId]: {
+          username: m[targetId]?.username ?? null,
+          follower_count: (m[targetId]?.follower_count || 0) + 1,
+        },
+      }));
     }
   };
 
