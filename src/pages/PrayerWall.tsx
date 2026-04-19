@@ -582,23 +582,6 @@ export default function PrayerWall() {
         </section>
       </main>
 
-      {/* Messenger FAB */}
-      <button
-        onClick={() => navigate("/community/messenger")}
-        aria-label="Messenger"
-        className={cn(
-          "fixed right-5 z-40",
-          "w-14 h-14 rounded-full",
-          "bg-gradient-to-br from-white/95 to-white/75 text-black",
-          "shadow-[0_10px_40px_-10px_rgba(255,255,255,0.5)] ring-1 ring-white/40",
-          "flex items-center justify-center",
-          "transition-transform hover:scale-105 active:scale-95"
-        )}
-        style={{ bottom: "calc(80px + env(safe-area-inset-bottom))" }}
-      >
-        <MessageSquare className="w-6 h-6" />
-      </button>
-
       <PremiumNav />
     </div>
   );
