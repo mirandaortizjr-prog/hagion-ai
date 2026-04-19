@@ -41,29 +41,84 @@ export const PremiumNav = () => {
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
+  const [mediaPreview, setMediaPreview] = useState<string | null>(null);
+  const [mediaKind, setMediaKind] = useState<"image" | "video" | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
   }, [postOpen]);
+
+  const pickMedia = (kind: "image" | "video") => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = kind === "image" ? "image/*" : "video/*";
+    input.onchange = () => {
+      const f = input.files?.[0];
+      if (!f) return;
+      const maxMb = kind === "image" ? 10 : 50;
+      if (f.size > maxMb * 1024 * 1024) {
+        toast({ title: `File too large`, description: `Max ${maxMb}MB`, variant: "destructive" });
+        return;
+      }
+      setMediaFile(f);
+      setMediaKind(kind);
+      setMediaPreview(URL.createObjectURL(f));
+    };
+    input.click();
+  };
+
+  const clearMedia = () => {
+    if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+    setMediaFile(null);
+    setMediaPreview(null);
+    setMediaKind(null);
+  };
 
   const handlePost = async () => {
     if (!user) {
       navigate("/auth");
       return;
     }
-    if (!composer.trim()) return;
+    if (!composer.trim() && !mediaFile) return;
     setPosting(true);
+
+    let media_url: string | null = null;
+    let media_type: "image" | "video" | null = null;
+
+    if (mediaFile && mediaKind) {
+      setUploading(true);
+      const ext = mediaFile.name.split(".").pop() || (mediaKind === "image" ? "jpg" : "mp4");
+      const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("community-media")
+        .upload(path, mediaFile, { contentType: mediaFile.type, upsert: false });
+      setUploading(false);
+      if (upErr) {
+        setPosting(false);
+        toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+        return;
+      }
+      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      media_url = pub.publicUrl;
+      media_type = mediaKind;
+    }
+
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
       author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
       post_type: composerType,
       content: composer.trim(),
+      media_url,
+      media_type,
     });
     setPosting(false);
     if (error) {
       toast({ title: "Could not post", description: error.message, variant: "destructive" });
     } else {
       setComposer("");
+      clearMedia();
       setPostOpen(false);
       toast({ title: "Shared with the community" });
       window.dispatchEvent(new CustomEvent("community:refresh"));
