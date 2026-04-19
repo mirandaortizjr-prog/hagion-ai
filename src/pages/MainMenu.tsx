@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles, Menu } from "lucide-react";
+import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles, Menu, ArrowLeft } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { BottomNav } from "@/components/BottomNav";
@@ -70,6 +70,19 @@ const MainMenu = () => {
       fetchYearlyCount();
     }
   }, [activeTab]);
+
+  // Intercept hardware/browser back button while Plan of Salvation dialog is open
+  useEffect(() => {
+    if (!salvationOpen) return;
+    window.history.pushState({ salvationOpen: true }, "");
+    const handlePopState = () => {
+      setSalvationOpen(false);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [salvationOpen]);
 
   const fetchYearlyCount = async () => {
     const oneYearAgo = new Date();
@@ -670,6 +683,15 @@ const MainMenu = () => {
 
                   <DialogHeader className="px-6 pt-6 pb-2">
                     <div className="flex items-center gap-3">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setSalvationOpen(false)}
+                        aria-label={t('back') || 'Back'}
+                        className="shrink-0 -ml-2"
+                      >
+                        <ArrowLeft className="w-5 h-5" />
+                      </Button>
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shrink-0">
                         <Heart className="w-6 h-6 text-white fill-white" />
                       </div>
