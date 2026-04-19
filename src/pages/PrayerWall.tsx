@@ -12,7 +12,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, Send, Heart, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 interface Prayer {
   id: string;
@@ -398,7 +398,7 @@ export default function PrayerWall() {
           </TabsContent>
         </Tabs>
       </div>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 }

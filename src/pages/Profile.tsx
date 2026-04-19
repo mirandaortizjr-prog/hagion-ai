@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -247,7 +247,7 @@ const Profile = () => {
           </Card>
         </div>
       </div>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };
