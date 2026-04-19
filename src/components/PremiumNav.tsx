@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Globe, Flame, BookOpen, User, Plus, Send, ImagePlus, Video, X, Loader2 } from "lucide-react";
+import { Home, Globe, Users, MessageCircle, Plus, Send, ImagePlus, Video, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
@@ -24,16 +24,12 @@ export const PremiumNav = () => {
   const { language } = useLanguage();
   const { toast } = useToast();
 
-  const isCommunity = location.pathname === "/community";
-
   const items: NavItem[] = [
     { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
     { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
-    isCommunity
-      ? { id: "post", labelEn: "Post", labelEs: "Publicar", icon: Plus, action: "post" }
-      : { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Flame, path: "/discernment" },
-    { id: "learning", labelEn: "Learning", labelEs: "Aprendizaje", icon: BookOpen, path: "/learning" },
-    { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
+    { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
+    { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community?tab=groups" },
+    { id: "messenger", labelEn: "Messenger", labelEs: "Mensajes", icon: MessageCircle, path: "/community/messenger" },
   ];
 
   const [postOpen, setPostOpen] = useState(false);
@@ -152,8 +148,10 @@ export const PremiumNav = () => {
         <ul className="relative flex items-stretch justify-around px-2 sm:px-4 py-2 max-w-2xl mx-auto">
           {items.map((item) => {
             const Icon = item.icon;
-            const active = item.path ? location.pathname === item.path : false;
+            const itemBasePath = item.path?.split("?")[0];
+            const active = itemBasePath ? location.pathname === itemBasePath : false;
             const label = language === "es" ? item.labelEs : item.labelEn;
+            const isCreate = item.action === "post";
             return (
               <li key={item.id} className="flex-1">
                 <button
@@ -163,6 +161,7 @@ export const PremiumNav = () => {
                     else if (item.path) navigate(item.path);
                   }}
                   aria-current={active ? "page" : undefined}
+                  aria-label={label}
                   className={cn(
                     "group relative w-full flex flex-col items-center justify-center gap-1",
                     "py-1.5 px-1 rounded-2xl",
@@ -173,28 +172,33 @@ export const PremiumNav = () => {
                 >
                   <span
                     className={cn(
-                      "relative flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300",
-                      active
-                        ? "bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_6px_20px_-4px_rgba(255,255,255,0.25)]"
-                        : "bg-white/[0.04] ring-1 ring-white/10 group-hover:bg-white/10"
+                      "relative flex items-center justify-center rounded-full transition-all duration-300",
+                      isCreate
+                        ? "w-12 h-12 -mt-5 bg-gradient-to-br from-white via-white/95 to-white/80 text-black ring-2 ring-white/60 shadow-[0_10px_30px_-6px_rgba(255,255,255,0.55),inset_0_1px_0_rgba(255,255,255,0.9)]"
+                        : active
+                        ? "w-9 h-9 bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_6px_20px_-4px_rgba(255,255,255,0.25)]"
+                        : "w-9 h-9 bg-white/[0.04] ring-1 ring-white/10 group-hover:bg-white/10"
                     )}
                   >
                     <Icon
-                      strokeWidth={active ? 2.4 : 1.9}
+                      strokeWidth={isCreate ? 2.6 : active ? 2.4 : 1.9}
                       className={cn(
-                        "w-[18px] h-[18px] transition-all duration-300",
-                        active && "drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] scale-110"
+                        "transition-all duration-300",
+                        isCreate ? "w-[22px] h-[22px]" : "w-[18px] h-[18px]",
+                        !isCreate && active && "drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] scale-110"
                       )}
                     />
                   </span>
-                  <span
-                    className={cn(
-                      "text-[10px] sm:text-[11px] leading-none tracking-[0.04em] font-playfair transition-all",
-                      active ? "font-semibold" : "font-medium"
-                    )}
-                  >
-                    {label}
-                  </span>
+                  {!isCreate && (
+                    <span
+                      className={cn(
+                        "text-[10px] sm:text-[11px] leading-none tracking-[0.04em] font-playfair transition-all",
+                        active ? "font-semibold" : "font-medium"
+                      )}
+                    >
+                      {label}
+                    </span>
+                  )}
                 </button>
               </li>
             );
