@@ -123,18 +123,21 @@ const Profile = () => {
         .upload(path, f, { contentType: f.type, upsert: true });
       if (upErr) {
         setUploadingAvatar(false);
+        cleanup();
         toast({ title: t('error'), description: upErr.message, variant: "destructive" });
         return;
       }
       const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const cacheBustedUrl = `${pub.publicUrl}?t=${Date.now()}`;
       const { error: updErr } = await supabase
         .from("profiles")
         .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
       setUploadingAvatar(false);
+      cleanup();
       if (updErr) {
         toast({ title: t('error'), description: updErr.message, variant: "destructive" });
       } else {
-        setAvatarUrl(pub.publicUrl);
+        setAvatarUrl(cacheBustedUrl);
         toast({ title: t('success'), description: t('profile_updated') });
       }
     };
