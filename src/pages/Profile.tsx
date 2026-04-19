@@ -63,15 +63,22 @@ const Profile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
+      const cleanUsername = username.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
+      if (cleanUsername && (cleanUsername.length < 3 || cleanUsername.length > 24)) {
+        throw new Error("Username must be 3-24 characters (letters, numbers, underscore)");
+      }
+
       const { error } = await supabase
         .from("profiles")
         .upsert({
           user_id: user.id,
           name,
           gender,
-        });
+          username: cleanUsername || null,
+        }, { onConflict: "user_id" });
 
       if (error) throw error;
+      if (cleanUsername) setUsername(cleanUsername);
 
       toast({
         title: t('success'),
