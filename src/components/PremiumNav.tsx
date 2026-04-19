@@ -128,8 +128,7 @@ export const PremiumNav = () => {
           "fixed bottom-0 left-0 right-0 z-50",
           "border-t border-white/10",
           "bg-black/30 backdrop-blur-2xl backdrop-saturate-150",
-          "shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.6)]",
-          "overflow-hidden"
+          "shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.6)]"
         )}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
