@@ -224,23 +224,26 @@ export default function PrayerWall() {
             Christian Community
           </h1>
           <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-          <div className="mt-5 w-full max-w-md aspect-[16/9] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden flex items-center justify-center">
-            <div className="flex flex-col items-center gap-2 text-white/40">
-              <Sparkles className="w-6 h-6" />
-              <span className="text-[11px] tracking-[0.18em] uppercase">Add a picture</span>
+          <div className="mt-5 w-full max-w-md relative">
+            <div className="aspect-[16/9] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden flex items-center justify-center">
+              <div className="flex flex-col items-center gap-2 text-white/40">
+                <Sparkles className="w-6 h-6" />
+                <span className="text-[11px] tracking-[0.18em] uppercase">Add a picture</span>
+              </div>
             </div>
+            <button
+              onClick={() => navigate("/profile")}
+              className="absolute left-1/2 -bottom-8 -translate-x-1/2 rounded-full ring-2 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
+              aria-label="Open profile"
+            >
+              <Avatar className="h-16 w-16">
+                <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-base">
+                  {(user?.email?.[0] || "U").toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </button>
           </div>
-          <button
-            onClick={() => navigate("/profile")}
-            className="mt-4 rounded-full ring-1 ring-white/20 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.6)] hover:ring-white/40 transition"
-            aria-label="Open profile"
-          >
-            <Avatar className="h-14 w-14">
-              <AvatarFallback className="bg-white/[0.06] backdrop-blur-md text-white/80 text-sm">
-                {(user?.email?.[0] || "U").toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </button>
+          <div className="h-10" />
         </header>
 
         {/* Composer */}
