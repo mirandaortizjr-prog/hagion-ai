@@ -24,7 +24,17 @@ import {
   Settings,
   Video,
   Radio,
+  Plus,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
@@ -87,19 +97,30 @@ interface ChurchItem {
   image_url: string | null;
 }
 
-const SectionHeader = ({ title, onSeeAll }: { title: string; onSeeAll?: () => void }) => (
+const SectionHeader = ({
+  title,
+  onSeeAll,
+  action,
+}: {
+  title: string;
+  onSeeAll?: () => void;
+  action?: React.ReactNode;
+}) => (
   <div className="flex items-end justify-between mb-3 px-1">
     <h2 className="font-playfair text-xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
       {title}
     </h2>
-    {onSeeAll && (
-      <button
-        onClick={onSeeAll}
-        className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
-      >
-        See all <ChevronRight className="w-3 h-3" />
-      </button>
-    )}
+    <div className="flex items-center gap-3">
+      {action}
+      {onSeeAll && (
+        <button
+          onClick={onSeeAll}
+          className="flex items-center gap-1 text-[11px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
+        >
+          See all <ChevronRight className="w-3 h-3" />
+        </button>
+      )}
+    </div>
   </div>
 );
 
@@ -119,6 +140,47 @@ export default function PrayerWall() {
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
   const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
   const [bannerUploading, setBannerUploading] = useState(false);
+  const [createGroupOpen, setCreateGroupOpen] = useState(false);
+  const [newGroupName, setNewGroupName] = useState("");
+  const [newGroupDesc, setNewGroupDesc] = useState("");
+  const [creatingGroup, setCreatingGroup] = useState(false);
+
+  const handleCreateGroup = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const name = newGroupName.trim();
+    if (!name) {
+      toast({ title: "Group name is required", variant: "destructive" });
+      return;
+    }
+    setCreatingGroup(true);
+    const { data, error } = await supabase
+      .from("groups")
+      .insert({
+        name,
+        description: newGroupDesc.trim() || null,
+        creator_id: user.id,
+      })
+      .select()
+      .single();
+    if (!error && data) {
+      // auto-join creator
+      await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id });
+    }
+    setCreatingGroup(false);
+    if (error) {
+      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+      return;
+    }
+    setNewGroupName("");
+    setNewGroupDesc("");
+    setCreateGroupOpen(false);
+    toast({ title: "Group created" });
+    loadAll();
+    navigate(`/community/group/${data!.id}`);
+  };
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -375,7 +437,58 @@ export default function PrayerWall() {
 
         {/* Groups */}
         <section className="mb-10">
-          <SectionHeader title="Groups" onSeeAll={() => navigate("/community/groups")} />
+          <SectionHeader
+            title="Groups"
+            onSeeAll={() => navigate("/community/groups")}
+            action={
+              <Dialog open={createGroupOpen} onOpenChange={setCreateGroupOpen}>
+                <DialogTrigger asChild>
+                  <button
+                    onClick={(e) => {
+                      if (!user) {
+                        e.preventDefault();
+                        navigate("/auth");
+                      }
+                    }}
+                    className="inline-flex items-center gap-1 rounded-full px-3 py-1 bg-white/10 hover:bg-white/20 border border-white/20 text-[11px] tracking-[0.16em] uppercase text-white transition"
+                  >
+                    <Plus className="w-3 h-3" /> Create
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-background/95 backdrop-blur-2xl border-white/10 text-white">
+                  <DialogHeader>
+                    <DialogTitle className="font-playfair text-xl">Create a Group</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3 pt-2">
+                    <Input
+                      placeholder="Group name"
+                      value={newGroupName}
+                      onChange={(e) => setNewGroupName(e.target.value)}
+                      maxLength={60}
+                      className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                    />
+                    <Textarea
+                      placeholder="Describe your group (optional)"
+                      value={newGroupDesc}
+                      onChange={(e) => setNewGroupDesc(e.target.value)}
+                      maxLength={300}
+                      rows={3}
+                      className="bg-white/5 border-white/15 text-white placeholder:text-white/40 resize-none"
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      onClick={handleCreateGroup}
+                      disabled={creatingGroup || !newGroupName.trim()}
+                      className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90"
+                    >
+                      {creatingGroup ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Group"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            }
+          />
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
             {groups.map((g) => (
               <div
