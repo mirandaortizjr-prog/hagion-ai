@@ -37,6 +37,13 @@ import BibleTranslations from "./pages/BibleTranslations";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import PrayerWall from "./pages/PrayerWall";
 import DailyWisdom from "./pages/DailyWisdom";
+import PostDetailPage from "./pages/community/PostDetailPage";
+import ReelsPage from "./pages/community/ReelsPage";
+import TeachingDetailPage from "./pages/community/TeachingDetailPage";
+import GroupDetailPage from "./pages/community/GroupDetailPage";
+import EventDetailPage from "./pages/community/EventDetailPage";
+import ChurchDetailPage from "./pages/community/ChurchDetailPage";
+import MessengerPage from "./pages/community/MessengerPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -106,6 +113,13 @@ const App = () => (
             <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/prayer-wall" element={<PrayerWall />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
+            <Route path="/community/post/:id" element={<PostDetailPage />} />
+            <Route path="/community/reels" element={<ReelsPage />} />
+            <Route path="/community/teaching/:id" element={<TeachingDetailPage />} />
+            <Route path="/community/group/:id" element={<GroupDetailPage />} />
+            <Route path="/community/event/:id" element={<EventDetailPage />} />
+            <Route path="/community/church/:id" element={<ChurchDetailPage />} />
+            <Route path="/community/messenger" element={<MessengerPage />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="*" element={<NotFound />} />
