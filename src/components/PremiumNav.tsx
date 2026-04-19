@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Globe, Flame, BookOpen, User, Plus, Send } from "lucide-react";
+import { Home, Globe, Flame, BookOpen, User, Plus, Send, ImagePlus, Video, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
