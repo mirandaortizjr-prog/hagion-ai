@@ -21,6 +21,7 @@ import {
   MessageSquare,
   Loader2,
   ImagePlus,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
