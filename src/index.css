@@ -211,4 +211,22 @@ All colors MUST be HSL.
       transform: translateY(0);
     }
   }
+
+  /* Premium home gradient: beige → black */
+  .home-gradient {
+    background:
+      radial-gradient(1200px 600px at 80% -10%, hsl(38 45% 78% / 0.18), transparent 60%),
+      radial-gradient(900px 500px at 0% 100%, hsl(35 30% 60% / 0.10), transparent 60%),
+      linear-gradient(180deg, hsl(36 30% 86%) 0%, hsl(34 22% 52%) 25%, hsl(28 15% 22%) 65%, hsl(0 0% 4%) 100%);
+    background-attachment: fixed;
+  }
+
+  /* Shimmer sweep on premium nav */
+  @keyframes navShimmer {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(400%); }
+  }
+  .nav-shimmer {
+    animation: navShimmer 4.5s linear infinite;
+  }
 }
