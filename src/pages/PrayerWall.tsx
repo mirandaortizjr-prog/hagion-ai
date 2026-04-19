@@ -471,35 +471,8 @@ export default function PrayerWall() {
           </div>
         </section>
 
-        {/* Churches */}
-        <section className="mb-10">
-          <SectionHeader title="Churches" onSeeAll={() => navigate("/community/churches")} />
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
-            {churches.map((c) => (
-              <div
-                key={c.id}
-                onClick={() => navigate(`/community/church/${c.id}`)}
-                className="shrink-0 w-56 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4 cursor-pointer hover:bg-white/[0.07] transition"
-              >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center mb-3">
-                  <Church className="w-5 h-5 text-white" />
-                </div>
-                <div className="text-sm font-semibold text-white line-clamp-1">{c.name}</div>
-                {c.location && <div className="text-[11px] text-white/50 mt-0.5">{c.location}</div>}
-                <Button
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/community/church/${c.id}`);
-                  }}
-                  className="mt-3 w-full rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs"
-                >
-                  View Church
-                </Button>
-              </div>
-            ))}
-          </div>
-        </section>
+
+
       </main>
 
       <PremiumNav />
