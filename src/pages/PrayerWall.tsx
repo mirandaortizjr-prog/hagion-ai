@@ -116,6 +116,9 @@ export default function PrayerWall() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     loadAll();
+    const onRefresh = () => loadAll();
+    window.addEventListener("community:refresh", onRefresh);
+    return () => window.removeEventListener("community:refresh", onRefresh);
   }, []);
 
   const loadAll = async () => {
