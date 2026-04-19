@@ -46,6 +46,8 @@ import GroupDetailPage from "./pages/community/GroupDetailPage";
 import EventDetailPage from "./pages/community/EventDetailPage";
 import ChurchDetailPage from "./pages/community/ChurchDetailPage";
 import MessengerPage from "./pages/community/MessengerPage";
+import Friends from "./pages/Friends";
+import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
