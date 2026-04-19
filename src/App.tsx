@@ -129,6 +129,7 @@ const App = () => (
             <Route path="/friends" element={<Friends />} />
             <Route path="/u/:handle" element={<PublicProfile />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
+            <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </OnboardingGuard>
