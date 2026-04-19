@@ -86,6 +86,45 @@ const Profile = () => {
     }
   };
 
+  const handleAvatarUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async () => {
+      const f = input.files?.[0];
+      if (!f) return;
+      if (f.size > 5 * 1024 * 1024) {
+        toast({ title: t('error'), description: "Max 5MB", variant: "destructive" });
+        return;
+      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      setUploadingAvatar(true);
+      const ext = f.name.split(".").pop() || "jpg";
+      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("community-media")
+        .upload(path, f, { contentType: f.type, upsert: true });
+      if (upErr) {
+        setUploadingAvatar(false);
+        toast({ title: t('error'), description: upErr.message, variant: "destructive" });
+        return;
+      }
+      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+      const { error: updErr } = await supabase
+        .from("profiles")
+        .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
+      setUploadingAvatar(false);
+      if (updErr) {
+        toast({ title: t('error'), description: updErr.message, variant: "destructive" });
+      } else {
+        setAvatarUrl(pub.publicUrl);
+        toast({ title: t('success'), description: t('profile_updated') });
+      }
+    };
+    input.click();
+  };
+
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
 
