@@ -76,10 +76,10 @@ const Settings = () => {
 
     try {
       const ext = file.name.split(".").pop() || "jpg";
-      const path = `profiles/${user.id}/${kind}-${Date.now()}.${ext}`;
+      const path = `${user.id}/${kind}-${Date.now()}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("community-media")
-        .upload(path, file, { upsert: true, cacheControl: "3600" });
+        .upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
       if (upErr) throw upErr;
 
       const { data: { publicUrl } } = supabase.storage
@@ -89,8 +89,7 @@ const Settings = () => {
       const field = kind === "avatar" ? "avatar_url" : "banner_url";
       const { error: updErr } = await supabase
         .from("profiles")
-        .update({ [field]: publicUrl })
-        .eq("user_id", user.id);
+        .upsert({ user_id: user.id, [field]: publicUrl }, { onConflict: "user_id" });
       if (updErr) throw updErr;
 
       setProfile((p) => ({ ...p, [field]: publicUrl }));
