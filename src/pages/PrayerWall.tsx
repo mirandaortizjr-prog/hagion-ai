@@ -437,7 +437,58 @@ export default function PrayerWall() {
 
         {/* Groups */}
         <section className="mb-10">
-          <SectionHeader title="Groups" onSeeAll={() => navigate("/community/groups")} />
+          <SectionHeader
+            title="Groups"
+            onSeeAll={() => navigate("/community/groups")}
+            action={
+              <Dialog open={createGroupOpen} onOpenChange={setCreateGroupOpen}>
+                <DialogTrigger asChild>
+                  <button
+                    onClick={(e) => {
+                      if (!user) {
+                        e.preventDefault();
+                        navigate("/auth");
+                      }
+                    }}
+                    className="inline-flex items-center gap-1 rounded-full px-3 py-1 bg-white/10 hover:bg-white/20 border border-white/20 text-[11px] tracking-[0.16em] uppercase text-white transition"
+                  >
+                    <Plus className="w-3 h-3" /> Create
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-background/95 backdrop-blur-2xl border-white/10 text-white">
+                  <DialogHeader>
+                    <DialogTitle className="font-playfair text-xl">Create a Group</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3 pt-2">
+                    <Input
+                      placeholder="Group name"
+                      value={newGroupName}
+                      onChange={(e) => setNewGroupName(e.target.value)}
+                      maxLength={60}
+                      className="bg-white/5 border-white/15 text-white placeholder:text-white/40"
+                    />
+                    <Textarea
+                      placeholder="Describe your group (optional)"
+                      value={newGroupDesc}
+                      onChange={(e) => setNewGroupDesc(e.target.value)}
+                      maxLength={300}
+                      rows={3}
+                      className="bg-white/5 border-white/15 text-white placeholder:text-white/40 resize-none"
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      onClick={handleCreateGroup}
+                      disabled={creatingGroup || !newGroupName.trim()}
+                      className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90"
+                    >
+                      {creatingGroup ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Group"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            }
+          />
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
             {groups.map((g) => (
               <div
