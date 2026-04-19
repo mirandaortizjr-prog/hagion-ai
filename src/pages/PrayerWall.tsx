@@ -139,6 +139,8 @@ export default function PrayerWall() {
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
   const [posting, setPosting] = useState(false);
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
+  const [authorMeta, setAuthorMeta] = useState<Record<string, { username: string | null; follower_count: number }>>({});
+  const [myFollowing, setMyFollowing] = useState<Set<string>>(new Set());
   const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
   const [bannerUploading, setBannerUploading] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
@@ -294,12 +296,27 @@ export default function PrayerWall() {
       supabase.from("events").select("*").order("event_date", { ascending: true }).limit(20),
       supabase.from("churches").select("*").order("created_at", { ascending: false }).limit(20),
     ]);
-    setPosts((p.data as any) || []);
+    const postsData = (p.data as any[]) || [];
+    setPosts(postsData as any);
     setReels((r.data as any) || []);
     setTeachings((t.data as any) || []);
     setGroups((g.data as any) || []);
     setEvents((e.data as any) || []);
     setChurches((c.data as any) || []);
+
+    // Load author meta (username + follower_count) for everyone in the feed
+    const authorIds = Array.from(new Set(postsData.map((x: any) => x.user_id).filter(Boolean)));
+    if (authorIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, username, follower_count")
+        .in("user_id", authorIds);
+      const meta: Record<string, { username: string | null; follower_count: number }> = {};
+      (profs || []).forEach((pr: any) => {
+        meta[pr.user_id] = { username: pr.username, follower_count: pr.follower_count || 0 };
+      });
+      setAuthorMeta(meta);
+    }
 
     const { data: authData } = await supabase.auth.getUser();
     if (authData.user) {
@@ -313,6 +330,50 @@ export default function PrayerWall() {
         map[i.post_id].add(i.interaction_type);
       });
       setMyInteractions(map);
+
+      const { data: fws } = await supabase
+        .from("follows")
+        .select("following_id")
+        .eq("follower_id", authData.user.id);
+      setMyFollowing(new Set((fws || []).map((f: any) => f.following_id)));
+    }
+  };
+
+  const toggleFollowAuthor = async (targetId: string) => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (targetId === user.id) return;
+    const isFollowing = myFollowing.has(targetId);
+    if (isFollowing) {
+      await supabase.from("follows").delete().eq("follower_id", user.id).eq("following_id", targetId);
+      setMyFollowing((s) => {
+        const n = new Set(s);
+        n.delete(targetId);
+        return n;
+      });
+      setAuthorMeta((m) => ({
+        ...m,
+        [targetId]: {
+          username: m[targetId]?.username ?? null,
+          follower_count: Math.max((m[targetId]?.follower_count || 1) - 1, 0),
+        },
+      }));
+    } else {
+      const { error } = await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
+      if (error) {
+        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
+        return;
+      }
+      setMyFollowing((s) => new Set(s).add(targetId));
+      setAuthorMeta((m) => ({
+        ...m,
+        [targetId]: {
+          username: m[targetId]?.username ?? null,
+          follower_count: (m[targetId]?.follower_count || 0) + 1,
+        },
+      }));
     }
   };
 
@@ -601,31 +662,74 @@ export default function PrayerWall() {
                   >
                     {/* Header */}
                     <header className="flex items-center gap-3 px-4 sm:px-4 pt-4 pb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center text-white text-sm font-semibold">
-                        {p.author_avatar ? (
-                          <img src={p.author_avatar} alt="" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                          initial
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold text-white truncate">
-                          {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
-                        </div>
-                        <div className="text-[11px] text-white/50">
-                          {new Date(p.created_at).toLocaleString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                          })}
-                          {p.post_type !== "post" && (
-                            <span className="ml-2 uppercase tracking-[0.14em] text-[10px] text-white/60">
-                              · {p.post_type}
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                      {(() => {
+                        const meta = authorMeta[p.user_id];
+                        const handle = meta?.username || p.user_id;
+                        const followers = meta?.follower_count || 0;
+                        const isFollowing = myFollowing.has(p.user_id);
+                        const isMe = user?.id === p.user_id;
+                        const goProfile = () => !p.is_anonymous && navigate(`/u/${handle}`);
+                        return (
+                          <>
+                            <button
+                              onClick={goProfile}
+                              disabled={p.is_anonymous}
+                              className="w-10 h-10 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center text-white text-sm font-semibold overflow-hidden disabled:cursor-default"
+                            >
+                              {p.author_avatar && !p.is_anonymous ? (
+                                <img src={p.author_avatar} alt="" className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                initial
+                              )}
+                            </button>
+                            <div className="flex-1 min-w-0">
+                              <button
+                                onClick={goProfile}
+                                disabled={p.is_anonymous}
+                                className="text-sm font-semibold text-white truncate text-left hover:underline disabled:no-underline disabled:cursor-default block max-w-full"
+                              >
+                                {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
+                              </button>
+                              <div className="text-[11px] text-white/50 flex items-center gap-1.5 flex-wrap">
+                                {!p.is_anonymous && (
+                                  <>
+                                    <span className="text-white/60">
+                                      {followers.toLocaleString()} {followers === 1 ? "follower" : "followers"}
+                                    </span>
+                                    <span>·</span>
+                                  </>
+                                )}
+                                <span>
+                                  {new Date(p.created_at).toLocaleString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    hour: "numeric",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                                {p.post_type !== "post" && (
+                                  <span className="uppercase tracking-[0.14em] text-[10px] text-white/60">
+                                    · {p.post_type}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {!p.is_anonymous && !isMe && (
+                              <button
+                                onClick={() => toggleFollowAuthor(p.user_id)}
+                                className={cn(
+                                  "shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wide transition",
+                                  isFollowing
+                                    ? "bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                                    : "bg-white text-black hover:bg-white/90 shadow-[0_4px_14px_-4px_rgba(255,255,255,0.4)]"
+                                )}
+                              >
+                                {isFollowing ? "Following" : "Follow"}
+                              </button>
+                            )}
+                          </>
+                        );
+                      })()}
                     </header>
 
                     {/* Content */}
