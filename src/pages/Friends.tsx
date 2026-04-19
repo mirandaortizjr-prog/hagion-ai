@@ -137,13 +137,23 @@ export default function Friends() {
               key={t}
               onClick={() => setTab(t)}
               className={cn(
-                "flex-1 py-2 rounded-full text-[12px] tracking-[0.16em] uppercase transition",
+                "flex-1 py-1.5 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium transition-all duration-300",
                 tab === t
-                  ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-                  : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
+                  ? "bg-gradient-to-b from-white to-white/85 text-black shadow-[0_4px_16px_-4px_rgba(255,255,255,0.35),inset_0_1px_0_rgba(255,255,255,0.6)]"
+                  : "bg-white/[0.04] border border-white/10 text-white/60 hover:text-white hover:bg-white/[0.08] backdrop-blur-xl"
               )}
             >
-              {t === "followers" ? `Followers · ${followers.length}` : t === "following" ? `Following · ${following.length}` : "Discover"}
+              <span className="inline-flex items-center gap-1.5">
+                {t === "followers" ? "Followers" : t === "following" ? "Following" : "Discover"}
+                {t !== "discover" && (
+                  <span className={cn(
+                    "inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full text-[9px] font-semibold",
+                    tab === t ? "bg-black/10 text-black" : "bg-white/10 text-white/70"
+                  )}>
+                    {t === "followers" ? followers.length : following.length}
+                  </span>
+                )}
+              </span>
             </button>
           ))}
         </div>
