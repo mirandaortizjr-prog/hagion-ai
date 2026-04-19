@@ -214,7 +214,7 @@ export default function PrayerWall() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-blue-100/30 p-4">
+    <div className="min-h-screen text-white p-4">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center mb-6 gap-4">
           <Button

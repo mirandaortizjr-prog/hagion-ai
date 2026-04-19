@@ -133,7 +133,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen text-white flex flex-col">
       <header className="flex items-center gap-4 px-4 py-4 border-b">
         <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
           <ArrowLeft className="w-6 h-6" />
