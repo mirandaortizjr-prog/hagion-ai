@@ -348,7 +348,7 @@ export default function PrayerWall() {
 
           {/* Three phone tiles: Reels, Videos, (reserved) */}
           <section className="w-full mt-2 mb-2 text-left">
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 max-w-[50%]">
               {[
                 { label: "Reels", icon: Play, onClick: () => navigate("/community/reels"), disabled: false },
                 { label: "Videos", icon: Video, onClick: () => navigate("/community/videos"), disabled: false },
