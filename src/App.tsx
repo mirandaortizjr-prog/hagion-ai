@@ -118,6 +118,7 @@ const App = () => (
             <Route path="/community/post/:id" element={<PostDetailPage />} />
             <Route path="/community/reels" element={<ReelsPage />} />
             <Route path="/community/videos" element={<VideosPage />} />
+            <Route path="/community/live" element={<LivePage />} />
             <Route path="/community/teaching/:id" element={<TeachingDetailPage />} />
             <Route path="/community/group/:id" element={<GroupDetailPage />} />
             <Route path="/community/event/:id" element={<EventDetailPage />} />
