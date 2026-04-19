@@ -123,6 +123,7 @@ const App = () => (
             <Route path="/community/videos" element={<VideosPage />} />
             <Route path="/community/live" element={<LivePage />} />
             <Route path="/community/teaching/:id" element={<TeachingDetailPage />} />
+            <Route path="/community/groups" element={<GroupsPage />} />
             <Route path="/community/group/:id" element={<GroupDetailPage />} />
             <Route path="/community/event/:id" element={<EventDetailPage />} />
             <Route path="/community/church/:id" element={<ChurchDetailPage />} />
