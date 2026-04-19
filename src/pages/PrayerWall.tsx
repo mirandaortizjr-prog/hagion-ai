@@ -22,6 +22,7 @@ import {
   Loader2,
   ImagePlus,
   Settings,
+  Video,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -345,52 +346,38 @@ export default function PrayerWall() {
           </div>
           <div className="h-10" />
 
-          {/* Compact Reels under profile */}
+          {/* Three phone tiles: Reels, Videos, (reserved) */}
           <section className="w-full mt-2 mb-2 text-left">
-            <div className="flex items-end justify-between mb-2 px-1">
-              <h2 className="font-playfair text-sm text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-                Reels
-              </h2>
-              <button
-                onClick={() => navigate("/community/reels")}
-                className="flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase text-white/60 hover:text-white transition"
-              >
-                See all <ChevronRight className="w-2.5 h-2.5" />
-              </button>
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
-              {reels.length === 0
-                ? Array.from({ length: 5 }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => navigate("/community/reels")}
-                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] flex items-center justify-center"
-                    >
-                      <Play className="w-5 h-5 text-white/40" />
-                    </button>
-                  ))
-                : reels.map((r) => (
-                    <button
-                      key={r.id}
-                      onClick={() => navigate(`/community/reels?start=${r.id}`)}
-                      className="relative shrink-0 w-20 h-32 rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-white/[0.02] backdrop-blur-xl shadow-[0_8px_24px_-8px_rgba(0,0,0,0.6)] group"
-                    >
-                      {r.thumbnail_url && (
-                        <img src={r.thumbnail_url} alt={r.title} className="w-full h-full object-cover" />
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {[
+                { label: "Reels", icon: Play, onClick: () => navigate("/community/reels"), disabled: false },
+                { label: "Videos", icon: Video, onClick: () => navigate("/community/videos"), disabled: false },
+                { label: "", icon: null as any, onClick: () => {}, disabled: true },
+              ].map((t, i) => {
+                const Icon = t.icon;
+                return (
+                  <button
+                    key={i}
+                    onClick={t.onClick}
+                    disabled={t.disabled}
+                    className="relative aspect-[9/16] rounded-[1.5rem] overflow-hidden border border-white/15 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl shadow-[0_16px_40px_-16px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed group"
+                  >
+                    <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-black/60 ring-1 ring-white/10 z-10" />
+                    <div className="absolute inset-1.5 rounded-[1.1rem] bg-gradient-to-br from-black/40 via-black/20 to-black/40 border border-white/10 flex flex-col items-center justify-center gap-1.5">
+                      {Icon && (
+                        <div className="w-9 h-9 rounded-full bg-white/15 backdrop-blur-md ring-1 ring-white/30 flex items-center justify-center group-hover:scale-110 transition">
+                          <Icon className="w-4 h-4 text-white" />
+                        </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md ring-1 ring-white/40 flex items-center justify-center group-hover:scale-110 transition">
-                          <Play className="w-2.5 h-2.5 text-white fill-white ml-0.5" />
+                      {t.label && (
+                        <div className="text-[9px] font-playfair tracking-[0.18em] uppercase text-white/90">
+                          {t.label}
                         </div>
-                      </div>
-                      <div className="absolute bottom-1 left-1 right-1 text-left">
-                        <div className="text-[9px] text-white font-semibold line-clamp-2 leading-tight">
-                          {r.title}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </section>
         </header>
@@ -510,6 +497,7 @@ export default function PrayerWall() {
 
         {/* Teachings */}
         <section className="mb-10">
+
           <SectionHeader title="Teachings & Messages" onSeeAll={() => navigate("/community/teachings")} />
           <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
             {teachings.map((t) => (
