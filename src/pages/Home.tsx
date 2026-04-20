@@ -46,8 +46,11 @@ const Home = () => {
       <PremiumNav />
 
       <main className="pb-24 max-w-3xl mx-auto">
-        {/* Hero backsplash — full bleed, edge to edge top */}
-        <section className="relative animate-fade-in">
+        {/* Hero backsplash — full bleed, runs under status bar */}
+        <section
+          className="relative animate-fade-in"
+          style={{ marginTop: "calc(-1 * env(safe-area-inset-top))" }}
+        >
           <div className="relative overflow-hidden">
             <img
               src={heroLiquidLight}
@@ -57,6 +60,7 @@ const Home = () => {
               fetchPriority="high"
               decoding="async"
               className="w-full h-[40vh] min-h-[260px] max-h-[400px] object-cover"
+              style={{ paddingTop: "env(safe-area-inset-top)" }}
             />
             <div
               aria-hidden
