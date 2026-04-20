@@ -74,6 +74,60 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_devotionals: {
+        Row: {
+          application_question_en: string
+          application_question_es: string
+          created_at: string
+          day_of_year: number
+          id: string
+          prayer_en: string
+          prayer_es: string
+          reflection_en: string
+          reflection_es: string
+          scripture_ref_en: string
+          scripture_ref_es: string
+          scripture_text_en: string
+          scripture_text_es: string
+          title_en: string
+          title_es: string
+        }
+        Insert: {
+          application_question_en: string
+          application_question_es: string
+          created_at?: string
+          day_of_year: number
+          id?: string
+          prayer_en: string
+          prayer_es: string
+          reflection_en: string
+          reflection_es: string
+          scripture_ref_en: string
+          scripture_ref_es: string
+          scripture_text_en: string
+          scripture_text_es: string
+          title_en: string
+          title_es: string
+        }
+        Update: {
+          application_question_en?: string
+          application_question_es?: string
+          created_at?: string
+          day_of_year?: number
+          id?: string
+          prayer_en?: string
+          prayer_es?: string
+          reflection_en?: string
+          reflection_es?: string
+          scripture_ref_en?: string
+          scripture_ref_es?: string
+          scripture_text_en?: string
+          scripture_text_es?: string
+          title_en?: string
+          title_es?: string
+        }
+        Relationships: []
+      }
       daily_wisdom_stories: {
         Row: {
           content: string
@@ -100,6 +154,127 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      devotional_comment_reports: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          reason: string | null
+          reporter_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reporter_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reporter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_comment_reports_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "devotional_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devotional_comment_votes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_id: string
+          vote: number
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+          vote: number
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+          vote?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_comment_votes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "devotional_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devotional_comments: {
+        Row: {
+          author_avatar: string | null
+          author_name: string | null
+          content: string
+          created_at: string
+          devotional_id: string
+          id: string
+          is_hidden: boolean
+          parent_id: string | null
+          score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          author_avatar?: string | null
+          author_name?: string | null
+          content: string
+          created_at?: string
+          devotional_id: string
+          id?: string
+          is_hidden?: boolean
+          parent_id?: string | null
+          score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          author_avatar?: string | null
+          author_name?: string | null
+          content?: string
+          created_at?: string
+          devotional_id?: string
+          id?: string
+          is_hidden?: boolean
+          parent_id?: string | null
+          score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_comments_devotional_id_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "daily_devotionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devotional_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "devotional_comments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       event_attendees: {
         Row: {
