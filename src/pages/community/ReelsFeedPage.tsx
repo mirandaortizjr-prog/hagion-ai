@@ -46,10 +46,8 @@ const SAMPLE_REELS: Reel[] = [
     title: "For God so loved the world.",
     description:
       "John 3:16 — that He gave His one and only Son, that whoever believes in Him shall not perish but have eternal life.",
-    video_url:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&q=80",
+    video_url: "/demo-reels/john316.mp4",
+    thumbnail_url: null,
     author_name: "hagion",
     like_count: 3420,
     view_count: 58200,
@@ -60,10 +58,8 @@ const SAMPLE_REELS: Reel[] = [
     user_id: "sample",
     title: "Be still and know that I am God.",
     description: "Psalm 46:10 — A breath of stillness for your day.",
-    video_url:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
+    video_url: "/demo-reels/bestill.mp4",
+    thumbnail_url: null,
     author_name: "hagion",
     like_count: 1284,
     view_count: 22400,
@@ -74,10 +70,8 @@ const SAMPLE_REELS: Reel[] = [
     user_id: "sample",
     title: "Light shines in the darkness.",
     description: "John 1:5 — and the darkness has not overcome it.",
-    video_url:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80",
+    video_url: "/demo-reels/john316.mp4",
+    thumbnail_url: null,
     author_name: "scripture_daily",
     like_count: 902,
     view_count: 15800,
@@ -88,10 +82,8 @@ const SAMPLE_REELS: Reel[] = [
     user_id: "sample",
     title: "He restores my soul.",
     description: "Psalm 23:3 — green pastures, still waters, peace.",
-    video_url:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-    thumbnail_url:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
+    video_url: "/demo-reels/restores.mp4",
+    thumbnail_url: null,
     author_name: "stillwaters",
     like_count: 2105,
     view_count: 41200,
