@@ -16,8 +16,8 @@ const Home = () => {
     hour < 12
       ? t("Good morning", "Buenos días")
       : hour < 18
-      ? t("Good afternoon", "Buenas tardes")
-      : t("Good evening", "Buenas noches");
+        ? t("Good afternoon", "Buenas tardes")
+        : t("Good evening", "Buenas noches");
 
   const verse = getVerseOfTheDay();
   const v = language === "es" ? verse.es : verse.en;
@@ -43,14 +43,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen text-white">
-      <PremiumNav />
-
-      <main className="pb-24 max-w-3xl mx-auto">
-        {/* Hero backsplash — full bleed, runs under status bar */}
-        <section
-          className="relative animate-fade-in"
-          style={{ marginTop: "calc(-1 * env(safe-area-inset-top))" }}
-        >
+      <main className="max-w-3xl mx-auto">
+        <section className="relative animate-fade-in">
           <div className="relative overflow-hidden">
             <img
               src={heroLiquidLight}
@@ -69,7 +63,7 @@ const Home = () => {
               <p className="text-[10px] tracking-[0.22em] uppercase text-white/65 font-inter">
                 {greeting}
               </p>
-              <h1 className="mt-1.5 font-playfair italic text-[15px] sm:text-lg leading-snug tracking-tight text-white/95 drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)] max-w-[34ch]">
+              <h1 className="mt-1.5 max-w-[34ch] font-playfair text-[15px] italic leading-snug tracking-tight text-white/95 drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)] sm:text-lg">
                 “{v.text}”
               </h1>
               <p className="mt-2 text-[9.5px] tracking-[0.22em] uppercase text-white/60 font-inter">
@@ -79,8 +73,7 @@ const Home = () => {
           </div>
         </section>
 
-        <div className="px-5 sm:px-8 pt-6">
-          {/* Tiles */}
+        <div className="px-5 pt-6 sm:px-8">
           <section className="space-y-4">
             {tiles.map((tile, i) => {
               const Icon = tile.icon;
@@ -89,38 +82,35 @@ const Home = () => {
                   key={tile.title}
                   onClick={tile.onClick}
                   className={cn(
-                    "group relative w-full overflow-hidden text-left p-6 rounded-3xl",
-                    "bg-white/[0.04] backdrop-blur-2xl border border-white/10",
-                    "shadow-[0_15px_50px_-20px_rgba(0,0,0,0.7)] ring-1",
+                    "group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-left ring-1 shadow-[0_15px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-2xl",
                     tile.ring,
-                    "transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99]",
-                    "animate-fade-in"
+                    "animate-fade-in transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99]"
                   )}
                   style={{ animationDelay: `${i * 90}ms` }}
                 >
                   <div
                     aria-hidden
                     className={cn(
-                      "pointer-events-none absolute -top-16 -right-12 w-56 h-56 rounded-full blur-3xl opacity-70 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br",
+                      "pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full bg-gradient-to-br opacity-70 blur-3xl transition-opacity duration-500 group-hover:opacity-100",
                       tile.accent
                     )}
                   />
                   <div className="relative flex items-center gap-5">
-                    <div className="shrink-0 w-14 h-14 rounded-2xl bg-white/10 ring-1 ring-white/25 flex items-center justify-center backdrop-blur-md shadow-inner">
-                      <Icon className="w-6 h-6" strokeWidth={1.9} />
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 shadow-inner ring-1 ring-white/25 backdrop-blur-md">
+                      <Icon className="h-6 w-6" strokeWidth={1.9} />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <h2 className="font-playfair text-2xl tracking-tight">{tile.title}</h2>
-                      <p className="mt-1 text-[13.5px] text-white/65 leading-snug">{tile.desc}</p>
+                      <p className="mt-1 text-[13.5px] leading-snug text-white/65">{tile.desc}</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-white/45 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-5 w-5 text-white/45 transition-transform group-hover:translate-x-1" />
                   </div>
                 </button>
               );
             })}
           </section>
 
-          <p className="mt-10 text-center text-[12px] text-white/40 italic font-playfair">
+          <p className="mt-10 text-center font-playfair text-[12px] italic text-white/40">
             {t(
               "“Your word is a lamp to my feet.” — Psalm 119:105",
               "“Lámpara es a mis pies tu palabra.” — Salmo 119:105"
@@ -128,6 +118,8 @@ const Home = () => {
           </p>
         </div>
       </main>
+
+      <PremiumNav />
     </div>
   );
 };
