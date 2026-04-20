@@ -60,7 +60,6 @@ const Home = () => {
               fetchPriority="high"
               decoding="async"
               className="w-full h-[40vh] min-h-[260px] max-h-[400px] object-cover"
-              style={{ paddingTop: "env(safe-area-inset-top)" }}
             />
             <div
               aria-hidden
