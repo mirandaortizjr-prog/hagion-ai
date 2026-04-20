@@ -61,8 +61,9 @@ const SAMPLE_REELS: Reel[] = [
     title: "Be still and know that I am God.",
     description: "Psalm 46:10 — A breath of stillness for your day.",
     video_url:
-      "https://cdn.coverr.co/videos/coverr-clouds-rolling-over-mountains-2633/1080p.mp4",
-    thumbnail_url: null,
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    thumbnail_url:
+      "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
     author_name: "hagion",
     like_count: 1284,
     view_count: 22400,
@@ -74,8 +75,9 @@ const SAMPLE_REELS: Reel[] = [
     title: "Light shines in the darkness.",
     description: "John 1:5 — and the darkness has not overcome it.",
     video_url:
-      "https://cdn.coverr.co/videos/coverr-a-candle-burning-in-the-dark-5244/1080p.mp4",
-    thumbnail_url: null,
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    thumbnail_url:
+      "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800&q=80",
     author_name: "scripture_daily",
     like_count: 902,
     view_count: 15800,
@@ -87,8 +89,9 @@ const SAMPLE_REELS: Reel[] = [
     title: "He restores my soul.",
     description: "Psalm 23:3 — green pastures, still waters, peace.",
     video_url:
-      "https://cdn.coverr.co/videos/coverr-a-stream-flowing-through-a-forest-2825/1080p.mp4",
-    thumbnail_url: null,
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    thumbnail_url:
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80",
     author_name: "stillwaters",
     like_count: 2105,
     view_count: 41200,
