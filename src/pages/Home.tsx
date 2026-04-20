@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Sparkles, ArrowRight, Home as HomeIcon, Globe, Brain } from "lucide-react";
+import { Sparkles, ArrowRight, Sun, HandHeart } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
@@ -9,39 +9,22 @@ const Home = () => {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
-  const pillars = [
+  const tiles = [
     {
-      title: t("Discipleship", "Discipulado"),
-      desc: t(
-        "Your daily walk — wisdom, prayer, and quiet counsel.",
-        "Tu caminar diario — sabiduría, oración y consejo."
-      ),
-      icon: HomeIcon,
+      title: t("Daily Devotional", "Devocional Diario"),
+      desc: t("A quiet word for today.", "Una palabra para hoy."),
+      icon: Sun,
       onClick: () => navigate("/daily-wisdom"),
       accent: "from-amber-300/35 via-orange-400/20 to-rose-600/30",
       ring: "ring-amber-300/30",
     },
     {
-      title: t("Community", "Comunidad"),
-      desc: t(
-        "Believers in conversation — prayer, testimony, fellowship.",
-        "Creyentes en conversación — oración, testimonio, comunión."
-      ),
-      icon: Globe,
-      onClick: () => navigate("/community"),
-      accent: "from-emerald-300/35 via-teal-400/20 to-cyan-600/30",
-      ring: "ring-emerald-300/30",
-    },
-    {
-      title: t("Hagion AI", "Hagion AI"),
-      desc: t(
-        "The full mind — analysts, divine guidance, and the university.",
-        "La mente completa — analistas, guía divina y la universidad."
-      ),
-      icon: Brain,
-      onClick: () => navigate("/main-menu"),
-      accent: "from-sky-300/35 via-indigo-400/20 to-blue-700/30",
-      ring: "ring-sky-300/30",
+      title: t("Prayer Wall", "Muro de Oración"),
+      desc: t("Lift one another up.", "Levantémonos unos a otros."),
+      icon: HandHeart,
+      onClick: () => navigate("/prayer-wall"),
+      accent: "from-violet-300/35 via-fuchsia-400/20 to-purple-700/30",
+      ring: "ring-violet-300/30",
     },
   ];
 
@@ -61,8 +44,8 @@ const Home = () => {
           </h1>
           <p className="mt-3 text-white/65 max-w-md leading-relaxed text-[15px]">
             {t(
-              "A sanctuary for reasoned faith — three doors, one journey.",
-              "Un santuario para la fe razonada — tres puertas, un camino."
+              "Begin your day in stillness, prayer, and the Word.",
+              "Comienza tu día en quietud, oración y la Palabra."
             )}
           </p>
 
@@ -80,19 +63,19 @@ const Home = () => {
           </button>
         </section>
 
-        {/* Three pillars */}
+        {/* Tiles */}
         <section className="space-y-4">
-          {pillars.map((pillar, i) => {
-            const Icon = pillar.icon;
+          {tiles.map((tile, i) => {
+            const Icon = tile.icon;
             return (
               <button
-                key={pillar.title}
-                onClick={pillar.onClick}
+                key={tile.title}
+                onClick={tile.onClick}
                 className={cn(
                   "group relative w-full overflow-hidden text-left p-6 rounded-3xl",
                   "bg-white/[0.04] backdrop-blur-2xl border border-white/10",
                   "shadow-[0_15px_50px_-20px_rgba(0,0,0,0.7)] ring-1",
-                  pillar.ring,
+                  tile.ring,
                   "transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99]",
                   "animate-fade-in"
                 )}
@@ -102,7 +85,7 @@ const Home = () => {
                   aria-hidden
                   className={cn(
                     "pointer-events-none absolute -top-16 -right-12 w-56 h-56 rounded-full blur-3xl opacity-70 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br",
-                    pillar.accent
+                    tile.accent
                   )}
                 />
                 <div className="relative flex items-center gap-5">
@@ -110,8 +93,8 @@ const Home = () => {
                     <Icon className="w-6 h-6" strokeWidth={1.9} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="font-playfair text-2xl tracking-tight">{pillar.title}</h2>
-                    <p className="mt-1 text-[13.5px] text-white/65 leading-snug">{pillar.desc}</p>
+                    <h2 className="font-playfair text-2xl tracking-tight">{tile.title}</h2>
+                    <p className="mt-1 text-[13.5px] text-white/65 leading-snug">{tile.desc}</p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-white/45 transition-transform group-hover:translate-x-1" />
                 </div>
