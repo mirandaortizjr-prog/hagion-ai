@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { App as CapacitorApp } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
@@ -10,7 +12,6 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Pause,
   MoreHorizontal,
   Sparkles,
   Music2,
@@ -70,7 +71,7 @@ const SAMPLE_REELS: Reel[] = [
     user_id: "sample",
     title: "Light shines in the darkness.",
     description: "John 1:5 — and the darkness has not overcome it.",
-    video_url: "/demo-reels/john316.mp4",
+    video_url: "/demo-reels/light.mp4",
     thumbnail_url: null,
     author_name: "scripture_daily",
     like_count: 902,
@@ -109,25 +110,54 @@ export default function ReelsFeedPage() {
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const lastTapRef = useRef<Record<string, number>>({});
 
+  const handleBack = useCallback(() => {
+    navigate("/community/reels", { replace: true });
+  }, [navigate]);
+
   useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const { data } = await supabase
+          .from("reels")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(50);
+
+        let list = (data as Reel[]) || [];
+        if (list.length === 0) list = SAMPLE_REELS;
+        setReels(list);
+        if (list.length) setActiveId(list[0].id);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     load();
   }, []);
 
-  const load = async () => {
-    setLoading(true);
-    const { data } = await supabase
-      .from("reels")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
-    let list = (data as Reel[]) || [];
-    if (list.length === 0) list = SAMPLE_REELS;
-    setReels(list);
-    if (list.length) setActiveId(list[0].id);
-    setLoading(false);
-  };
+  useEffect(() => {
+    const onPopState = () => handleBack();
+    window.history.pushState({ reelsFeed: true }, "", window.location.href);
+    window.addEventListener("popstate", onPopState);
 
-  // IntersectionObserver to switch active reel as user scrolls
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, [handleBack]);
+
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    const listener = CapacitorApp.addListener("backButton", () => {
+      handleBack();
+    });
+
+    return () => {
+      listener.then((l) => l.remove());
+    };
+  }, [handleBack]);
+
   useEffect(() => {
     if (!containerRef.current || reels.length === 0) return;
     const observer = new IntersectionObserver(
@@ -150,24 +180,33 @@ export default function ReelsFeedPage() {
     return () => observer.disconnect();
   }, [reels]);
 
-  // Play active video, pause the rest
   useEffect(() => {
-    videoRefs.current.forEach((v, id) => {
+    videoRefs.current.forEach((video, id) => {
       if (id === activeId && !paused[id]) {
-        v.muted = muted;
-        const p = v.play();
-        if (p && typeof p.catch === "function") p.catch(() => {});
+        video.muted = muted;
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {});
+        }
       } else {
-        v.pause();
+        video.pause();
       }
     });
   }, [activeId, muted, paused]);
+
+  useEffect(() => {
+    return () => {
+      videoRefs.current.forEach((video) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    };
+  }, []);
 
   const handleTap = (reel: Reel) => {
     const now = Date.now();
     const last = lastTapRef.current[reel.id] || 0;
     if (now - last < 280) {
-      // Double-tap → like
       handleLike(reel, true);
       setShowHeart((s) => ({ ...s, [reel.id]: now }));
       setTimeout(() => {
@@ -183,7 +222,6 @@ export default function ReelsFeedPage() {
       lastTapRef.current[reel.id] = 0;
     } else {
       lastTapRef.current[reel.id] = now;
-      // Single tap → toggle play/pause after delay
       setTimeout(() => {
         if (lastTapRef.current[reel.id] === now) {
           setPaused((p) => ({ ...p, [reel.id]: !p[reel.id] }));
@@ -227,15 +265,24 @@ export default function ReelsFeedPage() {
     } catch {}
   };
 
+  const handlePlaybackError = useCallback(
+    (title: string) => {
+      toast({
+        title: "Video unavailable",
+        description: `${title} could not be played.`,
+      });
+    },
+    [toast],
+  );
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
-      {/* Top gradient + header */}
       <div className="absolute top-0 inset-x-0 z-30 pointer-events-none">
         <div className="h-32 bg-gradient-to-b from-black/80 via-black/40 to-transparent" />
       </div>
       <header className="absolute top-0 inset-x-0 z-40 flex items-center justify-between px-4 pt-[max(env(safe-area-inset-top),12px)] pb-3">
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleBack}
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
           aria-label="Back"
         >
@@ -264,7 +311,7 @@ export default function ReelsFeedPage() {
           </div>
         </div>
       ) : reels.length === 0 ? (
-        <EmptyState onBack={() => navigate(-1)} />
+        <EmptyState onBack={handleBack} />
       ) : (
         <div
           ref={containerRef}
@@ -288,6 +335,7 @@ export default function ReelsFeedPage() {
               onShare={() => handleShare(reel)}
               onComment={() => toast({ title: "Comments coming soon" })}
               onMore={() => toast({ title: "More options coming soon" })}
+              onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(reel.id, el);
                 else videoRefs.current.delete(reel.id);
@@ -307,8 +355,6 @@ export default function ReelsFeedPage() {
   );
 }
 
-/* ---------- Reel item ---------- */
-
 interface ReelItemProps {
   reel: Reel;
   isActive: boolean;
@@ -324,6 +370,7 @@ interface ReelItemProps {
   onShare: () => void;
   onComment: () => void;
   onMore: () => void;
+  onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
 }
@@ -343,6 +390,7 @@ function ReelItem({
   onShare,
   onComment,
   onMore,
+  onPlaybackError,
   registerVideo,
   onProgress,
 }: ReelItemProps) {
@@ -356,7 +404,6 @@ function ReelItem({
       data-reel-id={reel.id}
       className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
     >
-      {/* Video */}
       <video
         ref={(el) => {
           videoRef.current = el;
@@ -367,8 +414,19 @@ function ReelItem({
         loop
         muted={muted}
         playsInline
+        autoPlay={isActive && !paused}
         preload={isActive ? "auto" : "metadata"}
         onClick={onTap}
+        onLoadedData={(e) => {
+          const video = e.currentTarget;
+          if (isActive && !paused) {
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          }
+        }}
+        onError={onPlaybackError}
         onTimeUpdate={(e) => {
           const v = e.currentTarget;
           if (v.duration > 0) onProgress(v.currentTime / v.duration);
@@ -376,12 +434,9 @@ function ReelItem({
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Subtle vignette */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_55%,rgba(0,0,0,0.55)_100%)]" />
-      {/* Bottom gradient for legibility */}
       <div className="pointer-events-none absolute bottom-0 inset-x-0 h-72 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
-      {/* Pause overlay */}
       {paused && isActive && (
         <button
           onClick={onTap}
@@ -394,7 +449,6 @@ function ReelItem({
         </button>
       )}
 
-      {/* Double-tap heart burst */}
       {showHeart && (
         <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
           <Heart
@@ -406,7 +460,6 @@ function ReelItem({
         </div>
       )}
 
-      {/* Right-side action rail */}
       <div
         className="absolute right-3 z-30 flex flex-col items-center gap-5"
         style={{ bottom: "max(calc(env(safe-area-inset-bottom) + 20px), 20px)" }}
@@ -436,7 +489,6 @@ function ReelItem({
         />
         <ActionButton icon={MoreHorizontal} label="" onClick={onMore} />
 
-        {/* Author avatar + follow */}
         <div className="relative mt-1">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white/35 via-white/15 to-white/5 ring-2 ring-white/40 flex items-center justify-center overflow-hidden">
             <span className="font-playfair text-base text-white">{initial}</span>
@@ -450,7 +502,6 @@ function ReelItem({
         </div>
       </div>
 
-      {/* Bottom info */}
       <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-7 pt-10">
         <div className="flex items-center gap-2 mb-3">
           <div className="text-sm font-medium text-white">
@@ -487,7 +538,6 @@ function ReelItem({
         </div>
       </div>
 
-      {/* Progress bar */}
       <div className="absolute bottom-0 inset-x-0 z-30 h-[3px] bg-white/10">
         <div
           className="h-full bg-gradient-to-r from-white via-white to-white/80"
@@ -495,7 +545,6 @@ function ReelItem({
         />
       </div>
 
-      {/* Local keyframes */}
       <style>{`
         @keyframes heartPop {
           0% { transform: scale(0.4); opacity: 0; }
@@ -513,8 +562,6 @@ function ReelItem({
     </section>
   );
 }
-
-/* ---------- Action button ---------- */
 
 function ActionButton({
   icon: Icon,
@@ -562,8 +609,6 @@ function ActionButton({
     </button>
   );
 }
-
-/* ---------- Empty state ---------- */
 
 function EmptyState({ onBack }: { onBack: () => void }) {
   return (
