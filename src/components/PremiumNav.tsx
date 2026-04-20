@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Globe, Users, UserPlus, Plus, Send, ImagePlus, Video, X, Loader2, Flame, BookOpen, User } from "lucide-react";
+import { Home, Globe, Users, UserPlus, Plus, Send, ImagePlus, Video, X, Loader2, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
@@ -36,10 +36,8 @@ export const PremiumNav = () => {
       ]
     : [
         { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+        { id: "hagion", labelEn: "Hagion AI", labelEs: "Hagion AI", icon: Brain, path: "/main-menu" },
         { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
-        { id: "discernment", labelEn: "Discern", labelEs: "Discernir", icon: Flame, path: "/discernment" },
-        { id: "learning", labelEn: "Learning", labelEs: "Aprender", icon: BookOpen, path: "/learning" },
-        { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
       ];
 
   const [postOpen, setPostOpen] = useState(false);

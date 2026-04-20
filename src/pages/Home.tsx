@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Flame, BookOpen, Globe, User, Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight, Home as HomeIcon, Globe, Brain } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
@@ -7,41 +7,41 @@ import { cn } from "@/lib/utils";
 const Home = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
-
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
-  const tiles = [
+  const pillars = [
     {
-      title: t("Discernment", "Discernimiento"),
-      desc: t("Test the spirits with truth.", "Prueba los espíritus con la verdad."),
-      icon: Flame,
-      path: "/discernment",
-      accent: "from-amber-400/30 via-orange-500/20 to-rose-600/30",
+      title: t("Discipleship", "Discipulado"),
+      desc: t(
+        "Your daily walk — wisdom, prayer, and quiet counsel.",
+        "Tu caminar diario — sabiduría, oración y consejo."
+      ),
+      icon: HomeIcon,
+      onClick: () => navigate("/daily-wisdom"),
+      accent: "from-amber-300/35 via-orange-400/20 to-rose-600/30",
       ring: "ring-amber-300/30",
     },
     {
-      title: t("Learning", "Aprendizaje"),
-      desc: t("Hagion University Lite.", "Universidad Hagion Lite."),
-      icon: BookOpen,
-      path: "/learning",
-      accent: "from-sky-300/30 via-cyan-400/20 to-blue-600/30",
-      ring: "ring-sky-300/30",
-    },
-    {
       title: t("Community", "Comunidad"),
-      desc: t("Prayer & testimony wall.", "Muro de oración y testimonios."),
+      desc: t(
+        "Believers in conversation — prayer, testimony, fellowship.",
+        "Creyentes en conversación — oración, testimonio, comunión."
+      ),
       icon: Globe,
-      path: "/community",
-      accent: "from-emerald-300/30 via-teal-400/20 to-cyan-600/30",
+      onClick: () => navigate("/community"),
+      accent: "from-emerald-300/35 via-teal-400/20 to-cyan-600/30",
       ring: "ring-emerald-300/30",
     },
     {
-      title: t("Profile", "Perfil"),
-      desc: t("Your sanctuary settings.", "Tu santuario y ajustes."),
-      icon: User,
-      path: "/profile",
-      accent: "from-violet-300/30 via-fuchsia-400/20 to-purple-600/30",
-      ring: "ring-violet-300/30",
+      title: t("Hagion AI", "Hagion AI"),
+      desc: t(
+        "The full mind — analysts, divine guidance, and the university.",
+        "La mente completa — analistas, guía divina y la universidad."
+      ),
+      icon: Brain,
+      onClick: () => navigate("/main-menu"),
+      accent: "from-sky-300/35 via-indigo-400/20 to-blue-700/30",
+      ring: "ring-sky-300/30",
     },
   ];
 
@@ -61,8 +61,8 @@ const Home = () => {
           </h1>
           <p className="mt-3 text-white/65 max-w-md leading-relaxed text-[15px]">
             {t(
-              "A sanctuary for reasoned faith — divine counsel, discernment, and learning, in one place.",
-              "Un santuario para la fe razonada — consejo divino, discernimiento y aprendizaje, en un solo lugar."
+              "A sanctuary for reasoned faith — three doors, one journey.",
+              "Un santuario para la fe razonada — tres puertas, un camino."
             )}
           </p>
 
@@ -80,45 +80,46 @@ const Home = () => {
           </button>
         </section>
 
-        {/* Tiles */}
-        <section className="grid grid-cols-2 gap-4 sm:gap-5">
-          {tiles.map((tile, i) => {
-            const Icon = tile.icon;
+        {/* Three pillars */}
+        <section className="space-y-4">
+          {pillars.map((pillar, i) => {
+            const Icon = pillar.icon;
             return (
               <button
-                key={tile.path}
-                onClick={() => navigate(tile.path)}
+                key={pillar.title}
+                onClick={pillar.onClick}
                 className={cn(
-                  "group relative overflow-hidden text-left p-5 rounded-3xl",
+                  "group relative w-full overflow-hidden text-left p-6 rounded-3xl",
                   "bg-white/[0.04] backdrop-blur-2xl border border-white/10",
-                  "shadow-[0_10px_40px_-15px_rgba(0,0,0,0.6)] ring-1",
-                  tile.ring,
-                  "transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.98]",
+                  "shadow-[0_15px_50px_-20px_rgba(0,0,0,0.7)] ring-1",
+                  pillar.ring,
+                  "transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99]",
                   "animate-fade-in"
                 )}
-                style={{ animationDelay: `${i * 80}ms` }}
+                style={{ animationDelay: `${i * 90}ms` }}
               >
-                {/* accent glow */}
                 <div
                   aria-hidden
                   className={cn(
-                    "pointer-events-none absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-60 transition-opacity duration-500 group-hover:opacity-90 bg-gradient-to-br",
-                    tile.accent
+                    "pointer-events-none absolute -top-16 -right-12 w-56 h-56 rounded-full blur-3xl opacity-70 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br",
+                    pillar.accent
                   )}
                 />
-                <div className="relative">
-                  <div className="w-11 h-11 rounded-2xl bg-white/10 ring-1 ring-white/20 flex items-center justify-center backdrop-blur-md shadow-inner">
-                    <Icon className="w-5 h-5" strokeWidth={2} />
+                <div className="relative flex items-center gap-5">
+                  <div className="shrink-0 w-14 h-14 rounded-2xl bg-white/10 ring-1 ring-white/25 flex items-center justify-center backdrop-blur-md shadow-inner">
+                    <Icon className="w-6 h-6" strokeWidth={1.9} />
                   </div>
-                  <h3 className="mt-4 font-playfair text-xl tracking-tight">{tile.title}</h3>
-                  <p className="mt-1 text-[12.5px] text-white/60 leading-snug">{tile.desc}</p>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-playfair text-2xl tracking-tight">{pillar.title}</h2>
+                    <p className="mt-1 text-[13.5px] text-white/65 leading-snug">{pillar.desc}</p>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-white/45 transition-transform group-hover:translate-x-1" />
                 </div>
               </button>
             );
           })}
         </section>
 
-        {/* Footer scripture */}
         <p className="mt-10 text-center text-[12px] text-white/40 italic font-playfair">
           {t(
             "“Your word is a lamp to my feet.” — Psalm 119:105",
