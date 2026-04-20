@@ -36,9 +36,9 @@ export const PremiumNav = () => {
       ]
     : [
         { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+        { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
         { id: "discernment", labelEn: "Discern", labelEs: "Discernir", icon: Flame, path: "/discernment" },
         { id: "learning", labelEn: "Learning", labelEs: "Aprender", icon: BookOpen, path: "/learning" },
-        { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
         { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
       ];
 
