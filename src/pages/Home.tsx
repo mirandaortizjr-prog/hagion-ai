@@ -1,13 +1,26 @@
 import { useNavigate } from "react-router-dom";
-import { Sparkles, ArrowRight, Sun, HandHeart } from "lucide-react";
+import { ArrowRight, Sun, HandHeart } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
+import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
+import { getVerseOfTheDay } from "@/data/versesOfTheDay";
 
 const Home = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
+
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 12
+      ? t("Good morning", "Buenos días")
+      : hour < 18
+      ? t("Good afternoon", "Buenas tardes")
+      : t("Good evening", "Buenas noches");
+
+  const verse = getVerseOfTheDay();
+  const v = language === "es" ? verse.es : verse.en;
 
   const tiles = [
     {
@@ -33,34 +46,42 @@ const Home = () => {
       <PremiumNav />
 
       <main className="px-5 sm:px-8 pb-24 max-w-3xl mx-auto">
-        {/* Hero */}
-        <section className="pt-6 pb-8 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md text-[11px] tracking-[0.18em] uppercase text-white/70">
-            <Sparkles className="w-3 h-3" />
-            {t("Welcome to Hagion", "Bienvenido a Hagion")}
-          </div>
-          <h1 className="mt-4 font-playfair text-4xl sm:text-5xl leading-[1.05] tracking-tight">
-            {t("Truth, illumined.", "La verdad, iluminada.")}
-          </h1>
-          <p className="mt-3 text-white/65 max-w-md leading-relaxed text-[15px]">
-            {t(
-              "Begin your day in stillness, prayer, and the Word.",
-              "Comienza tu día en quietud, oración y la Palabra."
-            )}
-          </p>
+        {/* Hero backsplash */}
+        <section className="relative -mx-5 sm:-mx-8 mb-8 animate-fade-in">
+          <div className="relative overflow-hidden sm:rounded-[2rem] sm:mx-2">
+            <img
+              src={heroLiquidLight}
+              alt=""
+              width={928}
+              height={1152}
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-[68vh] min-h-[440px] max-h-[640px] object-cover"
+            />
+            {/* Legibility gradient */}
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/85"
+            />
+            {/* Soft side vignette */}
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.5)_100%)]"
+            />
 
-          <button
-            onClick={() => navigate("/chat?voice=friend")}
-            className={cn(
-              "group mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full",
-              "bg-gradient-to-r from-white/95 to-white/80 text-black font-semibold tracking-wide",
-              "shadow-[0_10px_40px_-10px_rgba(255,255,255,0.45)]",
-              "transition-all duration-300 hover:scale-[1.02] active:scale-95"
-            )}
-          >
-            {t("Begin a conversation", "Comenzar una conversación")}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          </button>
+            {/* Overlay content */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10">
+              <p className="text-[11px] tracking-[0.22em] uppercase text-white/65 font-inter">
+                {greeting}
+              </p>
+              <h1 className="mt-2 font-playfair italic text-[28px] sm:text-4xl leading-[1.2] tracking-tight text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+                “{v.text}”
+              </h1>
+              <p className="mt-3 text-[12.5px] tracking-[0.18em] uppercase text-white/70 font-inter">
+                {v.ref}
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Tiles */}
