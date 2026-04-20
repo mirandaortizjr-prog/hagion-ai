@@ -37,6 +37,7 @@ import BibleTranslations from "./pages/BibleTranslations";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import PrayerWall from "./pages/PrayerWall";
 import DailyWisdom from "./pages/DailyWisdom";
+import DailyDevotional from "./pages/DailyDevotional";
 import PostDetailPage from "./pages/community/PostDetailPage";
 import ReelsFeedPage from "./pages/community/ReelsFeedPage";
 import VideosPage from "./pages/community/VideosPage";
@@ -118,6 +119,7 @@ const App = () => (
             <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/prayer-wall" element={<PrayerWall />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
+            <Route path="/daily-devotional" element={<DailyDevotional />} />
             <Route path="/community/post/:id" element={<PostDetailPage />} />
             <Route path="/community/reels" element={<ReelsFeedPage />} />
             <Route path="/community/reels/feed" element={<ReelsFeedPage />} />
