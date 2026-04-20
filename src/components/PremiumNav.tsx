@@ -24,13 +24,23 @@ export const PremiumNav = () => {
   const { language } = useLanguage();
   const { toast } = useToast();
 
-  const items: NavItem[] = [
-    { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
-    { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
-    { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
-    { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community/groups" },
-    { id: "friends", labelEn: "Friends", labelEs: "Amigos", icon: UserPlus, path: "/friends" },
-  ];
+  const inCommunity = location.pathname.startsWith("/community") || location.pathname === "/friends";
+
+  const items: NavItem[] = inCommunity
+    ? [
+        { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+        { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
+        { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
+        { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community/groups" },
+        { id: "friends", labelEn: "Friends", labelEs: "Amigos", icon: UserPlus, path: "/friends" },
+      ]
+    : [
+        { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+        { id: "discernment", labelEn: "Discern", labelEs: "Discernir", icon: Flame, path: "/discernment" },
+        { id: "learning", labelEn: "Learning", labelEs: "Aprender", icon: BookOpen, path: "/learning" },
+        { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
+        { id: "profile", labelEn: "Profile", labelEs: "Perfil", icon: User, path: "/profile" },
+      ];
 
   const [postOpen, setPostOpen] = useState(false);
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
