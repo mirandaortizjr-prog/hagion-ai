@@ -111,7 +111,7 @@ export default function ReelsFeedPage() {
   const lastTapRef = useRef<Record<string, number>>({});
 
   const handleBack = useCallback(() => {
-    navigate("/community/reels", { replace: true });
+    navigate("/community", { replace: true });
   }, [navigate]);
 
   useEffect(() => {
