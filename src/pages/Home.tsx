@@ -27,7 +27,7 @@ const Home = () => {
       title: t("Daily Devotional", "Devocional Diario"),
       desc: t("A quiet word for today.", "Una palabra para hoy."),
       icon: Sun,
-      onClick: () => navigate("/daily-wisdom"),
+      onClick: () => navigate("/daily-devotional"),
       accent: "from-amber-300/35 via-orange-400/20 to-rose-600/30",
       ring: "ring-amber-300/30",
     },
