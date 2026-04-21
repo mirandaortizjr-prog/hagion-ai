@@ -108,7 +108,7 @@ const SectionHeader = ({
   action?: React.ReactNode;
 }) => (
   <div className="flex items-end justify-between mb-3 px-1">
-    <h2 className="font-playfair text-xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+    <h2 className="font-playfair text-lg text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
       {title}
     </h2>
     <div className="flex items-center gap-3">
@@ -652,7 +652,7 @@ export default function PrayerWall() {
       {/* Edge-to-edge feed */}
       <section className="w-full border-t border-white/10 bg-black/20">
         <div className="max-w-3xl mx-auto px-0 sm:px-4 py-2">
-          <h2 className="font-playfair text-xl text-white tracking-tight px-4 sm:px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+          <h2 className="font-playfair text-lg text-white tracking-tight px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
             Feed
           </h2>
           {posts.length === 0 ? (
