@@ -510,8 +510,8 @@ export default function PrayerWall() {
             />
           </div>
 
-          {/* Black horizontal bar - 1/3 height of hero, full width edge-to-edge */}
-          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-[13vh] min-h-[86px] max-h-[133px] bg-black">
+          {/* Black horizontal bar - shortened to end at profile circle bottom */}
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-16 bg-black">
             {/* Profile avatar - positioned to overlap banner and black bar */}
             <button
               onClick={() => navigate("/profile")}
