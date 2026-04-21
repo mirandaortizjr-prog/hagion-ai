@@ -475,7 +475,7 @@ export default function PrayerWall() {
             Christian Community
           </h1>
           <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-          <div className="mt-5 w-screen max-w-none relative left-1/2 -translate-x-1/2">
+          <div className="relative mt-5 -mx-5 w-[calc(100%+2.5rem)] sm:-mx-8 sm:w-[calc(100%+4rem)]">
             <button
               type="button"
               onClick={uploadBanner}
