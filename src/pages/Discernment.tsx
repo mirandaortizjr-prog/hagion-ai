@@ -55,8 +55,8 @@ const Discernment = () => {
     {
       title: t("Video Analyzer", "Analizador de Video"),
       desc: t(
-        "Drop a link or transcript — uncover hidden messages, symbolism, and worldview.",
-        "Comparte un enlace o transcripción — descubre mensajes y cosmovisión."
+        "Test teaching videos and sermons to see if they align with the Bible.",
+        "Examina videos de enseñanza y sermones para ver si se alinean con la Biblia."
       ),
       icon: Film,
       onClick: () => navigate("/chat?voice=video&context=discernment"),
