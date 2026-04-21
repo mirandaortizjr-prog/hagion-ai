@@ -508,19 +508,24 @@ export default function PrayerWall() {
               aria-hidden
               className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"
             />
-            {/* Profile avatar - positioned on top of banner, far left, centered vertically */}
-            <button
-              onClick={() => navigate("/profile")}
-              className="absolute left-4 sm:left-8 top-[55%] -translate-y-1/2 rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition z-10"
-              aria-label="Open profile"
-            >
-              <Avatar className="h-24 w-24">
-                {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
-                <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-2xl">
-                  {(user?.email?.[0] || "U").toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </button>
+            {/* Profile avatar - positioned on top of banner, far left */}
+            <div className="absolute left-4 sm:left-8 top-[65%] -translate-y-1/2 flex flex-col items-center z-10">
+              <button
+                onClick={() => navigate("/profile")}
+                className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
+                aria-label="Open profile"
+              >
+                <Avatar className="h-24 w-24">
+                  {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
+                  <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-2xl">
+                    {(user?.email?.[0] || "U").toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+              <span className="mt-2 text-sm font-medium text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+              </span>
+            </div>
           </div>
 
           {/* Black horizontal bar */}
