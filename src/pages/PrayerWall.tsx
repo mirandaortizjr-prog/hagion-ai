@@ -508,14 +508,10 @@ export default function PrayerWall() {
               aria-hidden
               className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"
             />
-          </div>
-
-          {/* Black horizontal bar - shortened to end at profile circle bottom */}
-          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black">
-            {/* Profile avatar - positioned to overlap banner and black bar */}
+            {/* Profile avatar - positioned on top of banner, far left, centered vertically */}
             <button
               onClick={() => navigate("/profile")}
-              className="absolute left-1/2 -top-14 -translate-x-1/2 rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition z-10"
+              className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition z-10"
               aria-label="Open profile"
             >
               <Avatar className="h-28 w-28">
@@ -526,6 +522,9 @@ export default function PrayerWall() {
               </Avatar>
             </button>
           </div>
+
+          {/* Black horizontal bar */}
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black" />
 
           <div className="h-16" />
 
