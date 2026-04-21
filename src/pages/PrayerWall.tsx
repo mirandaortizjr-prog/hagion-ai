@@ -528,8 +528,14 @@ export default function PrayerWall() {
             </div>
           </div>
 
-          {/* Black horizontal bar */}
-          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black" />
+          {/* Black horizontal bar with top shadow */}
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black">
+            {/* Black shadow going down from top edge */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-black/70 to-transparent pointer-events-none"
+            />
+          </div>
 
           <div className="h-16" />
 
