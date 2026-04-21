@@ -546,7 +546,7 @@ export default function PrayerWall() {
 
 
 
-        <section className="mb-4">
+        <section className="mb-0">
           <SectionHeader
             title="Events"
             onSeeAll={() => navigate("/community/events")}
