@@ -516,7 +516,7 @@ export default function PrayerWall() {
               </Avatar>
             </button>
           </div>
-          <div className="h-10" />
+          <div className="h-9" />
 
           {/* Pill chips: Reels, Videos, Live */}
           <section className="w-full mt-2">
