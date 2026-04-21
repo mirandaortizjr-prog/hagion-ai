@@ -517,8 +517,8 @@ export default function PrayerWall() {
             </button>
           </div>
 
-          {/* Black horizontal bar - 1/3 height of hero, full width */}
-          <div className="w-full h-[13vh] min-h-[86px] max-h-[133px] bg-black" />
+          {/* Black horizontal bar - 1/3 height of hero, full width edge-to-edge */}
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-[13vh] min-h-[86px] max-h-[133px] bg-black" />
 
           <div className="h-16" />
 
