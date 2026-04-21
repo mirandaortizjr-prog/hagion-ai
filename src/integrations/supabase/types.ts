@@ -529,14 +529,45 @@ export type Database = {
           },
         ]
       }
+      post_votes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_votes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           author_avatar: string | null
           author_name: string | null
+          category: string
           comment_count: number
           content: string
           created_at: string
           encourage_count: number
+          hot_score: number
           id: string
           is_anonymous: boolean
           like_count: number
@@ -546,14 +577,17 @@ export type Database = {
           pray_count: number
           updated_at: string
           user_id: string
+          vote_score: number
         }
         Insert: {
           author_avatar?: string | null
           author_name?: string | null
+          category?: string
           comment_count?: number
           content: string
           created_at?: string
           encourage_count?: number
+          hot_score?: number
           id?: string
           is_anonymous?: boolean
           like_count?: number
@@ -563,14 +597,17 @@ export type Database = {
           pray_count?: number
           updated_at?: string
           user_id: string
+          vote_score?: number
         }
         Update: {
           author_avatar?: string | null
           author_name?: string | null
+          category?: string
           comment_count?: number
           content?: string
           created_at?: string
           encourage_count?: number
+          hot_score?: number
           id?: string
           is_anonymous?: boolean
           like_count?: number
@@ -580,6 +617,7 @@ export type Database = {
           pray_count?: number
           updated_at?: string
           user_id?: string
+          vote_score?: number
         }
         Relationships: []
       }
