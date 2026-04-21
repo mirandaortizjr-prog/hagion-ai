@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import heroDiscernment from "@/assets/hero-discernment.jpg";
 import {
   ShieldCheck,
   Mic,
