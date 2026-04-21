@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
 interface Post {
@@ -522,9 +523,19 @@ export default function PrayerWall() {
                   </AvatarFallback>
                 </Avatar>
               </button>
-              <span className="mt-2 text-sm font-medium text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
-              </span>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-base font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                  {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => sonnerToast.success("Friend request sent")}
+                  className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                  aria-label="Add as friend"
+                >
+                  Follow
+                </button>
+              </div>
             </div>
           </div>
 
