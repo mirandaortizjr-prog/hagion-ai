@@ -21,59 +21,80 @@ const Discernment = () => {
   const tools = [
     {
       title: t("Analysts of Faith", "Analistas de la Fe"),
-      desc: t("Specialized voices.", "Voces especializadas."),
+      desc: t(
+        "Consult specialized AI voices — theologians, apologists, and pastors — for nuanced answers.",
+        "Consulta voces de IA especializadas: teólogos, apologistas y pastores."
+      ),
       icon: Microscope,
       onClick: () => navigate("/main-menu?tab=assistants"),
-      ring: "ring-amber-300/25",
-      glow: "from-amber-400/30 via-orange-500/15 to-rose-700/25",
+      glow: "from-amber-300/70 via-orange-400/40 to-rose-500/60",
+      edgeColor: "251,191,36",
     },
     {
       title: t("Test the Spirits", "Probad los Espíritus"),
-      desc: t("Discern truth from error.", "Distingue verdad y error."),
+      desc: t(
+        "Submit teachings, claims, or movements and weigh them against Scripture line by line.",
+        "Somete enseñanzas y movimientos a la prueba de las Escrituras línea por línea."
+      ),
       icon: ShieldCheck,
       onClick: () => navigate("/discern"),
-      ring: "ring-sky-300/25",
-      glow: "from-sky-300/30 via-cyan-400/15 to-blue-700/25",
+      glow: "from-sky-300/70 via-cyan-400/40 to-blue-500/60",
+      edgeColor: "56,189,248",
     },
     {
       title: t("Sermon Analyzer", "Analizador de Sermones"),
-      desc: t("Weigh teaching by Scripture.", "Mide la enseñanza por la Escritura."),
+      desc: t(
+        "Paste a sermon or transcript — receive a Berean review of doctrine, exegesis, and fruit.",
+        "Pega un sermón y recibe una revisión berea de doctrina, exégesis y fruto."
+      ),
       icon: Mic,
       onClick: () => navigate("/chat?voice=sermon&context=discernment"),
-      ring: "ring-emerald-300/25",
-      glow: "from-emerald-300/30 via-teal-400/15 to-cyan-700/25",
+      glow: "from-emerald-300/70 via-teal-400/40 to-cyan-500/60",
+      edgeColor: "52,211,153",
     },
     {
       title: t("Music Analyzer", "Analizador Musical"),
-      desc: t("Lyrics tested in light.", "Letras a la luz de la Palabra."),
+      desc: t(
+        "Examine song lyrics for theology, spirit, and alignment with the Word of God.",
+        "Examina letras por teología, espíritu y alineación con la Palabra."
+      ),
       icon: Music,
       onClick: () => navigate("/chat?voice=music&context=discernment"),
-      ring: "ring-violet-300/25",
-      glow: "from-violet-300/30 via-fuchsia-400/15 to-purple-700/25",
+      glow: "from-violet-300/70 via-fuchsia-400/40 to-purple-500/60",
+      edgeColor: "192,132,252",
     },
     {
       title: t("Video Analyzer", "Analizador de Video"),
-      desc: t("Examine media with wisdom.", "Examina medios con sabiduría."),
+      desc: t(
+        "Drop a link or transcript — uncover hidden messages, symbolism, and worldview.",
+        "Comparte un enlace o transcripción — descubre mensajes y cosmovisión."
+      ),
       icon: Film,
       onClick: () => navigate("/chat?voice=video&context=discernment"),
-      ring: "ring-rose-300/25",
-      glow: "from-rose-300/30 via-pink-400/15 to-red-700/25",
+      glow: "from-rose-300/70 via-pink-400/40 to-red-500/60",
+      edgeColor: "251,113,133",
     },
     {
       title: t("Church Checker", "Verificador de Iglesias"),
-      desc: t("Doctrine and fruit.", "Doctrina y fruto."),
+      desc: t(
+        "Investigate a church's doctrine, leadership, and visible fruit before you commit.",
+        "Investiga la doctrina, liderazgo y fruto visible de una iglesia."
+      ),
       icon: Church,
       onClick: () => navigate("/discern"),
-      ring: "ring-indigo-300/25",
-      glow: "from-indigo-300/30 via-blue-400/15 to-violet-700/25",
+      glow: "from-indigo-300/70 via-blue-400/40 to-violet-500/60",
+      edgeColor: "129,140,248",
     },
     {
       title: t("Prophecy Checker", "Verificador de Profecía"),
-      desc: t("True or false foretelling.", "Profecía verdadera o falsa."),
+      desc: t(
+        "Test modern prophecies and prophets by the unchanging standard of Scripture.",
+        "Prueba profecías y profetas modernos por el estándar inmutable de la Escritura."
+      ),
       icon: ScrollText,
       onClick: () => navigate("/chat?voice=prophecy&context=discernment"),
-      ring: "ring-yellow-300/25",
-      glow: "from-yellow-300/30 via-amber-400/15 to-orange-700/25",
+      glow: "from-yellow-300/70 via-amber-400/40 to-orange-500/60",
+      edgeColor: "252,211,77",
     },
   ];
 
