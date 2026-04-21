@@ -502,6 +502,11 @@ export default function PrayerWall() {
                   <span className="text-[11px] tracking-[0.18em] uppercase text-white">Change</span>
                 </div>
               )}
+              {/* Subtle black shading at bottom edge */}
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"
+              />
             </button>
             <button
               onClick={() => navigate("/profile")}
