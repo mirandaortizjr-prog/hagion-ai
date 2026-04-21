@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Microscope,
   ShieldCheck,
   Mic,
   Music,
-  Film,
+  Globe,
   Church,
   ScrollText,
   ChevronRight,
