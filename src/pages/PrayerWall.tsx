@@ -510,7 +510,7 @@ export default function PrayerWall() {
               className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"
             />
             {/* Profile avatar - positioned on top of banner, far left */}
-            <div className="absolute left-4 sm:left-8 top-[65%] -translate-y-1/2 flex flex-col items-center z-10">
+            <div className="absolute left-1 sm:left-3 top-[65%] -translate-y-1/2 flex flex-col items-center z-10">
               <button
                 onClick={() => navigate("/profile")}
                 className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
@@ -523,14 +523,14 @@ export default function PrayerWall() {
                   </AvatarFallback>
                 </Avatar>
               </button>
-              <div className="mt-2 flex items-center gap-2">
-                <span className="text-base font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <div className="mt-2 flex items-center gap-4">
+                <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                   {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
                 </span>
                 <button
                   type="button"
                   onClick={() => sonnerToast.success("Friend request sent")}
-                  className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                  className="text-[10px] font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
                   aria-label="Add as friend"
                 >
                   Follow
