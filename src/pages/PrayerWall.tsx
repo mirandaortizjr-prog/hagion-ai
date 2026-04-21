@@ -511,7 +511,7 @@ export default function PrayerWall() {
           </div>
 
           {/* Black horizontal bar - shortened to end at profile circle bottom */}
-          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-11 bg-black">
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black">
             {/* Profile avatar - positioned to overlap banner and black bar */}
             <button
               onClick={() => navigate("/profile")}
