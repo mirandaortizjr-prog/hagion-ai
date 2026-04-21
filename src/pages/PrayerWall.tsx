@@ -456,7 +456,7 @@ export default function PrayerWall() {
       />
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
         {/* Header */}
-        <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center relative">
+        <header className="pt-6 pb-2 animate-fade-in flex flex-col items-center text-center relative">
           <button
             onClick={() => navigate("/community/messenger")}
             aria-label="Open messenger"
@@ -519,7 +519,7 @@ export default function PrayerWall() {
           <div className="h-3" />
 
           {/* Pill chips: Reels, Videos, Live */}
-          <section className="w-full mt-2 mb-2">
+          <section className="w-full mt-2">
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {[
                 { label: "Reels", icon: Play, onClick: () => navigate("/community/reels/feed") },
@@ -546,7 +546,7 @@ export default function PrayerWall() {
 
 
 
-        <section className="mb-10">
+        <section className="mt-3 mb-10">
           <SectionHeader
             title="Events"
             onSeeAll={() => navigate("/community/events")}
