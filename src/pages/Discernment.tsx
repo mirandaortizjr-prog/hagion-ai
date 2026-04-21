@@ -90,20 +90,27 @@ const Discernment = () => {
     <div className="min-h-screen text-white">
       <PremiumNav />
       <main className="px-5 sm:px-8 pb-24 max-w-3xl mx-auto">
-        <header className="pt-6 pb-6 animate-fade-in">
-          <p className="text-[11px] tracking-[0.22em] uppercase text-white/50">
-            {t("Section", "Sección")}
-          </p>
-          <h1 className="mt-2 font-playfair text-4xl sm:text-5xl tracking-tight">
-            {t("Discernment", "Discernimiento")}
-          </h1>
-          <p className="mt-3 text-white/60 max-w-md text-[13.5px] italic font-playfair">
-            {t(
-              "“Test the spirits to see whether they are from God.” — 1 John 4:1",
-              "“Probad los espíritus si son de Dios.” — 1 Juan 4:1"
-            )}
-          </p>
-        </header>
+        <section className="relative mt-4 mb-6 overflow-hidden rounded-3xl border border-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] animate-fade-in">
+          <img
+            src={heroDiscernment}
+            alt={t("Open Bible radiating light, depicting discernment", "Biblia abierta irradiando luz, representando el discernimiento")}
+            width={1536}
+            height={896}
+            className="w-full h-44 sm:h-56 object-cover"
+          />
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-4">
+            <h1 className="font-playfair text-2xl sm:text-3xl tracking-tight text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+              {t("Discernment", "Discernimiento")}
+            </h1>
+            <p className="mt-1.5 px-6 text-center text-white/75 text-[12px] italic font-playfair max-w-md">
+              {t(
+                "“Test the spirits to see whether they are from God.” — 1 John 4:1",
+                "“Probad los espíritus si son de Dios.” — 1 Juan 4:1"
+              )}
+            </p>
+          </div>
+        </section>
 
         <section className="grid grid-cols-1 gap-5 [perspective:1400px]">
           {tools.map((tool, i) => {
