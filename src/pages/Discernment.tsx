@@ -91,7 +91,7 @@ const Discernment = () => {
     <div className="min-h-screen text-white">
       <PremiumNav />
       <main className="px-5 sm:px-8 pb-24 max-w-3xl mx-auto">
-        <section className="relative -mt-2 mb-8 overflow-hidden rounded-3xl border border-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] animate-fade-in">
+        <section className="relative -mt-12 mb-16 overflow-hidden rounded-3xl border border-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] animate-fade-in">
           <img
             src={heroDiscernment}
             alt={t("Open Bible radiating light, depicting discernment", "Biblia abierta irradiando luz, representando el discernimiento")}
