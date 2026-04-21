@@ -455,10 +455,10 @@ export default function PrayerWall() {
             "radial-gradient(ellipse at center, #2B5681 0%, #000000 100%)",
         }}
       />
-      <main className="pb-2 max-w-3xl mx-auto">
+      <main className="px-5 sm:px-8 pb-2 max-w-3xl mx-auto">
         {/* Header */}
-        <header className="animate-fade-in flex flex-col items-center text-center relative px-5 sm:px-8">
-          <div className="relative -mx-5 w-[calc(100%+2.5rem)] sm:-mx-8 sm:w-[calc(100%+4rem)]">
+        <header className="animate-fade-in flex flex-col items-center text-center relative">
+          <div className="relative -mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)]">
             {/* Settings button - floats over the hero banner */}
             <button
               onClick={() => navigate("/settings")}
