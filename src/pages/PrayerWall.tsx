@@ -516,6 +516,10 @@ export default function PrayerWall() {
               </Avatar>
             </button>
           </div>
+
+          {/* Black horizontal bar - 1/3 height of hero, full width */}
+          <div className="w-full h-[13vh] min-h-[86px] max-h-[133px] bg-black" />
+
           <div className="h-16" />
 
           {/* Pill chips: Reels, Videos, Live */}
