@@ -506,7 +506,7 @@ export default function PrayerWall() {
             {/* Subtle black shading at bottom edge of banner */}
             <div
               aria-hidden
-              className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"
+              className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"
             />
             <button
               onClick={() => navigate("/profile")}
