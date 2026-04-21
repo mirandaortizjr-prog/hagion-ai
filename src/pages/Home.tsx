@@ -97,6 +97,9 @@ const Home = () => {
           </div>
         </section>
 
+        {/* Black horizontal bar - 1/3 height of hero, full width */}
+        <div className="w-full h-[13vh] min-h-[86px] max-h-[133px] bg-black" />
+
         <div className="px-5 pt-6 sm:px-8">
           <section className="space-y-3">
             {tiles.map((tile, i) => {
