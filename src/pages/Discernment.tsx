@@ -31,10 +31,10 @@ const Discernment = () => {
       edgeColor: "56,189,248",
     },
     {
-      title: t("Sermon Analyzer", "Analizador de Sermones"),
+      title: t("Sermon & Video Analyzer", "Analizador de Sermones y Videos"),
       desc: t(
-        "Paste a sermon or transcript — receive a Berean review of doctrine, exegesis, and fruit.",
-        "Pega un sermón y recibe una revisión berea de doctrina, exégesis y fruto."
+        "Paste a sermon, transcript, or video link — receive a Berean review weighing doctrine and exegesis against Scripture.",
+        "Pega un sermón, transcripción o enlace de video — recibe una revisión berea de doctrina y exégesis a la luz de la Escritura."
       ),
       icon: Mic,
       onClick: () => navigate("/chat?voice=sermon&context=discernment"),
@@ -53,13 +53,13 @@ const Discernment = () => {
       edgeColor: "192,132,252",
     },
     {
-      title: t("Video Analyzer", "Analizador de Video"),
+      title: t("Religion Checker", "Verificador de Religiones"),
       desc: t(
-        "Test teaching videos and sermons to see if they align with the Bible.",
-        "Examina videos de enseñanza y sermones para ver si se alinean con la Biblia."
+        "Examine world religions and denominations — Catholicism, Mormonism, Islam, and more — against biblical Christianity.",
+        "Examina religiones y denominaciones — catolicismo, mormonismo, islam y más — frente al cristianismo bíblico."
       ),
-      icon: Film,
-      onClick: () => navigate("/chat?voice=video&context=discernment"),
+      icon: Globe,
+      onClick: () => navigate("/chat?voice=religion&context=discernment"),
       glow: "from-rose-300/70 via-pink-400/40 to-red-500/60",
       edgeColor: "251,113,133",
     },
