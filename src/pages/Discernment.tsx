@@ -147,16 +147,9 @@ const Discernment = () => {
                 )}
                 style={{
                   animationDelay: `${i * 70}ms`,
-                  boxShadow: `0 0 0 1px rgba(${tool.edgeColor},0.35), 0 0 30px -2px rgba(${tool.edgeColor},0.45), 0 0 60px -10px rgba(${tool.edgeColor},0.35), inset 0 1px 0 rgba(255,255,255,0.18)`,
+                  boxShadow: `0 0 0 1px rgba(96,165,250,0.9), 0 0 6px 0 rgba(96,165,250,0.7), 0 0 12px 0 rgba(96,165,250,0.35)`,
                 }}
               >
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-px rounded-[26px] opacity-70 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    boxShadow: `0 0 50px 0 rgba(${tool.edgeColor},0.35), 0 0 90px 0 rgba(${tool.edgeColor},0.18)`,
-                  }}
-                />
 
                 <div
                   className="relative rounded-[26px] p-5 overflow-hidden border border-white/15 backdrop-blur-xl"
