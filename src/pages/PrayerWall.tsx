@@ -541,10 +541,8 @@ export default function PrayerWall() {
           {/* Black horizontal bar */}
           <div className="-mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black" />
 
-          <div className="h-16" />
-
           {/* Pill chips: Reels, Videos, Live */}
-          <section className="w-full mt-2">
+          <section className="w-full mt-1.5">
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               {[
                 { label: "Reels", icon: Play, onClick: () => navigate("/community/reels/feed") },
