@@ -74,7 +74,7 @@ const Home = () => {
         </section>
 
         <div className="px-5 pt-6 sm:px-8">
-          <section className="space-y-4">
+          <section className="space-y-3">
             {tiles.map((tile, i) => {
               const Icon = tile.icon;
               return (
@@ -82,28 +82,28 @@ const Home = () => {
                   key={tile.title}
                   onClick={tile.onClick}
                   className={cn(
-                    "group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-left ring-1 shadow-[0_15px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-2xl",
+                    "group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-left ring-1 shadow-[0_10px_35px_-18px_rgba(0,0,0,0.7)] backdrop-blur-2xl",
                     tile.ring,
-                    "animate-fade-in transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/[0.07] active:scale-[0.99]"
+                    "animate-fade-in transition-all duration-500 ease-out hover:-translate-y-0.5 hover:bg-white/[0.07] active:scale-[0.99]"
                   )}
                   style={{ animationDelay: `${i * 90}ms` }}
                 >
                   <div
                     aria-hidden
                     className={cn(
-                      "pointer-events-none absolute -right-12 -top-16 h-56 w-56 rounded-full bg-gradient-to-br opacity-70 blur-3xl transition-opacity duration-500 group-hover:opacity-100",
+                      "pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-gradient-to-br opacity-60 blur-3xl transition-opacity duration-500 group-hover:opacity-90",
                       tile.accent
                     )}
                   />
-                  <div className="relative flex items-center gap-5">
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 shadow-inner ring-1 ring-white/25 backdrop-blur-md">
-                      <Icon className="h-6 w-6" strokeWidth={1.9} />
+                  <div className="relative flex items-center gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 shadow-inner ring-1 ring-white/25 backdrop-blur-md">
+                      <Icon className="h-5 w-5" strokeWidth={1.9} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h2 className="font-playfair text-2xl tracking-tight">{tile.title}</h2>
-                      <p className="mt-1 text-[13.5px] leading-snug text-white/65">{tile.desc}</p>
+                      <h2 className="font-playfair text-lg tracking-tight leading-tight">{tile.title}</h2>
+                      <p className="mt-0.5 text-[12px] leading-snug text-white/60">{tile.desc}</p>
                     </div>
-                    <ArrowRight className="h-5 w-5 text-white/45 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4 text-white/45 transition-transform group-hover:translate-x-1" />
                   </div>
                 </button>
               );
