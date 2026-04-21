@@ -471,7 +471,7 @@ export default function PrayerWall() {
               type="button"
               onClick={uploadBanner}
               disabled={bannerUploading}
-              className="block w-full aspect-[16/9] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
+              className="block w-full h-[420px] sm:h-[480px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
               aria-label="Upload community banner"
             >
               {profile?.banner_url ? (
