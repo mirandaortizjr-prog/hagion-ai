@@ -510,7 +510,7 @@ export default function PrayerWall() {
               className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"
             />
             {/* Profile avatar - positioned on top of banner, far left */}
-            <div className="absolute left-0 sm:left-1 top-[65%] -translate-y-1/2 flex flex-col items-start z-10">
+            <div className="absolute left-3 sm:left-5 top-[65%] -translate-y-1/2 flex flex-col items-start z-10">
               <button
                 onClick={() => navigate("/profile")}
                 className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
