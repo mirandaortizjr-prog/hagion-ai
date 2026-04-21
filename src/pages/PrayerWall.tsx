@@ -502,12 +502,12 @@ export default function PrayerWall() {
                   <span className="text-[11px] tracking-[0.18em] uppercase text-white">Change</span>
                 </div>
               )}
-              {/* Subtle black shading at bottom edge */}
-              <div
-                aria-hidden
-                className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"
-              />
             </button>
+            {/* Subtle black shading at bottom edge of banner */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"
+            />
             <button
               onClick={() => navigate("/profile")}
               className="absolute left-1/2 -bottom-14 -translate-x-1/2 rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
