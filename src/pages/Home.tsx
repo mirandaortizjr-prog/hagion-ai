@@ -15,6 +15,18 @@ const Home = () => {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
+  const [trending, setTrending] = useState<any[]>([]);
+  useEffect(() => {
+    supabase
+      .from("posts")
+      .select("id, content, category, vote_score, comment_count, created_at, author_name, is_anonymous")
+      .eq("post_type", "discussion")
+      .order("hot_score", { ascending: false })
+      .order("created_at", { ascending: false })
+      .limit(3)
+      .then(({ data }) => setTrending(data || []));
+  }, []);
+
   const hour = new Date().getHours();
   const greeting =
     hour < 12
