@@ -6,7 +6,9 @@ import { PremiumNav } from "@/components/PremiumNav";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Heart, HandHeart, Sparkles, Send } from "lucide-react";
+import { Heart, HandHeart, Sparkles, Send, ArrowBigUp, MessageCircle } from "lucide-react";
+import { getCategory } from "@/data/discussionCategories";
+import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,11 +19,23 @@ export default function PostDetailPage() {
   const [comments, setComments] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
   const [text, setText] = useState("");
+  const [voted, setVoted] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     load();
   }, [id]);
+
+  useEffect(() => {
+    if (!user || !id) return;
+    supabase
+      .from("post_votes")
+      .select("id")
+      .eq("post_id", id)
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => setVoted(!!data));
+  }, [user, id]);
 
   const load = async () => {
     if (!id) return;
@@ -31,6 +45,24 @@ export default function PostDetailPage() {
     ]);
     setPost(p);
     setComments(c || []);
+  };
+
+  const toggleVote = async () => {
+    if (!user || !post) {
+      toast({ title: "Please sign in" });
+      return;
+    }
+    if (voted) {
+      await supabase.from("post_votes").delete().eq("post_id", post.id).eq("user_id", user.id);
+      setVoted(false);
+      setPost({ ...post, vote_score: Math.max(0, (post.vote_score || 0) - 1) });
+    } else {
+      const { error } = await supabase.from("post_votes").insert({ post_id: post.id, user_id: user.id });
+      if (!error) {
+        setVoted(true);
+        setPost({ ...post, vote_score: (post.vote_score || 0) + 1 });
+      }
+    }
   };
 
   const submit = async () => {
@@ -82,17 +114,54 @@ export default function PostDetailPage() {
               </div>
             </div>
           </div>
-          <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">{post.content}</p>
-          <div className="flex gap-4 mt-4 pt-3 border-t border-white/10 text-[12px] text-white/60">
-            <span className="flex items-center gap-1">
-              <Heart className="w-4 h-4" /> {post.like_count}
-            </span>
-            <span className="flex items-center gap-1">
-              <HandHeart className="w-4 h-4" /> {post.pray_count}
-            </span>
-            <span className="flex items-center gap-1">
-              <Sparkles className="w-4 h-4" /> {post.encourage_count}
-            </span>
+          {post.post_type === "discussion" ? (() => {
+            const m = post.content.match(/^\*\*(.+?)\*\*\n\n([\s\S]*)$/);
+            const title = m ? m[1] : null;
+            const body = m ? m[2] : post.content;
+            const cat = getCategory(post.category || "general");
+            return (
+              <>
+                <div className="mb-2">
+                  <span className="px-2 py-0.5 rounded-full bg-white/10 text-white/80 text-[11px]">
+                    {cat.emoji} {cat.en}
+                  </span>
+                </div>
+                {title && <h1 className="font-playfair text-2xl mb-3">{title}</h1>}
+                <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">{body}</p>
+              </>
+            );
+          })() : (
+            <p className="text-white/85 text-[15px] leading-relaxed whitespace-pre-wrap">{post.content}</p>
+          )}
+          <div className="flex items-center gap-4 mt-4 pt-3 border-t border-white/10 text-[12px] text-white/60">
+            {post.post_type === "discussion" ? (
+              <>
+                <button
+                  onClick={toggleVote}
+                  className={cn(
+                    "flex items-center gap-1 px-2 py-1 rounded-lg transition-all",
+                    voted ? "text-amber-300 bg-amber-300/15" : "hover:text-white hover:bg-white/10"
+                  )}
+                >
+                  <ArrowBigUp className="w-4 h-4" strokeWidth={voted ? 2.4 : 2} /> {post.vote_score || 0}
+                </button>
+                <span className="flex items-center gap-1">
+                  <MessageCircle className="w-4 h-4" /> {post.comment_count}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="flex items-center gap-1">
+                  <Heart className="w-4 h-4" /> {post.like_count}
+                </span>
+                <span className="flex items-center gap-1">
+                  <HandHeart className="w-4 h-4" /> {post.pray_count}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Sparkles className="w-4 h-4" /> {post.encourage_count}
+                </span>
+              </>
+            )}
           </div>
         </article>
 
