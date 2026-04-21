@@ -82,6 +82,11 @@ const Home = () => {
               aria-hidden
               className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/85"
             />
+            {/* Subtle black shading at bottom edge */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent"
+            />
 
             <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8">
               <p className="text-[10px] tracking-[0.22em] uppercase text-white/65 font-inter">
