@@ -214,10 +214,10 @@ const Profile = () => {
                   className="relative group"
                   aria-label="Change profile picture"
                 >
-                  <Avatar className="w-16 h-16 ring-2 ring-white/20">
+                  <Avatar className="w-24 h-24 ring-2 ring-white/20">
                     {avatarUrl && <AvatarImage src={avatarUrl} className="object-cover object-center" />}
                     <AvatarFallback>
-                      <User className="w-8 h-8" />
+                      <User className="w-12 h-12" />
                     </AvatarFallback>
                   </Avatar>
                   <span className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
