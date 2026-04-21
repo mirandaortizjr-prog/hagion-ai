@@ -229,4 +229,114 @@ All colors MUST be HSL.
   .nav-shimmer {
     animation: navShimmer 4.5s linear infinite;
   }
+
+  /* ============================================================
+     PREMIUM EFFECT LAYER — global utilities used across the app
+     ============================================================ */
+
+  /* Glassmorphism surfaces */
+  .glass {
+    background: hsl(0 0% 100% / 0.06);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid hsl(0 0% 100% / 0.12);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.18),
+      0 10px 30px -12px hsl(0 0% 0% / 0.45);
+  }
+  .glass-strong {
+    background: hsl(0 0% 100% / 0.10);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid hsl(0 0% 100% / 0.18);
+  }
+
+  /* Tap micro-interaction (premium spring-ish ease) */
+  .tap-scale {
+    transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 220ms ease-out,
+                filter 220ms ease-out;
+    will-change: transform;
+  }
+  .tap-scale:active {
+    transform: scale(0.94);
+    filter: brightness(1.05);
+  }
+
+  /* Heart pop micro-interaction */
+  @keyframes heartPop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.45); filter: drop-shadow(0 0 10px hsl(0 84% 60% / 0.7)); }
+    65%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+  .animate-heart-pop {
+    animation: heartPop 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Shimmer skeleton */
+  @keyframes shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(0 0% 100% / 0.04) 0%,
+      hsl(0 0% 100% / 0.12) 50%,
+      hsl(0 0% 100% / 0.04) 100%
+    );
+    background-size: 800px 100%;
+    animation: shimmer 1.6s linear infinite;
+    border-radius: 0.5rem;
+  }
+
+  /* Page transitions (route-level fluid fade + lift) */
+  @keyframes pageEnter {
+    0%   { opacity: 0; transform: translateY(8px) scale(0.995); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0)   scale(1);     filter: blur(0); }
+  }
+  .page-transition {
+    animation: pageEnter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Staggered list reveal — apply .stagger-children to a parent */
+  @keyframes staggerIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .stagger-children > * {
+    opacity: 0;
+    animation: staggerIn 480ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .stagger-children > *:nth-child(1) { animation-delay: 40ms; }
+  .stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+  .stagger-children > *:nth-child(3) { animation-delay: 160ms; }
+  .stagger-children > *:nth-child(4) { animation-delay: 220ms; }
+  .stagger-children > *:nth-child(5) { animation-delay: 280ms; }
+  .stagger-children > *:nth-child(6) { animation-delay: 340ms; }
+  .stagger-children > *:nth-child(7) { animation-delay: 400ms; }
+  .stagger-children > *:nth-child(8) { animation-delay: 460ms; }
+  .stagger-children > *:nth-child(n+9) { animation-delay: 520ms; }
+
+  /* Number value-change pulse */
+  @keyframes valueBump {
+    0%   { transform: translateY(0);    opacity: 1; }
+    40%  { transform: translateY(-3px); opacity: 0.85; }
+    100% { transform: translateY(0);    opacity: 1; }
+  }
+  .animate-value-bump { animation: valueBump 380ms ease-out; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition,
+    .stagger-children > *,
+    .animate-heart-pop,
+    .skeleton-shimmer,
+    .animate-value-bump,
+    .nav-shimmer {
+      animation: none !important;
+    }
+    .tap-scale { transition: none !important; }
+  }
 }
