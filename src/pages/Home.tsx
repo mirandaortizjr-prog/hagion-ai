@@ -1,10 +1,14 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sun, HandHeart, BookOpen } from "lucide-react";
+import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { getVerseOfTheDay } from "@/data/versesOfTheDay";
+import { supabase } from "@/integrations/supabase/client";
+import { getCategory } from "@/data/discussionCategories";
+import { formatDistanceToNow } from "date-fns";
 
 const Home = () => {
   const navigate = useNavigate();
