@@ -523,7 +523,7 @@ export default function PrayerWall() {
                   </AvatarFallback>
                 </Avatar>
               </button>
-              <div className="mt-2 ml-10 flex items-center gap-5">
+              <div className="mt-2 flex items-center gap-5">
                 <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                   {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
                 </span>
