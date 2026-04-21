@@ -528,10 +528,10 @@ export default function PrayerWall() {
               ].map((t, i) => {
                 const Icon = t.icon;
                 return (
-                  <button
+                <button
                     key={i}
                     onClick={t.onClick}
-                    className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 bg-white/5 border border-white/15 backdrop-blur-xl shadow-[0_6px_20px_-10px_rgba(0,0,0,0.6)] hover:bg-white/10 hover:border-white/25 active:scale-95 transition-all"
+                    className="inline-flex items-center gap-2 rounded-full px-5 py-1.5 bg-white/5 border border-white/15 backdrop-blur-xl shadow-[0_6px_20px_-10px_rgba(0,0,0,0.6)] hover:bg-white/10 hover:border-white/25 active:scale-95 transition-all"
                   >
                     <Icon className="w-4 h-4 text-white/90" />
                     <span className="text-xs font-playfair tracking-[0.2em] uppercase text-white/90">
