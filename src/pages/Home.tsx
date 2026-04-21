@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sun, HandHeart } from "lucide-react";
+import { ArrowRight, Sun, HandHeart, BookOpen } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,14 @@ const Home = () => {
       onClick: () => navigate("/prayer-wall"),
       accent: "from-violet-300/35 via-fuchsia-400/20 to-purple-700/30",
       ring: "ring-violet-300/30",
+    },
+    {
+      title: t("Bible", "Biblia"),
+      desc: t("Read Scripture in multiple translations.", "Lee la Escritura en varias traducciones."),
+      icon: BookOpen,
+      onClick: () => navigate("/bible-translations"),
+      accent: "from-sky-300/35 via-blue-400/20 to-indigo-700/30",
+      ring: "ring-sky-300/30",
     },
   ];
 
