@@ -90,9 +90,9 @@ const Home = () => {
                   key={tile.title}
                   onClick={tile.onClick}
                   className={cn(
-                    "group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-left ring-1 shadow-[0_10px_35px_-18px_rgba(0,0,0,0.7)] backdrop-blur-2xl",
-                    tile.ring,
-                    "animate-fade-in transition-all duration-500 ease-out hover:-translate-y-0.5 hover:bg-white/[0.07] active:scale-[0.99]"
+                    "group relative w-full overflow-hidden rounded-2xl border border-sky-400/30 bg-white/[0.04] px-4 py-3.5 text-left backdrop-blur-2xl",
+                    "shadow-[0_0_0_1px_rgba(56,189,248,0.25),0_0_18px_-2px_rgba(56,189,248,0.45),0_10px_35px_-18px_rgba(0,0,0,0.7)]",
+                    "animate-fade-in transition-all duration-500 ease-out hover:-translate-y-0.5 hover:bg-white/[0.07] hover:border-sky-300/60 hover:shadow-[0_0_0_1px_rgba(56,189,248,0.45),0_0_28px_-2px_rgba(56,189,248,0.7),0_14px_40px_-16px_rgba(0,0,0,0.8)] active:scale-[0.99]"
                   )}
                   style={{ animationDelay: `${i * 90}ms` }}
                 >
@@ -103,8 +103,12 @@ const Home = () => {
                       tile.accent
                     )}
                   />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent"
+                  />
                   <div className="relative flex items-center gap-3.5">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 shadow-inner ring-1 ring-white/25 backdrop-blur-md">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 shadow-inner ring-1 ring-sky-300/40 backdrop-blur-md">
                       <Icon className="h-5 w-5" strokeWidth={1.9} />
                     </div>
                     <div className="min-w-0 flex-1">
