@@ -583,31 +583,144 @@ export type Database = {
         }
         Relationships: []
       }
-      prayers: {
+      prayer_comments: {
         Row: {
+          author_avatar: string | null
           author_name: string | null
           content: string
           created_at: string
           id: string
-          is_anonymous: boolean
+          is_hidden: boolean
+          parent_id: string | null
+          prayer_id: string
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
+          author_avatar?: string | null
           author_name?: string | null
           content: string
           created_at?: string
           id?: string
-          is_anonymous?: boolean
+          is_hidden?: boolean
+          parent_id?: string | null
+          prayer_id: string
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
+          author_avatar?: string | null
           author_name?: string | null
           content?: string
           created_at?: string
           id?: string
+          is_hidden?: boolean
+          parent_id?: string | null
+          prayer_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prayer_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "prayer_comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prayer_comments_prayer_id_fkey"
+            columns: ["prayer_id"]
+            isOneToOne: false
+            referencedRelation: "prayers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prayer_reactions: {
+        Row: {
+          created_at: string
+          id: string
+          prayer_id: string
+          reaction: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          prayer_id: string
+          reaction: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          prayer_id?: string
+          reaction?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prayer_reactions_prayer_id_fkey"
+            columns: ["prayer_id"]
+            isOneToOne: false
+            referencedRelation: "prayers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prayers: {
+        Row: {
+          amen_count: number
+          answered_at: string | null
+          author_avatar: string | null
+          author_name: string | null
+          comment_count: number
+          content: string
+          created_at: string
+          encouraged_count: number
+          id: string
+          is_anonymous: boolean
+          is_answered: boolean
+          praying_count: number
+          theme: string | null
+          title: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amen_count?: number
+          answered_at?: string | null
+          author_avatar?: string | null
+          author_name?: string | null
+          comment_count?: number
+          content: string
+          created_at?: string
+          encouraged_count?: number
+          id?: string
           is_anonymous?: boolean
+          is_answered?: boolean
+          praying_count?: number
+          theme?: string | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amen_count?: number
+          answered_at?: string | null
+          author_avatar?: string | null
+          author_name?: string | null
+          comment_count?: number
+          content?: string
+          created_at?: string
+          encouraged_count?: number
+          id?: string
+          is_anonymous?: boolean
+          is_answered?: boolean
+          praying_count?: number
+          theme?: string | null
+          title?: string | null
           updated_at?: string
           user_id?: string | null
         }
