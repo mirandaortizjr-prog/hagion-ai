@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
 import { useNativeInit } from "@/hooks/useNativeFeatures";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
+import { PageTransition } from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Discernment from "./pages/Discernment";
@@ -89,6 +90,7 @@ const App = () => (
           <BrowserRouter>
             <NativeAppWrapper>
             <OnboardingGuard>
+            <PageTransition>
             <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/index" element={<Home />} />
@@ -138,6 +140,7 @@ const App = () => (
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </PageTransition>
           </OnboardingGuard>
           </NativeAppWrapper>
         </BrowserRouter>

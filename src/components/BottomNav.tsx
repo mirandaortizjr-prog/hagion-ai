@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Home as HomeIcon, MessageCircle, Bookmark, History as HistoryIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useHaptics } from "@/hooks/useNativeFeatures";
 import { cn } from "@/lib/utils";
 
 interface BottomNavItem {
@@ -21,6 +22,7 @@ export const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
+  const { impact } = useHaptics();
 
   return (
     <>
@@ -51,12 +53,15 @@ export const BottomNav = () => {
               <li key={item.id} className="flex-1">
                 <button
                   type="button"
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    impact("light");
+                    navigate(item.path);
+                  }}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "group relative w-full flex flex-col items-center justify-center gap-0.5",
+                    "tap-scale group relative w-full flex flex-col items-center justify-center gap-0.5",
                     "py-1 px-2 rounded-xl",
-                    "transition-all duration-300 ease-out active:scale-95",
+                    "transition-all duration-300 ease-out",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                     active ? "text-white" : "text-white/60 hover:text-white/90"
                   )}
