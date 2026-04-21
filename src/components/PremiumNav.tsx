@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, Globe, Users, UserPlus, Plus, Send, X, Loader2, Brain, Shield } from "lucide-react";
+import { Home, Globe, Users, UserPlus, Plus, Send, ImagePlus, Video, X, Loader2, Brain, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
