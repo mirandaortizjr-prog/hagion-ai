@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
 interface Post {
