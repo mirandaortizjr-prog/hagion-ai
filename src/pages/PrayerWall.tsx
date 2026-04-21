@@ -454,7 +454,7 @@ export default function PrayerWall() {
             "radial-gradient(90% 60% at 50% 0%, hsl(215 95% 55% / 0.55) 0%, transparent 65%), radial-gradient(70% 50% at 100% 25%, hsl(220 95% 60% / 0.45) 0%, transparent 70%), radial-gradient(80% 60% at 0% 75%, hsl(210 90% 50% / 0.4) 0%, transparent 70%), radial-gradient(60% 40% at 50% 100%, hsl(225 85% 45% / 0.35) 0%, transparent 70%), linear-gradient(180deg, hsl(220 70% 12%) 0%, hsl(222 65% 8%) 100%)",
         }}
       />
-      <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
+      <main className="px-5 sm:px-8 pb-2 max-w-3xl mx-auto">
         {/* Header */}
         <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center relative">
           <button
@@ -651,7 +651,7 @@ export default function PrayerWall() {
 
       {/* Edge-to-edge feed */}
       <section className="w-full border-t border-white/10 bg-black/20">
-        <div className="max-w-3xl mx-auto px-0 sm:px-4 py-4">
+        <div className="max-w-3xl mx-auto px-0 sm:px-4 py-2">
           <h2 className="font-playfair text-xl text-white tracking-tight px-4 sm:px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
             Feed
           </h2>
