@@ -475,12 +475,12 @@ export default function PrayerWall() {
             Christian Community
           </h1>
           <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-          <div className="mt-5 w-full max-w-md relative">
+          <div className="mt-5 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
             <button
               type="button"
               onClick={uploadBanner}
               disabled={bannerUploading}
-              className="block w-full aspect-[16/9] rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
+              className="block w-full aspect-[16/9] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
               aria-label="Upload community banner"
             >
               {profile?.banner_url ? (
