@@ -455,28 +455,18 @@ export default function PrayerWall() {
             "radial-gradient(ellipse at center, #2B5681 0%, #000000 100%)",
         }}
       />
-      <main className="px-5 sm:px-8 pb-2 max-w-3xl mx-auto">
+      <main className="pb-2 max-w-3xl mx-auto">
         {/* Header */}
-        <header className="pt-6 pb-6 animate-fade-in flex flex-col items-center text-center relative">
-          <button
-            onClick={() => navigate("/community/messenger")}
-            aria-label="Open messenger"
-            className="absolute left-0 top-6 w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.5)]"
-          >
-            <MessageSquare className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => navigate("/settings")}
-            aria-label="Open settings"
-            className="absolute right-0 top-6 w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.5)]"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-          <h1 className="font-playfair text-xl sm:text-2xl leading-[1.05] tracking-tight bg-gradient-to-b from-white via-white to-sky-200/90 bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(56,135,255,0.35)]">
-            Christian Community
-          </h1>
-          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-          <div className="relative mt-5 -mx-5 w-[calc(100%+2.5rem)] sm:-mx-8 sm:w-[calc(100%+4rem)]">
+        <header className="animate-fade-in flex flex-col items-center text-center relative px-5 sm:px-8">
+          <div className="relative -mx-5 w-[calc(100%+2.5rem)] sm:-mx-8 sm:w-[calc(100%+4rem)]">
+            {/* Settings button - floats over the hero banner */}
+            <button
+              onClick={() => navigate("/settings")}
+              aria-label="Open settings"
+              className="absolute right-3 sm:right-5 top-3 z-20 w-9 h-9 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-xl text-white/90 hover:text-white hover:bg-white/[0.14] transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.6)]"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
             <button
               type="button"
               onClick={uploadBanner}
