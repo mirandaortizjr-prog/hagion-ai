@@ -651,7 +651,7 @@ export default function PrayerWall() {
 
       {/* Edge-to-edge feed */}
       <section className="w-full border-t border-white/10 bg-black/20">
-        <div className="max-w-3xl mx-auto px-0 sm:px-4 py-2">
+        <div className="max-w-3xl mx-auto px-5 sm:px-8 py-2">
           <h2 className="font-playfair text-lg text-white tracking-tight px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
             Feed
           </h2>
