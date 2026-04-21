@@ -20,17 +20,6 @@ const Discernment = () => {
 
   const tools = [
     {
-      title: t("Analysts of Faith", "Analistas de la Fe"),
-      desc: t(
-        "Consult specialized AI voices — theologians, apologists, and pastors — for nuanced answers.",
-        "Consulta voces de IA especializadas: teólogos, apologistas y pastores."
-      ),
-      icon: Microscope,
-      onClick: () => navigate("/main-menu?tab=assistants"),
-      glow: "from-amber-300/70 via-orange-400/40 to-rose-500/60",
-      edgeColor: "251,191,36",
-    },
-    {
       title: t("Test the Spirits", "Probad los Espíritus"),
       desc: t(
         "Submit teachings, claims, or movements and weigh them against Scripture line by line.",
