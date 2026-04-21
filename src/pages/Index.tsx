@@ -23,7 +23,7 @@ const Index = () => {
   return (
     <div className="h-screen flex flex-col" style={{ background: 'var(--gradient-splash)' }}>
       {/* Top Navigation */}
-      <header className="border-b border-white/20 bg-white/10 backdrop-blur-sm pt-[env(safe-area-inset-top)]">
+      <header className="sticky top-0 z-40 border-b border-white/20 bg-white/10 backdrop-blur-md pt-[env(safe-area-inset-top)]">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
