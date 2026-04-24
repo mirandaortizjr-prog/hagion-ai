@@ -498,7 +498,17 @@ const MainMenu = () => {
             <SidebarTrigger>
               <Menu className="w-6 h-6" />
             </SidebarTrigger>
-            <img src={hagionAiTitle} alt="Hagion AI" className="h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_12px_hsl(var(--primary)/0.4)]" />
+            <div className="relative flex items-center justify-center">
+              <div
+                aria-hidden
+                className="absolute inset-0 -m-4 rounded-full blur-2xl pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, hsl(210 90% 60% / 0.55) 0%, hsl(210 90% 55% / 0.25) 45%, transparent 75%)",
+                }}
+              />
+              <img src={hagionAiTitle} alt="Hagion AI" className="relative h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_16px_hsl(210_90%_60%/0.7)]" />
+            </div>
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
               <Settings className="w-6 h-6" />
             </Button>
