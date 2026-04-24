@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame } from "lucide-react";
+import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame, Library as LibraryIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
@@ -62,6 +62,14 @@ const Home = () => {
       onClick: () => navigate("/bible-translations"),
       accent: "from-sky-300/35 via-blue-400/20 to-indigo-700/30",
       ring: "ring-sky-300/30",
+    },
+    {
+      title: t("Religious Library", "Biblioteca Religiosa"),
+      desc: t("Read sacred texts at the source — know what others believe.", "Lee textos sagrados desde la fuente — conoce lo que otros creen."),
+      icon: LibraryIcon,
+      onClick: () => navigate("/library"),
+      accent: "from-emerald-300/35 via-teal-400/20 to-cyan-700/30",
+      ring: "ring-emerald-300/30",
     },
   ];
 

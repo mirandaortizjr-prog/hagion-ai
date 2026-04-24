@@ -94,7 +94,7 @@ const Discernment = () => {
         "Prueba escritos sagrados, revelaciones modernas y textos extrabíblicos por integridad teológica y alineación con la Escritura."
       ),
       icon: BookOpen,
-      onClick: () => navigate("/chat?discern=texts"),
+      onClick: () => navigate("/library?mode=analyze"),
       glow: "from-blue-300/70 via-indigo-400/40 to-purple-500/60",
       edgeColor: "96,165,250",
     },
