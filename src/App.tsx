@@ -93,8 +93,8 @@ const App = () => (
             <OnboardingGuard>
             <PageTransition>
             <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/index" element={<Home />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/index" element={<Index />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<Index />} />
             <Route path="/discernment" element={<Discernment />} />
