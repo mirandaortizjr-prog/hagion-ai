@@ -28,16 +28,16 @@ export const PremiumNav = () => {
 
   const items: NavItem[] = inCommunity
     ? [
-        { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
+        { id: "hagion", labelEn: "Hagion AI", labelEs: "Hagion AI", icon: Brain, path: "/main-menu" },
         { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
         { id: "post", labelEn: "Create", labelEs: "Crear", icon: Plus, action: "post" },
         { id: "groups", labelEn: "Groups", labelEs: "Grupos", icon: Users, path: "/community/groups" },
         { id: "friends", labelEn: "Friends", labelEs: "Amigos", icon: UserPlus, path: "/friends" },
       ]
     : [
-        { id: "home", labelEn: "Home", labelEs: "Inicio", icon: Home, path: "/home" },
         { id: "hagion", labelEn: "Hagion AI", labelEs: "Hagion AI", icon: Brain, path: "/main-menu" },
         { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
+        { id: "discipleship", labelEn: "Discipleship", labelEs: "Discipulado", icon: Home, path: "/home" },
         { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Shield, path: "/discernment" },
       ];
 
