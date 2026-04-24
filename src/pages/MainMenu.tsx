@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Settings, MessageCircle, FileText, Clock, Swords, BookOpen, Shield, Scroll, Brain, Heart, Info, Search, Mic, Sparkles, Menu, ArrowLeft } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card } from "@/components/ui/card";
@@ -1004,7 +1004,7 @@ const MainMenu = () => {
         </div>
       </div>
 
-      <BottomNav />
+      <PremiumNav />
         </div>
       </div>
     </SidebarProvider>
