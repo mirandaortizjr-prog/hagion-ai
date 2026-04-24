@@ -34,7 +34,12 @@ const Chat = () => {
   const categoryName = searchParams.get("categoryName") || "";
   const discernContext = searchParams.get("discernContext") || "";
   const churchName = searchParams.get("church") || "";
-  const handleBack = useSafeBackNavigation(discern ? "/library?mode=analyze" : "/main-menu?tab=hagion-ai");
+  const backFallback = discern === "texts"
+    ? "/library?mode=analyze"
+    : context === "discernment" || discern
+      ? "/discernment"
+      : "/main-menu?tab=hagion-ai";
+  const handleBack = useSafeBackNavigation(backFallback);
   const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
