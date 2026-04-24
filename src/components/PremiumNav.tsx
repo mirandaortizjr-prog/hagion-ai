@@ -141,14 +141,15 @@ export const PremiumNav = () => {
         )}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 80% at 50% 100%, hsl(210 90% 55% / 0.18), transparent 70%)",
-          }}
-        />
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="absolute -top-8 -left-1/2 h-[200%] w-2/3 nav-shimmer blur-2xl"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, hsl(210 90% 60% / 0.28) 0%, hsl(210 90% 55% / 0.14) 35%, transparent 70%)",
+            }}
+          />
+        </div>
 
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
