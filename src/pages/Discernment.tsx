@@ -68,13 +68,35 @@ const Discernment = () => {
     {
       title: t("Church Checker", "Verificador de Iglesias"),
       desc: t(
-        "Investigate a church's doctrine, leadership, and visible fruit before you commit.",
-        "Investiga la doctrina, liderazgo y fruto visible de una iglesia."
+        "Investigate a church's doctrine, leadership, worship, and visible fruit before you commit.",
+        "Investiga la doctrina, liderazgo, adoración y fruto visible de una iglesia antes de comprometerte."
       ),
       icon: Church,
-      onClick: () => navigate("/discern"),
+      onClick: () => navigate("/chat?discern=churches"),
       glow: "from-indigo-300/70 via-blue-400/40 to-violet-500/60",
       edgeColor: "129,140,248",
+    },
+    {
+      title: t("Belief Systems", "Sistemas de Creencias"),
+      desc: t(
+        "Evaluate denominations, movements, and world religions for theological soundness against orthodox Christianity.",
+        "Evalúa denominaciones, movimientos y religiones mundiales por solidez teológica frente al cristianismo ortodoxo."
+      ),
+      icon: Search,
+      onClick: () => navigate("/chat?discern=belief-systems"),
+      glow: "from-cyan-300/70 via-sky-400/40 to-blue-500/60",
+      edgeColor: "56,189,248",
+    },
+    {
+      title: t("Religious Texts", "Textos Religiosos"),
+      desc: t(
+        "Test sacred writings, modern revelations, and extrabiblical texts for theological integrity and scriptural alignment.",
+        "Prueba escritos sagrados, revelaciones modernas y textos extrabíblicos por integridad teológica y alineación con la Escritura."
+      ),
+      icon: BookOpen,
+      onClick: () => navigate("/chat?discern=texts"),
+      glow: "from-blue-300/70 via-indigo-400/40 to-purple-500/60",
+      edgeColor: "96,165,250",
     },
     {
       title: t("Prophecy Checker", "Verificador de Profecía"),
