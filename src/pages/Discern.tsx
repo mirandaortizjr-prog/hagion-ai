@@ -5,7 +5,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Church, Search, BookOpen } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const Discern = () => {
   const navigate = useNavigate();
@@ -192,7 +192,7 @@ const Discern = () => {
           })}
         </div>
       </div>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { Check, Crown, ArrowLeft, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -198,7 +198,7 @@ const Premium = () => {
           <p className="text-xs">No refunds after billing. Cancellations take effect at the end of your billing period.</p>
         </div>
       </main>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };
