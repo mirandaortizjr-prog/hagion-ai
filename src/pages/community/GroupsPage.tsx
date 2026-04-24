@@ -209,7 +209,7 @@ export default function GroupsPage() {
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                  <Button className="rounded-full h-11 px-5 bg-gradient-to-b from-white to-white/85 text-black shadow-[0_10px_30px_-10px_rgba(255,255,255,0.5),inset_0_1px_0_rgba(255,255,255,0.6)] hover:from-white hover:to-white/95">
+                  <Button className="rounded-full h-11 px-5 text-white font-semibold bg-gradient-to-b from-primary/35 to-primary/10 border border-primary/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-6px_hsl(var(--primary)/0.55)] drop-shadow-[0_0_10px_hsl(var(--primary)/0.45)] hover:from-primary/45 hover:to-primary/15">
                     <Plus className="w-4 h-4" />
                     Create Group
                   </Button>
@@ -443,12 +443,12 @@ export default function GroupsPage() {
                       onClick={() => toggleJoin(g)}
                       disabled={isMine}
                       className={cn(
-                        "shrink-0 h-8 px-3 rounded-full text-[11px] uppercase tracking-[0.14em] font-medium transition-all",
+                        "shrink-0 h-8 px-3 rounded-full text-[11px] uppercase tracking-[0.14em] font-medium transition-all active:scale-95",
                         isMine
                           ? "bg-white/5 text-white/40 border border-white/10 cursor-default"
                           : joined
                             ? "bg-white/[0.06] text-white border border-white/15 hover:bg-white/10"
-                            : "bg-gradient-to-b from-white to-white/85 text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] hover:from-white hover:to-white/95",
+                            : "text-white font-semibold bg-gradient-to-b from-primary/35 to-primary/10 border border-primary/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.55)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.45)] hover:from-primary/45 hover:to-primary/15",
                       )}
                     >
                       {isMine ? (
