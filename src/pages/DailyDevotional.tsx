@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { CommentThread } from "@/components/devotional/CommentThread";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 
 type Devotional = {
   id: string;
@@ -33,6 +34,7 @@ const DailyDevotional = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
+  const handleBack = useSafeBackNavigation("/main-menu?tab=discipleship");
   const [dev, setDev] = useState<Devotional | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +67,7 @@ const DailyDevotional = () => {
       <header className="sticky top-0 z-20 backdrop-blur-xl bg-black/40 border-b border-white/10">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="p-2 rounded-full hover:bg-white/10 transition"
             aria-label={t("Back", "Atrás")}
           >
