@@ -390,116 +390,134 @@ const Chat = () => {
     });
   };
 
+  const headerTitle = discern ? t('discernment') : voiceNames[voice];
+  const headerSubtitle = discern
+    ? (discern === "churches" ? t('churches_evaluation')
+      : discern === "belief-systems" ? t('belief_systems_evaluation')
+      : discern === "texts" ? t('religious_texts_evaluation')
+      : t('theological_evaluation'))
+    : context.replace("-", " ");
+
   return (
-    <div className="h-screen flex flex-col bg-background">
-      <header className="border-b bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu")}>
-            <ArrowLeft className="w-5 h-5" />
+    <div className="h-screen flex flex-col bg-background text-white">
+      {/* iMessage-style header */}
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-background/70 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/50">
+        <div className="px-3 py-3 flex items-center gap-2 max-w-3xl mx-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="rounded-full text-primary hover:bg-white/5 -ml-1"
+          >
+            <ArrowLeft className="w-[22px] h-[22px]" strokeWidth={2.2} />
           </Button>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold text-secondary">
-              {discern ? t('discernment') : voiceNames[voice]}
+          <div className="flex-1 flex flex-col items-center -ml-8 pointer-events-none">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/30 to-primary/5 ring-1 ring-white/15 flex items-center justify-center mb-0.5">
+              <Sparkles className="w-4 h-4 text-primary/90" strokeWidth={1.8} />
+            </div>
+            <h1 className="font-playfair text-[15px] leading-tight tracking-tight">
+              {headerTitle}
             </h1>
-            <p className="text-sm text-muted-foreground capitalize flex items-center gap-2">
-              {discern ? (
-                discern === "churches" ? t('churches_evaluation') :
-                discern === "belief-systems" ? t('belief_systems_evaluation') :
-                discern === "texts" ? t('religious_texts_evaluation') :
-                t('theological_evaluation')
-              ) : context.replace("-", " ")}
+            <p className="text-[10.5px] text-white/45 capitalize tracking-wide">
+              {headerSubtitle}
             </p>
           </div>
+          <div className="w-9" />
         </div>
       </header>
 
-      <ScrollArea ref={scrollRef} className="flex-1 px-4">
-        <div className="container mx-auto max-w-4xl py-6 space-y-6">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              } animate-fade-in`}
-            >
-              <Card
-                className={`max-w-[80%] p-4 ${
-                  message.role === "user"
-                    ? "bg-primary text-white"
-                    : "bg-card"
-                }`}
+      {/* Messages */}
+      <ScrollArea ref={scrollRef} className="flex-1">
+        <div className="px-3 sm:px-4 py-5 max-w-3xl mx-auto space-y-2.5">
+          {messages.map((message, index) => {
+            const isUser = message.role === "user";
+            const prev = messages[index - 1];
+            const grouped = prev && prev.role === message.role;
+            return (
+              <div
+                key={index}
+                className={`flex ${isUser ? "justify-end" : "justify-start"} animate-fade-in`}
+                style={{ marginTop: grouped ? 2 : 10 }}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
-                {message.scripture && (
-                  <p className="text-xs mt-2 opacity-70 italic">
-                    — {message.scripture}
-                  </p>
-                )}
-                {message.role === "assistant" && message.content && (
-                  <div className="flex gap-2 mt-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => handleCopyMessage(message.content, index)}
-                    >
-                      {copiedIndex === index ? (
-                        <Check className="w-4 h-4" />
-                      ) : (
-                        <Copy className="w-4 h-4" />
-                      )}
-                      {copiedIndex === index ? t('copied') : t('copy')}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => handleShareMessage(message.content, index)}
-                      disabled={sharingIndex === index}
-                    >
-                      {sharingIndex === index ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <Share2 className="w-4 h-4" />
-                      )}
-                      {t('share')}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => handleSaveAnswer(message.content, index)}
-                    >
-                      <Bookmark className="w-4 h-4" />
-                      {t('save')}
-                    </Button>
+                <div className={`max-w-[78%] flex flex-col ${isUser ? "items-end" : "items-start"}`}>
+                  <div
+                    className={`relative px-3.5 py-2 text-[15px] leading-[1.35] font-light tracking-[-0.01em] ${
+                      isUser
+                        ? "text-white rounded-[20px] rounded-br-[6px] shadow-[0_1px_2px_rgba(0,0,0,0.25)]"
+                        : "text-white/95 rounded-[20px] rounded-bl-[6px] bg-white/[0.07] border border-white/10 backdrop-blur-xl"
+                    }`}
+                    style={isUser ? {
+                      background: "linear-gradient(180deg, hsl(var(--primary) / 0.95), hsl(var(--primary) / 0.78))",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18), 0 6px 18px -8px hsl(var(--primary) / 0.6)",
+                    } : undefined}
+                  >
+                    <p className="whitespace-pre-wrap font-sans">{message.content}</p>
+                    {message.scripture && (
+                      <p className="text-[11px] mt-1.5 opacity-70 italic font-playfair">
+                        — {message.scripture}
+                      </p>
+                    )}
                   </div>
-                )}
-              </Card>
-            </div>
-          ))}
+                  {!isUser && message.content && (
+                    <div className="flex gap-1 mt-1 ml-1 opacity-60 hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => handleCopyMessage(message.content, index)}
+                        className="text-[11px] px-2 py-1 rounded-full hover:bg-white/10 flex items-center gap-1 text-white/70"
+                      >
+                        {copiedIndex === index ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        {copiedIndex === index ? t('copied') : t('copy')}
+                      </button>
+                      <button
+                        onClick={() => handleShareMessage(message.content, index)}
+                        disabled={sharingIndex === index}
+                        className="text-[11px] px-2 py-1 rounded-full hover:bg-white/10 flex items-center gap-1 text-white/70"
+                      >
+                        {sharingIndex === index ? <Loader2 className="w-3 h-3 animate-spin" /> : <Share2 className="w-3 h-3" />}
+                        {t('share')}
+                      </button>
+                      <button
+                        onClick={() => handleSaveAnswer(message.content, index)}
+                        className="text-[11px] px-2 py-1 rounded-full hover:bg-white/10 flex items-center gap-1 text-white/70"
+                      >
+                        <Bookmark className="w-3 h-3" />
+                        {t('save')}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </ScrollArea>
 
-      <div className="border-t bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto max-w-4xl px-4 py-4">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              placeholder={t('type_message')}
-              className="flex-1"
-            />
+      {/* iMessage-style composer */}
+      <div className="border-t border-white/10 bg-background/70 backdrop-blur-2xl pb-[env(safe-area-inset-bottom)]">
+        <div className="px-3 py-2.5 max-w-3xl mx-auto">
+          <div className="flex items-end gap-2">
+            <div className="flex-1 relative">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                placeholder={t('type_message')}
+                className="rounded-full bg-white/[0.06] border-white/15 text-[15px] font-light tracking-[-0.01em] pl-4 pr-12 h-10 placeholder:text-white/35 focus-visible:ring-1 focus-visible:ring-primary/40"
+              />
+            </div>
             <Button
               onClick={handleSend}
               disabled={!input.trim()}
-              className="bg-primary text-white flex-shrink-0"
+              size="icon"
+              className="rounded-full h-9 w-9 flex-shrink-0 disabled:opacity-30 transition-all"
+              style={{
+                background: "linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary) / 0.78))",
+                boxShadow: "0 4px 14px -4px hsl(var(--primary) / 0.6)",
+              }}
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4" strokeWidth={2.2} />
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-2">
+          <p className="text-[10px] font-light tracking-wide text-white/35 text-center mt-1.5">
             {t('guidance_disclaimer')}
           </p>
         </div>
