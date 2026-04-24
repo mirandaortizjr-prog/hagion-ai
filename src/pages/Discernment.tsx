@@ -8,6 +8,8 @@ import {
   Church,
   ScrollText,
   ChevronRight,
+  Search,
+  BookOpen,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
