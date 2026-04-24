@@ -467,33 +467,25 @@ export default function PrayerWall() {
             >
               <Settings className="w-4 h-4" />
             </button>
-            <button
-              type="button"
-              onClick={uploadBanner}
-              disabled={bannerUploading}
-              className="block w-full h-[315px] sm:h-[360px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative group"
-              aria-label="Upload community banner"
+            <div
+              className="block w-full h-[315px] sm:h-[360px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
             >
               {profile?.banner_url ? (
                 <img src={profile.banner_url} alt="banner" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/40">
-                  {bannerUploading ? (
-                    <Loader2 className="w-6 h-6 animate-spin" />
-                  ) : (
-                    <ImagePlus className="w-6 h-6" />
-                  )}
+                <button
+                  type="button"
+                  onClick={() => navigate("/settings")}
+                  className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/40 hover:text-white/60 transition"
+                  aria-label="Add a cover picture in settings"
+                >
+                  <ImagePlus className="w-6 h-6" />
                   <span className="text-[11px] tracking-[0.18em] uppercase">
-                    {bannerUploading ? "Uploading..." : "Add a picture"}
+                    Add a picture
                   </span>
-                </div>
+                </button>
               )}
-              {profile?.banner_url && (
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <span className="text-[11px] tracking-[0.18em] uppercase text-white">Change</span>
-                </div>
-              )}
-            </button>
+            </div>
             {/* Subtle black shading at bottom edge of banner */}
             <div
               aria-hidden
