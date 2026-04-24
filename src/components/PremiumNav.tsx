@@ -136,17 +136,17 @@ export const PremiumNav = () => {
         className={cn(
           "fixed bottom-0 left-0 right-0 z-50",
           "border-t border-white/10",
-          "bg-black/30 backdrop-blur-2xl backdrop-saturate-150",
-          "shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.6)]"
+          "bg-[#070b14]/95 backdrop-blur-xl backdrop-saturate-150",
+          "shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.7)]"
         )}
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
-            className="absolute top-0 -left-1/2 h-full w-1/2 nav-shimmer"
+            className="absolute -top-8 -left-1/2 h-[200%] w-2/3 nav-shimmer blur-2xl"
             style={{
               background:
-                "linear-gradient(110deg, transparent 0%, transparent 30%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.10) 55%, transparent 70%, transparent 100%)",
+                "radial-gradient(ellipse at center, hsl(210 90% 60% / 0.28) 0%, hsl(210 90% 55% / 0.14) 35%, transparent 70%)",
             }}
           />
         </div>
