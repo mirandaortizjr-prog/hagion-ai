@@ -492,7 +492,7 @@ const Chat = () => {
       </ScrollArea>
 
       {/* iMessage-style composer */}
-      <div className="border-t border-white/10 bg-background/70 backdrop-blur-2xl pb-[env(safe-area-inset-bottom)]">
+      <div className="border-t border-white/10 bg-black/80 backdrop-blur-2xl pb-[env(safe-area-inset-bottom)]">
         <div className="px-3 py-2.5 max-w-3xl mx-auto">
           <div className="flex items-end gap-2">
             <div className="flex-1 relative">
