@@ -137,18 +137,27 @@ export default function Friends() {
               key={t}
               onClick={() => setTab(t)}
               className={cn(
-                "flex-1 py-1.5 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium transition-all duration-300",
+                "group relative flex-1 py-2 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium",
+                "transition-all duration-300 ease-out active:scale-95",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 tab === t
-                  ? "bg-gradient-to-b from-white to-white/85 text-black shadow-[0_4px_16px_-4px_rgba(255,255,255,0.35),inset_0_1px_0_rgba(255,255,255,0.6)]"
-                  : "bg-white/[0.04] border border-white/10 text-white/60 hover:text-white hover:bg-white/[0.08] backdrop-blur-xl"
+                  ? "text-white font-semibold bg-gradient-to-b from-primary/30 to-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
+                  : "text-white/60 hover:text-white bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] backdrop-blur-xl"
               )}
             >
-              <span className="inline-flex items-center gap-1.5">
+              <span
+                className="absolute inset-0 rounded-full pointer-events-none opacity-0 group-active:opacity-100 transition-opacity duration-150"
+                style={{
+                  background:
+                    "radial-gradient(circle at center, hsl(var(--primary) / 0.35), transparent 70%)",
+                }}
+              />
+              <span className="relative inline-flex items-center gap-1.5">
                 {t === "followers" ? "Followers" : t === "following" ? "Following" : "Discover"}
                 {t !== "discover" && (
                   <span className={cn(
                     "inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full text-[9px] font-semibold",
-                    tab === t ? "bg-black/10 text-black" : "bg-white/10 text-white/70"
+                    tab === t ? "bg-primary/30 text-white ring-1 ring-primary/50" : "bg-white/10 text-white/70"
                   )}>
                     {t === "followers" ? followers.length : following.length}
                   </span>
