@@ -554,10 +554,10 @@ export default function PrayerWall() {
                 <button
                     key={i}
                     onClick={t.onClick}
-                    className="inline-flex items-center gap-2 rounded-full px-5 py-1.5 bg-white/5 border border-white/15 backdrop-blur-xl shadow-[0_6px_20px_-10px_rgba(0,0,0,0.6)] hover:bg-white/10 hover:border-white/25 active:scale-95 transition-all"
+                    className="group relative inline-flex items-center gap-2 rounded-full px-5 py-2 bg-gradient-to-b from-primary/25 to-primary/5 border border-primary/30 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)] hover:from-primary/35 hover:to-primary/10 active:scale-95 transition-all"
                   >
-                    <Icon className="w-4 h-4 text-white/90" />
-                    <span className="text-xs font-playfair tracking-[0.2em] uppercase text-white/90">
+                    <Icon className="relative w-4 h-4 text-white" />
+                    <span className="relative text-xs font-playfair tracking-[0.2em] uppercase text-white">
                       {t.label}
                     </span>
                   </button>

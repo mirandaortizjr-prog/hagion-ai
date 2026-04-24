@@ -315,13 +315,22 @@ export default function GroupsPage() {
               key={t.id}
               onClick={() => setTab(t.id)}
               className={cn(
-                "flex-1 py-1.5 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium transition-all duration-300",
+                "group relative flex-1 py-2 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium",
+                "transition-all duration-300 ease-out active:scale-95",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                 tab === t.id
-                  ? "bg-gradient-to-b from-white to-white/85 text-black shadow-[0_4px_16px_-4px_rgba(255,255,255,0.4),inset_0_1px_0_rgba(255,255,255,0.6)]"
+                  ? "text-white font-semibold bg-gradient-to-b from-primary/30 to-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
                   : "text-white/55 hover:text-white/85",
               )}
             >
-              {t.label}
+              <span
+                className="absolute inset-0 rounded-full pointer-events-none opacity-0 group-active:opacity-100 transition-opacity duration-150"
+                style={{
+                  background:
+                    "radial-gradient(circle at center, hsl(var(--primary) / 0.35), transparent 70%)",
+                }}
+              />
+              <span className="relative">{t.label}</span>
             </button>
           ))}
         </div>
