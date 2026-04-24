@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import hagionLogo from "@/assets/hagion-logo.png";
+import hagionAiTitle from "@/assets/hagion-ai-title.png";
 
 interface ChatHistory {
   id: string;
