@@ -1,15 +1,15 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 
 export const CommunityHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => {
-  const navigate = useNavigate();
+  const handleBack = useSafeBackNavigation("/community");
   return (
     <header className="pt-6 pb-6 animate-fade-in">
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => navigate(-1)}
+        onClick={handleBack}
         className="text-white/80 hover:text-white hover:bg-white/10 -ml-2 mb-2"
       >
         <ArrowLeft className="w-5 h-5" />
