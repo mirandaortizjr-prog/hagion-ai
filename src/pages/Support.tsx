@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Mail, MessageCircle, Book, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const Support = () => {
   const navigate = useNavigate();
@@ -115,7 +115,7 @@ const Support = () => {
           </Card>
         </div>
       </div>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };

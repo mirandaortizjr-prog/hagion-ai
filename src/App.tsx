@@ -40,6 +40,7 @@ import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
 import DailyDevotional from "./pages/DailyDevotional";
+import Library from "./pages/Library";
 import PostDetailPage from "./pages/community/PostDetailPage";
 import DiscussionsPage from "./pages/community/DiscussionsPage";
 import ReelsFeedPage from "./pages/community/ReelsFeedPage";
@@ -124,6 +125,7 @@ const App = () => (
             <Route path="/prayer-wall" element={<PrayerWallPage />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
             <Route path="/daily-devotional" element={<DailyDevotional />} />
+            <Route path="/library" element={<Library />} />
             <Route path="/community/discussions" element={<DiscussionsPage />} />
             <Route path="/community/post/:id" element={<PostDetailPage />} />
             <Route path="/community/reels" element={<ReelsFeedPage />} />

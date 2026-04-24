@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowLeft, MessageCircle, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 interface ConversationHistory {
   id: string;
@@ -146,7 +146,7 @@ const History = () => {
           )}
         </div>
       </ScrollArea>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };

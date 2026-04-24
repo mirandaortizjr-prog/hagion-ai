@@ -15,7 +15,7 @@ import elohimSymbol from "@/assets/elohim-symbol.png";
 import triuneGod from "@/assets/triune-god.png";
 import hagionLogo from "@/assets/hagion-logo.png";
 import planOfSalvation from "@/assets/plan-of-salvation.png";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 interface Voice {
   id: string;
@@ -355,7 +355,7 @@ const DivineGuidance = () => {
           </Dialog>
         </div>
       </main>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };
