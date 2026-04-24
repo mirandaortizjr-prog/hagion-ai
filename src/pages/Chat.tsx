@@ -401,7 +401,7 @@ const Chat = () => {
   return (
     <div className="h-screen flex flex-col bg-background text-white">
       {/* iMessage-style header */}
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-background/70 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/50">
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-black/80 backdrop-blur-2xl">
         <div className="px-3 py-3 flex items-center gap-2 max-w-3xl mx-auto">
           <Button
             variant="ghost"
