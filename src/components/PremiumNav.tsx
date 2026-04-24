@@ -38,7 +38,6 @@ export const PremiumNav = () => {
         { id: "hagion", labelEn: "Hagion AI", labelEs: "Hagion AI", icon: Brain, path: "/main-menu" },
         { id: "community", labelEn: "Community", labelEs: "Comunidad", icon: Globe, path: "/community" },
         { id: "discipleship", labelEn: "Discipleship", labelEs: "Discipulado", icon: Home, path: "/home" },
-        { id: "discernment", labelEn: "Discernment", labelEs: "Discernimiento", icon: Shield, path: "/discernment" },
       ];
 
   const [postOpen, setPostOpen] = useState(false);
