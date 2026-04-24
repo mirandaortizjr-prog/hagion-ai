@@ -7,7 +7,7 @@ import { User } from "@supabase/supabase-js";
 import { Settings, Menu, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
-import { BottomNav } from "@/components/BottomNav";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -328,7 +328,7 @@ const Index = () => {
           </article>
         </div>
       </ScrollArea>
-      <BottomNav />
+      <PremiumNav />
     </div>
   );
 };
