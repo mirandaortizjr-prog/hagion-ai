@@ -10,3 +10,4 @@ export * from './useDeviceInfo';
 export * from './use-mobile';
 export * from './use-toast';
 export * from './useMessageLimit';
+export * from './useSafeBackNavigation';

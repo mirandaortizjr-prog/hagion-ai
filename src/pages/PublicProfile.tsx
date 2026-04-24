@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 
 export default function PublicProfile() {
   const { handle } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const handleBack = useSafeBackNavigation("/community");
   const [me, setMe] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
@@ -103,7 +105,7 @@ export default function PublicProfile() {
     return (
       <div className="min-h-screen text-white px-6 py-20 text-center">
         <p className="text-white/70">Profile not found.</p>
-        <Button onClick={() => navigate(-1)} className="mt-4">Go back</Button>
+        <Button onClick={handleBack} className="mt-4">Go back</Button>
       </div>
     );
   }
@@ -115,7 +117,7 @@ export default function PublicProfile() {
       <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-2xl border-b border-white/10">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
-            onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/community"))}
+            onClick={handleBack}
             aria-label="Back"
             className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
           >

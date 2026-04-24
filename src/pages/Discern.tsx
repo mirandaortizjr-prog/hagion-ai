@@ -6,11 +6,13 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, Church, Search, BookOpen } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 
 const Discern = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const [churchName, setChurchName] = useState("");
+  const handleBack = useSafeBackNavigation("/discernment");
 
 
   const text = language === 'es' ? {
@@ -77,7 +79,7 @@ const Discern = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="rounded-full"
           >
             <ArrowLeft className="h-5 w-5" />

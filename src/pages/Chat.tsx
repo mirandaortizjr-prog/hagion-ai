@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { useMessageLimit } from "@/hooks/useMessageLimit";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
@@ -33,6 +34,12 @@ const Chat = () => {
   const categoryName = searchParams.get("categoryName") || "";
   const discernContext = searchParams.get("discernContext") || "";
   const churchName = searchParams.get("church") || "";
+  const backFallback = discern === "texts"
+    ? "/library?mode=analyze"
+    : context === "discernment" || discern
+      ? "/discernment"
+      : "/main-menu?tab=hagion-ai";
+  const handleBack = useSafeBackNavigation(backFallback);
   const [remainingMessages, setRemainingMessages] = useState<number | null>(null);
   
   const [conversationId] = useState(() => historyId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -406,7 +413,7 @@ const Chat = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="rounded-full text-primary hover:bg-white/5 -ml-1"
           >
             <ArrowLeft className="w-[22px] h-[22px]" strokeWidth={2.2} />
