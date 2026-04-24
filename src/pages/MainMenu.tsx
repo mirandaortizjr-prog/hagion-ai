@@ -780,7 +780,7 @@ const MainMenu = () => {
             <div
               key={assistant.id}
               className="flex flex-col items-center gap-1.5 cursor-pointer group"
-              onClick={() => navigate(`/${assistant.id}`)}
+              onClick={() => navigate(assistant.id === 'discern' ? '/discernment' : `/${assistant.id}`)}
             >
               <div className="relative">
                 <div
