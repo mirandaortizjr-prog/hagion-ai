@@ -24,6 +24,7 @@ import holySpirItFire from "@/assets/holy-spirit-fire.png";
 import triuneGod from "@/assets/triune-god.png";
 import faithfulFriendIcon from "@/assets/faithful-friend-icon.png";
 import hagionLogo from "@/assets/hagion-logo.png";
+import hagionAiTitle from "@/assets/hagion-ai-title.png";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import sophiaImage from "@/assets/sophia-avatar.jpg";
 import brookeImage from "@/assets/brooke-avatar.jpg";
@@ -497,7 +498,7 @@ const MainMenu = () => {
             <SidebarTrigger>
               <Menu className="w-6 h-6" />
             </SidebarTrigger>
-            <h1 className="text-2xl font-bold">Hagion AI</h1>
+            <img src={hagionAiTitle} alt="Hagion AI" className="h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_12px_hsl(var(--primary)/0.4)]" />
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
               <Settings className="w-6 h-6" />
             </Button>
