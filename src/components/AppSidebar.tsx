@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import hagionLogo from "@/assets/hagion-logo.png";
+import hagionAiTitle from "@/assets/hagion-ai-title.png";
 
 interface ChatHistory {
   id: string;
@@ -166,7 +167,7 @@ export function AppSidebar() {
         {/* Header */}
         <div className="px-2 pb-4 flex items-center gap-3">
           <img src={hagionLogo} alt="Hagion AI" className="w-10 h-10 rounded-lg shadow-md" />
-          <h2 className="text-lg font-semibold text-white font-playfair">Hagion AI</h2>
+          <img src={hagionAiTitle} alt="Hagion AI" className="h-7 w-auto object-contain drop-shadow-[0_0_12px_hsl(var(--primary)/0.4)]" />
         </div>
 
         <div className="flex flex-col gap-2">
