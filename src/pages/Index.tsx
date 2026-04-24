@@ -328,6 +328,7 @@ const Index = () => {
           </article>
         </div>
       </ScrollArea>
+      <BottomNav />
     </div>
   );
 };
