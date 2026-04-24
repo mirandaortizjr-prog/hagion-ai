@@ -496,12 +496,19 @@ const Chat = () => {
         <div className="px-3 py-2.5 max-w-3xl mx-auto">
           <div className="flex items-end gap-2">
             <div className="flex-1 relative">
+              <div
+                className="absolute -inset-[1.5px] rounded-full pointer-events-none transition-opacity"
+                style={{
+                  background: "linear-gradient(135deg, hsl(var(--primary) / 0.7), hsl(var(--primary) / 0.25), hsl(var(--primary) / 0.7))",
+                  boxShadow: "0 0 18px hsl(var(--primary) / 0.45), 0 0 32px hsl(var(--primary) / 0.25)",
+                }}
+              />
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder={t('type_message')}
-                className="rounded-full bg-white/[0.06] border-white/15 text-[15px] font-light tracking-[-0.01em] pl-4 pr-12 h-10 placeholder:text-white/35 focus-visible:ring-1 focus-visible:ring-primary/40"
+                className="relative rounded-full bg-black/70 border-transparent text-[15px] font-light tracking-[-0.01em] pl-4 pr-4 h-10 placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0"
               />
             </div>
             <Button
