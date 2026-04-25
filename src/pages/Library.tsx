@@ -90,10 +90,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "The Qur'an",
         titleEs: "El Corán",
-        descEn: "Multiple English & Spanish translations.",
-        descEs: "Varias traducciones al inglés y español.",
-        url: "https://quran.com",
+        descEn: "All 114 surahs — Sahih International (EN) & Cortés (ES), offline.",
+        descEs: "Las 114 suras — Sahih International (EN) y Cortés (ES), sin conexión.",
+        url: "/scripture/quran",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_quran",
       },
       {
         titleEn: "Sahih al-Bukhari (Hadith)",
