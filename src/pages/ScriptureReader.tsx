@@ -33,7 +33,8 @@ const ScriptureReader = () => {
   const navigate = useNavigate();
   const { textId } = useParams<{ textId: string }>();
   const { language, t } = useLanguage();
-  const { canUse } = useTierAccess();
+  const tierAccess = useTierAccess();
+  const { canUse } = tierAccess;
 
   const text = useMemo(() => (textId ? getScriptureText(textId) : undefined), [textId]);
   const tr = (en: string, es: string) => (language === "es" ? es : en);
