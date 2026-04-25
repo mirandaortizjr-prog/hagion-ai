@@ -230,6 +230,7 @@ const Home = () => {
       </main>
 
       <PremiumNav />
+      <HeroImageUploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
     </div>
   );
 };
