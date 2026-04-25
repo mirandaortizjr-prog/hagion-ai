@@ -38,9 +38,10 @@ const ScriptureReader = () => {
   const text = useMemo(() => (textId ? getScriptureText(textId) : undefined), [textId]);
   const tr = (en: string, es: string) => (language === "es" ? es : en);
 
-  // Tier gate
-  const featureKey = textId ? TIER_FEATURE[textId] ?? "scripture_premium_plus" : "";
-  const hasAccess = featureKey ? canUse(featureKey) : true;
+  // Tier gate — use the text's declared minTier; "free" = always allowed.
+  const tierAccess = useTierAccess();
+  const hasAccess = !text || text.minTier === "free" || tierAccess.isAtLeast(text.minTier);
+  const featureKey = textId ? TIER_FEATURE[textId] ?? "" : "";
 
   const [selectedBook, setSelectedBook] = useState<string>(text?.books[0]?.slug ?? "");
   const [selectedChapter, setSelectedChapter] = useState(1);
