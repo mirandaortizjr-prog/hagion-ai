@@ -71,6 +71,15 @@ const traditions: Tradition[] = [
         url: "https://www.vatican.va/archive/ENG0015/_INDEX.HTM",
       },
       {
+        titleEn: "Didache (Teaching of the Twelve)",
+        titleEs: "Didaché (Enseñanza de los Doce)",
+        descEn: "Earliest Christian church manual — c. AD 50–120, free offline.",
+        descEs: "El manual cristiano más antiguo — c. 50–120 d.C., gratis sin conexión.",
+        url: "/scripture/apostolicfathers",
+        publicDomain: true,
+        inApp: true,
+      },
+      {
         titleEn: "Westminster Confession",
         titleEs: "Confesión de Westminster",
         descEn: "Reformed confession of faith — public domain.",
@@ -153,12 +162,13 @@ const traditions: Tradition[] = [
     edge: "129,140,248",
     texts: [
       {
-        titleEn: "Tanakh (JPS 1917)",
-        titleEs: "Tanaj (JPS 1917)",
-        descEn: "Hebrew Bible — public domain English translation.",
-        descEs: "Biblia hebrea — traducción al inglés de dominio público.",
-        url: "https://www.sefaria.org/texts/Tanakh",
+        titleEn: "Torah (JPS 1917)",
+        titleEs: "Torá (JPS 1917)",
+        descEn: "Five Books of Moses — Jewish Publication Society 1917, free offline.",
+        descEs: "Los cinco libros de Moisés — Jewish Publication Society 1917, gratis sin conexión.",
+        url: "/scripture/tanakh",
         publicDomain: true,
+        inApp: true,
       },
       {
         titleEn: "Mishnah & Talmud",

@@ -25,20 +25,23 @@ const TIER_FEATURE: Record<string, string> = {
   quran: "scripture_quran",
   bhagavadgita: "scripture_eastern",
   dhammapada: "scripture_eastern",
+  // Free, no gating:
+  // tanakh, apostolicfathers
 };
 
 const ScriptureReader = () => {
   const navigate = useNavigate();
   const { textId } = useParams<{ textId: string }>();
   const { language, t } = useLanguage();
-  const { canUse } = useTierAccess();
+  const tierAccess = useTierAccess();
+  const { canUse } = tierAccess;
 
   const text = useMemo(() => (textId ? getScriptureText(textId) : undefined), [textId]);
   const tr = (en: string, es: string) => (language === "es" ? es : en);
 
-  // Tier gate
-  const featureKey = textId ? TIER_FEATURE[textId] ?? "scripture_premium_plus" : "";
-  const hasAccess = featureKey ? canUse(featureKey) : true;
+  // Tier gate — use the text's declared minTier; "free" = always allowed.
+  const hasAccess = !text || text.minTier === "free" || tierAccess.isAtLeast(text.minTier);
+  const featureKey = textId ? TIER_FEATURE[textId] ?? "" : "";
 
   const [selectedBook, setSelectedBook] = useState<string>(text?.books[0]?.slug ?? "");
   const [selectedChapter, setSelectedChapter] = useState(1);
