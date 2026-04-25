@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { useTierAccess } from "@/hooks/useTierAccess";
 import { cn } from "@/lib/utils";
 import {
   BookOpen,
@@ -11,6 +12,8 @@ import {
   ShieldCheck,
   ChevronRight,
   ExternalLink,
+  Lock,
+  Download,
 } from "lucide-react";
 
 interface Text {
@@ -20,6 +23,10 @@ interface Text {
   descEs: string;
   url: string;
   publicDomain?: boolean;
+  /** True when the text is bundled offline inside the app. */
+  inApp?: boolean;
+  /** Tier-access feature key (used with useTierAccess). */
+  featureKey?: string;
 }
 
 interface Tradition {
