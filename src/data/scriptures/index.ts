@@ -29,6 +29,20 @@ export interface ScriptureText {
   edge: string;
 }
 
+// Qur'an surah metadata (loaded from manifest)
+import quranManifest from "./quran/_manifest.json";
+
+const quranBooks: ScriptureBook[] = (quranManifest as Array<{
+  slug: string; num: number; nameEn: string; translationEn: string; ayahs: number;
+}>).map((s) => ({
+  slug: s.slug,
+  nameEn: `${s.num}. ${s.nameEn} (${s.translationEn})`,
+  nameEs: `${s.num}. ${s.nameEn}`,
+  chapters: 1,
+  unitEn: "Surah",
+  unitEs: "Sura",
+}));
+
 export const SCRIPTURE_TEXTS: ScriptureText[] = [
   // ============== LDS Triple ==============
   {
