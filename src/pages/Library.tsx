@@ -253,16 +253,23 @@ const traditions: Tradition[] = [
 const Library = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { canUse } = useTierAccess();
   const [params] = useSearchParams();
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
   const analyzeMode = params.get("mode") === "analyze";
 
+  const isLocked = (text: Text) =>
+    !analyzeMode && !!text.featureKey && !canUse(text.featureKey);
+
   const openText = (text: Text) => {
     if (analyzeMode) {
-      // Send to Religious Texts analyst with the text pre-loaded
       const prompt = `${text.titleEn} — ${text.descEn}`;
       navigate(`/chat?discern=texts&seed=${encodeURIComponent(prompt)}`);
+      return;
+    }
+    if (isLocked(text)) {
+      navigate("/premium");
       return;
     }
     if (text.url.startsWith("/")) {
