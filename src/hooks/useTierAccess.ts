@@ -12,6 +12,11 @@ const FEATURE_MIN_TIER: Record<string, Tier> = {
   hero_upload: 'premium_plus',
   // Bible translations bulk
   bible_translations_premium: 'premium',
+  // Non-Bible bundled scriptures (LDS, Qur'an, etc.)
+  scripture_lds: 'premium',
+  scripture_quran: 'premium',
+  scripture_eastern: 'premium',
+  scripture_premium_plus: 'premium_plus',
   // Hagion University full access
   hagion_university: 'premium',
   // Debate arena premium rounds

@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { useTierAccess } from "@/hooks/useTierAccess";
 import { cn } from "@/lib/utils";
 import {
   BookOpen,
@@ -11,6 +12,8 @@ import {
   ShieldCheck,
   ChevronRight,
   ExternalLink,
+  Lock,
+  Download,
 } from "lucide-react";
 
 interface Text {
@@ -20,6 +23,10 @@ interface Text {
   descEs: string;
   url: string;
   publicDomain?: boolean;
+  /** True when the text is bundled offline inside the app. */
+  inApp?: boolean;
+  /** Tier-access feature key (used with useTierAccess). */
+  featureKey?: string;
 }
 
 interface Tradition {
@@ -42,10 +49,11 @@ const traditions: Tradition[] = [
       {
         titleEn: "Holy Bible (multiple translations)",
         titleEs: "Santa Biblia (varias traducciones)",
-        descEn: "Read Scripture in KJV, ESV, NIV, RVR and more.",
-        descEs: "Lee la Escritura en RVR, NVI, KJV y más.",
+        descEn: "Read Scripture in KJV, WEB, RVR1960 and more — fully offline.",
+        descEs: "Lee la Escritura en RVR1960, RVR1909, KJV y más — sin conexión.",
         url: "/bible-translations",
         publicDomain: true,
+        inApp: true,
       },
       {
         titleEn: "Church Fathers (CCEL)",
@@ -106,26 +114,32 @@ const traditions: Tradition[] = [
       {
         titleEn: "Book of Mormon",
         titleEs: "Libro de Mormón",
-        descEn: "Joseph Smith's foundational text.",
-        descEs: "Texto fundacional de José Smith.",
-        url: "https://www.churchofjesuschrist.org/study/scriptures/bofm",
+        descEn: "Joseph Smith's foundational text — full offline access.",
+        descEs: "Texto fundacional de José Smith — acceso completo sin conexión.",
+        url: "/scripture/bookofmormon",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_lds",
       },
       {
         titleEn: "Doctrine & Covenants",
         titleEs: "Doctrina y Convenios",
-        descEn: "Revelations recorded by LDS prophets.",
-        descEs: "Revelaciones de los profetas SUD.",
-        url: "https://www.churchofjesuschrist.org/study/scriptures/dc-testament",
+        descEn: "138 sections of revelations from LDS prophets.",
+        descEs: "138 secciones de revelaciones de los profetas SUD.",
+        url: "/scripture/doctrineandcovenants",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_lds",
       },
       {
         titleEn: "Pearl of Great Price",
         titleEs: "Perla de Gran Precio",
-        descEn: "LDS scripture including Book of Abraham.",
-        descEs: "Escritura SUD incluido el Libro de Abraham.",
-        url: "https://www.churchofjesuschrist.org/study/scriptures/pgp",
+        descEn: "Moses, Abraham, Joseph Smith—History, Articles of Faith.",
+        descEs: "Moisés, Abraham, José Smith—Historia, Artículos de Fe.",
+        url: "/scripture/pearlofgreatprice",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_lds",
       },
     ],
   },
@@ -239,16 +253,23 @@ const traditions: Tradition[] = [
 const Library = () => {
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { canUse } = useTierAccess();
   const [params] = useSearchParams();
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
   const analyzeMode = params.get("mode") === "analyze";
 
+  const isLocked = (text: Text) =>
+    !analyzeMode && !!text.featureKey && !canUse(text.featureKey);
+
   const openText = (text: Text) => {
     if (analyzeMode) {
-      // Send to Religious Texts analyst with the text pre-loaded
       const prompt = `${text.titleEn} — ${text.descEn}`;
       navigate(`/chat?discern=texts&seed=${encodeURIComponent(prompt)}`);
+      return;
+    }
+    if (isLocked(text)) {
+      navigate("/premium");
       return;
     }
     if (text.url.startsWith("/")) {
@@ -328,44 +349,60 @@ const Library = () => {
                   </h2>
                 </div>
                 <div className="space-y-2">
-                  {tr.texts.map((text) => (
-                    <button
-                      key={text.titleEn}
-                      onClick={() => openText(text)}
-                      className={cn(
-                        "group w-full text-left rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4",
-                        "hover:bg-white/[0.07] hover:border-white/20 transition-all"
-                      )}
-                      style={{
-                        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 20px -10px rgba(${tr.edge},0.3)`,
-                      }}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="font-playfair text-[15px] leading-snug">
-                              {language === "es" ? text.titleEs : text.titleEn}
-                            </h3>
-                            {text.publicDomain && (
-                              <span className="text-[9px] tracking-[0.18em] uppercase px-1.5 py-0.5 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
-                                {t("Free", "Libre")}
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 text-[12px] text-white/60 leading-relaxed">
-                            {language === "es" ? text.descEs : text.descEn}
-                          </p>
-                        </div>
-                        {analyzeMode ? (
-                          <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
-                        ) : text.url.startsWith("/") ? (
-                          <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
-                        ) : (
-                          <ExternalLink className="w-3.5 h-3.5 text-white/45 mt-1" />
+                  {tr.texts.map((text) => {
+                    const locked = isLocked(text);
+                    const isExternal = !text.url.startsWith("/");
+                    return (
+                      <button
+                        key={text.titleEn}
+                        onClick={() => openText(text)}
+                        className={cn(
+                          "group w-full text-left rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4",
+                          "hover:bg-white/[0.07] hover:border-white/20 transition-all"
                         )}
-                      </div>
-                    </button>
-                  ))}
+                        style={{
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 20px -10px rgba(${tr.edge},0.3)`,
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <h3 className="font-playfair text-[15px] leading-snug">
+                                {language === "es" ? text.titleEs : text.titleEn}
+                              </h3>
+                              {text.inApp && !locked && (
+                                <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
+                                  <Download className="w-2.5 h-2.5" />
+                                  {t("In-app", "En la app")}
+                                </span>
+                              )}
+                              {locked && (
+                                <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                                  <Lock className="w-2.5 h-2.5" />
+                                  {t("Premium", "Premium")}
+                                </span>
+                              )}
+                              {isExternal && !text.inApp && (
+                                <span className="text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-white/[0.06] text-white/50 border border-white/10">
+                                  {t("External", "Externo")}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-1 text-[12px] text-white/60 leading-relaxed">
+                              {language === "es" ? text.descEs : text.descEn}
+                            </p>
+                          </div>
+                          {locked ? (
+                            <Lock className="w-4 h-4 text-amber-300/70 mt-1" />
+                          ) : isExternal && !analyzeMode ? (
+                            <ExternalLink className="w-3.5 h-3.5 text-white/45 mt-1" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             );
