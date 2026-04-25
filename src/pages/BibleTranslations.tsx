@@ -560,12 +560,8 @@ const BookRow = ({
   selectedChapter: number | null;
   onPickChapter: (c: number) => void;
 }) => {
-  const [open, setOpen] = useState(selectedChapter !== null);
+  const [open, setOpen] = useState(false);
   const isSelected = selectedChapter !== null;
-
-  useEffect(() => {
-    if (isSelected) setOpen(true);
-  }, [isSelected]);
 
   return (
     <div>
