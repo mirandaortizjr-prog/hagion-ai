@@ -150,6 +150,38 @@ export const SCRIPTURE_TEXTS: ScriptureText[] = [
     edge: "52,211,153",
     books: quranBooks,
   },
+  // ============== Judaism ==============
+  {
+    id: "tanakh",
+    titleEn: "Tanakh — Torah (JPS 1917)",
+    titleEs: "Tanaj — Torá (JPS 1917)",
+    descEn: "The Five Books of Moses — Jewish Publication Society 1917, public domain.",
+    descEs: "Los cinco libros de Moisés — Jewish Publication Society 1917, dominio público.",
+    tradition: "judaism",
+    minTier: "free",
+    edge: "129,140,248",
+    books: [
+      { slug: "genesis", nameEn: "Genesis", nameEs: "Génesis", chapters: 50 },
+      { slug: "exodus", nameEn: "Exodus", nameEs: "Éxodo", chapters: 40 },
+      { slug: "leviticus", nameEn: "Leviticus", nameEs: "Levítico", chapters: 27 },
+      { slug: "numbers", nameEn: "Numbers", nameEs: "Números", chapters: 36 },
+      { slug: "deuteronomy", nameEn: "Deuteronomy", nameEs: "Deuteronomio", chapters: 34 },
+    ],
+  },
+  // ============== Early Christian Writings ==============
+  {
+    id: "apostolicfathers",
+    titleEn: "Didache (Teaching of the Twelve)",
+    titleEs: "Didaché (Enseñanza de los Doce)",
+    descEn: "Earliest known Christian church manual — c. AD 50–120, public domain.",
+    descEs: "El manual cristiano más antiguo conocido — c. 50–120 d.C., dominio público.",
+    tradition: "christianity",
+    minTier: "free",
+    edge: "96,165,250",
+    books: [
+      { slug: "didache", nameEn: "Didache", nameEs: "Didaché", chapters: 16 },
+    ],
+  },
 ];
 
 // Vite code-splits one chunk per chapter file.
