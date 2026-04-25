@@ -468,7 +468,7 @@ export default function PrayerWall() {
               <Settings className="w-4 h-4" />
             </button>
             <div
-              className="block w-full h-[315px] sm:h-[360px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
+              className="block w-full h-[252px] sm:h-[288px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
             >
               {profile?.banner_url ? (
                 <img src={profile.banner_url} alt="banner" className="w-full h-full object-cover" />
