@@ -179,10 +179,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "Bhagavad Gita",
         titleEs: "Bhagavad Gita",
-        descEn: "Public domain translation — sacred Hindu text.",
-        descEs: "Traducción de dominio público — texto sagrado hindú.",
-        url: "https://sacred-texts.com/hin/gita/",
+        descEn: "Krishna & Arjuna's dialogue — 18 chapters offline.",
+        descEs: "Diálogo de Krishna y Arjuna — 18 capítulos sin conexión.",
+        url: "/scripture/bhagavadgita",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_eastern",
       },
       {
         titleEn: "Upanishads",
