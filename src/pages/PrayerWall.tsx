@@ -468,7 +468,7 @@ export default function PrayerWall() {
               <Settings className="w-4 h-4" />
             </button>
             <div
-              className="block w-full h-[315px] sm:h-[360px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
+              className="block w-full h-[252px] sm:h-[288px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
             >
               {profile?.banner_url ? (
                 <img src={profile.banner_url} alt="banner" className="w-full h-full object-cover" />
@@ -498,9 +498,9 @@ export default function PrayerWall() {
                 className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
                 aria-label="Open profile"
               >
-                <Avatar className="h-24 w-24">
+                <Avatar className="h-20 w-20">
                   {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
-                  <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-2xl">
+                  <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-xl">
                     {(user?.email?.[0] || "U").toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -546,10 +546,10 @@ export default function PrayerWall() {
                 <button
                     key={i}
                     onClick={t.onClick}
-                    className="group relative inline-flex items-center gap-2 rounded-full px-5 py-2 bg-gradient-to-b from-primary/25 to-primary/5 border border-primary/30 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)] hover:from-primary/35 hover:to-primary/10 active:scale-95 transition-all"
+                    className="group relative inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 bg-gradient-to-b from-primary/25 to-primary/5 border border-primary/30 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)] hover:from-primary/35 hover:to-primary/10 active:scale-95 transition-all"
                   >
-                    <Icon className="relative w-4 h-4 text-white" />
-                    <span className="relative text-xs font-playfair tracking-[0.2em] uppercase text-white">
+                    <Icon className="relative w-3 h-3 text-white" />
+                    <span className="relative text-[10px] font-playfair tracking-[0.18em] uppercase text-white">
                       {t.label}
                     </span>
                   </button>
