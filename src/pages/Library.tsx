@@ -90,10 +90,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "The Qur'an",
         titleEs: "El Corán",
-        descEn: "Multiple English & Spanish translations.",
-        descEs: "Varias traducciones al inglés y español.",
-        url: "https://quran.com",
+        descEn: "All 114 surahs — Sahih International (EN) & Cortés (ES), offline.",
+        descEs: "Las 114 suras — Sahih International (EN) y Cortés (ES), sin conexión.",
+        url: "/scripture/quran",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_quran",
       },
       {
         titleEn: "Sahih al-Bukhari (Hadith)",
@@ -177,10 +179,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "Bhagavad Gita",
         titleEs: "Bhagavad Gita",
-        descEn: "Public domain translation — sacred Hindu text.",
-        descEs: "Traducción de dominio público — texto sagrado hindú.",
-        url: "https://sacred-texts.com/hin/gita/",
+        descEn: "Krishna & Arjuna's dialogue — 18 chapters offline.",
+        descEs: "Diálogo de Krishna y Arjuna — 18 capítulos sin conexión.",
+        url: "/scripture/bhagavadgita",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_eastern",
       },
       {
         titleEn: "Upanishads",
@@ -202,10 +206,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "Dhammapada",
         titleEs: "Dhammapada",
-        descEn: "Sayings of the Buddha — public domain.",
-        descEs: "Dichos de Buda — dominio público.",
-        url: "https://www.accesstoinsight.org/tipitaka/kn/dhp/",
+        descEn: "Sayings of the Buddha — 26 chapters offline.",
+        descEs: "Dichos de Buda — 26 capítulos sin conexión.",
+        url: "/scripture/dhammapada",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_eastern",
       },
       {
         titleEn: "Pali Canon (Tipitaka)",

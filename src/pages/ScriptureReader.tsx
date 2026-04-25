@@ -22,6 +22,9 @@ const TIER_FEATURE: Record<string, string> = {
   bookofmormon: "scripture_lds",
   doctrineandcovenants: "scripture_lds",
   pearlofgreatprice: "scripture_lds",
+  quran: "scripture_quran",
+  bhagavadgita: "scripture_eastern",
+  dhammapada: "scripture_eastern",
 };
 
 const ScriptureReader = () => {
@@ -69,7 +72,7 @@ const ScriptureReader = () => {
     let cancelled = false;
     setIsLoading(true);
     setReadProgress(0);
-    loadScriptureChapter(text.id, selectedBook, selectedChapter)
+    loadScriptureChapter(text.id, selectedBook, selectedChapter, language as "en" | "es")
       .then((data) => { if (!cancelled) setVerses(data); })
       .catch((err) => {
         console.error("Scripture load error:", err);
