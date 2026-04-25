@@ -206,10 +206,12 @@ const traditions: Tradition[] = [
       {
         titleEn: "Dhammapada",
         titleEs: "Dhammapada",
-        descEn: "Sayings of the Buddha — public domain.",
-        descEs: "Dichos de Buda — dominio público.",
-        url: "https://www.accesstoinsight.org/tipitaka/kn/dhp/",
+        descEn: "Sayings of the Buddha — 26 chapters offline.",
+        descEs: "Dichos de Buda — 26 capítulos sin conexión.",
+        url: "/scripture/dhammapada",
         publicDomain: true,
+        inApp: true,
+        featureKey: "scripture_eastern",
       },
       {
         titleEn: "Pali Canon (Tipitaka)",
