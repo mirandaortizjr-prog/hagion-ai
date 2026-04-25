@@ -276,6 +276,36 @@ export type Database = {
           },
         ]
       }
+      discernment_usage: {
+        Row: {
+          count: number
+          created_at: string
+          feature: string
+          id: string
+          period_start: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          created_at?: string
+          feature: string
+          id?: string
+          period_start?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          created_at?: string
+          feature?: string
+          id?: string
+          period_start?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_attendees: {
         Row: {
           event_id: string
@@ -1003,6 +1033,54 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          environment: string
+          id: string
+          price_id: string
+          product_id: string
+          status: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          price_id: string
+          product_id: string
+          status?: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          price_id?: string
+          product_id?: string
+          status?: string
+          stripe_customer_id?: string
+          stripe_subscription_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       teachings: {
         Row: {
           author_name: string
@@ -1075,6 +1153,39 @@ export type Database = {
         }
         Relationships: []
       }
+      transcription_usage: {
+        Row: {
+          created_at: string
+          daily_minutes: number
+          day_bucket: string
+          id: string
+          month_bucket: string
+          monthly_minutes: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_minutes?: number
+          day_bucket?: string
+          id?: string
+          month_bucket?: string
+          monthly_minutes?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_minutes?: number
+          day_bucket?: string
+          id?: string
+          month_bucket?: string
+          monthly_minutes?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_message_usage: {
         Row: {
           created_at: string
@@ -1133,13 +1244,36 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_and_increment_discernment_usage: {
+        Args: { p_feature: string; p_user_id: string }
+        Returns: {
+          allowed: boolean
+          monthly_limit: number
+          remaining: number
+          tier: string
+        }[]
+      }
       check_and_increment_message_count: {
         Args: { p_user_id: string }
         Returns: {
           allowed: boolean
+          daily_limit: number
           remaining: number
+          tier: string
         }[]
       }
+      check_and_increment_transcription_minutes: {
+        Args: { p_minutes: number; p_user_id: string }
+        Returns: {
+          allowed: boolean
+          daily_limit: number
+          daily_remaining: number
+          monthly_limit: number
+          monthly_remaining: number
+          tier: string
+        }[]
+      }
+      get_user_tier: { Args: { p_user_id: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
