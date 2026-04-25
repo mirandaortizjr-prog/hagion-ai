@@ -498,9 +498,9 @@ export default function PrayerWall() {
                 className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
                 aria-label="Open profile"
               >
-                <Avatar className="h-24 w-24">
+                <Avatar className="h-20 w-20">
                   {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
-                  <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-2xl">
+                  <AvatarFallback className="bg-white/[0.08] backdrop-blur-md text-white/80 text-xl">
                     {(user?.email?.[0] || "U").toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
