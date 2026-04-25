@@ -72,7 +72,7 @@ const ScriptureReader = () => {
     let cancelled = false;
     setIsLoading(true);
     setReadProgress(0);
-    loadScriptureChapter(text.id, selectedBook, selectedChapter)
+    loadScriptureChapter(text.id, selectedBook, selectedChapter, language as "en" | "es")
       .then((data) => { if (!cancelled) setVerses(data); })
       .catch((err) => {
         console.error("Scripture load error:", err);
