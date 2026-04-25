@@ -71,6 +71,15 @@ const traditions: Tradition[] = [
         url: "https://www.vatican.va/archive/ENG0015/_INDEX.HTM",
       },
       {
+        titleEn: "Didache (Teaching of the Twelve)",
+        titleEs: "Didaché (Enseñanza de los Doce)",
+        descEn: "Earliest Christian church manual — c. AD 50–120, free offline.",
+        descEs: "El manual cristiano más antiguo — c. 50–120 d.C., gratis sin conexión.",
+        url: "/scripture/apostolicfathers",
+        publicDomain: true,
+        inApp: true,
+      },
+      {
         titleEn: "Westminster Confession",
         titleEs: "Confesión de Westminster",
         descEn: "Reformed confession of faith — public domain.",
