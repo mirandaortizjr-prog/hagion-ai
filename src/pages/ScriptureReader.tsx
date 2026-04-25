@@ -25,6 +25,8 @@ const TIER_FEATURE: Record<string, string> = {
   quran: "scripture_quran",
   bhagavadgita: "scripture_eastern",
   dhammapada: "scripture_eastern",
+  // Free, no gating:
+  // tanakh, apostolicfathers
 };
 
 const ScriptureReader = () => {
