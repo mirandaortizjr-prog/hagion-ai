@@ -427,6 +427,51 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_images: {
+        Row: {
+          approved_at: string | null
+          created_at: string
+          display_count: number
+          first_displayed_at: string | null
+          id: string
+          image_url: string
+          last_displayed_at: string | null
+          rejection_reason: string | null
+          status: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          created_at?: string
+          display_count?: number
+          first_displayed_at?: string | null
+          id?: string
+          image_url: string
+          last_displayed_at?: string | null
+          rejection_reason?: string | null
+          status?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          created_at?: string
+          display_count?: number
+          first_displayed_at?: string | null
+          id?: string
+          image_url?: string
+          last_displayed_at?: string | null
+          rejection_reason?: string | null
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string

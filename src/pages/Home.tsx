@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame, Library as LibraryIcon } from "lucide-react";
+import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame, Library as LibraryIcon, ImagePlus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { HeroImageUploadDialog } from "@/components/HeroImageUploadDialog";
 import { cn } from "@/lib/utils";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { getVerseOfTheDay } from "@/data/versesOfTheDay";
@@ -16,6 +18,7 @@ const Home = () => {
   const t = (en: string, es: string) => (language === "es" ? es : en);
 
   const [trending, setTrending] = useState<any[]>([]);
+  const [uploadOpen, setUploadOpen] = useState(false);
   useEffect(() => {
     supabase
       .from("posts")
@@ -77,37 +80,34 @@ const Home = () => {
     <div className="min-h-screen text-white">
       <main className="max-w-3xl mx-auto">
         <section className="relative animate-fade-in">
-          <div className="relative overflow-hidden">
-            <img
-              src={heroLiquidLight}
-              alt=""
-              width={928}
-              height={1152}
-              decoding="async"
-              className="w-full h-[32vh] min-h-[208px] max-h-[320px] object-cover object-top scale-[1.08]"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/5 to-black/85"
-            />
-            {/* Subtle black shading at bottom edge */}
-            <div
-              aria-hidden
-              className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 to-transparent"
-            />
-
-            <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8">
+          <HeroSlideshow
+            fallbackSrc={heroLiquidLight}
+            className="h-[32vh] min-h-[208px] max-h-[320px]"
+          >
+            <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-8 z-[5]">
               <p className="text-[10px] tracking-[0.22em] uppercase text-white/65 font-inter">
                 {greeting}
               </p>
               <h1 className="mt-1.5 max-w-[34ch] font-playfair text-[15px] italic leading-snug tracking-tight text-white/95 drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)] sm:text-lg">
-                “{v.text}”
+                "{v.text}"
               </h1>
               <p className="mt-2 text-[9.5px] tracking-[0.22em] uppercase text-white/60 font-inter">
                 {v.ref}
               </p>
             </div>
-          </div>
+
+            {/* Premium upload trigger — bottom-right, subtle */}
+            <button
+              onClick={() => setUploadOpen(true)}
+              className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full border border-white/15 bg-black/30 px-2.5 py-[5px] backdrop-blur-md transition-all hover:bg-black/50 hover:border-white/30"
+              aria-label={t("Share an image", "Compartir imagen")}
+            >
+              <ImagePlus className="h-3 w-3 text-white/75" strokeWidth={1.8} />
+              <span className="font-inter text-[9.5px] tracking-[0.1em] uppercase text-white/75">
+                {t("Share", "Compartir")}
+              </span>
+            </button>
+          </HeroSlideshow>
         </section>
 
 
@@ -230,6 +230,7 @@ const Home = () => {
       </main>
 
       <PremiumNav />
+      <HeroImageUploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
     </div>
   );
 };
