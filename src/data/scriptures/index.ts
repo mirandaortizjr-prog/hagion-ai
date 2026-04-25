@@ -111,6 +111,48 @@ export const SCRIPTURE_TEXTS: ScriptureText[] = [
   },
 ];
 
+  // ============== Hinduism ==============
+  {
+    id: "bhagavadgita",
+    titleEn: "Bhagavad Gita",
+    titleEs: "Bhagavad Gita",
+    descEn: "Krishna and Arjuna's dialogue — Edwin Arnold translation, full offline.",
+    descEs: "Diálogo de Krishna y Arjuna — traducción de Edwin Arnold, sin conexión.",
+    tradition: "hinduism",
+    minTier: "premium",
+    edge: "251,113,133",
+    books: [
+      { slug: "bhagavadgita", nameEn: "Bhagavad Gita", nameEs: "Bhagavad Gita", chapters: 18 },
+    ],
+  },
+  // ============== Buddhism ==============
+  {
+    id: "dhammapada",
+    titleEn: "Dhammapada",
+    titleEs: "Dhammapada",
+    descEn: "Sayings of the Buddha — F.L. Woodward translation, 26 chapters offline.",
+    descEs: "Dichos de Buda — traducción de F.L. Woodward, 26 capítulos sin conexión.",
+    tradition: "buddhism",
+    minTier: "premium",
+    edge: "192,132,252",
+    books: [
+      { slug: "dhammapada", nameEn: "Dhammapada", nameEs: "Dhammapada", chapters: 26 },
+    ],
+  },
+  // ============== Islam ==============
+  {
+    id: "quran",
+    titleEn: "The Qur'an",
+    titleEs: "El Corán",
+    descEn: "All 114 surahs — Sahih International (EN) and Cortés (ES), fully offline.",
+    descEs: "Las 114 suras — Sahih International (EN) y Cortés (ES), sin conexión.",
+    tradition: "islam",
+    minTier: "premium",
+    edge: "52,211,153",
+    books: quranBooks,
+  },
+];
+
 // Vite code-splits one chunk per chapter file.
 const chapterModules = import.meta.glob<Record<string, string[]>>(
   "./*/*.json",
@@ -120,12 +162,18 @@ const chapterModules = import.meta.glob<Record<string, string[]>>(
 export async function loadScriptureChapter(
   textId: string,
   bookSlug: string,
-  chapter: number
+  chapter: number,
+  language: "en" | "es" = "en"
 ): Promise<string[]> {
   const key = `./${textId}/${bookSlug}.json`;
   const loader = chapterModules[key];
   if (!loader) throw new Error(`Scripture file not found: ${key}`);
   const book = await loader();
+  // Bilingual support: if a "<chapter>_es" key exists and language === "es", use it.
+  if (language === "es") {
+    const esKey = `${chapter}_es`;
+    if (book[esKey]) return book[esKey];
+  }
   return book[String(chapter)] ?? [];
 }
 
