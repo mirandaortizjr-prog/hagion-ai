@@ -349,44 +349,60 @@ const Library = () => {
                   </h2>
                 </div>
                 <div className="space-y-2">
-                  {tr.texts.map((text) => (
-                    <button
-                      key={text.titleEn}
-                      onClick={() => openText(text)}
-                      className={cn(
-                        "group w-full text-left rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4",
-                        "hover:bg-white/[0.07] hover:border-white/20 transition-all"
-                      )}
-                      style={{
-                        boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 20px -10px rgba(${tr.edge},0.3)`,
-                      }}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="font-playfair text-[15px] leading-snug">
-                              {language === "es" ? text.titleEs : text.titleEn}
-                            </h3>
-                            {text.publicDomain && (
-                              <span className="text-[9px] tracking-[0.18em] uppercase px-1.5 py-0.5 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
-                                {t("Free", "Libre")}
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 text-[12px] text-white/60 leading-relaxed">
-                            {language === "es" ? text.descEs : text.descEn}
-                          </p>
-                        </div>
-                        {analyzeMode ? (
-                          <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
-                        ) : text.url.startsWith("/") ? (
-                          <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
-                        ) : (
-                          <ExternalLink className="w-3.5 h-3.5 text-white/45 mt-1" />
+                  {tr.texts.map((text) => {
+                    const locked = isLocked(text);
+                    const isExternal = !text.url.startsWith("/");
+                    return (
+                      <button
+                        key={text.titleEn}
+                        onClick={() => openText(text)}
+                        className={cn(
+                          "group w-full text-left rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4",
+                          "hover:bg-white/[0.07] hover:border-white/20 transition-all"
                         )}
-                      </div>
-                    </button>
-                  ))}
+                        style={{
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 20px -10px rgba(${tr.edge},0.3)`,
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <h3 className="font-playfair text-[15px] leading-snug">
+                                {language === "es" ? text.titleEs : text.titleEn}
+                              </h3>
+                              {text.inApp && !locked && (
+                                <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
+                                  <Download className="w-2.5 h-2.5" />
+                                  {t("In-app", "En la app")}
+                                </span>
+                              )}
+                              {locked && (
+                                <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                                  <Lock className="w-2.5 h-2.5" />
+                                  {t("Premium", "Premium")}
+                                </span>
+                              )}
+                              {isExternal && !text.inApp && (
+                                <span className="text-[9px] tracking-[0.16em] uppercase px-1.5 py-0.5 rounded-full bg-white/[0.06] text-white/50 border border-white/10">
+                                  {t("External", "Externo")}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-1 text-[12px] text-white/60 leading-relaxed">
+                              {language === "es" ? text.descEs : text.descEn}
+                            </p>
+                          </div>
+                          {locked ? (
+                            <Lock className="w-4 h-4 text-amber-300/70 mt-1" />
+                          ) : isExternal && !analyzeMode ? (
+                            <ExternalLink className="w-3.5 h-3.5 text-white/45 mt-1" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4 text-white/45 mt-1 group-hover:translate-x-1 transition-transform" />
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             );
