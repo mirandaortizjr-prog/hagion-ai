@@ -22,6 +22,9 @@ const TIER_FEATURE: Record<string, string> = {
   bookofmormon: "scripture_lds",
   doctrineandcovenants: "scripture_lds",
   pearlofgreatprice: "scripture_lds",
+  quran: "scripture_quran",
+  bhagavadgita: "scripture_eastern",
+  dhammapada: "scripture_eastern",
 };
 
 const ScriptureReader = () => {
