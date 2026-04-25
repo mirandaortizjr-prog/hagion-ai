@@ -84,7 +84,7 @@ const Home = () => {
               width={928}
               height={1152}
               decoding="async"
-              className="w-full h-[40vh] min-h-[260px] max-h-[400px] object-cover object-top scale-[1.08]"
+              className="w-full h-[32vh] min-h-[208px] max-h-[320px] object-cover object-top scale-[1.08]"
             />
             <div
               aria-hidden
