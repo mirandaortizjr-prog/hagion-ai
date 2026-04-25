@@ -35,6 +35,7 @@ import StorytellingChat from "./pages/StorytellingChat";
 import LogosCircle from "./pages/LogosCircle";
 import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
+import ScriptureReader from "./pages/ScriptureReader";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
@@ -121,6 +122,7 @@ const App = () => (
             <Route path="/logos-circle" element={<LogosCircle />} />
             <Route path="/logos-circle/:type/:id" element={<LogosLearning />} />
             <Route path="/bible-translations" element={<BibleTranslations />} />
+            <Route path="/scripture/:textId" element={<ScriptureReader />} />
             <Route path="/public-speaking" element={<PublicSpeaking />} />
             <Route path="/prayer-wall" element={<PrayerWallPage />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
