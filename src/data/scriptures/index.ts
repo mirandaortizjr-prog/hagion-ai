@@ -109,7 +109,6 @@ export const SCRIPTURE_TEXTS: ScriptureText[] = [
       { slug: "articlesoffaith", nameEn: "Articles of Faith", nameEs: "Artículos de Fe", chapters: 1 },
     ],
   },
-];
 
   // ============== Hinduism ==============
   {
