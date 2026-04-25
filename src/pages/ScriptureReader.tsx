@@ -40,7 +40,6 @@ const ScriptureReader = () => {
   const tr = (en: string, es: string) => (language === "es" ? es : en);
 
   // Tier gate — use the text's declared minTier; "free" = always allowed.
-  const tierAccess = useTierAccess();
   const hasAccess = !text || text.minTier === "free" || tierAccess.isAtLeast(text.minTier);
   const featureKey = textId ? TIER_FEATURE[textId] ?? "" : "";
 
