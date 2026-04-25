@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame, Library as LibraryIcon } from "lucide-react";
+import { ArrowRight, Sun, HandHeart, BookOpen, MessagesSquare, Flame, Library as LibraryIcon, ImagePlus } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { HeroImageUploadDialog } from "@/components/HeroImageUploadDialog";
 import { cn } from "@/lib/utils";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { getVerseOfTheDay } from "@/data/versesOfTheDay";
