@@ -172,7 +172,7 @@ const DailyWisdom = () => {
       .map((p) => p.trim())
       .filter(Boolean)
       .map((p, i) => (
-        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-foreground mb-4">
+        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-white mb-4">
           {p}
         </p>
       ));
@@ -244,7 +244,7 @@ const DailyWisdom = () => {
 
               {/* Era line */}
               {story.era && (
-                <p className="text-center text-[12px] uppercase tracking-[0.35em] text-foreground/50 mb-2">
+                <p className="text-center text-[12px] uppercase tracking-[0.35em] text-white mb-2">
                   {story.era}
                 </p>
               )}
@@ -292,13 +292,13 @@ const DailyWisdom = () => {
                     <span className="mx-3 text-foreground/30 text-xs">✦</span>
                     <span className="h-px w-10 bg-foreground/20" />
                   </div>
-                  <blockquote className="text-center italic text-lg sm:text-xl leading-relaxed text-foreground/80 px-4">
+                  <blockquote className="text-center italic text-lg sm:text-xl leading-relaxed text-white px-4">
                     “{story.moral_takeaway}”
                   </blockquote>
                 </div>
               )}
 
-              <p className="mt-16 text-center text-[11px] uppercase tracking-[0.3em] text-foreground/40">
+              <p className="mt-16 text-center text-[11px] uppercase tracking-[0.3em] text-white">
                 Return tomorrow for new wisdom
               </p>
             </article>
@@ -325,7 +325,7 @@ const DailyWisdom = () => {
         <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold">
           {label}
         </h2>
-        <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-foreground" : ""}>
+        <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-white" : ""}>
           {emphasized ? (
             <p className="leading-[1.7]">{body}</p>
           ) : (
