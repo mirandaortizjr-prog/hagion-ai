@@ -394,6 +394,12 @@ export default function ReelsFeedPage() {
         title={commentsFor?.title}
         onClose={() => setCommentsFor(null)}
       />
+      <MediaMoreSheet
+        open={!!moreFor}
+        shareUrl={moreFor ? `${window.location.origin}/community/reels/feed#${moreFor.id}` : undefined}
+        videoUrl={moreFor?.video_url}
+        onClose={() => setMoreFor(null)}
+      />
     </div>
   );
 }
