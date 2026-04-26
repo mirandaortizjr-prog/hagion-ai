@@ -387,6 +387,12 @@ export default function ReelsFeedPage() {
         kind="reel"
         onUploaded={loadReels}
       />
+      <MediaCommentsSheet
+        open={!!commentsFor}
+        mediaId={commentsFor?.id || null}
+        title={commentsFor?.title}
+        onClose={() => setCommentsFor(null)}
+      />
     </div>
   );
 }
