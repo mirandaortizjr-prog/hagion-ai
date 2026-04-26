@@ -43,7 +43,12 @@ const SUBJECT_META: Record<
     chatVoice: "biblical-stories",
     isBiblical: true,
   },
-  martyrs: { titleKey: "martyrs_faith", image: martyrsImage, chatVoice: "martyrs" },
+  martyrs: {
+    titleKey: "martyrs_faith",
+    image: martyrsImage,
+    chatVoice: "martyrs",
+    isBiblical: true,
+  },
   "history-christianity": {
     titleKey: "history_christianity",
     image: historyImage,
