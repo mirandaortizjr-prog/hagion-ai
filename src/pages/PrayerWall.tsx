@@ -519,12 +519,12 @@ export default function PrayerWall() {
                 </button>
               </div>
             </div>
-            {/* Messenger icon - mirrored on right side, aligned with username row */}
+            {/* Messages icon - mirrored on right side, aligned with username row */}
             <button
               type="button"
-              onClick={() => navigate("/community/messenger")}
+              onClick={() => navigate("/community/messages")}
               className="absolute right-3 sm:right-5 top-[65%] translate-y-[44px] z-10 p-2 rounded-full bg-white/[0.08] backdrop-blur-md ring-1 ring-white/15 text-white hover:bg-white/[0.14] active:scale-95 transition shadow-[0_4px_20px_-6px_rgba(0,0,0,0.6)]"
-              aria-label="Open messenger"
+              aria-label="Open messages"
             >
               <MessageSquare className="w-5 h-5" />
             </button>

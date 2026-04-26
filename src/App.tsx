@@ -163,6 +163,7 @@ const App = () => (
             <Route path="/community/group/:id" element={<GroupDetailPage />} />
             <Route path="/community/event/:id" element={<EventDetailPage />} />
             <Route path="/community/church/:id" element={<ChurchDetailPage />} />
+            <Route path="/community/messages" element={<MessengerPage />} />
             <Route path="/community/messenger" element={<MessengerPage />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/u/:handle" element={<PublicProfile />} />
