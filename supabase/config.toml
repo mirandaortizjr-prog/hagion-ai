@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.send-message-push]
 verify_jwt = false
+
+[functions.request-account-deletion]
+verify_jwt = false

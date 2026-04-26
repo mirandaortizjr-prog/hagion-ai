@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { supabase } from '@/integrations/supabase/client';
 import { getStripeEnvironment } from '@/lib/stripe';
+
+const IS_NATIVE = Capacitor.isNativePlatform();
 
 export type Tier = 'free' | 'premium' | 'premium_plus' | 'pro';
 
@@ -17,6 +20,11 @@ const PRICE_TO_TIER: Record<string, Tier> = {
   hagion_premium_monthly: 'premium',
   hagion_premium_plus_monthly: 'premium_plus',
   hagion_pro_monthly: 'pro',
+};
+
+const NATIVE_PRODUCT_TO_TIER: Record<string, Tier> = {
+  hagion_premium_monthly: 'premium',
+  hagion_premium_plus_monthly: 'premium_plus',
 };
 
 const TIER_RANK: Record<Tier, number> = { free: 0, premium: 1, premium_plus: 2, pro: 3 };
@@ -50,6 +58,30 @@ export function useSubscription() {
       return;
     }
     setIsDemo(false);
+
+    // Native (Android/iOS): tier is driven by Google Play purchases only.
+    // Web: Stripe subscriptions only.
+    if (IS_NATIVE) {
+      const { data: gp } = await supabase
+        .from('google_play_purchases')
+        .select('product_id, status, expiry_time')
+        .eq('user_id', id)
+        .eq('status', 'active');
+      const now = Date.now();
+      const active = (gp ?? []).filter(
+        (p) => !p.expiry_time || new Date(p.expiry_time as string).getTime() > now,
+      );
+      let nativeTier: Tier = 'free';
+      for (const p of active) {
+        const t = NATIVE_PRODUCT_TO_TIER[p.product_id as string];
+        if (t && TIER_RANK[t] > TIER_RANK[nativeTier]) nativeTier = t;
+      }
+      setSubscription(null);
+      setTier(nativeTier);
+      setIsLoading(false);
+      return;
+    }
+
     const { data } = await supabase
       .from('subscriptions')
       .select('id, status, price_id, current_period_end, cancel_at_period_end, stripe_customer_id')

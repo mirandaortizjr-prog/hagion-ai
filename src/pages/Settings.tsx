@@ -14,7 +14,19 @@ import {
   Check,
   ChevronRight,
   Image as ImageIcon,
+  Trash2,
 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -147,6 +159,34 @@ const Settings = () => {
     } else {
       toast({ title: t('logged_out'), description: t('logged_out_success') });
       navigate("/auth");
+    }
+  };
+
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const handleDeleteAccount = async () => {
+    setDeletingAccount(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("request-account-deletion", {
+        body: {},
+      });
+      if (error) throw error;
+      toast({
+        title: language === "es" ? "Cuenta marcada para eliminación" : "Account scheduled for deletion",
+        description:
+          language === "es"
+            ? "Tu cuenta y datos se eliminarán en 30 días. Contáctanos para cancelar."
+            : "Your account and data will be deleted in 30 days. Contact us to cancel.",
+      });
+      await supabase.auth.signOut();
+      navigate("/auth");
+    } catch (e) {
+      toast({
+        title: language === "es" ? "Error" : "Error",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingAccount(false);
     }
   };
 
@@ -355,6 +395,37 @@ const Settings = () => {
             <LogOut className="w-4 h-4" />
             {t('log_out')}
           </button>
+
+          {/* Delete account (App Store / Play Store requirement) */}
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="w-full flex items-center justify-center gap-2 rounded-2xl border border-red-700/30 bg-red-900/10 hover:bg-red-900/20 backdrop-blur-xl px-4 py-3.5 transition text-red-400/90 font-medium text-sm"
+                disabled={deletingAccount}
+              >
+                {deletingAccount ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                {language === 'es' ? 'Eliminar cuenta' : 'Delete account'}
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {language === 'es' ? '¿Eliminar tu cuenta?' : 'Delete your account?'}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  {language === 'es'
+                    ? 'Tu cuenta se programará para eliminación en 30 días. Cualquier suscripción activa se cancelará al final del período actual. Contáctanos antes de 30 días para cancelar la eliminación.'
+                    : 'Your account will be scheduled for deletion in 30 days. Any active subscription will be cancelled at the end of the current period. Contact us within 30 days to cancel the deletion.'}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{language === 'es' ? 'Cancelar' : 'Cancel'}</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                  {language === 'es' ? 'Eliminar' : 'Delete'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
 
           <div className="text-center text-xs text-white/40 pt-4">
             <p className="font-playfair tracking-wider">Hagion AI · v1.0.0</p>

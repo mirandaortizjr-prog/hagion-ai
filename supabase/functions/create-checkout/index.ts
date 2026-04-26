@@ -44,7 +44,12 @@ Deno.serve(async (req) => {
       ...(customerEmail && { customer_email: customerEmail }),
       ...(userId && {
         metadata: { userId, managed_payments: 'true' },
-        ...(isRecurring && { subscription_data: { metadata: { userId } } }),
+        ...(isRecurring && {
+          subscription_data: {
+            metadata: { userId },
+            trial_period_days: 3,
+          },
+        }),
       }),
     });
 
