@@ -172,7 +172,7 @@ const DailyWisdom = () => {
       .map((p) => p.trim())
       .filter(Boolean)
       .map((p, i) => (
-        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-foreground mb-4">
+        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-white mb-4">
           {p}
         </p>
       ));
