@@ -23,7 +23,7 @@ import {
   ImagePlus,
   Settings,
   Video,
-  Radio,
+  
   Plus,
   X,
 } from "lucide-react";
@@ -533,13 +533,12 @@ export default function PrayerWall() {
           {/* Black horizontal bar */}
           <div className="-mx-5 sm:-mx-8 w-[calc(100%+2.5rem)] sm:w-[calc(100%+4rem)] h-8 bg-black" />
 
-          {/* Pill chips: Reels, Videos, Live */}
+          {/* Pill chips: Reels, Videos */}
           <section className="w-full mt-1.5">
-            <div className="grid grid-cols-3 items-center gap-2 sm:gap-3 max-w-sm mx-auto px-2">
+            <div className="grid grid-cols-2 items-center gap-2 sm:gap-3 max-w-sm mx-auto px-2">
               {[
                 { label: "Reels", icon: Play, onClick: () => navigate("/community/reels/feed") },
                 { label: "Videos", icon: Video, onClick: () => navigate("/community/videos") },
-                { label: "Live", icon: Radio, onClick: () => navigate("/community/live") },
               ].map((t, i) => {
                 const Icon = t.icon;
                 return (

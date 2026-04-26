@@ -58,7 +58,7 @@ import PostDetailPage from "./pages/community/PostDetailPage";
 import DiscussionsPage from "./pages/community/DiscussionsPage";
 import ReelsFeedPage from "./pages/community/ReelsFeedPage";
 import VideosPage from "./pages/community/VideosPage";
-import LivePage from "./pages/community/LivePage";
+
 import TeachingDetailPage from "./pages/community/TeachingDetailPage";
 import GroupDetailPage from "./pages/community/GroupDetailPage";
 import GroupsPage from "./pages/community/GroupsPage";
@@ -157,7 +157,7 @@ const App = () => (
             <Route path="/community/reels" element={<ReelsFeedPage />} />
             <Route path="/community/reels/feed" element={<ReelsFeedPage />} />
             <Route path="/community/videos" element={<VideosPage />} />
-            <Route path="/community/live" element={<LivePage />} />
+            
             <Route path="/community/teaching/:id" element={<TeachingDetailPage />} />
             <Route path="/community/groups" element={<GroupsPage />} />
             <Route path="/community/group/:id" element={<GroupDetailPage />} />

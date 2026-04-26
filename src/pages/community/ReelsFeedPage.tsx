@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 
 interface Reel {
   id: string;
@@ -108,33 +109,34 @@ export default function ReelsFeedPage() {
   const [liked, setLiked] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
+  const [uploadOpen, setUploadOpen] = useState(false);
   const lastTapRef = useRef<Record<string, number>>({});
 
   const handleBack = useCallback(() => {
     navigate("/community", { replace: true });
   }, [navigate]);
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      try {
-        const { data } = await supabase
-          .from("reels")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(50);
+  const loadReels = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data } = await supabase
+        .from("reels")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(50);
 
-        let list = (data as Reel[]) || [];
-        if (list.length === 0) list = SAMPLE_REELS;
-        setReels(list);
-        if (list.length) setActiveId(list[0].id);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
+      let list = (data as Reel[]) || [];
+      if (list.length === 0) list = SAMPLE_REELS;
+      setReels(list);
+      if (list.length) setActiveId((prev) => prev ?? list[0].id);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadReels();
+  }, [loadReels]);
 
   useEffect(() => {
     const onPopState = () => handleBack();
@@ -292,13 +294,22 @@ export default function ReelsFeedPage() {
           <Sparkles className="w-3.5 h-3.5 text-white/80" />
           <h1 className="font-playfair text-lg tracking-tight">Reels</h1>
         </div>
-        <button
-          onClick={() => setMuted((m) => !m)}
-          className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-          aria-label={muted ? "Unmute" : "Mute"}
-        >
-          {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setUploadOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label="Upload reel"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => setMuted((m) => !m)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label={muted ? "Unmute" : "Mute"}
+          >
+            {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          </button>
+        </div>
       </header>
 
       {loading ? (
@@ -351,6 +362,13 @@ export default function ReelsFeedPage() {
           ))}
         </div>
       )}
+
+      <VideoUploadSheet
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        kind="reel"
+        onUploaded={loadReels}
+      />
     </div>
   );
 }
