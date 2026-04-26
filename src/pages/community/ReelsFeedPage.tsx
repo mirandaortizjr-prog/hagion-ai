@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
+import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 
 interface Reel {
   id: string;
@@ -103,14 +104,26 @@ export default function ReelsFeedPage() {
   const [reels, setReels] = useState<Reel[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
-  const [liked, setLiked] = useState<Set<string>>(new Set());
-  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [liked, setLiked] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("reels_liked") || "[]")); } catch { return new Set(); }
+  });
+  const [saved, setSaved] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("reels_saved") || "[]")); } catch { return new Set(); }
+  });
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    localStorage.setItem("reels_liked", JSON.stringify([...liked]));
+  }, [liked]);
+  useEffect(() => {
+    localStorage.setItem("reels_saved", JSON.stringify([...saved]));
+  }, [saved]);
 
   const handleBack = useCallback(() => {
     navigate("/community", { replace: true });
@@ -184,14 +197,19 @@ export default function ReelsFeedPage() {
 
   useEffect(() => {
     videoRefs.current.forEach((video, id) => {
-      if (id === activeId && !paused[id]) {
+      if (id === activeId) {
         video.muted = muted;
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
+        if (!paused[id]) {
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          video.pause();
         }
       } else {
         video.pause();
+        video.currentTime = 0;
       }
     });
   }, [activeId, muted, paused]);
@@ -344,7 +362,7 @@ export default function ReelsFeedPage() {
               onLike={() => handleLike(reel)}
               onSave={() => handleSave(reel)}
               onShare={() => handleShare(reel)}
-              onComment={() => toast({ title: "Comments coming soon" })}
+              onComment={() => setCommentsFor(reel)}
               onMore={() => toast({ title: "More options coming soon" })}
               onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
@@ -368,6 +386,12 @@ export default function ReelsFeedPage() {
         onOpenChange={setUploadOpen}
         kind="reel"
         onUploaded={loadReels}
+      />
+      <MediaCommentsSheet
+        open={!!commentsFor}
+        mediaId={commentsFor?.id || null}
+        title={commentsFor?.title}
+        onClose={() => setCommentsFor(null)}
       />
     </div>
   );

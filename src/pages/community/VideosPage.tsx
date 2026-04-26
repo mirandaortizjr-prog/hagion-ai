@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
+import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 
 interface VideoItem {
   id: string;
@@ -101,14 +102,26 @@ export default function VideosPage() {
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [currentTime, setCurrentTime] = useState<Record<string, number>>({});
   const [duration, setDuration] = useState<Record<string, number>>({});
-  const [liked, setLiked] = useState<Set<string>>(new Set());
-  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [liked, setLiked] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("videos_liked") || "[]")); } catch { return new Set(); }
+  });
+  const [saved, setSaved] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("videos_saved") || "[]")); } catch { return new Set(); }
+  });
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem("videos_liked", JSON.stringify([...liked]));
+  }, [liked]);
+  useEffect(() => {
+    localStorage.setItem("videos_saved", JSON.stringify([...saved]));
+  }, [saved]);
 
   const handleBack = useCallback(() => {
     navigate("/community", { replace: true });
@@ -173,14 +186,19 @@ export default function VideosPage() {
 
   useEffect(() => {
     videoRefs.current.forEach((video, id) => {
-      if (id === activeId && !paused[id]) {
+      if (id === activeId) {
         video.muted = muted;
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
+        if (!paused[id]) {
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          video.pause();
         }
       } else {
         video.pause();
+        video.currentTime = 0;
       }
     });
   }, [activeId, muted, paused]);
@@ -301,7 +319,7 @@ export default function VideosPage() {
               onLike={() => handleLike(v)}
               onSave={() => handleSave(v)}
               onShare={() => handleShare(v)}
-              onComment={() => toast({ title: "Comments coming soon" })}
+              onComment={() => setCommentsFor(v)}
               onMore={() => toast({ title: "More options coming soon" })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
@@ -339,6 +357,12 @@ export default function VideosPage() {
         onOpenChange={setUploadOpen}
         kind="teaching"
         onUploaded={loadVideos}
+      />
+      <MediaCommentsSheet
+        open={!!commentsFor}
+        mediaId={commentsFor?.id || null}
+        title={commentsFor?.title}
+        onClose={() => setCommentsFor(null)}
       />
     </div>
   );
