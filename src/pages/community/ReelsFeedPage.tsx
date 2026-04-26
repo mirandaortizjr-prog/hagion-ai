@@ -543,6 +543,10 @@ function ReelItem({
             <span className="font-playfair text-base text-white">{initial}</span>
           </div>
           <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onLike();
+            }}
             className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
             aria-label="Follow"
           >
@@ -552,24 +556,24 @@ function ReelItem({
       </div>
 
       <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-7 pt-10">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-2">
           <div className="text-sm font-medium text-white">
             @{reel.author_name || "anonymous"}
           </div>
           <span className="w-1 h-1 rounded-full bg-white/40" />
-          <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
+          <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
             Follow
           </button>
         </div>
         {reel.title && (
-          <h3 className="font-playfair text-[19px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1.5">
+          <h3 className="font-playfair text-[15px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1">
             {reel.title}
           </h3>
         )}
         {reel.description && (
           <p
             className={cn(
-              "text-[13px] text-white/80 leading-relaxed",
+              "text-[11px] text-white/75 leading-snug",
               !expanded && "line-clamp-2",
             )}
             onClick={() => setExpanded((e) => !e)}
