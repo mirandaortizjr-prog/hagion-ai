@@ -22,31 +22,36 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const systemPrompt = `You are a master storyteller crafting daily wisdom stories for Hagion University. Create original fables, parables, or allegories that:
+    // Get last 30 titles to avoid repeats
+    const { data: recent } = await supabase
+      .from("daily_wisdom_stories")
+      .select("title")
+      .order("created_at", { ascending: false })
+      .limit(30);
+    const avoidTitles = (recent || []).map((r: any) => r.title);
 
-- Are rooted in biblical reasoning, moral clarity, and spiritual insight (but NOT direct Scripture quotes)
-- Illuminate moral and ethical truths
-- Cultivate wisdom, discernment, and integrity
-- Inspire logical reflection and spiritual resonance
-- Encourage virtue, humility, courage, and compassion
-- Use metaphor and narrative to point toward eternal principles
+    const systemPrompt = `You are a master historian and theologian writing for "Hagion University - Daily Wisdom".
+Write in the cold, surgical, observant style of Robert Greene's "48 Laws of Power" — Machiavellian in cadence — but the wisdom itself is unwavering, biblically sound Christian Truth. Each story illustrates a spiritual law drawn from Scripture, taught through figures from the HISTORY OF CHRISTIANITY (church fathers, martyrs, reformers, missionaries, theologians, monks, Christian rulers, heretics who fell). Use only post-apostolic Christian history (~AD 60 to AD 1950). NEVER use Bible characters or Bible-narrative events.
 
-Each story should:
-- Be 2-3 minutes to read (400-600 words)
-- Have a clear beginning, middle, and end
-- Include vivid characters and settings
-- End with a thought-provoking insight
-- Be tagged with ONE primary theme
+Each story must be deep, engaging, paragraph-rich, and end in a piercing, unforgettable truth.
 
-Return your response in this JSON format:
+Return ONLY a JSON object — no preamble, no markdown fences:
 {
-  "title": "Story Title",
-  "content": "The full story text with paragraphs separated by \\n\\n",
-  "theme": "One of: Justice, Mercy, Truth, Perseverance, Humility, Discernment, Courage, Compassion, Integrity, Faith",
-  "moral_takeaway": "A brief reflection or question for the reader"
-}`;
+  "title": "5-9 word Greene-style law title",
+  "era": "Short era line like '316 AD' or 'c. 1153 AD'",
+  "theme": "ONE word from: Humility, Courage, Discernment, Perseverance, Truth, Mercy, Integrity, Faith, Wisdom, Repentance, Obedience, Sacrifice",
+  "law_statement": "2-4 sentences. Bold statement of the spiritual law plus brief elaboration.",
+  "law_transgression": "350-500 word vivid historical narrative of a real Christian-history figure who violated this law and fell.",
+  "law_observance": "350-500 word vivid historical narrative of a real Christian-history figure who upheld this law and prevailed.",
+  "law_interpretation": "250-400 word interpretation grounding the law in Scripture with inline references (e.g. Proverbs 16:18). Cold, clear, unwavering.",
+  "moral_takeaway": "One sharp closing sentence."
+}
 
-    console.log("Generating new wisdom story...");
+Hard rules:
+- Real figures from Christian history only — not Bible characters.
+- No emoji. No markdown inside string fields. Plain prose.`;
+
+    console.log("Generating new wisdom story... avoiding", avoidTitles.length, "titles");
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -58,9 +63,9 @@ Return your response in this JSON format:
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: "Create a new wisdom story for today." },
+          { role: "user", content: `Produce ONE new story now. Avoid these titles already used: ${JSON.stringify(avoidTitles)}.` },
         ],
-        temperature: 0.9,
+        temperature: 0.95,
       }),
     });
 
@@ -72,25 +77,33 @@ Return your response in this JSON format:
 
     const data = await response.json();
     const generatedText = data.choices[0].message.content;
-    
-    console.log("Raw AI response:", generatedText);
 
-    // Parse the JSON from the response
     const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Could not extract JSON from AI response");
     }
 
-    const storyData = JSON.parse(jsonMatch[0]);
+    const s = JSON.parse(jsonMatch[0]);
 
-    // Insert into database
+    const required = ["title","era","theme","law_statement","law_transgression","law_observance","law_interpretation","moral_takeaway"];
+    for (const k of required) {
+      if (!s[k] || typeof s[k] !== "string") {
+        throw new Error(`Missing field: ${k}`);
+      }
+    }
+
     const { data: insertedStory, error: insertError } = await supabase
       .from("daily_wisdom_stories")
       .insert({
-        title: storyData.title,
-        content: storyData.content,
-        theme: storyData.theme,
-        moral_takeaway: storyData.moral_takeaway,
+        title: s.title,
+        content: s.law_statement, // legacy field kept in sync
+        theme: s.theme,
+        moral_takeaway: s.moral_takeaway,
+        era: s.era,
+        law_statement: s.law_statement,
+        law_transgression: s.law_transgression,
+        law_observance: s.law_observance,
+        law_interpretation: s.law_interpretation,
       })
       .select()
       .single();
@@ -100,27 +113,17 @@ Return your response in this JSON format:
       throw insertError;
     }
 
-    console.log("Story created successfully:", insertedStory.id);
+    console.log("Story created:", insertedStory.id, "-", insertedStory.title);
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        story: insertedStory 
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      JSON.stringify({ success: true, story: insertedStory }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
     console.error("Error in generate-daily-wisdom:", error);
     return new Response(
-      JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Unknown error" 
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 });
