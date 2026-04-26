@@ -292,7 +292,7 @@ const DailyWisdom = () => {
                     <span className="mx-3 text-foreground/30 text-xs">✦</span>
                     <span className="h-px w-10 bg-foreground/20" />
                   </div>
-                  <blockquote className="text-center italic text-lg sm:text-xl leading-relaxed text-foreground/80 px-4">
+                  <blockquote className="text-center italic text-lg sm:text-xl leading-relaxed text-white px-4">
                     “{story.moral_takeaway}”
                   </blockquote>
                 </div>
