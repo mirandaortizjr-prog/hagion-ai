@@ -27,6 +27,7 @@ export const PremiumNav = () => {
 
   const inCommunity = location.pathname.startsWith("/community") || location.pathname === "/friends";
   const inDiscussions = location.pathname.startsWith("/community/discussions");
+  const inGroupsList = location.pathname === "/community/groups";
 
   const items: NavItem[] = inCommunity
     ? [
@@ -45,6 +46,7 @@ export const PremiumNav = () => {
   const [postOpen, setPostOpen] = useState(false);
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
   const [discussionCategory, setDiscussionCategory] = useState<string>("general");
+  const [groupName, setGroupName] = useState("");
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
