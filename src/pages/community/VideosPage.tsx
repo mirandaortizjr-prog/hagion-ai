@@ -206,11 +206,31 @@ export default function VideosPage() {
   }, [activeId, muted, paused]);
 
   useEffect(() => {
-    return () => {
+    const stopAll = () => {
       videoRefs.current.forEach((video) => {
-        video.pause();
-        video.currentTime = 0;
+        try {
+          video.pause();
+          video.removeAttribute("src");
+          video.load();
+        } catch {}
       });
+    };
+    const onVisibility = () => {
+      if (document.hidden) {
+        videoRefs.current.forEach((v) => {
+          try { v.pause(); } catch {}
+        });
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pagehide", stopAll);
+    window.addEventListener("blur", onVisibility);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pagehide", stopAll);
+      window.removeEventListener("blur", onVisibility);
+      stopAll();
+      videoRefs.current.clear();
     };
   }, []);
 
