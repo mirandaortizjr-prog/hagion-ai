@@ -361,7 +361,7 @@ export default function ReelsFeedPage() {
               onLike={() => handleLike(reel)}
               onSave={() => handleSave(reel)}
               onShare={() => handleShare(reel)}
-              onComment={() => toast({ title: "Comments coming soon" })}
+              onComment={() => setCommentsFor(reel)}
               onMore={() => toast({ title: "More options coming soon" })}
               onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
