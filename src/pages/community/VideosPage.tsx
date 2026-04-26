@@ -310,8 +310,7 @@ export default function VideosPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-2">
-          <Film className="w-3.5 h-3.5 text-white/80" />
-          <h1 className="font-playfair text-lg tracking-tight">Videos</h1>
+          {/* title removed per design */}
         </div>
         <div className="flex items-center gap-2">
           <button
