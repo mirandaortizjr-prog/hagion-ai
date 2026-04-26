@@ -106,11 +106,23 @@ export default function ReelsFeedPage() {
   const [muted, setMuted] = useState(false);
   const [paused, setPaused] = useState<Record<string, boolean>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
-  const [liked, setLiked] = useState<Set<string>>(new Set());
-  const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [liked, setLiked] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("reels_liked") || "[]")); } catch { return new Set(); }
+  });
+  const [saved, setSaved] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem("reels_saved") || "[]")); } catch { return new Set(); }
+  });
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    localStorage.setItem("reels_liked", JSON.stringify([...liked]));
+  }, [liked]);
+  useEffect(() => {
+    localStorage.setItem("reels_saved", JSON.stringify([...saved]));
+  }, [saved]);
 
   const handleBack = useCallback(() => {
     navigate("/community", { replace: true });
