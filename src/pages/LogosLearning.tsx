@@ -14,6 +14,8 @@ const LogosLearning = () => {
   const { type, id } = useParams<{ type: string; id: string }>();
   const { t, language } = useLanguage();
   const access = useTierAccess();
+  const curriculumData = getCurriculumData(language);
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
   if (!access.isLoading && !access.canUse("hagion_university")) {
     return (
@@ -29,8 +31,6 @@ const LogosLearning = () => {
       />
     );
   }
-  const curriculumData = getCurriculumData(language);
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
   const trackTitles: Record<string, string> = {
     foundations: t('foundations_logos'),
