@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 
 interface Reel {
   id: string;
