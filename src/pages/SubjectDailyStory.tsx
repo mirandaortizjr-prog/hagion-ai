@@ -43,7 +43,12 @@ const SUBJECT_META: Record<
     chatVoice: "biblical-stories",
     isBiblical: true,
   },
-  martyrs: { titleKey: "martyrs_faith", image: martyrsImage, chatVoice: "martyrs" },
+  martyrs: {
+    titleKey: "martyrs_faith",
+    image: martyrsImage,
+    chatVoice: "martyrs",
+    isBiblical: true,
+  },
   "history-christianity": {
     titleKey: "history_christianity",
     image: historyImage,
@@ -425,7 +430,14 @@ const SubjectDailyStory = () => {
               {isBiblical ? (
                 <>
                   <Section label={language === "es" ? "El Escenario" : "The Setting"} body={story.law_transgression} />
-                  <Section label={language === "es" ? "La Escena" : "The Scene"} body={story.law_observance} />
+                  <Section
+                    label={
+                      subjectId === "martyrs"
+                        ? (language === "es" ? "El Martirio" : "The Martyrdom")
+                        : (language === "es" ? "La Escena" : "The Scene")
+                    }
+                    body={story.law_observance}
+                  />
                   <Section label={language === "es" ? "Lo Que Quedó" : "The Aftermath"} body={story.law_interpretation} />
                 </>
               ) : (
