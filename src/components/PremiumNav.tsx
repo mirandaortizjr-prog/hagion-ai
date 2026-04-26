@@ -51,14 +51,32 @@ export const PremiumNav = () => {
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<{ name: string | null; username: string | null; avatar_url: string | null } | null>(null);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<"image" | "video" | null>(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then(async ({ data }) => {
+      setUser(data.user);
+      if (data.user) {
+        const { data: prof } = await supabase
+          .from("profiles")
+          .select("name, username, avatar_url")
+          .eq("user_id", data.user.id)
+          .maybeSingle();
+        setProfile(prof);
+      }
+    });
   }, [postOpen]);
+
+  const displayName = () =>
+    profile?.name?.trim() ||
+    profile?.username?.trim() ||
+    user?.user_metadata?.name ||
+    user?.user_metadata?.full_name ||
+    "Believer";
 
   const pickMedia = (kind: "image" | "video") => {
     const input = document.createElement("input");
@@ -149,7 +167,8 @@ export const PremiumNav = () => {
 
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: displayName(),
+      author_avatar: profile?.avatar_url || null,
       post_type: inDiscussions ? "discussion" : composerType,
       category: inDiscussions ? discussionCategory : "general",
       content: composer.trim(),
@@ -303,22 +322,7 @@ export const PremiumNav = () => {
                 })}
               </div>
             ) : (
-              <div className="flex gap-2 mb-3">
-                {(["post", "prayer", "testimony"] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setComposerType(t)}
-                    className={cn(
-                      "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
-                      composerType === t
-                        ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-                        : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
-                    )}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
+              <div className="mb-1" />
             )}
             <Textarea
               value={composer}
@@ -328,11 +332,7 @@ export const PremiumNav = () => {
                   ? (language === "es" ? "Describe el propósito del grupo (opcional)" : "Describe the group's purpose (optional)")
                   : inDiscussions
                   ? (language === "es" ? "Comparte tu pregunta o reflexión..." : "Share your question or reflection...")
-                  : composerType === "prayer"
-                  ? "Share a prayer request..."
-                  : composerType === "testimony"
-                  ? "Share what God has done..."
-                  : "Share with the community..."
+                  : (language === "es" ? "Comparte con la comunidad..." : "Share with the community...")
               }
               rows={4}
               className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
