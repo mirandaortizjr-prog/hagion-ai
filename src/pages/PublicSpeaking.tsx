@@ -55,6 +55,11 @@ const PublicSpeaking = () => {
   useEffect(() => { loadDrafts(); }, []);
 
   const handleCreate = async () => {
+    if (!isPro) { setShowGate(true); return; }
+    if (atLimit) {
+      toast({ title: "Monthly limit reached", description: `You can create up to ${MONTHLY_LIMIT} sermons per month.`, variant: "destructive" });
+      return;
+    }
     const title = newTitle.trim() || "Untitled Sermon";
     setCreating(true);
     const { data: { session } } = await supabase.auth.getSession();
@@ -70,11 +75,15 @@ const PublicSpeaking = () => {
       .single();
     setCreating(false);
     if (error || !data) {
-      toast({ title: "Could not create sermon", description: error?.message, variant: "destructive" });
+      const msg = error?.message || "";
+      if (msg.includes("Pro plan")) setShowGate(true);
+      else if (msg.includes("Monthly sermon limit")) toast({ title: "Monthly limit reached", description: `Limit is ${MONTHLY_LIMIT} sermons per month.`, variant: "destructive" });
+      else toast({ title: "Could not create sermon", description: msg, variant: "destructive" });
       return;
     }
     setNewTitle("");
     setShowNew(false);
+    setDrafts((prev) => [data as SermonDraft, ...prev]);
     navigate(`/sermon-lab/${data.id}`);
   };
 
