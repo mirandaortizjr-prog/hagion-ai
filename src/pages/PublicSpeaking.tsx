@@ -296,6 +296,7 @@ const PublicSpeaking = () => {
       </main>
 
       <PremiumNav />
+      <LimitReachedDialog open={showGate} onOpenChange={setShowGate} requiredTier="pro" reason="gated" />
     </div>
   );
 };
