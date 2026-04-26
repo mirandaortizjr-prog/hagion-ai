@@ -1,21 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Plus, FileText, Trash2, Loader2 } from "lucide-react";
+import { ArrowLeft, BookOpen, Plus, FileText, Trash2, Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS, type SermonDraft } from "@/lib/sermonSteps";
+import { useTierAccess } from "@/hooks/useTierAccess";
+import { LimitReachedDialog } from "@/components/LimitReachedDialog";
+
+const MONTHLY_LIMIT = 5;
 
 const PublicSpeaking = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const access = useTierAccess();
+  const isPro = access.canUse("sermon_lab");
   const [drafts, setDrafts] = useState<SermonDraft[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [showNew, setShowNew] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+
+  const monthlyCount = useMemo(() => {
+    const start = new Date();
+    start.setDate(1); start.setHours(0, 0, 0, 0);
+    return drafts.filter((d) => new Date(d.created_at) >= start).length;
+  }, [drafts]);
+  const remaining = Math.max(0, MONTHLY_LIMIT - monthlyCount);
+  const atLimit = isPro && remaining === 0;
 
   const loadDrafts = async () => {
     setLoading(true);
@@ -40,6 +55,11 @@ const PublicSpeaking = () => {
   useEffect(() => { loadDrafts(); }, []);
 
   const handleCreate = async () => {
+    if (!isPro) { setShowGate(true); return; }
+    if (atLimit) {
+      toast({ title: "Monthly limit reached", description: `You can create up to ${MONTHLY_LIMIT} sermons per month.`, variant: "destructive" });
+      return;
+    }
     const title = newTitle.trim() || "Untitled Sermon";
     setCreating(true);
     const { data: { session } } = await supabase.auth.getSession();
@@ -55,11 +75,15 @@ const PublicSpeaking = () => {
       .single();
     setCreating(false);
     if (error || !data) {
-      toast({ title: "Could not create sermon", description: error?.message, variant: "destructive" });
+      const msg = error?.message || "";
+      if (msg.includes("Pro plan")) setShowGate(true);
+      else if (msg.includes("Monthly sermon limit")) toast({ title: "Monthly limit reached", description: `Limit is ${MONTHLY_LIMIT} sermons per month.`, variant: "destructive" });
+      else toast({ title: "Could not create sermon", description: msg, variant: "destructive" });
       return;
     }
     setNewTitle("");
     setShowNew(false);
+    setDrafts((prev) => [data as SermonDraft, ...prev]);
     navigate(`/sermon-lab/${data.id}`);
   };
 
@@ -103,11 +127,34 @@ const PublicSpeaking = () => {
             Sermon Lab
           </h1>
 
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-4">
             <span className="text-[10px] uppercase tracking-[0.3em] text-accent/90 px-3 py-1 rounded-full border border-accent/20 bg-accent/5">
-              Craft & Discern
+              Pastors & Theologians · Pro
             </span>
           </div>
+
+          {isPro && (
+            <p className="text-center text-[12px] text-white/55 mb-8">
+              {remaining} of {MONTHLY_LIMIT} sermons remaining this month
+            </p>
+          )}
+
+          {!isPro && (
+            <div className="mb-10 border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm text-center">
+              <Lock className="w-5 h-5 mx-auto mb-2 text-white/60" />
+              <p className="text-white text-[14.5px] font-medium mb-1">Sermon Lab is a Pro feature</p>
+              <p className="text-[12.5px] text-white/60 mb-4 leading-relaxed">
+                Designed for pastors and theologians. Includes up to {MONTHLY_LIMIT} AI-refined sermons per month.
+              </p>
+              <Button
+                size="sm"
+                onClick={() => navigate("/premium")}
+                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-9 px-5 text-xs"
+              >
+                Upgrade to Pro
+              </Button>
+            </div>
+          )}
 
           <div className="flex items-center justify-center mb-10">
             <span className="h-px w-10 bg-foreground/20" />
@@ -124,8 +171,12 @@ const PublicSpeaking = () => {
               </h2>
               <Button
                 size="sm"
-                onClick={() => setShowNew((s) => !s)}
-                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-8 px-3 text-xs"
+                disabled={!isPro || atLimit}
+                onClick={() => {
+                  if (!isPro) { setShowGate(true); return; }
+                  setShowNew((s) => !s);
+                }}
+                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-8 px-3 text-xs disabled:opacity-50"
               >
                 <Plus className="w-3.5 h-3.5 mr-1" />
                 New
@@ -245,6 +296,7 @@ const PublicSpeaking = () => {
       </main>
 
       <PremiumNav />
+      <LimitReachedDialog open={showGate} onOpenChange={setShowGate} requiredTier="pro" reason="gated" />
     </div>
   );
 };

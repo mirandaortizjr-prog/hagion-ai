@@ -17,6 +17,8 @@ const FEATURE_MIN_TIER: Record<string, Tier> = {
   scripture_premium_plus: 'premium_plus',
   // Hagion University full access
   hagion_university: 'premium',
+  // Sermon Lab — pastors & theologians only (Pro plan)
+  sermon_lab: 'pro',
   // Debate arena premium rounds
   debate_arena_premium: 'premium',
   // Pro-only
