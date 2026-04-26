@@ -20,7 +20,6 @@ const ReligionChecker = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Verificador de Religiones" : "Religion Checker"}
       />
     );
   }

@@ -20,7 +20,6 @@ const SermonAnalyzer = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Analizador de Sermones" : "Sermon Analyzer"}
       />
     );
   }

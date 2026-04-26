@@ -20,7 +20,6 @@ const ProphecyChecker = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Verificador de Profecías" : "Prophecy Checker"}
       />
     );
   }

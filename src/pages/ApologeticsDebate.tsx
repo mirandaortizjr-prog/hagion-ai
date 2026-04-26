@@ -30,7 +30,6 @@ const ApologeticsDebate = () => {
     return (
       <FeatureLockCard
         requiredTier="premium"
-        featureName={language === "es" ? "Debate de Apologética" : "Apologetics Debate"}
       />
     );
   }

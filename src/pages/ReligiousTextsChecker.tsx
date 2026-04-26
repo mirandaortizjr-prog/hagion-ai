@@ -20,7 +20,6 @@ const ReligiousTextsChecker = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Verificador de Textos" : "Religious Texts Checker"}
       />
     );
   }

@@ -20,7 +20,6 @@ const BeliefSystemsChecker = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Verificador de Creencias" : "Belief Systems Checker"}
       />
     );
   }

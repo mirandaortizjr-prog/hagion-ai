@@ -20,7 +20,6 @@ const TestSpirits = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Prueba los Espíritus" : "Test the Spirits"}
       />
     );
   }

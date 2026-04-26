@@ -20,7 +20,6 @@ const ChurchChecker = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Verificador de Iglesias" : "Church Checker"}
       />
     );
   }

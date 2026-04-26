@@ -20,7 +20,6 @@ const MusicAnalyzer = () => {
     return (
       <FeatureLockCard
         requiredTier="premium_plus"
-        featureName={language === "es" ? "Analizador de Música" : "Music & Lyric Analyzer"}
       />
     );
   }
