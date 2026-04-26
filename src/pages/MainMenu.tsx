@@ -41,6 +41,17 @@ import lightbulbIcon from "@/assets/lightbulb-icon.png";
 import scrollIcon from "@/assets/scroll-icon.png";
 import brainIcon from "@/assets/brain-icon.png";
 import shieldIcon from "@/assets/shield-icon.png";
+import trackFoundationsImg from "@/assets/track-foundations.jpg";
+import trackFallaciesImg from "@/assets/track-fallacies.jpg";
+import trackApologeticsImg from "@/assets/track-apologetics.jpg";
+import trackWitnessingImg from "@/assets/track-witnessing.jpg";
+import trackScriptureImg from "@/assets/track-scripture.jpg";
+import trackEmotionalImg from "@/assets/track-emotional.jpg";
+import pathApologeticsImg from "@/assets/path-apologetics.jpg";
+import pathWitnessingImg from "@/assets/path-witnessing.jpg";
+import pathLogicImg from "@/assets/path-logic.jpg";
+import pathScripturalImg from "@/assets/path-scriptural.jpg";
+import pathCeremonialImg from "@/assets/path-ceremonial.jpg";
 import logicReasoningIcon from "@/assets/logic-reasoning-icon.png";
 import martyrsIcon from "@/assets/martyrs-icon.png";
 import historyIcon from "@/assets/history-icon.png";
@@ -210,7 +221,7 @@ const MainMenu = () => {
       id: "foundations",
       name: t('foundations_logos'),
       subtitle: t('foundations_logos_desc'),
-      image: lightbulbIcon,
+      image: trackFoundationsImg,
       icon: BookOpen,
       color: "bg-blue-500",
       isPro: false,
@@ -221,7 +232,7 @@ const MainMenu = () => {
       id: "fallacies",
       name: t('fallacies_shadows'),
       subtitle: t('fallacies_shadows_desc'),
-      image: shieldIcon,
+      image: trackFallaciesImg,
       icon: undefined,
       color: "bg-orange-500",
       isPro: false,
@@ -232,7 +243,7 @@ const MainMenu = () => {
       id: "apologetics",
       name: t('apologetics_logic'),
       subtitle: t('apologetics_logic_desc'),
-      image: scrollIcon,
+      image: trackApologeticsImg,
       icon: undefined,
       color: "bg-teal-500",
       isPro: false,
@@ -243,7 +254,7 @@ const MainMenu = () => {
       id: "witnessing",
       name: t('witnessing_wisdom'),
       subtitle: t('witnessing_wisdom_desc'),
-      image: megaphoneIcon,
+      image: trackWitnessingImg,
       icon: undefined,
       color: "bg-blue-500",
       isPro: false,
@@ -254,7 +265,7 @@ const MainMenu = () => {
       id: "scripture",
       name: t('logic_scripture'),
       subtitle: t('logic_scripture_desc'),
-      image: scrollIcon,
+      image: trackScriptureImg,
       icon: undefined,
       color: "bg-teal-500",
       isPro: false,
@@ -265,7 +276,7 @@ const MainMenu = () => {
       id: "emotional",
       name: t('emotional_logic'),
       subtitle: t('emotional_logic_desc'),
-      image: undefined,
+      image: trackEmotionalImg,
       icon: Heart,
       color: "bg-rose-500",
       isPro: false,
@@ -279,7 +290,7 @@ const MainMenu = () => {
       id: "apologetics-path",
       name: t('apologetics_path'),
       subtitle: t('apologetics_path_desc'),
-      image: shieldIcon,
+      image: pathApologeticsImg,
       icon: undefined,
       color: "bg-blue-500",
       isPro: false,
@@ -290,7 +301,7 @@ const MainMenu = () => {
       id: "witnessing-path",
       name: t('witnessing_path'),
       subtitle: t('witnessing_path_desc'),
-      image: megaphoneIcon,
+      image: pathWitnessingImg,
       icon: undefined,
       color: "bg-blue-500",
       isPro: false,
@@ -301,7 +312,7 @@ const MainMenu = () => {
       id: "logic-path",
       name: t('logic_path'),
       subtitle: t('logic_path_desc'),
-      image: brainIcon,
+      image: pathLogicImg,
       icon: undefined,
       color: "bg-orange-500",
       isPro: false,
@@ -312,7 +323,7 @@ const MainMenu = () => {
       id: "scriptural-path",
       name: t('scriptural_path'),
       subtitle: t('scriptural_path_desc'),
-      image: scrollIcon,
+      image: pathScripturalImg,
       icon: undefined,
       color: "bg-teal-500",
       isPro: false,
@@ -323,8 +334,8 @@ const MainMenu = () => {
       id: "ceremonial-path",
       name: t('ceremonial_path'),
       subtitle: t('ceremonial_path_desc'),
-      image: undefined,
-      icon: Heart,
+      image: pathCeremonialImg,
+      icon: undefined,
       color: "bg-rose-500",
       isPro: false,
       isSpecial: false,
@@ -920,7 +931,7 @@ const MainMenu = () => {
                         if (item.id === 'bible-translations') {
                           navigate('/bible-translations');
                         } else {
-                          navigate(`/storytelling/${item.id}`);
+                          navigate(`/subject-story/${item.id}`);
                         }
                       } else if (item.type === 'group') {
                         setExpandedGroup(item.id);
