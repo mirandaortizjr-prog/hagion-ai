@@ -38,6 +38,7 @@ import BibleTranslations from "./pages/BibleTranslations";
 import ScriptureReader from "./pages/ScriptureReader";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import TestSpirits from "./pages/TestSpirits";
+import SermonAnalyzer from "./pages/SermonAnalyzer";
 import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
