@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
+import MediaMoreSheet from "@/components/community/MediaMoreSheet";
 
 interface Reel {
   id: string;
