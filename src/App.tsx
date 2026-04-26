@@ -42,6 +42,10 @@ import SermonWorkspace from "./pages/SermonWorkspace";
 import SermonStepEditor from "./pages/SermonStepEditor";
 import SermonRefine from "./pages/SermonRefine";
 import TestSpirits from "./pages/TestSpirits";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import RefundPolicy from "./pages/legal/RefundPolicy";
+import AIDisclaimer from "./pages/legal/AIDisclaimer";
 import SermonAnalyzer from "./pages/SermonAnalyzer";
 import MusicAnalyzer from "./pages/MusicAnalyzer";
 import ReligionChecker from "./pages/ReligionChecker";
@@ -169,6 +173,12 @@ const App = () => (
             <Route path="/u/:handle" element={<PublicProfile />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
             <Route path="/subject-story/:subjectId" element={<SubjectDailyStory />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
