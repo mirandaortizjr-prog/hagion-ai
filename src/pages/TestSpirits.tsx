@@ -9,7 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
-import ReactMarkdown from "react-markdown";
 
 type InputMode = "url" | "claim" | "movement" | "text";
 
