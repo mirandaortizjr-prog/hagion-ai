@@ -413,6 +413,57 @@ export type Database = {
         }
         Relationships: []
       }
+      google_play_purchases: {
+        Row: {
+          acknowledged: boolean
+          auto_renewing: boolean
+          created_at: string
+          expiry_time: string | null
+          id: string
+          last_verified_at: string
+          order_id: string | null
+          product_id: string
+          purchase_token: string
+          raw_response: Json | null
+          start_time: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          auto_renewing?: boolean
+          created_at?: string
+          expiry_time?: string | null
+          id?: string
+          last_verified_at?: string
+          order_id?: string | null
+          product_id: string
+          purchase_token: string
+          raw_response?: Json | null
+          start_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged?: boolean
+          auto_renewing?: boolean
+          created_at?: string
+          expiry_time?: string | null
+          id?: string
+          last_verified_at?: string
+          order_id?: string | null
+          product_id?: string
+          purchase_token?: string
+          raw_response?: Json | null
+          start_time?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           group_id: string
