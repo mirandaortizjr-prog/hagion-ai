@@ -322,7 +322,7 @@ const DailyWisdom = () => {
     if (!body) return null;
     return (
       <section className="mb-10">
-        <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent/80 mb-4 font-semibold">
+        <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold">
           {label}
         </h2>
         <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-foreground" : ""}>
