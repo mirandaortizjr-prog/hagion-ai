@@ -427,6 +427,27 @@ export default function VideosPage() {
         videoUrl={moreFor?.video_url || undefined}
         onClose={() => setMoreFor(null)}
       />
+      <MediaSearchSheet
+        open={searchOpen}
+        items={videos.map((v) => ({
+          id: v.id,
+          title: v.title,
+          description: v.description,
+          author_name: v.author_name,
+          thumbnail_url: v.thumbnail_url,
+        }))}
+        placeholder="Search teachings…"
+        onClose={() => setSearchOpen(false)}
+        onSelect={(it) => {
+          setActiveId(it.id);
+          requestAnimationFrame(() => {
+            const el = containerRef.current?.querySelector(
+              `[data-video-id="${it.id}"]`,
+            ) as HTMLElement | null;
+            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }}
+      />
     </div>
   );
 }
