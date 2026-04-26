@@ -218,20 +218,13 @@ export const useInAppPurchases = () => {
     setState(prev => ({ ...prev, products, isLoading: false }));
   }, []);
 
-  const updatePurchaseState = useCallback(() => {
-    if (!store) return;
-
-    const premiumProduct = store.get(PRODUCT_IDS.PREMIUM_MONTHLY);
-    const premiumPlusProduct = store.get(PRODUCT_IDS.PREMIUM_PLUS_MONTHLY);
-
-    const isPremium = premiumProduct?.owned || false;
-    const isPremiumPlus = premiumPlusProduct?.owned || false;
-
-    setState(prev => ({
-      ...prev,
-      isPremium: isPremium || isPremiumPlus, // Premium Plus includes Premium features
-      isPremiumPlus,
-    }));
+  // Source of truth for premium access is the google_play_purchases table,
+  // populated by the verify-google-play-purchase edge function. The local
+  // `store.owned` flag is NOT trusted because it can be spoofed on rooted
+  // devices.
+  const updatePurchaseState = useCallback(async () => {
+    const { isPremium, isPremiumPlus } = await fetchVerifiedPurchaseState();
+    setState(prev => ({ ...prev, isPremium, isPremiumPlus }));
   }, []);
 
   const purchaseProduct = useCallback(async (productId: string) => {
