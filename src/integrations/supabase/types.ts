@@ -1152,6 +1152,72 @@ export type Database = {
           },
         ]
       }
+      sermon_drafts: {
+        Row: {
+          ai_feedback: string | null
+          ai_rewrite: string | null
+          assembled_text: string | null
+          created_at: string
+          id: string
+          scripture_ref: string | null
+          step_1: string | null
+          step_10: string | null
+          step_2: string | null
+          step_3: string | null
+          step_4: string | null
+          step_5: string | null
+          step_6: string | null
+          step_7: string | null
+          step_8: string | null
+          step_9: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          ai_rewrite?: string | null
+          assembled_text?: string | null
+          created_at?: string
+          id?: string
+          scripture_ref?: string | null
+          step_1?: string | null
+          step_10?: string | null
+          step_2?: string | null
+          step_3?: string | null
+          step_4?: string | null
+          step_5?: string | null
+          step_6?: string | null
+          step_7?: string | null
+          step_8?: string | null
+          step_9?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          ai_rewrite?: string | null
+          assembled_text?: string | null
+          created_at?: string
+          id?: string
+          scripture_ref?: string | null
+          step_1?: string | null
+          step_10?: string | null
+          step_2?: string | null
+          step_3?: string | null
+          step_4?: string | null
+          step_5?: string | null
+          step_6?: string | null
+          step_7?: string | null
+          step_8?: string | null
+          step_9?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       shared_content: {
         Row: {
           content: string

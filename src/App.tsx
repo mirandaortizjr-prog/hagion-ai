@@ -38,6 +38,9 @@ import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
 import ScriptureReader from "./pages/ScriptureReader";
 import PublicSpeaking from "./pages/PublicSpeaking";
+import SermonWorkspace from "./pages/SermonWorkspace";
+import SermonStepEditor from "./pages/SermonStepEditor";
+import SermonRefine from "./pages/SermonRefine";
 import TestSpirits from "./pages/TestSpirits";
 import SermonAnalyzer from "./pages/SermonAnalyzer";
 import MusicAnalyzer from "./pages/MusicAnalyzer";
@@ -141,6 +144,9 @@ const App = () => (
             <Route path="/bible-translations" element={<BibleTranslations />} />
             <Route path="/scripture/:textId" element={<ScriptureReader />} />
             <Route path="/public-speaking" element={<PublicSpeaking />} />
+            <Route path="/sermon-lab/:id" element={<SermonWorkspace />} />
+            <Route path="/sermon-lab/:id/step/:stepNum" element={<SermonStepEditor />} />
+            <Route path="/sermon-lab/:id/refine" element={<SermonRefine />} />
             <Route path="/prayer-wall" element={<PrayerWallPage />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
             <Route path="/daily-devotional" element={<DailyDevotional />} />
