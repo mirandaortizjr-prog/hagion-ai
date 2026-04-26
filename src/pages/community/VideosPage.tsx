@@ -461,6 +461,7 @@ function VideoFeedItem({
   onShare,
   onComment,
   onMore,
+  onFollow,
   onSeek,
   onPlaybackError,
   registerVideo,
