@@ -618,7 +618,7 @@ function VideoFeedItem({
         </div>
       </div>
 
-      <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-12 pt-10">
+      <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-6 pt-10">
         <div className="flex items-center gap-2 mb-3">
           <div className="text-sm font-medium text-white">
             @{video.author_name || "anonymous"}
