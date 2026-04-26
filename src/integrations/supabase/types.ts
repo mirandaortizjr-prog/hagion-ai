@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_deletion_requests: {
+        Row: {
+          cancelled_at: string | null
+          completed_at: string | null
+          id: string
+          notes: string | null
+          requested_at: string
+          scheduled_deletion_at: string
+          user_id: string
+        }
+        Insert: {
+          cancelled_at?: string | null
+          completed_at?: string | null
+          id?: string
+          notes?: string | null
+          requested_at?: string
+          scheduled_deletion_at?: string
+          user_id: string
+        }
+        Update: {
+          cancelled_at?: string | null
+          completed_at?: string | null
+          id?: string
+          notes?: string | null
+          requested_at?: string
+          scheduled_deletion_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       churches: {
         Row: {
           created_at: string
