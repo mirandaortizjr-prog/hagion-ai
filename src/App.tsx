@@ -41,6 +41,10 @@ import TestSpirits from "./pages/TestSpirits";
 import SermonAnalyzer from "./pages/SermonAnalyzer";
 import MusicAnalyzer from "./pages/MusicAnalyzer";
 import ReligionChecker from "./pages/ReligionChecker";
+import ChurchChecker from "./pages/ChurchChecker";
+import BeliefSystemsChecker from "./pages/BeliefSystemsChecker";
+import ReligiousTextsChecker from "./pages/ReligiousTextsChecker";
+import ProphecyChecker from "./pages/ProphecyChecker";
 import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
@@ -108,6 +112,10 @@ const App = () => (
             <Route path="/discernment/sermon-analyzer" element={<SermonAnalyzer />} />
             <Route path="/discernment/music-analyzer" element={<MusicAnalyzer />} />
             <Route path="/discernment/religion-checker" element={<ReligionChecker />} />
+            <Route path="/discernment/church-checker" element={<ChurchChecker />} />
+            <Route path="/discernment/belief-systems" element={<BeliefSystemsChecker />} />
+            <Route path="/discernment/religious-texts" element={<ReligiousTextsChecker />} />
+            <Route path="/discernment/prophecy-checker" element={<ProphecyChecker />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/community" element={<PrayerWall />} />
             <Route path="/splash" element={<Splash />} />

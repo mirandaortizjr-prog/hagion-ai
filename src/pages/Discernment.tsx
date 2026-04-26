@@ -72,7 +72,7 @@ const Discernment = () => {
         "Investiga la doctrina, liderazgo, adoración y fruto visible de una iglesia antes de comprometerte."
       ),
       icon: Church,
-      onClick: () => navigate("/chat?discern=churches"),
+      onClick: () => navigate("/discernment/church-checker"),
       glow: "from-indigo-300/70 via-blue-400/40 to-violet-500/60",
       edgeColor: "129,140,248",
     },
@@ -83,7 +83,7 @@ const Discernment = () => {
         "Evalúa denominaciones, movimientos y religiones mundiales por solidez teológica frente al cristianismo ortodoxo."
       ),
       icon: Search,
-      onClick: () => navigate("/chat?discern=belief-systems"),
+      onClick: () => navigate("/discernment/belief-systems"),
       glow: "from-cyan-300/70 via-sky-400/40 to-blue-500/60",
       edgeColor: "56,189,248",
     },
@@ -94,7 +94,7 @@ const Discernment = () => {
         "Prueba escritos sagrados, revelaciones modernas y textos extrabíblicos por integridad teológica y alineación con la Escritura."
       ),
       icon: BookOpen,
-      onClick: () => navigate("/library?mode=analyze"),
+      onClick: () => navigate("/discernment/religious-texts"),
       glow: "from-blue-300/70 via-indigo-400/40 to-purple-500/60",
       edgeColor: "96,165,250",
     },
@@ -105,7 +105,7 @@ const Discernment = () => {
         "Prueba profecías y profetas modernos por el estándar inmutable de la Escritura."
       ),
       icon: ScrollText,
-      onClick: () => navigate("/chat?voice=prophecy&context=discernment"),
+      onClick: () => navigate("/discernment/prophecy-checker"),
       glow: "from-yellow-300/70 via-amber-400/40 to-orange-500/60",
       edgeColor: "252,211,77",
     },
