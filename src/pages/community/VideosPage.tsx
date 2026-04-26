@@ -438,6 +438,7 @@ interface VideoFeedItemProps {
   onShare: () => void;
   onComment: () => void;
   onMore: () => void;
+  onFollow: () => void;
   onSeek: (ratio: number) => void;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
