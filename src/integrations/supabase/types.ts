@@ -134,6 +134,7 @@ export type Database = {
           created_at: string
           id: string
           moral_takeaway: string | null
+          subject: string
           theme: string
           title: string
         }
@@ -142,6 +143,7 @@ export type Database = {
           created_at?: string
           id?: string
           moral_takeaway?: string | null
+          subject?: string
           theme: string
           title: string
         }
@@ -150,6 +152,7 @@ export type Database = {
           created_at?: string
           id?: string
           moral_takeaway?: string | null
+          subject?: string
           theme?: string
           title?: string
         }
