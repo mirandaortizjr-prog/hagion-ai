@@ -244,7 +244,7 @@ const DailyWisdom = () => {
 
               {/* Era line */}
               {story.era && (
-                <p className="text-center text-[12px] uppercase tracking-[0.35em] text-foreground/50 mb-2">
+                <p className="text-center text-[12px] uppercase tracking-[0.35em] text-white mb-2">
                   {story.era}
                 </p>
               )}
