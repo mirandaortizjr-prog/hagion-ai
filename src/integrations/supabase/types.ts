@@ -1488,6 +1488,15 @@ export type Database = {
           tier: string
         }[]
       }
+      check_sermon_draft_quota: {
+        Args: { p_user_id: string }
+        Returns: {
+          allowed: boolean
+          monthly_limit: number
+          remaining: number
+          tier: string
+        }[]
+      }
       get_user_tier: { Args: { p_user_id: string }; Returns: string }
     }
     Enums: {
