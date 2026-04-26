@@ -1498,6 +1498,7 @@ export type Database = {
         }[]
       }
       get_user_tier: { Args: { p_user_id: string }; Returns: string }
+      is_staff_email: { Args: { p_user_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
