@@ -51,14 +51,32 @@ export const PremiumNav = () => {
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<{ name: string | null; username: string | null; avatar_url: string | null } | null>(null);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<"image" | "video" | null>(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then(async ({ data }) => {
+      setUser(data.user);
+      if (data.user) {
+        const { data: prof } = await supabase
+          .from("profiles")
+          .select("name, username, avatar_url")
+          .eq("user_id", data.user.id)
+          .maybeSingle();
+        setProfile(prof);
+      }
+    });
   }, [postOpen]);
+
+  const displayName = () =>
+    profile?.name?.trim() ||
+    profile?.username?.trim() ||
+    user?.user_metadata?.name ||
+    user?.user_metadata?.full_name ||
+    "Believer";
 
   const pickMedia = (kind: "image" | "video") => {
     const input = document.createElement("input");
