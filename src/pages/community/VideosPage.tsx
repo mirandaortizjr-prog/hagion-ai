@@ -366,6 +366,12 @@ export default function VideosPage() {
         title={commentsFor?.title}
         onClose={() => setCommentsFor(null)}
       />
+      <MediaMoreSheet
+        open={!!moreFor}
+        shareUrl={moreFor ? `${window.location.origin}/community/videos#${moreFor.id}` : undefined}
+        videoUrl={moreFor?.video_url || undefined}
+        onClose={() => setMoreFor(null)}
+      />
     </div>
   );
 }
