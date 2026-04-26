@@ -117,6 +117,7 @@ export default function ReelsFeedPage() {
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const [uploadOpen, setUploadOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
+  const [moreFor, setMoreFor] = useState<Reel | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
