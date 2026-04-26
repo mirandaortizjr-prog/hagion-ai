@@ -499,11 +499,35 @@ function VideoFeedItem({
 }: VideoFeedItemProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const initial = (video.author_name || "?").charAt(0).toUpperCase();
+
+  const showControls = () => {
+    setControlsVisible(true);
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    if (!paused) {
+      hideTimerRef.current = setTimeout(() => setControlsVisible(false), 2000);
+    }
+  };
+
+  useEffect(() => {
+    if (paused) {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      setControlsVisible(true);
+    } else {
+      showControls();
+    }
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paused, isActive]);
 
   return (
     <section
       data-video-id={video.id}
+      onPointerDown={showControls}
       className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
     >
       {video.video_url ? (
@@ -626,7 +650,7 @@ function VideoFeedItem({
       </div>
 
       {/* Scrubber */}
-      <div className="absolute bottom-0 inset-x-0 z-30 px-4 pb-2">
+      <div className={cn("absolute bottom-0 inset-x-0 z-30 px-4 pb-2 transition-opacity duration-500", controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none")}>
         <div className="flex items-center gap-2 text-[10px] tabular-nums text-white/80">
           <button
             onClick={onTogglePause}
