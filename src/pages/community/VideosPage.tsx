@@ -551,8 +551,7 @@ function VideoFeedItem({
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              const evt = new CustomEvent("hagion:follow-toast", { detail: video.author_name });
-              window.dispatchEvent(evt);
+              onFollow();
             }}
             className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
             aria-label="Follow"
