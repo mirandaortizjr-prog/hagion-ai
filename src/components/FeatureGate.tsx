@@ -26,7 +26,5 @@ export function FeatureGate({ feature, fallbackTier = "premium", children }: Pro
   if (canUse(feature)) return <>{children}</>;
 
   const required = (requiredTierFor(feature) ?? fallbackTier) as Exclude<Tier, "free">;
-  const tier = required === "free" ? fallbackTier : required;
-
-  return <FeatureLockCard requiredTier={tier} />;
+  return <FeatureLockCard requiredTier={required} />;
 }
