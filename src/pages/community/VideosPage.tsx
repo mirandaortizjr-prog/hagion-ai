@@ -650,7 +650,7 @@ function VideoFeedItem({
       </div>
 
       {/* Scrubber */}
-      <div className="absolute bottom-0 inset-x-0 z-30 px-4 pb-2">
+      <div className={cn("absolute bottom-0 inset-x-0 z-30 px-4 pb-2 transition-opacity duration-500", controlsVisible ? "opacity-100" : "opacity-0 pointer-events-none")}>
         <div className="flex items-center gap-2 text-[10px] tabular-nums text-white/80">
           <button
             onClick={onTogglePause}
