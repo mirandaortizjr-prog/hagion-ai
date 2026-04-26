@@ -322,22 +322,7 @@ export const PremiumNav = () => {
                 })}
               </div>
             ) : (
-              <div className="flex gap-2 mb-3">
-                {(["post", "prayer", "testimony"] as const).map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setComposerType(t)}
-                    className={cn(
-                      "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
-                      composerType === t
-                        ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-                        : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
-                    )}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
+              <div className="mb-1" />
             )}
             <Textarea
               value={composer}
