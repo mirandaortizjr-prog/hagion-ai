@@ -115,7 +115,8 @@ export const PremiumNav = () => {
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
       author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
-      post_type: composerType,
+      post_type: inDiscussions ? "discussion" : composerType,
+      category: inDiscussions ? discussionCategory : "general",
       content: composer.trim(),
       media_url,
       media_type,
@@ -229,31 +230,58 @@ export const PremiumNav = () => {
         >
           <SheetHeader>
             <SheetTitle className="text-white font-playfair text-xl text-center">
-              {language === "es" ? "Compartir con la comunidad" : "Share with the community"}
+              {inDiscussions
+                ? (language === "es" ? "Iniciar una discusión" : "Start a discussion")
+                : (language === "es" ? "Compartir con la comunidad" : "Share with the community")}
             </SheetTitle>
           </SheetHeader>
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4">
-            <div className="flex gap-2 mb-3">
-              {(["post", "prayer", "testimony"] as const).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setComposerType(t)}
-                  className={cn(
-                    "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
-                    composerType === t
-                      ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
-                      : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
-                  )}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+            {inDiscussions ? (
+              <div className="flex gap-2 mb-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+                {DISCUSSION_CATEGORIES.map((c) => {
+                  const active = discussionCategory === c.id;
+                  return (
+                    <button
+                      key={c.id}
+                      onClick={() => setDiscussionCategory(c.id)}
+                      className={cn(
+                        "shrink-0 px-3 py-1 rounded-full text-[11px] tracking-[0.12em] uppercase transition flex items-center gap-1.5",
+                        active
+                          ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
+                          : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
+                      )}
+                    >
+                      <span>{c.emoji}</span>
+                      <span>{language === "es" ? c.es : c.en}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex gap-2 mb-3">
+                {(["post", "prayer", "testimony"] as const).map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setComposerType(t)}
+                    className={cn(
+                      "px-3 py-1 rounded-full text-[11px] tracking-[0.16em] uppercase transition",
+                      composerType === t
+                        ? "bg-white text-black shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
+                        : "bg-white/[0.06] border border-white/15 text-white/70 hover:text-white"
+                    )}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            )}
             <Textarea
               value={composer}
               onChange={(e) => setComposer(e.target.value)}
               placeholder={
-                composerType === "prayer"
+                inDiscussions
+                  ? (language === "es" ? "Comparte tu pregunta o reflexión..." : "Share your question or reflection...")
+                  : composerType === "prayer"
                   ? "Share a prayer request..."
                   : composerType === "testimony"
                   ? "Share what God has done..."
