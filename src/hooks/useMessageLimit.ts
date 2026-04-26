@@ -20,10 +20,11 @@ export const useMessageLimit = () => {
         return;
       }
 
-      // Demo account gets unlimited messages - return null to hide limit display
-      if (user.email?.toLowerCase() === DEMO_EMAIL.toLowerCase()) {
-        setRemaining(null); // null hides the limit display entirely
-        setIsDemoAccount(true);
+      // Demo + staff accounts get unlimited messages
+      const lower = user.email?.toLowerCase() ?? "";
+      if (lower === DEMO_EMAIL.toLowerCase() || STAFF_EMAILS.includes(lower)) {
+        setRemaining(null);
+        setIsDemoAccount(lower === DEMO_EMAIL.toLowerCase());
         setLoading(false);
         return;
       }
