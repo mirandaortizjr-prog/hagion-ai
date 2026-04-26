@@ -577,14 +577,14 @@ function VideoFeedItem({
           </span>
         </div>
         {video.title && (
-          <h3 className="font-playfair text-[19px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1.5">
+          <h3 className="font-playfair text-[15px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1">
             {video.title}
           </h3>
         )}
         {video.description && (
           <p
             className={cn(
-              "text-[13px] text-white/80 leading-relaxed",
+              "text-[11px] text-white/75 leading-snug",
               !expanded && "line-clamp-2",
             )}
             onClick={() => setExpanded((e) => !e)}
