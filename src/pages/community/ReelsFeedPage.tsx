@@ -368,6 +368,13 @@ export default function ReelsFeedPage() {
         </div>
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setSearchOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label="Search reels"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+          <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
             aria-label="Upload reel"
