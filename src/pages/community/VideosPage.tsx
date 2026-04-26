@@ -522,6 +522,8 @@ function VideoFeedItem({
       <div
         className="absolute right-3 z-30 flex flex-col items-center gap-5"
         style={{ bottom: "max(calc(env(safe-area-inset-bottom) + 56px), 56px)" }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <ActionButton
           icon={Heart}
@@ -545,7 +547,14 @@ function VideoFeedItem({
             <span className="font-playfair text-base text-white">{initial}</span>
           </div>
           <button
-            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              const evt = new CustomEvent("hagion:follow-toast", { detail: video.author_name });
+              window.dispatchEvent(evt);
+            }}
+            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
             aria-label="Follow"
           >
             <Plus className="w-3 h-3 text-white" strokeWidth={3} />
