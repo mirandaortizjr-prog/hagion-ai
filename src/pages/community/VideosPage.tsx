@@ -244,25 +244,50 @@ export default function VideosPage() {
   };
 
   const handleSave = (v: VideoItem) => {
+    const wasSaved = saved.has(v.id);
     setSaved((s) => {
       const n = new Set(s);
-      if (n.has(v.id)) n.delete(v.id);
+      if (wasSaved) n.delete(v.id);
       else n.add(v.id);
       return n;
     });
-    toast({ title: saved.has(v.id) ? "Removed from saved" : "Saved" });
+    toast({
+      title: wasSaved ? "Removed from saved" : "Saved to your collection",
+      description: wasSaved ? undefined : "View under Profile › Saved",
+    });
   };
 
   const handleShare = async (v: VideoItem) => {
     const url = `${window.location.origin}/community/videos#${v.id}`;
+    const shareData = { title: v.title, text: v.description || v.title, url };
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share(shareData);
+        return;
+      } catch (err: any) {
+        if (err?.name === "AbortError") return;
+      }
+    }
     try {
-      if (navigator.share) {
-        await navigator.share({ title: v.title, url });
-      } else {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: "Link copied", description: url });
+        return;
       }
     } catch {}
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      toast({ title: "Link copied", description: url });
+    } catch {
+      toast({ title: "Share link", description: url });
+    }
   };
 
   const handleSeek = (id: string, ratio: number) => {
