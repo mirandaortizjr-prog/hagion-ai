@@ -39,6 +39,7 @@ import ScriptureReader from "./pages/ScriptureReader";
 import PublicSpeaking from "./pages/PublicSpeaking";
 import TestSpirits from "./pages/TestSpirits";
 import SermonAnalyzer from "./pages/SermonAnalyzer";
+import MusicAnalyzer from "./pages/MusicAnalyzer";
 import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
@@ -104,6 +105,7 @@ const App = () => (
             <Route path="/discernment" element={<Discernment />} />
             <Route path="/discernment/test-spirits" element={<TestSpirits />} />
             <Route path="/discernment/sermon-analyzer" element={<SermonAnalyzer />} />
+            <Route path="/discernment/music-analyzer" element={<MusicAnalyzer />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/community" element={<PrayerWall />} />
             <Route path="/splash" element={<Splash />} />

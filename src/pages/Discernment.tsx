@@ -50,7 +50,7 @@ const Discernment = () => {
         "Examina letras por teología, espíritu y alineación con la Palabra."
       ),
       icon: Music,
-      onClick: () => navigate("/chat?voice=music&context=discernment"),
+      onClick: () => navigate("/discernment/music-analyzer"),
       glow: "from-violet-300/70 via-fuchsia-400/40 to-purple-500/60",
       edgeColor: "192,132,252",
     },
