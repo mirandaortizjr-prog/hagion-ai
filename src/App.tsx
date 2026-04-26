@@ -32,6 +32,7 @@ import Chat from "./pages/Chat";
 import Premium from "./pages/Premium";
 import AssistantChat from "./pages/AssistantChat";
 import StorytellingChat from "./pages/StorytellingChat";
+import SubjectDailyStory from "./pages/SubjectDailyStory";
 import LogosCircle from "./pages/LogosCircle";
 import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
@@ -159,6 +160,7 @@ const App = () => (
             <Route path="/friends" element={<Friends />} />
             <Route path="/u/:handle" element={<PublicProfile />} />
             <Route path="/storytelling/:storyId" element={<StorytellingChat />} />
+            <Route path="/subject-story/:subjectId" element={<SubjectDailyStory />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
