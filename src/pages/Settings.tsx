@@ -215,7 +215,15 @@ const Settings = () => {
         { icon: BookOpen, label: language === 'es' ? 'Ver Tutorial de Nuevo' : 'View Tutorial Again', action: handleResetOnboarding },
       ],
     },
-  ];
+    {
+      title: language === 'es' ? 'Legal' : 'Legal',
+      items: [
+        { icon: BookOpen, label: language === 'es' ? 'Política de Privacidad' : 'Privacy Policy', action: () => navigate("/privacy") },
+        { icon: BookOpen, label: language === 'es' ? 'Términos de Servicio' : 'Terms of Service', action: () => navigate("/terms") },
+        { icon: BookOpen, label: language === 'es' ? 'Reembolsos y Cancelación' : 'Refund & Cancellation', action: () => navigate("/refund-policy") },
+        { icon: BookOpen, label: language === 'es' ? 'Descargo de IA' : 'AI Disclaimer', action: () => navigate("/ai-disclaimer") },
+      ],
+    },
 
   const initial = (profile.name?.[0] || user?.email?.[0] || "U").toUpperCase();
   const nameChanged = (name || "") !== (profile.name || "");
