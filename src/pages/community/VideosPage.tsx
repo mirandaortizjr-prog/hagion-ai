@@ -676,8 +676,14 @@ function ActionButton({
   const isRose = active && activeColor === "rose";
   return (
     <button
-      onClick={onClick}
-      className="flex flex-col items-center gap-1 active:scale-90 transition"
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+      onPointerDown={(e) => e.stopPropagation()}
+      className="flex flex-col items-center gap-1 active:scale-90 transition cursor-pointer select-none"
     >
       <div
         className={cn(
