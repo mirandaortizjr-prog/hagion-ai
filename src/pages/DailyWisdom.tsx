@@ -325,7 +325,7 @@ const DailyWisdom = () => {
         <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold">
           {label}
         </h2>
-        <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-foreground" : ""}>
+        <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-white" : ""}>
           {emphasized ? (
             <p className="leading-[1.7]">{body}</p>
           ) : (
