@@ -142,7 +142,9 @@ const Premium = () => {
       return;
     }
     if (!plan.priceId) return;
-    if (tier === plan.id) {
+    // Any active paid tier → route through Stripe Billing Portal to switch
+    // plans with proration; prevents creating duplicate subscriptions.
+    if (tier !== 'free' && !isDemo) {
       handleManageBilling();
       return;
     }
