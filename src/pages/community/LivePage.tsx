@@ -298,17 +298,46 @@ export default function LivePage() {
     setTimeout(() => setHearts((h) => h.filter((x) => x.id !== id)), 2200);
   };
 
-  const sendChat = (sid: string) => {
-    if (!draft.trim()) return;
-    const msg: ChatMessage = {
-      id: `me-${Date.now()}`,
-      author: "You",
-      content: draft.trim(),
-      ts: Date.now(),
-      isMine: true,
-    };
-    setChats((c) => ({ ...c, [sid]: [...(c[sid] || []), msg].slice(-30) }));
+  const sendChat = async (sid: string) => {
+    const text = draft.trim();
+    if (!text) return;
     setDraft("");
+
+    // Sample stream — local only.
+    if (sid.startsWith("live-")) {
+      const msg: ChatMessage = {
+        id: `me-${Date.now()}`,
+        author: "You",
+        content: text,
+        ts: Date.now(),
+        isMine: true,
+      };
+      setChats((c) => ({ ...c, [sid]: [...(c[sid] || []), msg].slice(-30) }));
+      return;
+    }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: "Sign in to chat", description: "Join the conversation by signing in." });
+      return;
+    }
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("name, username, avatar_url")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    const authorName = profile?.name || profile?.username || "anonymous";
+
+    const { error } = await supabase.from("live_chat_messages").insert({
+      stream_id: sid,
+      user_id: user.id,
+      author_name: authorName,
+      author_avatar: profile?.avatar_url ?? null,
+      content: text,
+    });
+    if (error) {
+      toast({ title: "Couldn't send", description: error.message });
+    }
   };
 
   const handleShare = async (s: LiveStream) => {
