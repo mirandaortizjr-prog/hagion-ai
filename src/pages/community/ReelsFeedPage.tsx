@@ -419,6 +419,7 @@ interface ReelItemProps {
   onShare: () => void;
   onComment: () => void;
   onMore: () => void;
+  onFollow: () => void;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
