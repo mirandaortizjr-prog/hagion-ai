@@ -261,7 +261,8 @@ export const PremiumNav = () => {
       <Sheet open={postOpen} onOpenChange={setPostOpen}>
         <SheetContent
           side="bottom"
-          className="bg-black/80 backdrop-blur-2xl border-t border-white/10 text-white rounded-t-3xl max-h-[92dvh] overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)]"
+          onOpenAutoFocus={(event) => event.preventDefault()}
+          className="bg-black/80 backdrop-blur-2xl border-t border-white/10 text-white rounded-t-3xl max-h-[92dvh] overflow-y-auto overscroll-contain pb-[calc(env(safe-area-inset-bottom)+1rem)]"
         >
           <SheetHeader>
             <SheetTitle className="text-white font-playfair text-xl text-center">
