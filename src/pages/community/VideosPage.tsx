@@ -368,6 +368,7 @@ export default function VideosPage() {
               onShare={() => handleShare(v)}
               onComment={() => setCommentsFor(v)}
               onMore={() => setMoreFor(v)}
+              onFollow={() => toast({ title: `Following @${v.author_name || "user"}` })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
