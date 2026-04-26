@@ -332,11 +332,7 @@ export const PremiumNav = () => {
                   ? (language === "es" ? "Describe el propósito del grupo (opcional)" : "Describe the group's purpose (optional)")
                   : inDiscussions
                   ? (language === "es" ? "Comparte tu pregunta o reflexión..." : "Share your question or reflection...")
-                  : composerType === "prayer"
-                  ? "Share a prayer request..."
-                  : composerType === "testimony"
-                  ? "Share what God has done..."
-                  : "Share with the community..."
+                  : (language === "es" ? "Comparte con la comunidad..." : "Share with the community...")
               }
               rows={4}
               className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
