@@ -298,7 +298,7 @@ const DailyWisdom = () => {
                 </div>
               )}
 
-              <p className="mt-16 text-center text-[11px] uppercase tracking-[0.3em] text-foreground/40">
+              <p className="mt-16 text-center text-[11px] uppercase tracking-[0.3em] text-white">
                 Return tomorrow for new wisdom
               </p>
             </article>
