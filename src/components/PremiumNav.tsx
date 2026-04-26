@@ -85,11 +85,43 @@ export const PremiumNav = () => {
     setMediaKind(null);
   };
 
+  const handleCreateGroup = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (!groupName.trim()) return;
+    setPosting(true);
+    const { data, error } = await supabase
+      .from("groups")
+      .insert({
+        name: groupName.trim(),
+        description: composer.trim() || null,
+        creator_id: user.id,
+      })
+      .select("id")
+      .single();
+    if (!error && data) {
+      await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id });
+    }
+    setPosting(false);
+    if (error) {
+      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+    } else {
+      setGroupName("");
+      setComposer("");
+      setPostOpen(false);
+      toast({ title: language === "es" ? "Grupo creado" : "Group created" });
+      window.dispatchEvent(new CustomEvent("groups:refresh"));
+    }
+  };
+
   const handlePost = async () => {
     if (!user) {
       navigate("/auth");
       return;
     }
+    if (inGroupsList) return handleCreateGroup();
     if (!composer.trim() && !mediaFile) return;
     setPosting(true);
 
