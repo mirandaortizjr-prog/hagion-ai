@@ -6,8 +6,6 @@ const FEATURE_MIN_TIER: Record<string, Tier> = {
   sermon_analysis: 'premium_plus',
   doctrine_analysis: 'premium_plus',
   lyric_analysis: 'premium_plus',
-  // Faithful Friend cross-app bonus
-  faithful_friend: 'premium_plus',
   // Hero image upload
   hero_upload: 'premium_plus',
   // Bible translations bulk

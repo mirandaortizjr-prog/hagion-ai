@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logo from "@/assets/faithful-friend-logo.png";
+import logo from "@/assets/hagion-logo.png";
 
 const Splash = () => {
   const navigate = useNavigate();
@@ -19,16 +19,15 @@ const Splash = () => {
     <div className="min-h-screen flex items-center justify-center bg-absolute-black">
       <div className="text-center animate-fade-in px-4">
         <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto bg-absolute-black">
-          
           <img
             src={logo}
-            alt="Faithful Friend"
+            alt="Hagion"
             className="w-full h-full object-contain animate-scale-in"
             style={{ backgroundColor: 'transparent' }}
           />
         </div>
         <h1 className="mt-6 sm:mt-8 text-3xl sm:text-4xl font-bold text-secondary animate-slide-up">
-          Faithful Friend
+          Hagion
         </h1>
         <p className="mt-2 text-sm sm:text-base text-muted-foreground animate-slide-up">
           {t('divine_wisdom')}
