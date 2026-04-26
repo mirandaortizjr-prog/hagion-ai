@@ -238,7 +238,7 @@ const DailyWisdom = () => {
           ) : story ? (
             <article className="animate-fade-in">
               {/* Title — bold, centered, top */}
-              <h1 className="text-center text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-foreground mb-3 px-2">
+              <h1 className="text-center text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-white mb-3 px-2">
                 {story.title}
               </h1>
 
