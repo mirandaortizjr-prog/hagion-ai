@@ -107,32 +107,34 @@ export default function VideosPage() {
   const [duration, setDuration] = useState<Record<string, number>>({});
   const [liked, setLiked] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState<Set<string>>(new Set());
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   const handleBack = useCallback(() => {
     navigate("/community", { replace: true });
   }, [navigate]);
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      try {
-        const { data } = await supabase
-          .from("teachings")
-          .select("*")
-          .not("video_url", "is", null)
-          .order("created_at", { ascending: false })
-          .limit(50);
+  const loadVideos = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data } = await supabase
+        .from("teachings")
+        .select("*")
+        .not("video_url", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(50);
 
-        let list = (data as VideoItem[]) || [];
-        if (list.length === 0) list = SAMPLE_VIDEOS;
-        setVideos(list);
-        if (list.length) setActiveId(list[0].id);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+      let list = (data as VideoItem[]) || [];
+      if (list.length === 0) list = SAMPLE_VIDEOS;
+      setVideos(list);
+      if (list.length) setActiveId((prev) => prev ?? list[0].id);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadVideos();
+  }, [loadVideos]);
 
   useEffect(() => {
     const onPopState = () => handleBack();
