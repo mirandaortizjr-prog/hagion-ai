@@ -1,7 +1,56 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Capacitor } from '@capacitor/core';
+import { supabase } from '@/integrations/supabase/client';
 
 const isNative = Capacitor.isNativePlatform();
+
+// Server-side receipt verification.
+// Calls the verify-google-play-purchase edge function which talks to the
+// Google Play Developer API and writes the verified state to the
+// google_play_purchases table. The premium gate reads that table — never
+// trust the client.
+async function verifyPurchaseOnServer(productId: string, purchaseToken: string) {
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      'verify-google-play-purchase',
+      { body: { productId, purchaseToken } },
+    );
+    if (error) {
+      console.error('Server verification failed:', error);
+      return { verified: false, error: error.message };
+    }
+    console.log('Server verification result:', data);
+    return data;
+  } catch (e) {
+    console.error('Server verification error:', e);
+    return { verified: false, error: (e as Error).message };
+  }
+}
+
+async function fetchVerifiedPurchaseState() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { isPremium: false, isPremiumPlus: false };
+
+  const { data, error } = await supabase
+    .from('google_play_purchases')
+    .select('product_id, status, expiry_time')
+    .eq('user_id', user.id)
+    .eq('status', 'active');
+
+  if (error || !data) return { isPremium: false, isPremiumPlus: false };
+
+  const now = Date.now();
+  const active = data.filter(
+    (p) => !p.expiry_time || new Date(p.expiry_time).getTime() > now,
+  );
+  const isPremiumPlus = active.some(
+    (p) => p.product_id === PRODUCT_IDS.PREMIUM_PLUS_MONTHLY,
+  );
+  const isPremium =
+    isPremiumPlus ||
+    active.some((p) => p.product_id === PRODUCT_IDS.PREMIUM_MONTHLY);
+  return { isPremium, isPremiumPlus };
+}
 
 // Product IDs - these must match your Google Play Console / App Store Connect setup
 export const PRODUCT_IDS = {
