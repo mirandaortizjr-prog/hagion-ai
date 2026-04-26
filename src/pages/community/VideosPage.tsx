@@ -333,6 +333,13 @@ export default function VideosPage() {
           ))}
         </div>
       )}
+
+      <VideoUploadSheet
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        kind="teaching"
+        onUploaded={loadVideos}
+      />
     </div>
   );
 }
