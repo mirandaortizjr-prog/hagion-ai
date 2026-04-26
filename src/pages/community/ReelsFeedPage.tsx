@@ -370,14 +370,14 @@ export default function ReelsFeedPage() {
           <button
             onClick={() => setSearchOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Search reels"
+            aria-label="Search clips"
           >
             <Search className="w-5 h-5" />
           </button>
           <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Upload reel"
+            aria-label="Upload clip"
           >
             <Plus className="w-5 h-5" />
           </button>
@@ -396,7 +396,7 @@ export default function ReelsFeedPage() {
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
-              Loading reels
+              Loading clips
             </div>
           </div>
         </div>
@@ -470,7 +470,7 @@ export default function ReelsFeedPage() {
           author_name: r.author_name,
           thumbnail_url: r.thumbnail_url,
         }))}
-        placeholder="Search reels…"
+        placeholder="Search clips…"
         onClose={() => setSearchOpen(false)}
         onSelect={(it) => {
           setActiveId(it.id);
@@ -761,7 +761,7 @@ function EmptyState({ onBack }: { onBack: () => void }) {
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center mb-5">
         <Sparkles className="w-9 h-9 text-white/80" />
       </div>
-      <h2 className="font-playfair text-2xl mb-2">No reels yet</h2>
+      <h2 className="font-playfair text-2xl mb-2">No clips yet</h2>
       <p className="text-white/55 text-[14px] max-w-xs leading-relaxed mb-6">
         Be the first to share a short, sacred moment with the community.
       </p>

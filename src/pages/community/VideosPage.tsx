@@ -319,14 +319,14 @@ export default function VideosPage() {
           <button
             onClick={() => setSearchOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Search videos"
+            aria-label="Search vids"
           >
             <Search className="w-5 h-5" />
           </button>
           <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Upload teaching"
+            aria-label="Upload vid"
           >
             <Plus className="w-5 h-5" />
           </button>
@@ -436,7 +436,7 @@ export default function VideosPage() {
           author_name: v.author_name,
           thumbnail_url: v.thumbnail_url,
         }))}
-        placeholder="Search teachings…"
+        placeholder="Search vids…"
         onClose={() => setSearchOpen(false)}
         onSelect={(it) => {
           setActiveId(it.id);
@@ -773,9 +773,9 @@ function EmptyState({ onBack }: { onBack: () => void }) {
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center mb-5">
         <Film className="w-9 h-9 text-white/80" />
       </div>
-      <h2 className="font-playfair text-2xl mb-2">No videos yet</h2>
+      <h2 className="font-playfair text-2xl mb-2">No vids yet</h2>
       <p className="text-white/55 text-[14px] max-w-xs leading-relaxed mb-6">
-        Long-form teachings and sermons from the community will appear here.
+        Long-form vids from the community will appear here.
       </p>
       <Button
         onClick={onBack}
