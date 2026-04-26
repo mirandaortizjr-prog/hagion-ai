@@ -6,31 +6,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { getCurriculumData } from "@/data/curriculumData";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
-import { useTierAccess } from "@/hooks/useTierAccess";
-import { FeatureLockCard } from "@/components/FeatureLockCard";
 
 const LogosLearning = () => {
   const navigate = useNavigate();
   const { type, id } = useParams<{ type: string; id: string }>();
   const { t, language } = useLanguage();
-  const access = useTierAccess();
-  const curriculumData = getCurriculumData(language);
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
-
-  if (!access.isLoading && !access.canUse("hagion_university")) {
-    return (
-      <FeatureLockCard
-        requiredTier="premium"
-        featureName={language === "es" ? "Universidad Hagion" : "Hagion University"}
-        description={
-          language === "es"
-            ? "Accede al currículo completo de Hagion University con el plan Premium o superior."
-            : "Unlock the full Hagion University curriculum with Premium or higher."
-        }
-        onBack={() => navigate("/main-menu?tab=hagion-university")}
-      />
-    );
-  }
 
   const trackTitles: Record<string, string> = {
     foundations: t('foundations_logos'),
