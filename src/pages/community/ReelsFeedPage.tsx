@@ -362,6 +362,13 @@ export default function ReelsFeedPage() {
           ))}
         </div>
       )}
+
+      <VideoUploadSheet
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        kind="reel"
+        onUploaded={loadReels}
+      />
     </div>
   );
 }
