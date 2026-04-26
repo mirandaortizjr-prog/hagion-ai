@@ -132,7 +132,12 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          era: string | null
           id: string
+          law_interpretation: string | null
+          law_observance: string | null
+          law_statement: string | null
+          law_transgression: string | null
           moral_takeaway: string | null
           subject: string
           theme: string
@@ -141,7 +146,12 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
+          era?: string | null
           id?: string
+          law_interpretation?: string | null
+          law_observance?: string | null
+          law_statement?: string | null
+          law_transgression?: string | null
           moral_takeaway?: string | null
           subject?: string
           theme: string
@@ -150,7 +160,12 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
+          era?: string | null
           id?: string
+          law_interpretation?: string | null
+          law_observance?: string | null
+          law_statement?: string | null
+          law_transgression?: string | null
           moral_takeaway?: string | null
           subject?: string
           theme?: string
