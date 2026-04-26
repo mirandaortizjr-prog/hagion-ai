@@ -276,20 +276,49 @@ const PublicSpeaking = () => {
             </p>
 
             <ol className="space-y-3">
-              {SERMON_STEPS.map((s) => (
-                <li
-                  key={s.num}
-                  className="flex items-start gap-3 border border-white/10 rounded-2xl p-4 bg-white/[0.03] backdrop-blur-sm"
-                >
-                  <span className="shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium bg-white/10 text-white/85 ring-1 ring-white/15">
-                    {s.num}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-white text-[14.5px] font-medium leading-snug">{s.title}</p>
-                    <p className="text-[13px] text-white/60 mt-0.5 leading-relaxed">{s.desc}</p>
-                  </div>
-                </li>
-              ))}
+              {SERMON_STEPS.map((s) => {
+                const handleStepTap = async () => {
+                  if (!isPro) { setShowGate(true); return; }
+                  // Open step on most recent draft, or create one
+                  let draftId = drafts[0]?.id;
+                  if (!draftId) {
+                    if (atLimit) {
+                      toast({ title: "Monthly limit reached", description: `Limit is ${MONTHLY_LIMIT} sermons per month.`, variant: "destructive" });
+                      return;
+                    }
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) { toast({ title: "Sign in required", variant: "destructive" }); return; }
+                    const { data, error } = await supabase
+                      .from("sermon_drafts")
+                      .insert({ user_id: session.user.id, title: "Untitled Sermon" })
+                      .select()
+                      .single();
+                    if (error || !data) {
+                      toast({ title: "Could not create sermon", description: error?.message, variant: "destructive" });
+                      return;
+                    }
+                    draftId = data.id;
+                    setDrafts((prev) => [data as SermonDraft, ...prev]);
+                  }
+                  navigate(`/sermon-lab/${draftId}/step/${s.num}`);
+                };
+                return (
+                  <li key={s.num}>
+                    <button
+                      onClick={handleStepTap}
+                      className="w-full text-left flex items-start gap-3 border border-white/10 rounded-2xl p-4 bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.06] transition-colors tap-scale"
+                    >
+                      <span className="shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium bg-white/10 text-white/85 ring-1 ring-white/15">
+                        {s.num}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-white text-[14.5px] font-medium leading-snug">{s.title}</p>
+                        <p className="text-[13px] text-white/60 mt-0.5 leading-relaxed">{s.desc}</p>
+                      </div>
+                    </button>
+                  </li>
+                );
+              })}
             </ol>
           </section>
         </div>
