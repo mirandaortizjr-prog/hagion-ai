@@ -22,7 +22,7 @@ const PRICE_TO_TIER: Record<string, Tier> = {
 const TIER_RANK: Record<Tier, number> = { free: 0, premium: 1, premium_plus: 2, pro: 3 };
 
 const DEMO_EMAIL = 'demo.hagionai@gmail.com';
-const STAFF_EMAILS = ['fabyygarciia@gmail.com', 'nicholasexousia@gmail.com'];
+const STAFF_EMAILS = ['fabyygarciia@gmail.com', 'miranda.ortiz.jr@gmail.com'];
 
 export function useSubscription() {
   const [subscription, setSubscription] = useState<SubscriptionRow | null>(null);

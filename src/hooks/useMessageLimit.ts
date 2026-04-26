@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Demo account for Google Play review - gets unlimited messages
 const DEMO_EMAIL = "demo.hagionai@gmail.com";
-const STAFF_EMAILS = ["fabyygarciia@gmail.com", "nicholasexousia@gmail.com"];
+const STAFF_EMAILS = ["fabyygarciia@gmail.com", "miranda.ortiz.jr@gmail.com"];
 
 export const useMessageLimit = () => {
   const [remaining, setRemaining] = useState<number | null>(null);
