@@ -920,7 +920,7 @@ const MainMenu = () => {
                         if (item.id === 'bible-translations') {
                           navigate('/bible-translations');
                         } else {
-                          navigate(`/storytelling/${item.id}`);
+                          navigate(`/subject-story/${item.id}`);
                         }
                       } else if (item.type === 'group') {
                         setExpandedGroup(item.id);
