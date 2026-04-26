@@ -9,10 +9,22 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
+import { FeatureLockCard } from "@/components/FeatureLockCard";
+import { useTierAccess } from "@/hooks/useTierAccess";
 
 type InputMode = "prophet" | "prophecy" | "movement";
 
 const ProphecyChecker = () => {
+  const __lockAccess = useTierAccess();
+  if (!__lockAccess.isLoading && !__lockAccess.canUse("doctrine_analysis")) {
+    return (
+      <FeatureLockCard
+        requiredTier="premium_plus"
+        featureName={language === "es" ? "Verificador de Profecías" : "Prophecy Checker"}
+      />
+    );
+  }
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const { language } = useLanguage();

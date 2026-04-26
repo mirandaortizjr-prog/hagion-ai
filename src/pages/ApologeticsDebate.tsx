@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { FeatureLockCard } from "@/components/FeatureLockCard";
+import { useTierAccess } from "@/hooks/useTierAccess";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -23,6 +25,16 @@ interface Persona {
 }
 
 const ApologeticsDebate = () => {
+  const __lockAccess = useTierAccess();
+  if (!__lockAccess.isLoading && !__lockAccess.canUse("debate_arena_premium")) {
+    return (
+      <FeatureLockCard
+        requiredTier="premium"
+        featureName={language === "es" ? "Debate de Apologética" : "Apologetics Debate"}
+      />
+    );
+  }
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();

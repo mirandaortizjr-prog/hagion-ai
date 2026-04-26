@@ -7,6 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { assembleSermon, type SermonDraft } from "@/lib/sermonSteps";
 import jsPDF from "jspdf";
+import { FeatureLockCard } from "@/components/FeatureLockCard";
+import { useTierAccess } from "@/hooks/useTierAccess";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const downloadSermonPdf = (
   title: string,
@@ -88,6 +91,17 @@ type Refinement = {
 };
 
 const SermonRefine = () => {
+  const { language: __lockLang } = useLanguage();
+  const __lockAccess = useTierAccess();
+  if (!__lockAccess.isLoading && !__lockAccess.canUse("sermon_lab")) {
+    return (
+      <FeatureLockCard
+        requiredTier="pro"
+        featureName={__lockLang === "es" ? "Laboratorio de Sermones" : "Sermon Lab"}
+      />
+    );
+  }
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();

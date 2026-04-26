@@ -7,8 +7,22 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS } from "@/lib/sermonSteps";
+import { FeatureLockCard } from "@/components/FeatureLockCard";
+import { useTierAccess } from "@/hooks/useTierAccess";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SermonStepEditor = () => {
+  const { language: __lockLang } = useLanguage();
+  const __lockAccess = useTierAccess();
+  if (!__lockAccess.isLoading && !__lockAccess.canUse("sermon_lab")) {
+    return (
+      <FeatureLockCard
+        requiredTier="pro"
+        featureName={__lockLang === "es" ? "Laboratorio de Sermones" : "Sermon Lab"}
+      />
+    );
+  }
+
   const { id, stepNum } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
