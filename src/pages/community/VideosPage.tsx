@@ -319,7 +319,7 @@ export default function VideosPage() {
               onLike={() => handleLike(v)}
               onSave={() => handleSave(v)}
               onShare={() => handleShare(v)}
-              onComment={() => toast({ title: "Comments coming soon" })}
+              onComment={() => setCommentsFor(v)}
               onMore={() => toast({ title: "More options coming soon" })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
