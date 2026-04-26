@@ -263,28 +263,24 @@ const DailyWisdom = () => {
                 <span className="h-px w-10 bg-foreground/20" />
               </div>
 
-              {/* Statement of the Truth */}
               <Section
-                label="Statement of the Truth"
+                label="The King's Command"
                 body={story.law_statement || story.content}
                 emphasized
               />
 
-              {/* Transgression of the Truth */}
               <Section
-                label="Transgression of the Truth"
+                label="The Fall of the Fool"
                 body={story.law_transgression}
               />
 
-              {/* Observance of the Truth */}
               <Section
-                label="Observance of the Truth"
+                label="The Rise of the Faithful"
                 body={story.law_observance}
               />
 
-              {/* Interpretation */}
               <Section
-                label="Interpretation"
+                label="Wisdom"
                 body={story.law_interpretation}
               />
 
