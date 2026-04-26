@@ -279,19 +279,28 @@ export default function MessengerPage() {
       media = { url, type: "image" };
     }
 
-    const { error } = await supabase.from("messages").insert({
-      conversation_id: activeId,
-      sender_id: user.id,
-      content: text.trim() || null,
-      media_url: media?.url ?? null,
-      media_type: media?.type ?? null,
-      media_duration_ms: media?.durationMs ?? null,
-    });
+    const { data: inserted, error } = await supabase
+      .from("messages")
+      .insert({
+        conversation_id: activeId,
+        sender_id: user.id,
+        content: text.trim() || null,
+        media_url: media?.url ?? null,
+        media_type: media?.type ?? null,
+        media_duration_ms: media?.durationMs ?? null,
+      })
+      .select()
+      .single();
 
     if (error) {
       notification("error");
-      toast({ title: "Could not send", variant: "destructive" });
+      console.error("send message error", error);
+      toast({ title: "Could not send", description: error.message, variant: "destructive" });
     } else {
+      // Optimistically append (realtime will dedupe by id)
+      if (inserted) {
+        setMessages((m) => (m.some((x) => x.id === inserted.id) ? m : [...m, inserted]));
+      }
       setText("");
       setPendingImage(null);
     }
