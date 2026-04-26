@@ -127,11 +127,34 @@ const PublicSpeaking = () => {
             Sermon Lab
           </h1>
 
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-4">
             <span className="text-[10px] uppercase tracking-[0.3em] text-accent/90 px-3 py-1 rounded-full border border-accent/20 bg-accent/5">
-              Craft & Discern
+              Pastors & Theologians · Pro
             </span>
           </div>
+
+          {isPro && (
+            <p className="text-center text-[12px] text-white/55 mb-8">
+              {remaining} of {MONTHLY_LIMIT} sermons remaining this month
+            </p>
+          )}
+
+          {!isPro && (
+            <div className="mb-10 border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm text-center">
+              <Lock className="w-5 h-5 mx-auto mb-2 text-white/60" />
+              <p className="text-white text-[14.5px] font-medium mb-1">Sermon Lab is a Pro feature</p>
+              <p className="text-[12.5px] text-white/60 mb-4 leading-relaxed">
+                Designed for pastors and theologians. Includes up to {MONTHLY_LIMIT} AI-refined sermons per month.
+              </p>
+              <Button
+                size="sm"
+                onClick={() => navigate("/premium")}
+                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-9 px-5 text-xs"
+              >
+                Upgrade to Pro
+              </Button>
+            </div>
+          )}
 
           <div className="flex items-center justify-center mb-10">
             <span className="h-px w-10 bg-foreground/20" />
@@ -148,8 +171,12 @@ const PublicSpeaking = () => {
               </h2>
               <Button
                 size="sm"
-                onClick={() => setShowNew((s) => !s)}
-                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-8 px-3 text-xs"
+                disabled={!isPro || atLimit}
+                onClick={() => {
+                  if (!isPro) { setShowGate(true); return; }
+                  setShowNew((s) => !s);
+                }}
+                className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full h-8 px-3 text-xs disabled:opacity-50"
               >
                 <Plus className="w-3.5 h-3.5 mr-1" />
                 New
