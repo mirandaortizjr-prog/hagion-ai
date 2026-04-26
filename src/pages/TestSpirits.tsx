@@ -298,8 +298,8 @@ If given only a URL with no context, evaluate what is publicly known about the r
                 {t("Examining against Scripture…", "Examinando con la Escritura…")}
               </div>
             ) : (
-              <div className="prose prose-invert prose-sm max-w-none prose-headings:font-playfair prose-headings:tracking-tight prose-h2:text-base prose-h2:mt-4 prose-h2:mb-2 prose-p:text-white/85 prose-li:text-white/85 prose-strong:text-white">
-                <ReactMarkdown>{result}</ReactMarkdown>
+              <div className="text-sm text-white/85 leading-relaxed whitespace-pre-wrap font-sans">
+                {result}
               </div>
             )}
           </div>
