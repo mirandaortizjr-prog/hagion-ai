@@ -61,7 +61,7 @@ const Discernment = () => {
         "Examina religiones y denominaciones — catolicismo, mormonismo, islam y más — frente al cristianismo bíblico."
       ),
       icon: Globe,
-      onClick: () => navigate("/chat?voice=religion&context=discernment"),
+      onClick: () => navigate("/discernment/religion-checker"),
       glow: "from-rose-300/70 via-pink-400/40 to-red-500/60",
       edgeColor: "251,113,133",
     },
