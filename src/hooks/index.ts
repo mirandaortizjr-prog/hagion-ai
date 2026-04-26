@@ -5,6 +5,8 @@ export * from './useOfflineCache';
 export * from './useInAppPurchases';
 export * from './useTextToSpeech';
 export * from './useDeviceInfo';
+export * from './useCamera';
+export * from './useVoiceRecorder';
 
 // Other hooks
 export * from './use-mobile';
