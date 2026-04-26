@@ -1,6 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { supabase } from '@/integrations/supabase/client';
 import { getStripeEnvironment } from '@/lib/stripe';
+
+const IS_NATIVE = Capacitor.isNativePlatform();
+
+const NATIVE_PRODUCT_TO_TIER: Record<string, Tier> = {
+  hagion_premium_monthly: 'premium',
+  hagion_premium_plus_monthly: 'premium_plus',
+};
 
 export type Tier = 'free' | 'premium' | 'premium_plus' | 'pro';
 
