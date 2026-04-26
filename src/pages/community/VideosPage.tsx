@@ -322,7 +322,7 @@ export default function VideosPage() {
               onSave={() => handleSave(v)}
               onShare={() => handleShare(v)}
               onComment={() => setCommentsFor(v)}
-              onMore={() => toast({ title: "More options coming soon" })}
+              onMore={() => setMoreFor(v)}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
