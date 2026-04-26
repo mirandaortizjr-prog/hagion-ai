@@ -37,6 +37,7 @@ import LogosLearning from "./pages/LogosLearning";
 import BibleTranslations from "./pages/BibleTranslations";
 import ScriptureReader from "./pages/ScriptureReader";
 import PublicSpeaking from "./pages/PublicSpeaking";
+import TestSpirits from "./pages/TestSpirits";
 import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
@@ -100,6 +101,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<Index />} />
             <Route path="/discernment" element={<Discernment />} />
+            <Route path="/discernment/test-spirits" element={<TestSpirits />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/community" element={<PrayerWall />} />
             <Route path="/splash" element={<Splash />} />

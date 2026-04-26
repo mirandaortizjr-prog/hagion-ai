@@ -28,7 +28,7 @@ const Discernment = () => {
         "Somete enseñanzas y movimientos a la prueba de las Escrituras línea por línea."
       ),
       icon: ShieldCheck,
-      onClick: () => navigate("/chat?voice=spirits&context=discernment"),
+      onClick: () => navigate("/discernment/test-spirits"),
       glow: "from-sky-300/70 via-cyan-400/40 to-blue-500/60",
       edgeColor: "56,189,248",
     },
