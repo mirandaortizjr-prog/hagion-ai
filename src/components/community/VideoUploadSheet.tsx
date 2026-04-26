@@ -115,11 +115,22 @@ export default function VideoUploadSheet({ open, onOpenChange, kind, lang = "en"
   const isReel = kind === "reel";
   const maxBytes = isReel ? REEL_MAX : TEACHING_MAX;
 
-  const handlePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
     if (f.size > maxBytes) {
       toast({ title: isReel ? t.tooLargeReel : t.tooLargeTeaching, variant: "destructive" });
+      return;
+    }
+    toast({ title: t.checking });
+    const duration = await probeDuration(f);
+    const maxSec = isReel ? REEL_MAX_SECONDS : TEACHING_MAX_SECONDS;
+    if (duration > 0 && duration > maxSec + 0.5) {
+      toast({
+        title: isReel ? t.tooLongReel : t.tooLongTeaching,
+        description: `${Math.round(duration)}s`,
+        variant: "destructive",
+      });
       return;
     }
     setFile(f);
