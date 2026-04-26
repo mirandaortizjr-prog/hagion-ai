@@ -143,10 +143,28 @@ export const useInAppPurchases = () => {
         transaction.verify();
       });
 
-      store.when().verified((receipt: any) => {
-        console.log('Purchase verified:', receipt);
+      store.when().verified(async (receipt: any) => {
+        console.log('Purchase verified by store:', receipt);
+
+        // Extract productId + purchaseToken for server-side verification.
+        // cordova-plugin-purchase shapes vary; cover the common ones.
+        const productId =
+          receipt?.collection?.[0]?.id ||
+          receipt?.id ||
+          receipt?.transaction?.products?.[0]?.id;
+        const purchaseToken =
+          receipt?.transaction?.purchaseToken ||
+          receipt?.purchaseToken ||
+          receipt?.nativePurchase?.purchaseToken;
+
+        if (productId && purchaseToken) {
+          await verifyPurchaseOnServer(productId, purchaseToken);
+        } else {
+          console.warn('Missing productId or purchaseToken on receipt', receipt);
+        }
+
         receipt.finish();
-        updatePurchaseState();
+        await updatePurchaseState();
       });
 
       store.when().finished((transaction: any) => {
