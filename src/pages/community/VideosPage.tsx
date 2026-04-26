@@ -186,14 +186,19 @@ export default function VideosPage() {
 
   useEffect(() => {
     videoRefs.current.forEach((video, id) => {
-      if (id === activeId && !paused[id]) {
+      if (id === activeId) {
         video.muted = muted;
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
+        if (!paused[id]) {
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          video.pause();
         }
       } else {
         video.pause();
+        video.currentTime = 0;
       }
     });
   }, [activeId, muted, paused]);
