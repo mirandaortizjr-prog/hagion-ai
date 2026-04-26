@@ -128,7 +128,7 @@ export default function PublicProfile() {
           </h1>
           {!isMe && (
             <button
-              onClick={() => navigate(`/community/messenger?to=${profile.user_id}`)}
+              onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
               aria-label="Message"
               className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
             >
@@ -193,7 +193,7 @@ export default function PublicProfile() {
                 )}
               </Button>
               <Button
-                onClick={() => navigate(`/community/messenger?to=${profile.user_id}`)}
+                onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
                 className="flex-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
               >
                 Message
