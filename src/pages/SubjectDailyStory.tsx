@@ -13,7 +13,7 @@ import { PremiumNav } from "@/components/PremiumNav";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import historyImage from "@/assets/history-christianity.jpg";
-import bibleImage from "@/assets/bible-translations.jpg";
+import bibleImage from "@/assets/biblical-scroll.jpg";
 import { toast as sonner } from "sonner";
 
 interface Story {
