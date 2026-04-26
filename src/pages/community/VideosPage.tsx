@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
+import MediaMoreSheet from "@/components/community/MediaMoreSheet";
 
 interface VideoItem {
   id: string;
@@ -115,6 +116,7 @@ export default function VideosPage() {
   });
   const [uploadOpen, setUploadOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
+  const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
 
   useEffect(() => {
     localStorage.setItem("videos_liked", JSON.stringify([...liked]));
@@ -320,7 +322,7 @@ export default function VideosPage() {
               onSave={() => handleSave(v)}
               onShare={() => handleShare(v)}
               onComment={() => setCommentsFor(v)}
-              onMore={() => toast({ title: "More options coming soon" })}
+              onMore={() => setMoreFor(v)}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
@@ -363,6 +365,12 @@ export default function VideosPage() {
         mediaId={commentsFor?.id || null}
         title={commentsFor?.title}
         onClose={() => setCommentsFor(null)}
+      />
+      <MediaMoreSheet
+        open={!!moreFor}
+        shareUrl={moreFor ? `${window.location.origin}/community/videos#${moreFor.id}` : undefined}
+        videoUrl={moreFor?.video_url || undefined}
+        onClose={() => setMoreFor(null)}
       />
     </div>
   );

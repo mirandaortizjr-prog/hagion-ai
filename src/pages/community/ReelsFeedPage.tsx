@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
+import MediaMoreSheet from "@/components/community/MediaMoreSheet";
 
 interface Reel {
   id: string;
@@ -116,6 +117,7 @@ export default function ReelsFeedPage() {
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const [uploadOpen, setUploadOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
+  const [moreFor, setMoreFor] = useState<Reel | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
@@ -309,8 +311,7 @@ export default function ReelsFeedPage() {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-white/80" />
-          <h1 className="font-playfair text-lg tracking-tight">Reels</h1>
+          {/* title removed per design */}
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -363,7 +364,8 @@ export default function ReelsFeedPage() {
               onSave={() => handleSave(reel)}
               onShare={() => handleShare(reel)}
               onComment={() => setCommentsFor(reel)}
-              onMore={() => toast({ title: "More options coming soon" })}
+              onMore={() => setMoreFor(reel)}
+              onFollow={() => toast({ title: `Following @${reel.author_name || "user"}` })}
               onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(reel.id, el);
@@ -393,6 +395,12 @@ export default function ReelsFeedPage() {
         title={commentsFor?.title}
         onClose={() => setCommentsFor(null)}
       />
+      <MediaMoreSheet
+        open={!!moreFor}
+        shareUrl={moreFor ? `${window.location.origin}/community/reels/feed#${moreFor.id}` : undefined}
+        videoUrl={moreFor?.video_url}
+        onClose={() => setMoreFor(null)}
+      />
     </div>
   );
 }
@@ -412,6 +420,7 @@ interface ReelItemProps {
   onShare: () => void;
   onComment: () => void;
   onMore: () => void;
+  onFollow: () => void;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
@@ -432,6 +441,7 @@ function ReelItem({
   onShare,
   onComment,
   onMore,
+  onFollow,
   onPlaybackError,
   registerVideo,
   onProgress,
@@ -536,6 +546,10 @@ function ReelItem({
             <span className="font-playfair text-base text-white">{initial}</span>
           </div>
           <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onFollow();
+            }}
             className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
             aria-label="Follow"
           >
@@ -545,24 +559,24 @@ function ReelItem({
       </div>
 
       <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-7 pt-10">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-2">
           <div className="text-sm font-medium text-white">
             @{reel.author_name || "anonymous"}
           </div>
           <span className="w-1 h-1 rounded-full bg-white/40" />
-          <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
+          <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
             Follow
           </button>
         </div>
         {reel.title && (
-          <h3 className="font-playfair text-[19px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1.5">
+          <h3 className="font-playfair text-[15px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1">
             {reel.title}
           </h3>
         )}
         {reel.description && (
           <p
             className={cn(
-              "text-[13px] text-white/80 leading-relaxed",
+              "text-[11px] text-white/75 leading-snug",
               !expanded && "line-clamp-2",
             )}
             onClick={() => setExpanded((e) => !e)}
