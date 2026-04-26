@@ -1,21 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Plus, FileText, Trash2, Loader2 } from "lucide-react";
+import { ArrowLeft, BookOpen, Plus, FileText, Trash2, Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS, type SermonDraft } from "@/lib/sermonSteps";
+import { useTierAccess } from "@/hooks/useTierAccess";
+import { LimitReachedDialog } from "@/components/LimitReachedDialog";
+
+const MONTHLY_LIMIT = 5;
 
 const PublicSpeaking = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const access = useTierAccess();
+  const isPro = access.canUse("sermon_lab");
   const [drafts, setDrafts] = useState<SermonDraft[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [showNew, setShowNew] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+
+  const monthlyCount = useMemo(() => {
+    const start = new Date();
+    start.setDate(1); start.setHours(0, 0, 0, 0);
+    return drafts.filter((d) => new Date(d.created_at) >= start).length;
+  }, [drafts]);
+  const remaining = Math.max(0, MONTHLY_LIMIT - monthlyCount);
+  const atLimit = isPro && remaining === 0;
 
   const loadDrafts = async () => {
     setLoading(true);
