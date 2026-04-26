@@ -244,25 +244,50 @@ export default function VideosPage() {
   };
 
   const handleSave = (v: VideoItem) => {
+    const wasSaved = saved.has(v.id);
     setSaved((s) => {
       const n = new Set(s);
-      if (n.has(v.id)) n.delete(v.id);
+      if (wasSaved) n.delete(v.id);
       else n.add(v.id);
       return n;
     });
-    toast({ title: saved.has(v.id) ? "Removed from saved" : "Saved" });
+    toast({
+      title: wasSaved ? "Removed from saved" : "Saved to your collection",
+      description: wasSaved ? undefined : "View under Profile › Saved",
+    });
   };
 
   const handleShare = async (v: VideoItem) => {
     const url = `${window.location.origin}/community/videos#${v.id}`;
+    const shareData = { title: v.title, text: v.description || v.title, url };
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share(shareData);
+        return;
+      } catch (err: any) {
+        if (err?.name === "AbortError") return;
+      }
+    }
     try {
-      if (navigator.share) {
-        await navigator.share({ title: v.title, url });
-      } else {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: "Link copied", description: url });
+        return;
       }
     } catch {}
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      toast({ title: "Link copied", description: url });
+    } catch {
+      toast({ title: "Share link", description: url });
+    }
   };
 
   const handleSeek = (id: string, ratio: number) => {
@@ -343,6 +368,7 @@ export default function VideosPage() {
               onShare={() => handleShare(v)}
               onComment={() => setCommentsFor(v)}
               onMore={() => setMoreFor(v)}
+              onFollow={() => toast({ title: `Following @${v.author_name || "user"}` })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
@@ -412,6 +438,7 @@ interface VideoFeedItemProps {
   onShare: () => void;
   onComment: () => void;
   onMore: () => void;
+  onFollow: () => void;
   onSeek: (ratio: number) => void;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
@@ -434,6 +461,7 @@ function VideoFeedItem({
   onShare,
   onComment,
   onMore,
+  onFollow,
   onSeek,
   onPlaybackError,
   registerVideo,
@@ -497,6 +525,8 @@ function VideoFeedItem({
       <div
         className="absolute right-3 z-30 flex flex-col items-center gap-5"
         style={{ bottom: "max(calc(env(safe-area-inset-bottom) + 56px), 56px)" }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <ActionButton
           icon={Heart}
@@ -520,7 +550,13 @@ function VideoFeedItem({
             <span className="font-playfair text-base text-white">{initial}</span>
           </div>
           <button
-            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onFollow();
+            }}
+            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
             aria-label="Follow"
           >
             <Plus className="w-3 h-3 text-white" strokeWidth={3} />
@@ -640,8 +676,14 @@ function ActionButton({
   const isRose = active && activeColor === "rose";
   return (
     <button
-      onClick={onClick}
-      className="flex flex-col items-center gap-1 active:scale-90 transition"
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+      onPointerDown={(e) => e.stopPropagation()}
+      className="flex flex-col items-center gap-1 active:scale-90 transition cursor-pointer select-none"
     >
       <div
         className={cn(

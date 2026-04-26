@@ -286,25 +286,55 @@ export default function ReelsFeedPage() {
   };
 
   const handleSave = (reel: Reel) => {
+    const wasSaved = saved.has(reel.id);
     setSaved((s) => {
       const n = new Set(s);
-      if (n.has(reel.id)) n.delete(reel.id);
+      if (wasSaved) n.delete(reel.id);
       else n.add(reel.id);
       return n;
     });
-    toast({ title: saved.has(reel.id) ? "Removed from saved" : "Saved" });
+    toast({
+      title: wasSaved ? "Removed from saved" : "Saved to your collection",
+      description: wasSaved ? undefined : "View under Profile › Saved",
+    });
   };
 
   const handleShare = async (reel: Reel) => {
     const url = `${window.location.origin}/community/reels/feed#${reel.id}`;
+    const shareData = { title: reel.title, text: reel.description || reel.title, url };
+
+    // Try native share first
+    if (typeof navigator !== "undefined" && (navigator as any).share) {
+      try {
+        await (navigator as any).share(shareData);
+        return;
+      } catch (err: any) {
+        if (err?.name === "AbortError") return; // user cancelled
+        // fall through to clipboard
+      }
+    }
+    // Clipboard fallback
     try {
-      if (navigator.share) {
-        await navigator.share({ title: reel.title, url });
-      } else {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: "Link copied", description: url });
+        return;
       }
     } catch {}
+    // Last-resort: legacy execCommand
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      toast({ title: "Link copied", description: url });
+    } catch {
+      toast({ title: "Share link", description: url });
+    }
   };
 
   const handlePlaybackError = useCallback(
@@ -535,6 +565,8 @@ function ReelItem({
       <div
         className="absolute right-3 z-30 flex flex-col items-center gap-5"
         style={{ bottom: "max(calc(env(safe-area-inset-bottom) + 20px), 20px)" }}
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <ActionButton
           icon={Heart}
@@ -655,8 +687,14 @@ function ActionButton({
   const isRose = active && activeColor === "rose";
   return (
     <button
-      onClick={onClick}
-      className="flex flex-col items-center gap-1 active:scale-90 transition"
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onClick();
+      }}
+      onPointerDown={(e) => e.stopPropagation()}
+      className="flex flex-col items-center gap-1 active:scale-90 transition cursor-pointer select-none"
     >
       <div
         className={cn(
