@@ -117,6 +117,7 @@ export default function VideosPage() {
     try { return new Set(JSON.parse(localStorage.getItem("videos_saved") || "[]")); } catch { return new Set(); }
   });
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
   const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
 
