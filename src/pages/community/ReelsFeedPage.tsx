@@ -461,6 +461,27 @@ export default function ReelsFeedPage() {
         videoUrl={moreFor?.video_url}
         onClose={() => setMoreFor(null)}
       />
+      <MediaSearchSheet
+        open={searchOpen}
+        items={reels.map((r) => ({
+          id: r.id,
+          title: r.title,
+          description: r.description,
+          author_name: r.author_name,
+          thumbnail_url: r.thumbnail_url,
+        }))}
+        placeholder="Search reels…"
+        onClose={() => setSearchOpen(false)}
+        onSelect={(it) => {
+          setActiveId(it.id);
+          requestAnimationFrame(() => {
+            const el = containerRef.current?.querySelector(
+              `[data-reel-id="${it.id}"]`,
+            ) as HTMLElement | null;
+            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }}
+      />
     </div>
   );
 }
