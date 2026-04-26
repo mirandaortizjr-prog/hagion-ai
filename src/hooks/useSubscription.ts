@@ -5,11 +5,6 @@ import { getStripeEnvironment } from '@/lib/stripe';
 
 const IS_NATIVE = Capacitor.isNativePlatform();
 
-const NATIVE_PRODUCT_TO_TIER: Record<string, Tier> = {
-  hagion_premium_monthly: 'premium',
-  hagion_premium_plus_monthly: 'premium_plus',
-};
-
 export type Tier = 'free' | 'premium' | 'premium_plus' | 'pro';
 
 interface SubscriptionRow {
@@ -25,6 +20,11 @@ const PRICE_TO_TIER: Record<string, Tier> = {
   hagion_premium_monthly: 'premium',
   hagion_premium_plus_monthly: 'premium_plus',
   hagion_pro_monthly: 'pro',
+};
+
+const NATIVE_PRODUCT_TO_TIER: Record<string, Tier> = {
+  hagion_premium_monthly: 'premium',
+  hagion_premium_plus_monthly: 'premium_plus',
 };
 
 const TIER_RANK: Record<Tier, number> = { free: 0, premium: 1, premium_plus: 2, pro: 3 };
