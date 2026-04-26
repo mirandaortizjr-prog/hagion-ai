@@ -167,7 +167,8 @@ export const PremiumNav = () => {
 
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: displayName(),
+      author_avatar: profile?.avatar_url || null,
       post_type: inDiscussions ? "discussion" : composerType,
       category: inDiscussions ? discussionCategory : "general",
       content: composer.trim(),
