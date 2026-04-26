@@ -68,6 +68,7 @@ import MessengerPage from "./pages/community/MessengerPage";
 import Friends from "./pages/Friends";
 import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
+import { FeatureGate } from "@/components/FeatureGate";
 
 const queryClient = new QueryClient();
 
@@ -138,15 +139,15 @@ const App = () => (
             <Route path="/divine/:voiceId" element={<DivineChat />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/premium" element={<Premium />} />
-            <Route path="/apologetics-debate" element={<ApologeticsDebate />} />
+            <Route path="/apologetics-debate" element={<FeatureGate feature="debate_arena_premium"><ApologeticsDebate /></FeatureGate>} />
             <Route path="/logos-circle" element={<LogosCircle />} />
-            <Route path="/logos-circle/:type/:id" element={<LogosLearning />} />
+            <Route path="/logos-circle/:type/:id" element={<FeatureGate feature="hagion_university"><LogosLearning /></FeatureGate>} />
             <Route path="/bible-translations" element={<BibleTranslations />} />
             <Route path="/scripture/:textId" element={<ScriptureReader />} />
             <Route path="/public-speaking" element={<PublicSpeaking />} />
-            <Route path="/sermon-lab/:id" element={<SermonWorkspace />} />
-            <Route path="/sermon-lab/:id/step/:stepNum" element={<SermonStepEditor />} />
-            <Route path="/sermon-lab/:id/refine" element={<SermonRefine />} />
+            <Route path="/sermon-lab/:id" element={<FeatureGate feature="sermon_lab"><SermonWorkspace /></FeatureGate>} />
+            <Route path="/sermon-lab/:id/step/:stepNum" element={<FeatureGate feature="sermon_lab"><SermonStepEditor /></FeatureGate>} />
+            <Route path="/sermon-lab/:id/refine" element={<FeatureGate feature="sermon_lab"><SermonRefine /></FeatureGate>} />
             <Route path="/prayer-wall" element={<PrayerWallPage />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
             <Route path="/daily-devotional" element={<DailyDevotional />} />
