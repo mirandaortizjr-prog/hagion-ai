@@ -290,16 +290,42 @@ const SermonRefine = () => {
 
           {result && tab === "rewrite" && (
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
                   Polished Sermon
                 </p>
-                <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, "Polished sermon")} className="rounded-full text-white/70 h-8">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                </Button>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, "Polished sermon")} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, result.polished_sermon, "polished")} className="rounded-full text-white/70 h-8">
+                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                  </Button>
+                </div>
               </div>
               <div className="text-[13.5px] leading-[1.8] text-white/90 whitespace-pre-wrap">
                 {result.polished_sermon}
+              </div>
+            </div>
+          )}
+
+          {result && tab === "original" && (
+            <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
+                  Your Draft
+                </p>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copyText(assembled, "Draft")} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, assembled, "draft")} className="rounded-full text-white/70 h-8">
+                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                  </Button>
+                </div>
+              </div>
+              <div className="text-[13.5px] leading-[1.8] text-white/85 whitespace-pre-wrap">
+                {assembled}
               </div>
             </div>
           )}
