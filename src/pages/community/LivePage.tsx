@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { App as CapacitorApp } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
+import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft,
   Heart,
@@ -119,15 +120,33 @@ export default function LivePage() {
     navigate("/community", { replace: true });
   }, [navigate]);
 
+  // Load real streams; fallback to sample if none.
   useEffect(() => {
-    // No live_streams table yet — use sample data so the experience is fully featured.
-    const list = SAMPLE_LIVES;
-    setStreams(list);
-    setActiveId(list[0]?.id ?? null);
-    const initialChats: Record<string, ChatMessage[]> = {};
-    list.forEach((s) => (initialChats[s.id] = [...SAMPLE_CHAT]));
-    setChats(initialChats);
-    setLoading(false);
+    let cancelled = false;
+    const load = async () => {
+      const { data } = await supabase
+        .from("live_streams")
+        .select("*")
+        .eq("status", "live")
+        .order("started_at", { ascending: false })
+        .limit(50);
+      if (cancelled) return;
+      const real = (data as LiveStream[] | null) || [];
+      const list = real.length > 0 ? real : SAMPLE_LIVES;
+      setStreams(list);
+      setActiveId(list[0]?.id ?? null);
+      // Pre-populate sample chat only for sample streams; real streams will load via realtime hook.
+      if (real.length === 0) {
+        const initialChats: Record<string, ChatMessage[]> = {};
+        list.forEach((s) => (initialChats[s.id] = [...SAMPLE_CHAT]));
+        setChats(initialChats);
+      }
+      setLoading(false);
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -178,9 +197,65 @@ export default function LivePage() {
     });
   }, [activeId, muted]);
 
-  // Simulate ambient chat activity for realism.
+  // Load chat history + subscribe to realtime for the active real stream.
+  // For sample streams (id starts with "live-") we keep the ambient simulator below.
   useEffect(() => {
     if (!activeId) return;
+    if (activeId.startsWith("live-")) return; // sample stream; skip backend
+    let cancelled = false;
+    const loadHistory = async () => {
+      const { data } = await supabase
+        .from("live_chat_messages")
+        .select("id, user_id, author_name, content, created_at")
+        .eq("stream_id", activeId)
+        .order("created_at", { ascending: true })
+        .limit(50);
+      if (cancelled || !data) return;
+      const mapped: ChatMessage[] = data.map((row: any) => ({
+        id: row.id,
+        author: row.author_name || "anonymous",
+        content: row.content,
+        ts: new Date(row.created_at).getTime(),
+      }));
+      setChats((c) => ({ ...c, [activeId]: mapped.slice(-30) }));
+    };
+    loadHistory();
+
+    const channel = supabase
+      .channel(`live-chat-${activeId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "live_chat_messages",
+          filter: `stream_id=eq.${activeId}`,
+        },
+        (payload) => {
+          const row: any = payload.new;
+          const msg: ChatMessage = {
+            id: row.id,
+            author: row.author_name || "anonymous",
+            content: row.content,
+            ts: new Date(row.created_at).getTime(),
+          };
+          setChats((c) => ({
+            ...c,
+            [activeId]: [...(c[activeId] || []), msg].slice(-30),
+          }));
+        },
+      )
+      .subscribe();
+
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
+  }, [activeId]);
+
+  // Ambient chat simulator for sample streams only.
+  useEffect(() => {
+    if (!activeId || !activeId.startsWith("live-")) return;
     const lines = [
       "Glory to God!",
       "Hallelujah",
