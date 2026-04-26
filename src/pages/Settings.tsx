@@ -162,6 +162,34 @@ const Settings = () => {
     }
   };
 
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const handleDeleteAccount = async () => {
+    setDeletingAccount(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("request-account-deletion", {
+        body: {},
+      });
+      if (error) throw error;
+      toast({
+        title: language === "es" ? "Cuenta marcada para eliminación" : "Account scheduled for deletion",
+        description:
+          language === "es"
+            ? "Tu cuenta y datos se eliminarán en 30 días. Contáctanos para cancelar."
+            : "Your account and data will be deleted in 30 days. Contact us to cancel.",
+      });
+      await supabase.auth.signOut();
+      navigate("/auth");
+    } catch (e) {
+      toast({
+        title: language === "es" ? "Error" : "Error",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingAccount(false);
+    }
+  };
+
   const handleResetOnboarding = () => {
     localStorage.removeItem("onboardingCompleted");
     toast({
