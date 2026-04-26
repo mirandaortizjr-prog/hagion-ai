@@ -358,6 +358,12 @@ export default function VideosPage() {
         kind="teaching"
         onUploaded={loadVideos}
       />
+      <MediaCommentsSheet
+        open={!!commentsFor}
+        mediaId={commentsFor?.id || null}
+        title={commentsFor?.title}
+        onClose={() => setCommentsFor(null)}
+      />
     </div>
   );
 }
