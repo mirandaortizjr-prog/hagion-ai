@@ -365,10 +365,15 @@ const Auth = () => {
 
           {/* Footer fine print */}
           <p className="mt-5 text-center text-[10.5px] leading-relaxed text-white/45">
-            {tt(
-              "By continuing, you agree to our Terms & acknowledge our Privacy Policy.",
-              "Al continuar, aceptas nuestros Términos y reconoces nuestra Política de Privacidad."
-            )}
+            {tt("By continuing, you agree to our ", "Al continuar, aceptas nuestros ")}
+            <a href="/terms" className="underline hover:text-white/70">
+              {tt("Terms", "Términos")}
+            </a>
+            {tt(" & acknowledge our ", " y reconoces nuestra ")}
+            <a href="/privacy" className="underline hover:text-white/70">
+              {tt("Privacy Policy", "Política de Privacidad")}
+            </a>
+            .
           </p>
         </div>
 

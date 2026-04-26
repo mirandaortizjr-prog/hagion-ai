@@ -301,6 +301,23 @@ const Premium = () => {
               ? 'Impuestos calculados automáticamente. Sin reembolsos después de la facturación.'
               : 'Taxes calculated automatically. No refunds after billing.'}
           </p>
+          <p className="pt-2 text-[11px] text-white/40">
+            <a href="/terms" className="underline hover:text-white/70">
+              {language === 'es' ? 'Términos' : 'Terms'}
+            </a>
+            {' · '}
+            <a href="/privacy" className="underline hover:text-white/70">
+              {language === 'es' ? 'Privacidad' : 'Privacy'}
+            </a>
+            {' · '}
+            <a href="/refund-policy" className="underline hover:text-white/70">
+              {language === 'es' ? 'Reembolsos' : 'Refunds'}
+            </a>
+            {' · '}
+            <a href="/ai-disclaimer" className="underline hover:text-white/70">
+              {language === 'es' ? 'Descargo de IA' : 'AI Disclaimer'}
+            </a>
+          </p>
         </div>
       </main>
 
