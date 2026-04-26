@@ -426,7 +426,7 @@ const SubjectDailyStory = () => {
                 <>
                   <Section label={language === "es" ? "El Escenario" : "The Setting"} body={story.law_transgression} />
                   <Section label={language === "es" ? "La Escena" : "The Scene"} body={story.law_observance} />
-                  <Section label={language === "es" ? "Lo Que Quedó" : "The Aftermath"} body={story.law_aftermathFallback ?? story.law_interpretation} />
+                  <Section label={language === "es" ? "Lo Que Quedó" : "The Aftermath"} body={story.law_interpretation} />
                 </>
               ) : (
                 <div className="mb-10">{renderParagraphs(story.content)}</div>
