@@ -39,7 +39,7 @@ const Discernment = () => {
         "Pega un sermón, transcripción o enlace de video — recibe una revisión berea de doctrina y exégesis a la luz de la Escritura."
       ),
       icon: Mic,
-      onClick: () => navigate("/chat?voice=sermon&context=discernment"),
+      onClick: () => navigate("/discernment/sermon-analyzer"),
       glow: "from-emerald-300/70 via-teal-400/40 to-cyan-500/60",
       edgeColor: "52,211,153",
     },
