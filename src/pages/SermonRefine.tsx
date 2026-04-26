@@ -1,11 +1,83 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Sparkles, Loader2, Copy, BookOpen, GitCompare, AlertCircle, Lightbulb } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, Copy, BookOpen, GitCompare, AlertCircle, Lightbulb, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { assembleSermon, type SermonDraft } from "@/lib/sermonSteps";
+import jsPDF from "jspdf";
+
+const downloadSermonPdf = (
+  title: string,
+  scripture: string | null,
+  body: string,
+  filenameSuffix: string,
+) => {
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const margin = 56;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const usableWidth = pageWidth - margin * 2;
+  let y = margin;
+
+  doc.setFont("times", "bold");
+  doc.setFontSize(20);
+  const titleLines = doc.splitTextToSize(title || "Untitled Sermon", usableWidth);
+  doc.text(titleLines, margin, y);
+  y += titleLines.length * 24;
+
+  if (scripture) {
+    doc.setFont("times", "italic");
+    doc.setFontSize(12);
+    const scrLines = doc.splitTextToSize(scripture, usableWidth);
+    doc.text(scrLines, margin, y);
+    y += scrLines.length * 16 + 6;
+  }
+
+  doc.setDrawColor(180);
+  doc.line(margin, y, pageWidth - margin, y);
+  y += 18;
+
+  doc.setFont("times", "normal");
+  doc.setFontSize(12);
+  const lineHeight = 18;
+
+  const paragraphs = body.split(/\n+/);
+  for (const para of paragraphs) {
+    const trimmed = para.trim();
+    if (!trimmed) {
+      y += lineHeight / 2;
+      continue;
+    }
+    // Treat markdown headings as bold
+    const headingMatch = trimmed.match(/^#{1,6}\s+(.*)/);
+    if (headingMatch) {
+      doc.setFont("times", "bold");
+      doc.setFontSize(14);
+      const lines = doc.splitTextToSize(headingMatch[1], usableWidth);
+      for (const line of lines) {
+        if (y > pageHeight - margin) { doc.addPage(); y = margin; }
+        doc.text(line, margin, y);
+        y += 20;
+      }
+      doc.setFont("times", "normal");
+      doc.setFontSize(12);
+      y += 4;
+      continue;
+    }
+    const lines = doc.splitTextToSize(trimmed, usableWidth);
+    for (const line of lines) {
+      if (y > pageHeight - margin) { doc.addPage(); y = margin; }
+      doc.text(line, margin, y);
+      y += lineHeight;
+    }
+    y += 6;
+  }
+
+  const safe = (title || "sermon").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+  doc.save(`${safe || "sermon"}-${filenameSuffix}.pdf`);
+};
 
 type Refinement = {
   theological_review: string;
@@ -218,13 +290,18 @@ const SermonRefine = () => {
 
           {result && tab === "rewrite" && (
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
                   Polished Sermon
                 </p>
-                <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, "Polished sermon")} className="rounded-full text-white/70 h-8">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                </Button>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, "Polished sermon")} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, result.polished_sermon, "polished")} className="rounded-full text-white/70 h-8">
+                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                  </Button>
+                </div>
               </div>
               <div className="text-[13.5px] leading-[1.8] text-white/90 whitespace-pre-wrap">
                 {result.polished_sermon}
@@ -234,13 +311,18 @@ const SermonRefine = () => {
 
           {result && tab === "original" && (
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
                   Your Draft
                 </p>
-                <Button size="sm" variant="ghost" onClick={() => copyText(assembled, "Draft")} className="rounded-full text-white/70 h-8">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                </Button>
+                <div className="flex gap-1">
+                  <Button size="sm" variant="ghost" onClick={() => copyText(assembled, "Draft")} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, assembled, "draft")} className="rounded-full text-white/70 h-8">
+                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                  </Button>
+                </div>
               </div>
               <div className="text-[13.5px] leading-[1.8] text-white/85 whitespace-pre-wrap">
                 {assembled}
