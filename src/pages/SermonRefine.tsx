@@ -329,22 +329,6 @@ const SermonRefine = () => {
               </div>
             </div>
           )}
-
-          {result && tab === "original" && (
-            <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
-                  Your Draft
-                </p>
-                <Button size="sm" variant="ghost" onClick={() => copyText(assembled, "Draft")} className="rounded-full text-white/70 h-8">
-                  <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                </Button>
-              </div>
-              <div className="text-[13.5px] leading-[1.8] text-white/85 whitespace-pre-wrap">
-                {assembled}
-              </div>
-            </div>
-          )}
         </div>
       </main>
 
