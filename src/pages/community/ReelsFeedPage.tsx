@@ -109,6 +109,7 @@ export default function ReelsFeedPage() {
   const [liked, setLiked] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
+  const [uploadOpen, setUploadOpen] = useState(false);
   const lastTapRef = useRef<Record<string, number>>({});
 
   const handleBack = useCallback(() => {
