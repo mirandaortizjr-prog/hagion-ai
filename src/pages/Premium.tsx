@@ -111,7 +111,6 @@ const Premium = () => {
         { en: 'Discernment tools (sermon, doctrine, lyrics)', es: 'Herramientas de Discernimiento' },
         { en: '60 min/day transcription', es: '60 min/día de transcripción' },
         { en: 'Hero image uploads', es: 'Subir imágenes principales' },
-        { en: 'Faithful Friend app access', es: 'Acceso a Faithful Friend' },
         { en: 'Everything in Premium', es: 'Todo lo de Premium' },
       ],
     },

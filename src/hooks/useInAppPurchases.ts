@@ -251,7 +251,7 @@ function getDefaultDescription(productId: string): string {
     case PRODUCT_IDS.PREMIUM_MONTHLY:
       return 'Unlock all premium features with unlimited access';
     case PRODUCT_IDS.PREMIUM_PLUS_MONTHLY:
-      return 'Premium features plus Faithful Friend app access';
+      return 'Premium features plus advanced discernment, transcription, and hero image uploads';
     default:
       return '';
   }

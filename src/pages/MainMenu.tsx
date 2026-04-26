@@ -22,7 +22,7 @@ import elohimSymbol from "@/assets/elohim-symbol.png";
 import christCross from "@/assets/christ-cross.png";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
 import triuneGod from "@/assets/triune-god.png";
-import faithfulFriendIcon from "@/assets/faithful-friend-icon.png";
+
 import hagionLogo from "@/assets/hagion-logo.png";
 import hagionAiTitle from "@/assets/hagion-ai-title.png";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
@@ -154,13 +154,6 @@ const MainMenu = () => {
       name: t('triune_god'),
       image: triuneGod,
       isPro: false,
-    },
-    {
-      id: "faithful-friend",
-      name: "Faithful Friend",
-      image: faithfulFriendIcon,
-      isPro: true,
-      externalLink: "https://faithfulfriend.app",
     },
   ];
 
@@ -577,14 +570,7 @@ const MainMenu = () => {
                   key={guide.id}
                   className="flex flex-col items-center gap-1.5 cursor-pointer group"
                   onClick={() => {
-                    if ((guide as any).externalLink) {
-                      // Faithful Friend requires Premium Plus
-                      if (isPremiumPlus) {
-                        window.open((guide as any).externalLink, '_blank');
-                      } else {
-                        navigate('/premium');
-                      }
-                    } else if (guide.isPro) {
+                    if (guide.isPro) {
                       navigate('/premium');
                     } else {
                       navigate(`/divine/${guide.id}`);
@@ -592,11 +578,6 @@ const MainMenu = () => {
                   }}
                 >
                   <div className="relative">
-                    {guide.id === 'faithful-friend' && (
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-lg z-20 whitespace-nowrap">
-                        Bonus App
-                      </div>
-                    )}
                     <div className="relative w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-white/40 via-primary/30 to-accent/40 shadow-[0_10px_30px_-8px_hsl(var(--primary)/0.55),0_0_0_1px_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_40px_-10px_hsl(var(--primary)/0.75)]">
                       <div className="relative w-full h-full rounded-full bg-black/70 backdrop-blur-xl flex items-center justify-center overflow-hidden ring-1 ring-white/20">
                         {/* Inner top highlight for glass feel */}
@@ -624,12 +605,11 @@ const MainMenu = () => {
                           {guide.id === 'christ' && t('christ_info')}
                           {guide.id === 'holy-spirit' && t('holy_spirit_info')}
                           {guide.id === 'trinity' && t('trinity_info')}
-                          {guide.id === 'faithful-friend' && 'Your personal AI spiritual companion available 24/7. Access deep theological conversations and personalized guidance.'}
                         </p>
                       </PopoverContent>
                     </Popover>
                     {guide.isPro && !isPremiumPlus && (
-                      <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${guide.id === 'faithful-friend' ? 'bg-sky-500' : 'bg-orange-500'}`}>
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 bg-orange-500">
                         <span>★</span> PRO
                       </div>
                     )}
@@ -640,7 +620,7 @@ const MainMenu = () => {
                 </div>
               ))}
 
-              {/* Plan of Salvation Circle — placed next to Faithful Friend */}
+              {/* Plan of Salvation Circle */}
               <button
                 type="button"
                 onClick={() => setSalvationOpen(true)}
