@@ -116,6 +116,7 @@ export default function VideosPage() {
   });
   const [uploadOpen, setUploadOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
+  const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
 
   useEffect(() => {
     localStorage.setItem("videos_liked", JSON.stringify([...liked]));
