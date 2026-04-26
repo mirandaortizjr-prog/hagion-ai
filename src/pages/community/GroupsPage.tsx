@@ -59,6 +59,9 @@ export default function GroupsPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     load();
+    const onRefresh = () => load();
+    window.addEventListener("groups:refresh", onRefresh);
+    return () => window.removeEventListener("groups:refresh", onRefresh);
   }, []);
 
   const load = async () => {
