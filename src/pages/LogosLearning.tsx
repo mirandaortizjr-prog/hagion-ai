@@ -1,13 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BookOpen, CheckCircle2, Settings } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import { getCurriculumData } from "@/data/curriculumData";
 import { useLanguage } from "@/contexts/LanguageContext";
-import hagionLogo from "@/assets/hagion-logo.png";
+import { PremiumNav } from "@/components/PremiumNav";
 
 const LogosLearning = () => {
   const navigate = useNavigate();
@@ -36,98 +34,116 @@ const LogosLearning = () => {
   const title = type === "track" ? trackTitles[id || ""] : pathTitles[id || ""];
   const curriculum = id ? curriculumData[id] : null;
 
+  const totalLessons = curriculum?.modules.reduce((acc, mod) => acc + mod.lessons.length, 0) || 0;
+
   const toggleLessonComplete = (lessonId: string) => {
     setCompletedLessons((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(lessonId)) {
-        newSet.delete(lessonId);
-      } else {
-        newSet.add(lessonId);
-      }
-      return newSet;
+      const next = new Set(prev);
+      if (next.has(lessonId)) next.delete(lessonId);
+      else next.add(lessonId);
+      return next;
     });
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="flex items-center justify-between gap-4 px-4 py-4 border-b">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/main-menu?tab=hagion-university")}>
-            <ArrowLeft className="w-6 h-6" />
+    <div className="min-h-screen flex flex-col page-transition">
+      {/* Floating header — matches SubjectDailyStory */}
+      <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/40 border-b border-white/5">
+        <div className="flex items-center gap-3 px-4 py-3 max-w-3xl mx-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/main-menu?tab=hagion-university")}
+            className="tap-scale rounded-full hover:bg-white/10"
+          >
+            <ArrowLeft className="w-5 h-5" />
           </Button>
-          <img 
-            src={hagionLogo} 
-            alt="Hagion AI" 
-            className="w-8 h-8 object-contain"
-          />
+          <div className="flex-1 text-center">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
+              {type === "track" ? t('curriculum_track') : t('teaching_path_label')}
+            </p>
+          </div>
+          <div className="w-10" />
         </div>
-        <div className="flex-1 text-center">
-          <h1 className="text-xl font-bold">{title}</h1>
-          <p className="text-sm text-muted-foreground">
-            {type === "track" ? t('curriculum_track') : t('teaching_path_label')}
-          </p>
-        </div>
-        <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
-          <Settings className="w-6 h-6" />
-        </Button>
       </header>
 
-      {/* Curriculum Content */}
-      <div className="flex-1 overflow-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <main className="flex-1 overflow-auto px-5 sm:px-6 pt-8 pb-32">
+        <div className="max-w-2xl mx-auto">
+          {/* Title */}
+          <h1 className="text-center text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-white mb-3 px-2">
+            {title}
+          </h1>
+
+          {/* Theme pill */}
+          <div className="flex justify-center mb-10">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-accent/90 px-3 py-1 rounded-full border border-accent/20 bg-accent/5">
+              {type === "track" ? t('curriculum_track') : t('teaching_path_label')}
+            </span>
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center justify-center mb-10">
+            <span className="h-px w-10 bg-foreground/20" />
+            <span className="mx-3 text-foreground/30 text-xs">✦</span>
+            <span className="h-px w-10 bg-foreground/20" />
+          </div>
+
           {!curriculum && (
-            <Card className="bg-[#3BB4F2]/5 border-[#3BB4F2]/20">
-              <CardContent className="pt-6">
-                <p className="text-center text-muted-foreground">
-                  {t('coming_soon').replace('{title}', title)}
-                </p>
-              </CardContent>
-            </Card>
+            <div className="py-16 text-center">
+              <p className="text-[15px] text-white/70 leading-relaxed">
+                {t('coming_soon').replace('{title}', title)}
+              </p>
+            </div>
           )}
 
           {curriculum && (
             <>
-              {/* Introduction Card */}
-              <Card className="bg-gradient-to-br from-[#3BB4F2]/10 to-[#0052D4]/10 border-[#3BB4F2]/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-[#3BB4F2]" />
-                    {t('curriculum_overview')}
-                  </CardTitle>
-                  <CardDescription>
-                    {t('curriculum_overview_desc')}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center gap-4 text-sm">
-                    <div>
-                      <span className="font-semibold">{curriculum.modules.length}</span> {t('modules')}
-                    </div>
-                    <div>
-                      <span className="font-semibold">
-                        {curriculum.modules.reduce((acc, mod) => acc + mod.lessons.length, 0)}
-                      </span>{" "}
-                      {t('lessons')}
-                    </div>
-                    <div>
-                      <span className="font-semibold">{completedLessons.size}</span> {t('completed')}
-                    </div>
+              {/* Overview */}
+              <section className="mb-10">
+                <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold flex items-center justify-center gap-2">
+                  <BookOpen className="w-3.5 h-3.5" />
+                  {t('curriculum_overview')}
+                </h2>
+                <p className="text-center text-[14px] text-white/70 leading-relaxed mb-5">
+                  {t('curriculum_overview_desc')}
+                </p>
+                <div className="flex justify-center gap-6 text-center">
+                  <div>
+                    <p className="text-2xl font-semibold text-white">{curriculum.modules.length}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 mt-1">{t('modules')}</p>
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <p className="text-2xl font-semibold text-white">{totalLessons}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 mt-1">{t('lessons')}</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-accent">{completedLessons.size}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 mt-1">{t('completed')}</p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Divider */}
+              <div className="flex items-center justify-center mb-10">
+                <span className="h-px w-10 bg-foreground/20" />
+                <span className="mx-3 text-foreground/30 text-xs">✦</span>
+                <span className="h-px w-10 bg-foreground/20" />
+              </div>
 
               {/* Modules */}
-              {curriculum.modules.map((module, moduleIdx) => (
-                <Card key={module.id}>
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary">{t('module')} {moduleIdx + 1}</Badge>
-                      <CardTitle className="text-lg">{module.title}</CardTitle>
-                    </div>
-                    <CardDescription>{module.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
+              <div className="space-y-8">
+                {curriculum.modules.map((module, moduleIdx) => (
+                  <section key={module.id}>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-accent/80 mb-2">
+                      {t('module')} {moduleIdx + 1}
+                    </p>
+                    <h2 className="text-xl font-semibold text-white mb-2 leading-tight">
+                      {module.title}
+                    </h2>
+                    <p className="text-[14px] text-white/65 leading-relaxed mb-5">
+                      {module.description}
+                    </p>
+
                     <Accordion type="single" collapsible className="space-y-2">
                       {module.lessons.map((lesson, lessonIdx) => {
                         const isCompleted = completedLessons.has(lesson.id);
@@ -135,68 +151,75 @@ const LogosLearning = () => {
                           <AccordionItem
                             key={lesson.id}
                             value={lesson.id}
-                            className="border rounded-lg px-4"
+                            className="border border-white/10 rounded-2xl px-4 bg-white/[0.03] backdrop-blur-sm"
                           >
-                            <AccordionTrigger className="hover:no-underline">
-                              <div className="flex items-center gap-3 flex-1">
-                                <Button
-                                  size="sm"
-                                  variant={isCompleted ? "default" : "outline"}
-                                  className="h-8 w-8 rounded-full p-0"
+                            <AccordionTrigger className="hover:no-underline py-4">
+                              <div className="flex items-center gap-3 flex-1 min-w-0">
+                                <button
+                                  type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     toggleLessonComplete(lesson.id);
                                   }}
+                                  className={`shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
+                                    isCompleted
+                                      ? "bg-accent text-accent-foreground"
+                                      : "bg-white/10 text-white/80 ring-1 ring-white/15 hover:bg-white/15"
+                                  }`}
+                                  aria-label={isCompleted ? t('mark_incomplete') : t('mark_complete')}
                                 >
-                                  {isCompleted ? (
-                                    <CheckCircle2 className="w-4 h-4" />
-                                  ) : (
-                                    <span className="text-xs">{lessonIdx + 1}</span>
-                                  )}
-                                </Button>
-                                <div className="text-left flex-1">
-                                  <div className="font-medium">{lesson.title}</div>
-                                  <div className="text-sm text-muted-foreground">
+                                  {isCompleted ? <CheckCircle2 className="w-4 h-4" /> : lessonIdx + 1}
+                                </button>
+                                <div className="text-left flex-1 min-w-0">
+                                  <div className="font-medium text-white text-[14.5px] leading-snug">
+                                    {lesson.title}
+                                  </div>
+                                  <div className="text-[12.5px] text-white/55 mt-0.5 leading-snug line-clamp-2">
                                     {lesson.description}
                                   </div>
                                 </div>
-                                <Badge variant="outline" className="ml-auto">
+                                <span className="shrink-0 text-[10px] uppercase tracking-[0.18em] text-white/50 px-2 py-0.5 rounded-full border border-white/10">
                                   {lesson.duration}
-                                </Badge>
+                                </span>
                               </div>
                             </AccordionTrigger>
-                            <AccordionContent className="pt-4 space-y-4">
-                              {/* Lesson Content */}
+                            <AccordionContent className="pt-2 pb-5 space-y-5">
                               <div className="space-y-3">
-                                <h4 className="font-semibold text-sm">{t('lesson_content')}</h4>
+                                <h4 className="text-[10px] uppercase tracking-[0.3em] text-accent font-semibold">
+                                  {t('lesson_content')}
+                                </h4>
                                 {lesson.content.map((paragraph, idx) => (
-                                  <p key={idx} className="text-sm leading-relaxed">
+                                  <p key={idx} className="text-[14px] leading-[1.8] text-white/85">
                                     {paragraph}
                                   </p>
                                 ))}
                               </div>
 
-                              {/* Exercises */}
                               {lesson.exercises && lesson.exercises.length > 0 && (
-                                <div className="space-y-3 pt-4 border-t">
-                                  <h4 className="font-semibold text-sm">{t('practice_exercises')}</h4>
+                                <div className="space-y-3 pt-4 border-t border-white/10">
+                                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-accent font-semibold">
+                                    {t('practice_exercises')}
+                                  </h4>
                                   <ul className="space-y-2">
                                     {lesson.exercises.map((exercise, idx) => (
-                                      <li key={idx} className="flex items-start gap-2 text-sm">
-                                        <span className="text-[#3BB4F2] font-bold">•</span>
-                                        <span>{exercise}</span>
+                                      <li key={idx} className="flex items-start gap-2 text-[14px] text-white/80">
+                                        <span className="text-accent font-bold leading-relaxed">•</span>
+                                        <span className="leading-relaxed">{exercise}</span>
                                       </li>
                                     ))}
                                   </ul>
                                 </div>
                               )}
 
-                              {/* Action Buttons */}
-                              <div className="flex gap-2 pt-4">
+                              <div className="flex gap-2 pt-2">
                                 <Button
                                   size="sm"
-                                  variant={isCompleted ? "outline" : "default"}
                                   onClick={() => toggleLessonComplete(lesson.id)}
+                                  className={
+                                    isCompleted
+                                      ? "bg-white/10 text-white border border-white/15 hover:bg-white/15"
+                                      : "bg-accent text-accent-foreground hover:bg-accent/90"
+                                  }
                                 >
                                   {isCompleted ? t('mark_incomplete') : t('mark_complete')}
                                 </Button>
@@ -206,13 +229,15 @@ const LogosLearning = () => {
                         );
                       })}
                     </Accordion>
-                  </CardContent>
-                </Card>
-              ))}
+                  </section>
+                ))}
+              </div>
             </>
           )}
         </div>
-      </div>
+      </main>
+
+      <PremiumNav />
     </div>
   );
 };

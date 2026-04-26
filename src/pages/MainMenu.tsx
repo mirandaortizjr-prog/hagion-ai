@@ -854,10 +854,10 @@ const MainMenu = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`w-20 h-20 rounded-3xl overflow-hidden flex items-center justify-center ${item.color}`}
+                      className={`w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-1 ring-white/15 shadow-lg ${item.color}`}
                     >
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-full" />
                       ) : item.icon && (
                         <item.icon className="w-10 h-10 text-white" />
                       )}
@@ -895,10 +895,10 @@ const MainMenu = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`w-20 h-20 rounded-3xl overflow-hidden flex items-center justify-center ${item.color}`}
+                      className={`w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-1 ring-white/15 shadow-lg ${item.color}`}
                     >
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-12 h-12 object-contain" />
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-full" />
                       ) : item.icon && (
                         <item.icon className="w-10 h-10 text-white" />
                       )}
