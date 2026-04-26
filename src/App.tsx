@@ -103,6 +103,7 @@ const App = () => (
             <Route path="/about" element={<Index />} />
             <Route path="/discernment" element={<Discernment />} />
             <Route path="/discernment/test-spirits" element={<TestSpirits />} />
+            <Route path="/discernment/sermon-analyzer" element={<SermonAnalyzer />} />
             <Route path="/learning" element={<Learning />} />
             <Route path="/community" element={<PrayerWall />} />
             <Route path="/splash" element={<Splash />} />
