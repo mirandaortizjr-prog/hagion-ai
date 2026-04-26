@@ -294,13 +294,22 @@ export default function ReelsFeedPage() {
           <Sparkles className="w-3.5 h-3.5 text-white/80" />
           <h1 className="font-playfair text-lg tracking-tight">Reels</h1>
         </div>
-        <button
-          onClick={() => setMuted((m) => !m)}
-          className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-          aria-label={muted ? "Unmute" : "Mute"}
-        >
-          {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setUploadOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label="Upload reel"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => setMuted((m) => !m)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label={muted ? "Unmute" : "Mute"}
+          >
+            {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          </button>
+        </div>
       </header>
 
       {loading ? (
