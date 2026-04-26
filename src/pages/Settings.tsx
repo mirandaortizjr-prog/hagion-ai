@@ -224,6 +224,7 @@ const Settings = () => {
         { icon: BookOpen, label: language === 'es' ? 'Descargo de IA' : 'AI Disclaimer', action: () => navigate("/ai-disclaimer") },
       ],
     },
+  ];
 
   const initial = (profile.name?.[0] || user?.email?.[0] || "U").toUpperCase();
   const nameChanged = (name || "") !== (profile.name || "");
