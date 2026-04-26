@@ -172,7 +172,7 @@ const DailyWisdom = () => {
       .map((p) => p.trim())
       .filter(Boolean)
       .map((p, i) => (
-        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-foreground/90 mb-4">
+        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-foreground mb-4">
           {p}
         </p>
       ));
@@ -263,28 +263,24 @@ const DailyWisdom = () => {
                 <span className="h-px w-10 bg-foreground/20" />
               </div>
 
-              {/* Statement of the Truth */}
               <Section
-                label="Statement of the Truth"
+                label="The King's Command"
                 body={story.law_statement || story.content}
                 emphasized
               />
 
-              {/* Transgression of the Truth */}
               <Section
-                label="Transgression of the Truth"
+                label="The Fall of the Fool"
                 body={story.law_transgression}
               />
 
-              {/* Observance of the Truth */}
               <Section
-                label="Observance of the Truth"
+                label="The Rise of the Faithful"
                 body={story.law_observance}
               />
 
-              {/* Interpretation */}
               <Section
-                label="Interpretation"
+                label="Wisdom"
                 body={story.law_interpretation}
               />
 
@@ -326,7 +322,7 @@ const DailyWisdom = () => {
     if (!body) return null;
     return (
       <section className="mb-10">
-        <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent/80 mb-4 font-semibold">
+        <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold">
           {label}
         </h2>
         <div className={emphasized ? "text-lg sm:text-xl leading-[1.7] font-medium text-foreground" : ""}>
