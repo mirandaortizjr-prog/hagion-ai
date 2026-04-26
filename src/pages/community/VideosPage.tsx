@@ -527,6 +527,7 @@ function VideoFeedItem({
   return (
     <section
       data-video-id={video.id}
+      onPointerDown={showControls}
       className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
     >
       {video.video_url ? (
