@@ -605,12 +605,11 @@ const MainMenu = () => {
                           {guide.id === 'christ' && t('christ_info')}
                           {guide.id === 'holy-spirit' && t('holy_spirit_info')}
                           {guide.id === 'trinity' && t('trinity_info')}
-                          {guide.id === 'faithful-friend' && 'Your personal AI spiritual companion available 24/7. Access deep theological conversations and personalized guidance.'}
                         </p>
                       </PopoverContent>
                     </Popover>
                     {guide.isPro && !isPremiumPlus && (
-                      <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 ${guide.id === 'faithful-friend' ? 'bg-sky-500' : 'bg-orange-500'}`}>
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-white text-xs px-2 py-0.5 rounded-full flex items-center gap-1 bg-orange-500">
                         <span>★</span> PRO
                       </div>
                     )}
@@ -621,7 +620,7 @@ const MainMenu = () => {
                 </div>
               ))}
 
-              {/* Plan of Salvation Circle — placed next to Faithful Friend */}
+              {/* Plan of Salvation Circle */}
               <button
                 type="button"
                 onClick={() => setSalvationOpen(true)}
