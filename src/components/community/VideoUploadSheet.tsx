@@ -22,8 +22,8 @@ const COPY = {
   en: {
     reelTitle: "Share a Reel",
     teachingTitle: "Upload a Teaching",
-    reelHint: "Short vertical video. Up to 100 MB.",
-    teachingHint: "Long-form teaching video. Up to 500 MB.",
+    reelHint: "Vertical video. Up to 30 seconds, 100 MB.",
+    teachingHint: "Long-form teaching. Up to 15 minutes, 500 MB.",
     title: "Title",
     description: "Description (optional)",
     pick: "Choose video",
@@ -38,12 +38,15 @@ const COPY = {
     failure: "Upload failed",
     tooLargeReel: "Reel must be under 100 MB",
     tooLargeTeaching: "Teaching must be under 500 MB",
+    tooLongReel: "Reel must be 30 seconds or less",
+    tooLongTeaching: "Teaching must be 15 minutes or less",
+    checking: "Checking video…",
   },
   es: {
     reelTitle: "Comparte un Reel",
     teachingTitle: "Sube una Enseñanza",
-    reelHint: "Video vertical corto. Hasta 100 MB.",
-    teachingHint: "Video de enseñanza largo. Hasta 500 MB.",
+    reelHint: "Video vertical. Hasta 30 segundos, 100 MB.",
+    teachingHint: "Enseñanza larga. Hasta 15 minutos, 500 MB.",
     title: "Título",
     description: "Descripción (opcional)",
     pick: "Elegir video",
@@ -58,11 +61,35 @@ const COPY = {
     failure: "Error al subir",
     tooLargeReel: "El Reel debe ser menor a 100 MB",
     tooLargeTeaching: "La Enseñanza debe ser menor a 500 MB",
+    tooLongReel: "El Reel debe durar 30 segundos o menos",
+    tooLongTeaching: "La Enseñanza debe durar 15 minutos o menos",
+    checking: "Verificando video…",
   },
 };
 
 const REEL_MAX = 100 * 1024 * 1024;
 const TEACHING_MAX = 500 * 1024 * 1024;
+const REEL_MAX_SECONDS = 30;
+const TEACHING_MAX_SECONDS = 15 * 60;
+
+const probeDuration = (file: File): Promise<number> =>
+  new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.muted = true;
+    video.src = url;
+    const cleanup = () => URL.revokeObjectURL(url);
+    video.onloadedmetadata = () => {
+      const d = video.duration;
+      cleanup();
+      resolve(isFinite(d) ? d : 0);
+    };
+    video.onerror = () => {
+      cleanup();
+      resolve(0);
+    };
+  });
 
 export default function VideoUploadSheet({ open, onOpenChange, kind, lang = "en", onUploaded }: Props) {
   const t = COPY[lang];
@@ -88,11 +115,22 @@ export default function VideoUploadSheet({ open, onOpenChange, kind, lang = "en"
   const isReel = kind === "reel";
   const maxBytes = isReel ? REEL_MAX : TEACHING_MAX;
 
-  const handlePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
     if (f.size > maxBytes) {
       toast({ title: isReel ? t.tooLargeReel : t.tooLargeTeaching, variant: "destructive" });
+      return;
+    }
+    toast({ title: t.checking });
+    const duration = await probeDuration(f);
+    const maxSec = isReel ? REEL_MAX_SECONDS : TEACHING_MAX_SECONDS;
+    if (duration > 0 && duration > maxSec + 0.5) {
+      toast({
+        title: isReel ? t.tooLongReel : t.tooLongTeaching,
+        description: `${Math.round(duration)}s`,
+        variant: "destructive",
+      });
       return;
     }
     setFile(f);

@@ -16,6 +16,7 @@ import {
   Sparkles,
   Music2,
   Plus,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +24,7 @@ import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 import MediaMoreSheet from "@/components/community/MediaMoreSheet";
+import MediaSearchSheet from "@/components/community/MediaSearchSheet";
 
 interface Reel {
   id: string;
@@ -116,6 +118,7 @@ export default function ReelsFeedPage() {
   });
   const [showHeart, setShowHeart] = useState<Record<string, number>>({});
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
   const [moreFor, setMoreFor] = useState<Reel | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
@@ -365,6 +368,13 @@ export default function ReelsFeedPage() {
         </div>
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setSearchOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label="Search reels"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+          <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
             aria-label="Upload reel"
@@ -450,6 +460,27 @@ export default function ReelsFeedPage() {
         shareUrl={moreFor ? `${window.location.origin}/community/reels/feed#${moreFor.id}` : undefined}
         videoUrl={moreFor?.video_url}
         onClose={() => setMoreFor(null)}
+      />
+      <MediaSearchSheet
+        open={searchOpen}
+        items={reels.map((r) => ({
+          id: r.id,
+          title: r.title,
+          description: r.description,
+          author_name: r.author_name,
+          thumbnail_url: r.thumbnail_url,
+        }))}
+        placeholder="Search reels…"
+        onClose={() => setSearchOpen(false)}
+        onSelect={(it) => {
+          setActiveId(it.id);
+          requestAnimationFrame(() => {
+            const el = containerRef.current?.querySelector(
+              `[data-reel-id="${it.id}"]`,
+            ) as HTMLElement | null;
+            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }}
       />
     </div>
   );

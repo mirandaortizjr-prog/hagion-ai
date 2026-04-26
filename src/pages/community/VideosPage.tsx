@@ -17,6 +17,7 @@ import {
   Sparkles,
   Plus,
   Film,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -24,6 +25,7 @@ import { cn } from "@/lib/utils";
 import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 import MediaMoreSheet from "@/components/community/MediaMoreSheet";
+import MediaSearchSheet from "@/components/community/MediaSearchSheet";
 
 interface VideoItem {
   id: string;
@@ -115,6 +117,7 @@ export default function VideosPage() {
     try { return new Set(JSON.parse(localStorage.getItem("videos_saved") || "[]")); } catch { return new Set(); }
   });
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
   const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
 
@@ -314,6 +317,13 @@ export default function VideosPage() {
         </div>
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setSearchOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
+            aria-label="Search videos"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+          <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
             aria-label="Upload teaching"
@@ -416,6 +426,27 @@ export default function VideosPage() {
         shareUrl={moreFor ? `${window.location.origin}/community/videos#${moreFor.id}` : undefined}
         videoUrl={moreFor?.video_url || undefined}
         onClose={() => setMoreFor(null)}
+      />
+      <MediaSearchSheet
+        open={searchOpen}
+        items={videos.map((v) => ({
+          id: v.id,
+          title: v.title,
+          description: v.description,
+          author_name: v.author_name,
+          thumbnail_url: v.thumbnail_url,
+        }))}
+        placeholder="Search teachings…"
+        onClose={() => setSearchOpen(false)}
+        onSelect={(it) => {
+          setActiveId(it.id);
+          requestAnimationFrame(() => {
+            const el = containerRef.current?.querySelector(
+              `[data-video-id="${it.id}"]`,
+            ) as HTMLElement | null;
+            el?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }}
       />
     </div>
   );
