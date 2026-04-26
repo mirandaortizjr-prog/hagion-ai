@@ -365,6 +365,7 @@ export default function ReelsFeedPage() {
               onShare={() => handleShare(reel)}
               onComment={() => setCommentsFor(reel)}
               onMore={() => setMoreFor(reel)}
+              onFollow={() => toast({ title: `Following @${reel.author_name || "user"}` })}
               onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(reel.id, el);
