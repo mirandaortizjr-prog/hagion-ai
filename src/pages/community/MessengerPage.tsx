@@ -100,7 +100,7 @@ export default function MessengerPage() {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${activeId}` },
         (payload) => {
-          setMessages((m) => [...m, payload.new]);
+          setMessages((m) => (m.some((x) => x.id === payload.new.id) ? m : [...m, payload.new]));
           if (payload.new.sender_id !== user?.id) impact("light");
         }
       )
