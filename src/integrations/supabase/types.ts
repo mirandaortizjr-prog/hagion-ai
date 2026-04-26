@@ -659,26 +659,35 @@ export type Database = {
       }
       messages: {
         Row: {
-          content: string
+          content: string | null
           conversation_id: string
           created_at: string
           id: string
+          media_duration_ms: number | null
+          media_type: string | null
+          media_url: string | null
           read_at: string | null
           sender_id: string
         }
         Insert: {
-          content: string
+          content?: string | null
           conversation_id: string
           created_at?: string
           id?: string
+          media_duration_ms?: number | null
+          media_type?: string | null
+          media_url?: string | null
           read_at?: string | null
           sender_id: string
         }
         Update: {
-          content?: string
+          content?: string | null
           conversation_id?: string
           created_at?: string
           id?: string
+          media_duration_ms?: number | null
+          media_type?: string | null
+          media_url?: string | null
           read_at?: string | null
           sender_id?: string
         }
