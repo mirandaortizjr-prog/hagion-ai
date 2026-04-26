@@ -1,7 +1,56 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Capacitor } from '@capacitor/core';
+import { supabase } from '@/integrations/supabase/client';
 
 const isNative = Capacitor.isNativePlatform();
+
+// Server-side receipt verification.
+// Calls the verify-google-play-purchase edge function which talks to the
+// Google Play Developer API and writes the verified state to the
+// google_play_purchases table. The premium gate reads that table — never
+// trust the client.
+async function verifyPurchaseOnServer(productId: string, purchaseToken: string) {
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      'verify-google-play-purchase',
+      { body: { productId, purchaseToken } },
+    );
+    if (error) {
+      console.error('Server verification failed:', error);
+      return { verified: false, error: error.message };
+    }
+    console.log('Server verification result:', data);
+    return data;
+  } catch (e) {
+    console.error('Server verification error:', e);
+    return { verified: false, error: (e as Error).message };
+  }
+}
+
+async function fetchVerifiedPurchaseState() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { isPremium: false, isPremiumPlus: false };
+
+  const { data, error } = await supabase
+    .from('google_play_purchases')
+    .select('product_id, status, expiry_time')
+    .eq('user_id', user.id)
+    .eq('status', 'active');
+
+  if (error || !data) return { isPremium: false, isPremiumPlus: false };
+
+  const now = Date.now();
+  const active = data.filter(
+    (p) => !p.expiry_time || new Date(p.expiry_time).getTime() > now,
+  );
+  const isPremiumPlus = active.some(
+    (p) => p.product_id === PRODUCT_IDS.PREMIUM_PLUS_MONTHLY,
+  );
+  const isPremium =
+    isPremiumPlus ||
+    active.some((p) => p.product_id === PRODUCT_IDS.PREMIUM_MONTHLY);
+  return { isPremium, isPremiumPlus };
+}
 
 // Product IDs - these must match your Google Play Console / App Store Connect setup
 export const PRODUCT_IDS = {
@@ -94,10 +143,28 @@ export const useInAppPurchases = () => {
         transaction.verify();
       });
 
-      store.when().verified((receipt: any) => {
-        console.log('Purchase verified:', receipt);
+      store.when().verified(async (receipt: any) => {
+        console.log('Purchase verified by store:', receipt);
+
+        // Extract productId + purchaseToken for server-side verification.
+        // cordova-plugin-purchase shapes vary; cover the common ones.
+        const productId =
+          receipt?.collection?.[0]?.id ||
+          receipt?.id ||
+          receipt?.transaction?.products?.[0]?.id;
+        const purchaseToken =
+          receipt?.transaction?.purchaseToken ||
+          receipt?.purchaseToken ||
+          receipt?.nativePurchase?.purchaseToken;
+
+        if (productId && purchaseToken) {
+          await verifyPurchaseOnServer(productId, purchaseToken);
+        } else {
+          console.warn('Missing productId or purchaseToken on receipt', receipt);
+        }
+
         receipt.finish();
-        updatePurchaseState();
+        await updatePurchaseState();
       });
 
       store.when().finished((transaction: any) => {
@@ -151,20 +218,13 @@ export const useInAppPurchases = () => {
     setState(prev => ({ ...prev, products, isLoading: false }));
   }, []);
 
-  const updatePurchaseState = useCallback(() => {
-    if (!store) return;
-
-    const premiumProduct = store.get(PRODUCT_IDS.PREMIUM_MONTHLY);
-    const premiumPlusProduct = store.get(PRODUCT_IDS.PREMIUM_PLUS_MONTHLY);
-
-    const isPremium = premiumProduct?.owned || false;
-    const isPremiumPlus = premiumPlusProduct?.owned || false;
-
-    setState(prev => ({
-      ...prev,
-      isPremium: isPremium || isPremiumPlus, // Premium Plus includes Premium features
-      isPremiumPlus,
-    }));
+  // Source of truth for premium access is the google_play_purchases table,
+  // populated by the verify-google-play-purchase edge function. The local
+  // `store.owned` flag is NOT trusted because it can be spoofed on rooted
+  // devices.
+  const updatePurchaseState = useCallback(async () => {
+    const { isPremium, isPremiumPlus } = await fetchVerifiedPurchaseState();
+    setState(prev => ({ ...prev, isPremium, isPremiumPlus }));
   }, []);
 
   const purchaseProduct = useCallback(async (productId: string) => {
