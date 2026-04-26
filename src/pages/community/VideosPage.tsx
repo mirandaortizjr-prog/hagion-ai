@@ -499,7 +499,30 @@ function VideoFeedItem({
 }: VideoFeedItemProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [expanded, setExpanded] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const initial = (video.author_name || "?").charAt(0).toUpperCase();
+
+  const showControls = () => {
+    setControlsVisible(true);
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    if (!paused) {
+      hideTimerRef.current = setTimeout(() => setControlsVisible(false), 2000);
+    }
+  };
+
+  useEffect(() => {
+    if (paused) {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      setControlsVisible(true);
+    } else {
+      showControls();
+    }
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paused, isActive]);
 
   return (
     <section
