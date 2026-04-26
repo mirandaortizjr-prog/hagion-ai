@@ -71,10 +71,21 @@ export default function PostDetailPage() {
       return;
     }
     if (!text.trim() || !id) return;
+    const { data: prof } = await supabase
+      .from("profiles")
+      .select("name, username")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    const author_name =
+      prof?.name?.trim() ||
+      prof?.username?.trim() ||
+      user.user_metadata?.name ||
+      user.user_metadata?.full_name ||
+      "Believer";
     const { error } = await supabase.from("post_comments").insert({
       post_id: id,
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name,
       content: text.trim(),
     });
     if (error) toast({ title: "Could not comment", variant: "destructive" });
