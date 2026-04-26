@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Bookmark, BookmarkCheck, Loader2, Send, Share2, Sparkles } from "lucide-react";
+import { ArrowLeft, Bookmark, BookmarkCheck, Loader2, Send, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -13,7 +12,6 @@ import { PremiumNav } from "@/components/PremiumNav";
 import biblicalScrollImage from "@/assets/biblical-scroll.jpg";
 import martyrsImage from "@/assets/martyrs-symbol.jpg";
 import historyImage from "@/assets/history-christianity.jpg";
-import bibleImage from "@/assets/biblical-scroll.jpg";
 import { toast as sonner } from "sonner";
 
 interface Story {
@@ -23,6 +21,11 @@ interface Story {
   theme: string;
   moral_takeaway: string | null;
   subject: string;
+  era: string | null;
+  law_statement: string | null;       // biblical: scripture_ref
+  law_transgression: string | null;   // biblical: scene_setting
+  law_observance: string | null;      // biblical: scene_action
+  law_interpretation: string | null;  // biblical: scene_aftermath
 }
 
 interface ChatMessage {
@@ -32,18 +35,15 @@ interface ChatMessage {
 
 const SUBJECT_META: Record<
   string,
-  { titleKey: string; image: string; chatVoice: string }
+  { titleKey: string; image: string; chatVoice: string; isBiblical?: boolean }
 > = {
   "biblical-stories": {
     titleKey: "biblical_stories",
     image: biblicalScrollImage,
     chatVoice: "biblical-stories",
+    isBiblical: true,
   },
-  martyrs: {
-    titleKey: "martyrs_faith",
-    image: martyrsImage,
-    chatVoice: "martyrs",
-  },
+  martyrs: { titleKey: "martyrs_faith", image: martyrsImage, chatVoice: "martyrs" },
   "history-christianity": {
     titleKey: "history_christianity",
     image: historyImage,
@@ -51,7 +51,7 @@ const SUBJECT_META: Record<
   },
   "bible-translations": {
     titleKey: "bible_translations",
-    image: bibleImage,
+    image: biblicalScrollImage,
     chatVoice: "bible-translations",
   },
 };
@@ -64,6 +64,7 @@ const SubjectDailyStory = () => {
 
   const meta = SUBJECT_META[subjectId || ""] || SUBJECT_META["biblical-stories"];
   const subjectTitle = t(meta.titleKey);
+  const isBiblical = !!meta.isBiblical;
 
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(true);
@@ -73,9 +74,9 @@ const SubjectDailyStory = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Load today's story for this subject
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -87,7 +88,6 @@ const SubjectDailyStory = () => {
           return;
         }
 
-        // All views by this user for stories in this subject
         const { data: views } = await supabase
           .from("user_story_views")
           .select("story_id, viewed_at, daily_wisdom_stories!inner(subject)")
@@ -126,7 +126,6 @@ const SubjectDailyStory = () => {
           if (next && next.length > 0) {
             chosen = next[0] as Story;
           } else {
-            // Cycled through all — pick the oldest one again
             const { data: anyStory } = await supabase
               .from("daily_wisdom_stories")
               .select("*")
@@ -155,14 +154,13 @@ const SubjectDailyStory = () => {
             .maybeSingle();
           setIsSaved(!!savedRow);
 
-          // Seed chat with the story so the AI has context
           setMessages([
             {
               role: "assistant",
               content:
                 language === "es"
-                  ? `Acabas de leer "${chosen.title}". Pregúntame lo que quieras sobre ${subjectTitle.toLowerCase()} y exploraremos más profundo en la Escritura.`
-                  : `You just read "${chosen.title}". Ask me anything about ${subjectTitle.toLowerCase()} and we'll dig deeper into Scripture together.`,
+                  ? `Acabas de leer "${chosen.title}". Pregúntame lo que quieras y exploraremos más profundo en la Escritura.`
+                  : `You just read "${chosen.title}". Ask me anything and we'll dig deeper into Scripture together.`,
             },
           ]);
         }
@@ -174,12 +172,9 @@ const SubjectDailyStory = () => {
       }
     };
     load();
-    return () => {
-      cancelled = true;
-    };
-  }, [subjectId, navigate, language, subjectTitle, t]);
+    return () => { cancelled = true; };
+  }, [subjectId, navigate, language, t]);
 
-  // Auto-scroll chat
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -193,17 +188,11 @@ const SubjectDailyStory = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       if (isSaved) {
-        await supabase
-          .from("saved_stories")
-          .delete()
-          .eq("user_id", user.id)
-          .eq("story_id", story.id);
+        await supabase.from("saved_stories").delete().eq("user_id", user.id).eq("story_id", story.id);
         setIsSaved(false);
         sonner.success(t("story_removed_saved"));
       } else {
-        await supabase
-          .from("saved_stories")
-          .insert({ user_id: user.id, story_id: story.id });
+        await supabase.from("saved_stories").insert({ user_id: user.id, story_id: story.id });
         setIsSaved(true);
         sonner.success(t("story_saved_reflection"));
       }
@@ -214,7 +203,7 @@ const SubjectDailyStory = () => {
 
   const handleShare = async () => {
     if (!story) return;
-    const shareText = `${subjectTitle}: ${story.title}\n\n${story.content}\n\n— Hagion University`;
+    const shareText = `${story.title}${story.era ? `\n${story.era}` : ""}\n\n${story.content}\n\n— Hagion University`;
     if (navigator.share) {
       try {
         await navigator.share({ title: story.title, text: shareText });
@@ -241,11 +230,7 @@ const SubjectDailyStory = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
-        toast({
-          title: t("login_required"),
-          description: t("login_required_continue"),
-          variant: "destructive",
-        });
+        toast({ title: t("login_required"), description: t("login_required_continue"), variant: "destructive" });
         navigate("/auth");
         setSending(false);
         return;
@@ -258,10 +243,7 @@ const SubjectDailyStory = () => {
 
       const response = await fetch(CHAT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({
           messages: [
             { role: "system", content: contextPreamble },
@@ -290,15 +272,12 @@ const SubjectDailyStory = () => {
         return;
       }
 
-      if (!response.ok || !response.body) {
-        throw new Error("Failed to get response");
-      }
+      if (!response.ok || !response.body) throw new Error("Failed to get response");
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let assistantContent = "";
       let buffer = "";
-
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
       while (true) {
@@ -333,176 +312,232 @@ const SubjectDailyStory = () => {
       }
     } catch (err) {
       console.error("Chat error:", err);
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: t("connection_issue_retry") },
-      ]);
+      setMessages((prev) => [...prev, { role: "assistant", content: t("connection_issue_retry") }]);
     } finally {
       setSending(false);
     }
   };
 
+  const renderParagraphs = (text: string | null | undefined) => {
+    if (!text) return null;
+    return text
+      .replace(/\\n/g, "\n")
+      .split(/\n{2,}|\n/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p, i) => (
+        <p key={i} className="leading-[1.85] text-[15px] sm:text-base text-white mb-4">
+          {p}
+        </p>
+      ));
+  };
+
   return (
-    <div className="min-h-screen flex flex-col blue-sky-gradient">
-      {/* Header */}
-      <header className="flex items-center gap-3 px-4 py-4 border-b border-white/10 shrink-0">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => navigate("/main-menu?tab=hagion-university")}
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </Button>
-        <Avatar className="w-10 h-10 ring-1 ring-white/30">
-          <AvatarImage src={meta.image} alt={subjectTitle} />
-          <AvatarFallback>{subjectTitle.slice(0, 1)}</AvatarFallback>
-        </Avatar>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-lg font-bold truncate">{subjectTitle}</h1>
-          <p className="text-xs text-muted-foreground truncate">
-            {language === "es" ? "Historia diaria + Pregunta más" : "Daily story + Ask more"}
-          </p>
+    <div className="min-h-screen flex flex-col page-transition">
+      {/* Floating header — minimal, no card */}
+      <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/40 border-b border-white/5">
+        <div className="flex items-center gap-3 px-4 py-3 max-w-3xl mx-auto">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/main-menu?tab=hagion-university")}
+            className="tap-scale rounded-full hover:bg-white/10"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex-1 text-center">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
+              {subjectTitle}
+            </p>
+          </div>
+          {story && (
+            <div className="flex gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleSave}
+                disabled={savingBookmark}
+                className="tap-scale rounded-full hover:bg-white/10"
+              >
+                {isSaved ? (
+                  <BookmarkCheck className="w-5 h-5 text-accent" />
+                ) : (
+                  <Bookmark className="w-5 h-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleShare}
+                className="tap-scale rounded-full hover:bg-white/10"
+              >
+                <Share2 className="w-5 h-5" />
+              </Button>
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Story + Chat */}
-      <div className="flex-1 overflow-auto px-4 py-4 space-y-4 max-w-3xl mx-auto w-full pb-32">
-        {loading ? (
-          <Card>
-            <CardContent className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-[#3BB4F2]" />
-            </CardContent>
-          </Card>
-        ) : story ? (
-          <Card className="bg-white/95 text-foreground">
-            <CardHeader>
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <CardTitle className="text-xl mb-2">{story.title}</CardTitle>
-                  <CardDescription>
-                    <span className="inline-block px-3 py-1 bg-[#3BB4F2]/10 text-[#3BB4F2] rounded-full text-xs font-semibold">
-                      {story.theme}
-                    </span>
-                  </CardDescription>
-                </div>
-                <div className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleSave}
-                    disabled={savingBookmark}
-                  >
-                    {isSaved ? (
-                      <BookmarkCheck className="w-5 h-5 text-[#3BB4F2]" />
-                    ) : (
-                      <Bookmark className="w-5 h-5" />
-                    )}
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={handleShare}>
-                    <Share2 className="w-5 h-5" />
-                  </Button>
-                </div>
+      <main className="flex-1 overflow-auto px-5 sm:px-6 pt-8 pb-32">
+        <div className="max-w-2xl mx-auto">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-24 gap-4">
+              <Loader2 className="w-7 h-7 animate-spin text-accent" />
+              <p className="text-xs uppercase tracking-[0.2em] text-foreground/50">
+                {language === "es" ? "Abriendo la Escritura…" : "Opening the Scripture…"}
+              </p>
+            </div>
+          ) : story ? (
+            <article className="animate-fade-in">
+              {/* Title */}
+              <h1 className="text-center text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-white mb-3 px-2">
+                {story.title}
+              </h1>
+
+              {/* Era */}
+              {story.era && (
+                <p className="text-center text-[12px] uppercase tracking-[0.35em] text-white mb-2">
+                  {story.era}
+                </p>
+              )}
+
+              {/* Scripture reference (biblical only) */}
+              {isBiblical && story.law_statement && (
+                <p className="text-center text-[11px] tracking-[0.2em] text-accent/90 mb-2 italic">
+                  {story.law_statement}
+                </p>
+              )}
+
+              {/* Theme pill */}
+              <div className="flex justify-center mb-10">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-accent/90 px-3 py-1 rounded-full border border-accent/20 bg-accent/5">
+                  {story.theme}
+                </span>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="prose prose-sm max-w-none">
-                {story.content
-                  .replace(/\\n/g, "\n")
-                  .split("\n\n")
-                  .map((p, i) => (
-                    <p key={i} className="leading-relaxed">
-                      {p}
-                    </p>
-                  ))}
+
+              {/* Divider */}
+              <div className="flex items-center justify-center mb-10">
+                <span className="h-px w-10 bg-foreground/20" />
+                <span className="mx-3 text-foreground/30 text-xs">✦</span>
+                <span className="h-px w-10 bg-foreground/20" />
               </div>
+
+              {isBiblical ? (
+                <>
+                  <Section label={language === "es" ? "El Escenario" : "The Setting"} body={story.law_transgression} />
+                  <Section label={language === "es" ? "La Escena" : "The Scene"} body={story.law_observance} />
+                  <Section label={language === "es" ? "Lo Que Quedó" : "The Aftermath"} body={story.law_interpretation} />
+                </>
+              ) : (
+                <div className="mb-10">{renderParagraphs(story.content)}</div>
+              )}
+
+              {/* Closing reflection */}
               {story.moral_takeaway && (
-                <div className="p-4 bg-muted/40 rounded-lg border-l-4 border-[#3BB4F2]">
-                  <h3 className="font-semibold text-sm mb-1 flex items-center gap-1">
-                    <Sparkles className="w-4 h-4 text-[#3BB4F2]" />
-                    {t("reflection")}
-                  </h3>
-                  <p className="text-sm italic text-muted-foreground">
-                    {story.moral_takeaway}
-                  </p>
+                <div className="mt-12 mb-2">
+                  <div className="flex items-center justify-center mb-6">
+                    <span className="h-px w-10 bg-foreground/20" />
+                    <span className="mx-3 text-foreground/30 text-xs">✦</span>
+                    <span className="h-px w-10 bg-foreground/20" />
+                  </div>
+                  <blockquote className="text-center italic text-lg sm:text-xl leading-relaxed text-white px-4">
+                    "{story.moral_takeaway}"
+                  </blockquote>
                 </div>
               )}
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardContent className="py-12 text-center text-muted-foreground">
-              {t("no_story_available")}
-            </CardContent>
-          </Card>
-        )}
 
-        {/* Chat thread */}
-        {story && (
-          <div className="space-y-3">
-            <h2 className="text-sm font-semibold text-white/80 px-1">
-              {language === "es" ? "Pregunta más sobre esta historia" : "Ask more about this story"}
-            </h2>
-            <ScrollArea className="max-h-[50vh]">
-              <div ref={scrollRef} className="space-y-3 pr-2">
-                {messages.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    {m.role === "assistant" && (
-                      <Avatar className="w-7 h-7 shrink-0">
-                        <AvatarImage src={meta.image} />
-                        <AvatarFallback>{subjectTitle.slice(0, 1)}</AvatarFallback>
-                      </Avatar>
-                    )}
-                    <div
-                      className={`rounded-2xl px-3 py-2 max-w-[80%] text-sm whitespace-pre-wrap ${
-                        m.role === "user"
-                          ? "bg-[#3BB4F2] text-white"
-                          : "bg-white/95 text-foreground"
-                      }`}
-                    >
-                      {m.content || (sending && i === messages.length - 1 ? "…" : "")}
-                    </div>
-                  </div>
-                ))}
+              {/* Ask more — inline toggle */}
+              <div className="mt-14 flex justify-center">
+                <Button
+                  variant="ghost"
+                  onClick={() => setChatOpen((v) => !v)}
+                  className="text-xs uppercase tracking-[0.3em] text-accent hover:bg-accent/10 rounded-full px-5"
+                >
+                  {chatOpen
+                    ? (language === "es" ? "Ocultar conversación" : "Hide conversation")
+                    : (language === "es" ? "Pregunta más" : "Ask more")}
+                </Button>
               </div>
-            </ScrollArea>
-          </div>
-        )}
-      </div>
 
-      {/* Composer */}
-      <div className="fixed bottom-[72px] left-0 right-0 px-4 pb-3 bg-gradient-to-t from-black/40 to-transparent">
-        <div className="max-w-3xl mx-auto flex gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder={
-              language === "es" ? "Escribe tu pregunta…" : "Type your question…"
-            }
-            className="flex-1 bg-white/95 text-foreground border-white/30"
-            disabled={sending || !story}
-          />
-          <Button
-            onClick={handleSend}
-            disabled={sending || !input.trim() || !story}
-            className="bg-[#3BB4F2] hover:bg-[#0052D4]"
-          >
-            {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-          </Button>
+              {chatOpen && (
+                <div className="mt-6 animate-fade-in">
+                  <ScrollArea className="max-h-[50vh]">
+                    <div ref={scrollRef} className="space-y-3 pr-2">
+                      {messages.map((m, i) => (
+                        <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                          {m.role === "assistant" && (
+                            <Avatar className="w-7 h-7 shrink-0">
+                              <AvatarImage src={meta.image} />
+                              <AvatarFallback>{subjectTitle.slice(0, 1)}</AvatarFallback>
+                            </Avatar>
+                          )}
+                          <div
+                            className={`rounded-2xl px-3 py-2 max-w-[80%] text-sm whitespace-pre-wrap ${
+                              m.role === "user"
+                                ? "bg-accent text-accent-foreground"
+                                : "bg-white/10 text-white border border-white/10"
+                            }`}
+                          >
+                            {m.content || (sending && i === messages.length - 1 ? "…" : "")}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
+            </article>
+          ) : (
+            <div className="py-24 text-center text-foreground/60">
+              <p>{t("no_story_available")}</p>
+            </div>
+          )}
         </div>
-      </div>
+      </main>
+
+      {/* Composer — only when chat opened */}
+      {chatOpen && story && (
+        <div className="fixed bottom-[72px] left-0 right-0 px-4 pb-3 backdrop-blur-xl bg-background/60 border-t border-white/5 pt-3">
+          <div className="max-w-2xl mx-auto flex gap-2">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              placeholder={language === "es" ? "Escribe tu pregunta…" : "Type your question…"}
+              className="flex-1 bg-white/10 text-white border-white/20 placeholder:text-white/40"
+              disabled={sending}
+            />
+            <Button
+              onClick={handleSend}
+              disabled={sending || !input.trim()}
+              className="bg-accent hover:bg-accent/90 text-accent-foreground"
+            >
+              {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            </Button>
+          </div>
+        </div>
+      )}
 
       <PremiumNav />
     </div>
   );
+
+  function Section({ label, body }: { label: string; body: string | null | undefined }) {
+    if (!body) return null;
+    return (
+      <section className="mb-10">
+        <h2 className="text-[11px] uppercase tracking-[0.3em] text-accent mb-4 font-semibold">
+          {label}
+        </h2>
+        {renderParagraphs(body)}
+      </section>
+    );
+  }
 };
 
 export default SubjectDailyStory;
