@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -27,6 +28,7 @@ export const PremiumNav = () => {
 
   const inCommunity = location.pathname.startsWith("/community") || location.pathname === "/friends";
   const inDiscussions = location.pathname.startsWith("/community/discussions");
+  const inGroupsList = location.pathname === "/community/groups";
 
   const items: NavItem[] = inCommunity
     ? [
@@ -45,6 +47,7 @@ export const PremiumNav = () => {
   const [postOpen, setPostOpen] = useState(false);
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
   const [discussionCategory, setDiscussionCategory] = useState<string>("general");
+  const [groupName, setGroupName] = useState("");
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -83,11 +86,43 @@ export const PremiumNav = () => {
     setMediaKind(null);
   };
 
+  const handleCreateGroup = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (!groupName.trim()) return;
+    setPosting(true);
+    const { data, error } = await supabase
+      .from("groups")
+      .insert({
+        name: groupName.trim(),
+        description: composer.trim() || null,
+        creator_id: user.id,
+      })
+      .select("id")
+      .single();
+    if (!error && data) {
+      await supabase.from("group_members").insert({ group_id: data.id, user_id: user.id });
+    }
+    setPosting(false);
+    if (error) {
+      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+    } else {
+      setGroupName("");
+      setComposer("");
+      setPostOpen(false);
+      toast({ title: language === "es" ? "Grupo creado" : "Group created" });
+      window.dispatchEvent(new CustomEvent("groups:refresh"));
+    }
+  };
+
   const handlePost = async () => {
     if (!user) {
       navigate("/auth");
       return;
     }
+    if (inGroupsList) return handleCreateGroup();
     if (!composer.trim() && !mediaFile) return;
     setPosting(true);
 
@@ -230,13 +265,22 @@ export const PremiumNav = () => {
         >
           <SheetHeader>
             <SheetTitle className="text-white font-playfair text-xl text-center">
-              {inDiscussions
+              {inGroupsList
+                ? (language === "es" ? "Crear un grupo" : "Create a group")
+                : inDiscussions
                 ? (language === "es" ? "Iniciar una discusión" : "Start a discussion")
                 : (language === "es" ? "Compartir con la comunidad" : "Share with the community")}
             </SheetTitle>
           </SheetHeader>
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4">
-            {inDiscussions ? (
+            {inGroupsList ? (
+              <Input
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                placeholder={language === "es" ? "Nombre del grupo" : "Group name"}
+                className="mb-3 bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
+              />
+            ) : inDiscussions ? (
               <div className="flex gap-2 mb-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
                 {DISCUSSION_CATEGORIES.map((c) => {
                   const active = discussionCategory === c.id;
@@ -279,7 +323,9 @@ export const PremiumNav = () => {
               value={composer}
               onChange={(e) => setComposer(e.target.value)}
               placeholder={
-                inDiscussions
+                inGroupsList
+                  ? (language === "es" ? "Describe el propósito del grupo (opcional)" : "Describe the group's purpose (optional)")
+                  : inDiscussions
                   ? (language === "es" ? "Comparte tu pregunta o reflexión..." : "Share your question or reflection...")
                   : composerType === "prayer"
                   ? "Share a prayer request..."
@@ -291,7 +337,7 @@ export const PremiumNav = () => {
               className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
             />
 
-            {mediaPreview && (
+            {!inGroupsList && mediaPreview && (
               <div className="relative mt-3 rounded-xl overflow-hidden border border-white/10 bg-black/40">
                 {mediaKind === "image" ? (
                   <img src={mediaPreview} alt="preview" className="w-full max-h-64 object-cover" />
@@ -311,28 +357,35 @@ export const PremiumNav = () => {
 
             <div className="flex items-center justify-between mt-3 gap-2">
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => pickMedia("image")}
-                  disabled={posting}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
-                >
-                  <ImagePlus className="w-4 h-4" />
-                  {language === "es" ? "Foto" : "Photo"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => pickMedia("video")}
-                  disabled={posting}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
-                >
-                  <Video className="w-4 h-4" />
-                  {language === "es" ? "Video" : "Video"}
-                </button>
+                {!inGroupsList && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => pickMedia("image")}
+                      disabled={posting}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
+                    >
+                      <ImagePlus className="w-4 h-4" />
+                      {language === "es" ? "Foto" : "Photo"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => pickMedia("video")}
+                      disabled={posting}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.06] border border-white/15 text-white/80 hover:text-white hover:bg-white/10 transition text-xs"
+                    >
+                      <Video className="w-4 h-4" />
+                      {language === "es" ? "Video" : "Video"}
+                    </button>
+                  </>
+                )}
               </div>
               <Button
                 onClick={handlePost}
-                disabled={posting || (!composer.trim() && !mediaFile)}
+                disabled={
+                  posting ||
+                  (inGroupsList ? !groupName.trim() : !composer.trim() && !mediaFile)
+                }
                 className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white hover:to-white/90 shadow-[0_6px_20px_-4px_rgba(255,255,255,0.4)]"
               >
                 {uploading ? (
@@ -340,7 +393,9 @@ export const PremiumNav = () => {
                 ) : (
                   <Send className="w-4 h-4 mr-1" />
                 )}
-                {posting ? (uploading ? "Uploading..." : "Sharing...") : "Share"}
+                {posting
+                  ? (uploading ? "Uploading..." : (inGroupsList ? "Creating..." : "Sharing..."))
+                  : (inGroupsList ? (language === "es" ? "Crear" : "Create") : (language === "es" ? "Compartir" : "Share"))}
               </Button>
             </div>
           </div>
