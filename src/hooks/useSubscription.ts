@@ -41,8 +41,9 @@ export function useSubscription() {
       setIsLoading(false);
       return;
     }
-    if (em?.toLowerCase() === DEMO_EMAIL) {
-      setIsDemo(true);
+    const lowerEm = em?.toLowerCase() ?? '';
+    if (lowerEm === DEMO_EMAIL || STAFF_EMAILS.includes(lowerEm)) {
+      setIsDemo(lowerEm === DEMO_EMAIL);
       setTier('pro');
       setSubscription(null);
       setIsLoading(false);
