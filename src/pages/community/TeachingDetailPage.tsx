@@ -23,7 +23,7 @@ export default function TeachingDetailPage() {
   return (
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Teaching" />
+        <CommunityHeader title="Vid" />
         {t && (
           <>
             <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] mb-5">
