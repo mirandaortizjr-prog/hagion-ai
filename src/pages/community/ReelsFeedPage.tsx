@@ -441,6 +441,7 @@ function ReelItem({
   onShare,
   onComment,
   onMore,
+  onFollow,
   onPlaybackError,
   registerVideo,
   onProgress,
