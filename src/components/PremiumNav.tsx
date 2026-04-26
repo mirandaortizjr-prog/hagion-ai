@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { DISCUSSION_CATEGORIES } from "@/data/discussionCategories";
 
 interface NavItem {
   id: string;
@@ -25,6 +26,7 @@ export const PremiumNav = () => {
   const { toast } = useToast();
 
   const inCommunity = location.pathname.startsWith("/community") || location.pathname === "/friends";
+  const inDiscussions = location.pathname.startsWith("/community/discussions");
 
   const items: NavItem[] = inCommunity
     ? [
@@ -42,6 +44,7 @@ export const PremiumNav = () => {
 
   const [postOpen, setPostOpen] = useState(false);
   const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
+  const [discussionCategory, setDiscussionCategory] = useState<string>("general");
   const [composer, setComposer] = useState("");
   const [posting, setPosting] = useState(false);
   const [user, setUser] = useState<any>(null);
