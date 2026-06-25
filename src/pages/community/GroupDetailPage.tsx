@@ -41,6 +41,20 @@ interface Group {
   created_at: string;
 }
 
+interface GroupPost {
+  id: string;
+  user_id: string;
+  author_name: string | null;
+  author_avatar: string | null;
+  post_type: string;
+  content: string;
+  like_count: number;
+  comment_count: number;
+  pray_count: number;
+  encourage_count: number;
+  created_at: string;
+}
+
 interface Member {
   user_id: string;
   joined_at: string;
