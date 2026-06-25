@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { CommunityHeader } from "@/components/community/CommunityHeader";
 import { PremiumNav } from "@/components/PremiumNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,13 +20,22 @@ import {
   Pencil,
   Trash2,
   Share2,
-  Calendar,
   Heart,
   MessageCircle,
   HandHeart,
   Sparkles,
   Send,
+  ArrowLeft,
+  MoreHorizontal,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
@@ -76,6 +84,7 @@ export default function GroupDetailPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const handleBack = useSafeBackNavigation("/community/groups");
 
   // Edit dialog
   const [editOpen, setEditOpen] = useState(false);
@@ -296,213 +305,219 @@ export default function GroupDetailPage() {
         <div className="absolute top-1/3 -right-40 w-[480px] h-[480px] rounded-full bg-white/[0.03] blur-3xl" />
       </div>
 
-      <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Group" />
+      <main className="px-4 sm:px-6 pb-32 max-w-2xl mx-auto">
+        {/* Compact top bar */}
+        <header className="sticky top-0 z-20 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-3 bg-gradient-to-b from-black/60 via-black/40 to-transparent backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleBack}
+              className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <h1 className="flex-1 text-center text-[13px] font-medium tracking-wide text-white/90 truncate px-2">
+              {group?.name || "Group"}
+            </h1>
+            {group ? (
+              <>
+                <button
+                  onClick={handleShare}
+                  className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
+                  aria-label="Share"
+                >
+                  <Share2 className="w-4 h-4" />
+                </button>
+                {isOwner ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
+                        aria-label="More"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      className="bg-[#0b0b0f]/95 backdrop-blur-2xl border-white/10 text-white rounded-2xl"
+                    >
+                      <DropdownMenuItem
+                        onClick={() => setEditOpen(true)}
+                        className="gap-2 focus:bg-white/10"
+                      >
+                        <Pencil className="w-4 h-4" /> Edit group
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="bg-white/10" />
+                      <DropdownMenuItem
+                        onClick={handleDelete}
+                        className="gap-2 text-red-300 focus:bg-red-500/10 focus:text-red-200"
+                      >
+                        <Trash2 className="w-4 h-4" /> Delete group
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="w-9" />
+                )}
+              </>
+            ) : (
+              <div className="w-9" />
+            )}
+          </div>
+        </header>
 
         {loading ? (
           <div className="flex items-center justify-center py-20 text-white/40">
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : !group ? (
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-10 text-center text-white/60">
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-10 text-center text-white/60">
             Group not found.
           </div>
         ) : (
           <>
-            {/* Hero card */}
-            <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent backdrop-blur-2xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)] animate-fade-in">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_60%)]" />
-              <div className="relative p-6 sm:p-7">
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center shrink-0">
-                    <Users className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    {isOwner && (
-                      <div className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.22em] uppercase text-white/65 mb-2">
-                        <Crown className="w-3 h-3" />
-                        <span>Owner</span>
-                      </div>
-                    )}
-                    <h2 className="font-playfair text-[26px] sm:text-3xl leading-[1.1] tracking-tight">
-                      {group.name}
-                    </h2>
-                    <div className="mt-2 flex items-center gap-3 text-[11px] text-white/55">
-                      <span className="inline-flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        {group.member_count}{" "}
-                        {group.member_count === 1 ? "member" : "members"}
-                      </span>
-                      <span className="w-px h-3 bg-white/15" />
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(group.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {group.description && (
-                  <p className="mt-5 text-[14px] text-white/75 leading-relaxed">
-                    {group.description}
-                  </p>
-                )}
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  <Button
-                    onClick={toggleJoin}
-                    disabled={busy || isOwner}
-                    className={
-                      isOwner
-                        ? "rounded-full h-11 px-5 bg-white/5 text-white/40 border border-white/10 cursor-default"
-                        : joined
-                          ? "rounded-full h-11 px-5 bg-white/[0.06] text-white border border-white/15 hover:bg-white/10"
-                          : "rounded-full h-11 px-5 bg-gradient-to-b from-white to-white/85 text-black shadow-[0_10px_30px_-10px_rgba(255,255,255,0.5),inset_0_1px_0_rgba(255,255,255,0.6)] hover:from-white hover:to-white/95"
-                    }
-                  >
-                    {busy ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : isOwner ? (
-                      "Owner"
-                    ) : joined ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4" /> Joined
-                      </>
-                    ) : (
-                      "Join Group"
-                    )}
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    onClick={handleShare}
-                    className="rounded-full h-11 px-4 bg-white/[0.04] border border-white/10 text-white hover:bg-white/10"
-                  >
-                    <Share2 className="w-4 h-4" />
-                    Share
-                  </Button>
-
-                  {isOwner && (
-                    <>
-                      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="rounded-full h-11 px-4 bg-white/[0.04] border border-white/10 text-white hover:bg-white/10"
-                          >
-                            <Pencil className="w-4 h-4" />
-                            Edit
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
-                          <DialogHeader>
-                            <DialogTitle className="font-playfair text-2xl text-center">
-                              Edit Group
-                            </DialogTitle>
-                          </DialogHeader>
-                          <div className="space-y-4 mt-2">
-                            <div>
-                              <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                                Name
-                              </label>
-                              <Input
-                                value={editName}
-                                onChange={(e) => setEditName(e.target.value)}
-                                maxLength={80}
-                                className="mt-1.5 bg-white/5 border-white/15 text-white h-11 rounded-xl"
-                              />
-                            </div>
-                            <div>
-                              <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                                Description
-                              </label>
-                              <Textarea
-                                value={editDesc}
-                                onChange={(e) => setEditDesc(e.target.value)}
-                                rows={3}
-                                maxLength={500}
-                                className="mt-1.5 bg-white/5 border-white/15 text-white rounded-xl resize-none"
-                              />
-                            </div>
-                            <Button
-                              onClick={handleSave}
-                              disabled={saving}
-                              className="w-full h-11 rounded-full bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
-                            >
-                              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-
-                      <Button
-                        variant="ghost"
-                        onClick={handleDelete}
-                        className="rounded-full h-11 px-4 bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Delete
-                      </Button>
-                    </>
+            {/* Compact hero card */}
+            <section className="mt-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4 animate-fade-in">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center shrink-0 overflow-hidden">
+                  {group.icon_url ? (
+                    <img src={group.icon_url} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <Users className="w-5 h-5 text-white" />
                   )}
                 </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <h2 className="font-playfair text-[19px] leading-tight tracking-tight truncate">
+                      {group.name}
+                    </h2>
+                    {isOwner && <Crown className="w-3.5 h-3.5 text-amber-200/80 shrink-0" />}
+                  </div>
+                  <div className="mt-0.5 flex items-center gap-2 text-[11px] text-white/50">
+                    <span>{group.member_count} {group.member_count === 1 ? "member" : "members"}</span>
+                    <span className="w-0.5 h-0.5 rounded-full bg-white/30" />
+                    <span>{new Date(group.created_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+                <Button
+                  onClick={toggleJoin}
+                  disabled={busy || isOwner}
+                  size="sm"
+                  className={
+                    isOwner
+                      ? "rounded-full h-8 px-3 text-[12px] bg-white/5 text-white/40 border border-white/10 cursor-default"
+                      : joined
+                        ? "rounded-full h-8 px-3 text-[12px] bg-white/[0.06] text-white border border-white/15 hover:bg-white/10"
+                        : "rounded-full h-8 px-3.5 text-[12px] bg-white text-black hover:bg-white/95"
+                  }
+                >
+                  {busy ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : isOwner ? (
+                    "Owner"
+                  ) : joined ? (
+                    <>
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Joined
+                    </>
+                  ) : (
+                    "Join"
+                  )}
+                </Button>
               </div>
+
+              {group.description && (
+                <p className="mt-3 text-[13px] text-white/70 leading-relaxed">
+                  {group.description}
+                </p>
+              )}
             </section>
 
-            {/* Members */}
-            <section className="mt-8">
-              <div className="flex items-center justify-between mb-3 px-1">
+            {/* Edit dialog (kept available, opened via dropdown) */}
+            <Dialog open={editOpen} onOpenChange={setEditOpen}>
+              <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
+                <DialogHeader>
+                  <DialogTitle className="font-playfair text-2xl text-center">
+                    Edit Group
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 mt-2">
+                  <div>
+                    <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
+                      Name
+                    </label>
+                    <Input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      maxLength={80}
+                      className="mt-1.5 bg-white/5 border-white/15 text-white h-11 rounded-xl"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
+                      Description
+                    </label>
+                    <Textarea
+                      value={editDesc}
+                      onChange={(e) => setEditDesc(e.target.value)}
+                      rows={3}
+                      maxLength={500}
+                      className="mt-1.5 bg-white/5 border-white/15 text-white rounded-xl resize-none"
+                    />
+                  </div>
+                  <Button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="w-full h-11 rounded-full bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
+                  >
+                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+
+            {/* Members strip */}
+            <section className="mt-5">
+              <div className="flex items-center justify-between mb-2 px-1">
                 <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55">
-                  Members
+                  Members · {group.member_count}
                 </h3>
-                <span className="text-[11px] text-white/45">
-                  Showing {members.length} of {group.member_count}
-                </span>
+                {members.length > 8 && (
+                  <span className="text-[11px] text-white/45">+{group.member_count - 8} more</span>
+                )}
               </div>
               {members.length === 0 ? (
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center text-white/55 text-sm">
                   Be the first to join this circle.
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {members.map((m) => {
-                    const handle =
-                      m.profile?.username || m.profile?.name || "Member";
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+                  {members.slice(0, 12).map((m) => {
+                    const handle = m.profile?.username || m.profile?.name || "Member";
                     const initial = (handle || "?").charAt(0).toUpperCase();
                     return (
                       <button
                         key={m.user_id}
-                        onClick={() =>
-                          m.profile?.username &&
-                          navigate(`/u/${m.profile.username}`)
-                        }
-                        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-3 hover:bg-white/[0.07] hover:border-white/20 transition text-left"
+                        onClick={() => m.profile?.username && navigate(`/u/${m.profile.username}`)}
+                        className="flex flex-col items-center gap-1.5 shrink-0 w-14 group"
+                        title={handle}
                       >
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center overflow-hidden group-hover:ring-white/40 transition">
                           {m.profile?.avatar_url ? (
-                            <img
-                              src={m.profile.avatar_url}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
+                            <img src={m.profile.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="font-playfair text-base text-white">
-                              {initial}
+                            <span className="font-playfair text-base text-white">{initial}</span>
+                          )}
+                          {m.user_id === group.creator_id && (
+                            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-amber-300/90 ring-2 ring-black flex items-center justify-center">
+                              <Crown className="w-2.5 h-2.5 text-black" />
                             </span>
                           )}
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-sm text-white truncate">
-                            {handle}
-                          </div>
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">
-                            Joined{" "}
-                            {new Date(m.joined_at).toLocaleDateString()}
-                          </div>
-                        </div>
-                        {m.user_id === group.creator_id && (
-                          <Crown className="w-3.5 h-3.5 text-white/70 shrink-0" />
-                        )}
+                        <span className="text-[10px] text-white/60 truncate w-full text-center">
+                          {handle.split(" ")[0]}
+                        </span>
                       </button>
                     );
                   })}
@@ -510,21 +525,19 @@ export default function GroupDetailPage() {
               )}
             </section>
 
+
             {/* Composer */}
-            <section className="mt-8">
-              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
-                Share with the group
-              </h3>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4">
-                <div className="flex gap-1.5 mb-3">
+            <section className="mt-5">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-3">
+                <div className="flex gap-1 mb-2">
                   {(["post", "prayer", "testimony"] as const).map((t) => (
                     <button
                       key={t}
                       onClick={() => setComposerType(t)}
-                      className={`text-[10px] tracking-[0.18em] uppercase px-3 py-1.5 rounded-full border transition ${
+                      className={`text-[10px] tracking-[0.16em] uppercase px-2.5 py-1 rounded-full border transition ${
                         composerType === t
                           ? "bg-white text-black border-white"
-                          : "bg-white/[0.04] text-white/65 border-white/10 hover:bg-white/10"
+                          : "bg-transparent text-white/60 border-white/10 hover:bg-white/5"
                       }`}
                     >
                       {t}
@@ -545,25 +558,26 @@ export default function GroupDetailPage() {
                             ? "Share what God has done..."
                             : "What's on your heart?"
                   }
-                  rows={3}
+                  rows={2}
                   maxLength={1000}
                   disabled={!user || (!joined && !isOwner)}
-                  className="bg-white/5 border-white/15 text-white rounded-xl resize-none placeholder:text-white/35"
+                  className="bg-transparent border-0 text-white text-[14px] rounded-lg resize-none placeholder:text-white/35 focus-visible:ring-0 px-1 min-h-[44px]"
                 />
-                <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center justify-between mt-1 pt-2 border-t border-white/5">
                   <span className="text-[10px] text-white/40">
                     {composer.length}/1000
                   </span>
                   <Button
                     onClick={handlePost}
                     disabled={posting || !composer.trim() || !user || (!joined && !isOwner)}
-                    className="rounded-full h-10 px-5 bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
+                    size="sm"
+                    className="rounded-full h-8 px-4 text-[12px] bg-white text-black hover:bg-white/90"
                   >
                     {posting ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
                       <>
-                        <Send className="w-3.5 h-3.5" /> Post
+                        <Send className="w-3 h-3" /> Post
                       </>
                     )}
                   </Button>
@@ -572,10 +586,11 @@ export default function GroupDetailPage() {
             </section>
 
             {/* Group feed */}
-            <section className="mt-8">
-              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
+            <section className="mt-5">
+              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-2 px-1">
                 {posts.length} {posts.length === 1 ? "post" : "posts"}
               </h3>
+
               {posts.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
                   No posts yet. Be the first to share.
