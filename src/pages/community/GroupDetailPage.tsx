@@ -83,6 +83,13 @@ export default function GroupDetailPage() {
   const [editDesc, setEditDesc] = useState("");
   const [saving, setSaving] = useState(false);
 
+  // Group feed
+  const [posts, setPosts] = useState<GroupPost[]>([]);
+  const [composer, setComposer] = useState("");
+  const [composerType, setComposerType] = useState<"post" | "prayer" | "testimony">("post");
+  const [posting, setPosting] = useState(false);
+  const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     load();
