@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { CommunityHeader } from "@/components/community/CommunityHeader";
 import { PremiumNav } from "@/components/PremiumNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,15 +14,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 import {
   Users,
   Plus,
   Search,
-  Sparkles,
   Loader2,
-  Crown,
+  ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Sparkles,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +43,7 @@ type Tab = "discover" | "joined" | "mine";
 export default function GroupsPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const handleBack = useSafeBackNavigation("/community");
 
   const [user, setUser] = useState<any>(null);
   const [groups, setGroups] = useState<Group[]>([]);
@@ -49,8 +51,9 @@ export default function GroupsPage() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<Tab>("discover");
   const [search, setSearch] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  // Create dialog
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -63,6 +66,10 @@ export default function GroupsPage() {
     window.addEventListener("groups:refresh", onRefresh);
     return () => window.removeEventListener("groups:refresh", onRefresh);
   }, []);
+
+  useEffect(() => {
+    if (searchOpen) setTimeout(() => searchRef.current?.focus(), 50);
+  }, [searchOpen]);
 
   const load = async () => {
     setLoading(true);
@@ -96,16 +103,9 @@ export default function GroupsPage() {
           (g.description || "").toLowerCase().includes(q),
       );
     }
-    // Avoid showing the same items twice when the Featured rail is visible
-    if (tab === "discover" && !q && groups.length > 3) {
-      const top = new Set(groups.slice(0, 3).map((g) => g.id));
-      list = list.filter((g) => !top.has(g.id));
-    }
     return list;
   }, [groups, tab, search, memberships, user]);
 
-  const featured = useMemo(() => (groups.length > 3 ? groups.slice(0, 3) : []), [groups]);
-  const featuredIds = useMemo(() => new Set(featured.map((g) => g.id)), [featured]);
   const totalMembers = useMemo(
     () => groups.reduce((s, g) => s + (g.member_count || 0), 0),
     [groups],
@@ -179,134 +179,140 @@ export default function GroupsPage() {
 
   return (
     <div className="min-h-screen text-white">
-      {/* Ambient backdrop glows */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full bg-white/[0.04] blur-3xl" />
-        <div className="absolute top-1/3 -right-40 w-[480px] h-[480px] rounded-full bg-white/[0.03] blur-3xl" />
-      </div>
+      <main className="px-4 sm:px-6 pb-32 max-w-2xl mx-auto">
+        {/* Top bar: back + title + search */}
+        <header className="pt-5 pb-3 animate-fade-in">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleBack}
+              aria-label="Back"
+              className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
 
-      <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader
-          title="Groups"
-          subtitle="Find your circle. Build sacred community."
-        />
+            <h1 className="flex-1 font-playfair text-xl leading-none tracking-tight text-white truncate">
+              Groups
+            </h1>
 
-        {/* Hero */}
-        <section className="relative mb-7 overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-transparent backdrop-blur-2xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.7)] animate-fade-in">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_60%)]" />
-          <div className="relative p-6 sm:p-7">
-            <div className="flex items-center gap-2 text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3">
-              <Crown className="w-3 h-3" />
-              <span>Sacred Circles</span>
+            {!searchOpen ? (
+              <button
+                onClick={() => setSearchOpen(true)}
+                aria-label="Search"
+                className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setSearchOpen(false);
+                  setSearch("");
+                }}
+                aria-label="Close search"
+                className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {searchOpen && (
+            <div className="relative mt-3 animate-fade-in">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/40" />
+              <Input
+                ref={searchRef}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search groups"
+                className="pl-9 h-9 text-[13px] rounded-full bg-white/[0.05] border-white/10 text-white placeholder:text-white/40"
+              />
             </div>
-            <h2 className="font-playfair text-[26px] sm:text-3xl leading-[1.1] tracking-tight">
-              Gather in faith.
-              <br />
-              <span className="text-white/65">Grow together.</span>
-            </h2>
-            <p className="mt-3 text-[13px] text-white/60 max-w-md leading-relaxed">
-              Create a private circle for your church, study group, or ministry — or
-              discover communities walking the same path.
-            </p>
+          )}
+        </header>
 
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <Button className="rounded-full h-11 px-5 text-white font-semibold bg-gradient-to-b from-primary/35 to-primary/10 border border-primary/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_8px_24px_-6px_hsl(var(--primary)/0.55)] drop-shadow-[0_0_10px_hsl(var(--primary)/0.45)] hover:from-primary/45 hover:to-primary/15">
-                    <Plus className="w-4 h-4" />
-                    Create Group
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
-                  <DialogHeader>
-                    <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center mb-2">
-                      <Sparkles className="w-6 h-6 text-white" />
-                    </div>
-                    <DialogTitle className="font-playfair text-2xl text-center">
-                      Create a Group
-                    </DialogTitle>
-                    <DialogDescription className="text-center text-white/55">
-                      Name your circle and invite hearts to gather.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4 mt-2">
-                    <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                        Name
-                      </label>
-                      <Input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Morning Prayer Warriors"
-                        maxLength={80}
-                        className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/35 h-11 rounded-xl"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                        Description
-                      </label>
-                      <Textarea
-                        value={desc}
-                        onChange={(e) => setDesc(e.target.value)}
-                        placeholder="What is this group about? Who is it for?"
-                        rows={3}
-                        maxLength={500}
-                        className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none"
-                      />
-                      <div className="text-right text-[10px] text-white/35 mt-1">
-                        {desc.length}/500
-                      </div>
-                    </div>
-                    <Button
-                      onClick={handleCreate}
-                      disabled={creating || !name.trim()}
-                      className="w-full h-11 rounded-full bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
-                    >
-                      {creating ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <>
-                          Create Group <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              <div className="flex items-center gap-4 text-[11px] text-white/55">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-playfair text-base text-white">
-                    {groups.length}
-                  </span>
-                  <span className="uppercase tracking-[0.16em]">Groups</span>
-                </div>
-                <div className="w-px h-4 bg-white/15" />
-                <div className="flex items-center gap-1.5">
-                  <span className="font-playfair text-base text-white">
-                    {totalMembers}
-                  </span>
-                  <span className="uppercase tracking-[0.16em]">Members</span>
-                </div>
-              </div>
+        {/* Compact summary strip */}
+        <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-3 flex items-center gap-3 animate-fade-in">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/30 to-primary/5 ring-1 ring-primary/30 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-[13px] font-medium text-white leading-tight">
+              Sacred Circles
+            </div>
+            <div className="text-[11px] text-white/55 mt-0.5">
+              {groups.length} {groups.length === 1 ? "group" : "groups"} · {totalMembers}{" "}
+              {totalMembers === 1 ? "member" : "members"}
             </div>
           </div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button
+                size="sm"
+                className="rounded-full h-8 px-3 text-[12px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Create
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
+              <DialogHeader>
+                <DialogTitle className="font-playfair text-xl">
+                  Create a Group
+                </DialogTitle>
+                <DialogDescription className="text-white/55 text-[13px]">
+                  Name your circle and invite hearts to gather.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3 mt-2">
+                <div>
+                  <label className="text-[10px] uppercase tracking-[0.16em] text-white/50">
+                    Name
+                  </label>
+                  <Input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Morning Prayer Warriors"
+                    maxLength={80}
+                    className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/35 h-10 rounded-xl"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-[0.16em] text-white/50">
+                    Description
+                  </label>
+                  <Textarea
+                    value={desc}
+                    onChange={(e) => setDesc(e.target.value)}
+                    placeholder="What is this group about?"
+                    rows={3}
+                    maxLength={500}
+                    className="mt-1.5 bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none"
+                  />
+                  <div className="text-right text-[10px] text-white/35 mt-1">
+                    {desc.length}/500
+                  </div>
+                </div>
+                <Button
+                  onClick={handleCreate}
+                  disabled={creating || !name.trim()}
+                  className="w-full h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  {creating ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      Create Group <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </section>
 
-        {/* Search */}
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search groups by name or topic"
-            className="pl-11 h-11 rounded-full bg-white/[0.04] border-white/10 text-white placeholder:text-white/40 backdrop-blur-xl"
-          />
-        </div>
-
         {/* Tabs */}
-        <div className="flex items-center gap-2 mb-6 p-1 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl">
+        <div className="flex items-center gap-1 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/10">
           {(
             [
               { id: "discover", label: "Discover" },
@@ -318,88 +324,46 @@ export default function GroupsPage() {
               key={t.id}
               onClick={() => setTab(t.id)}
               className={cn(
-                "group relative flex-1 py-2 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium",
-                "transition-all duration-300 ease-out active:scale-95",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+                "flex-1 py-1.5 rounded-full text-[11px] tracking-wide font-medium transition-all active:scale-95",
                 tab === t.id
-                  ? "text-white font-semibold bg-gradient-to-b from-primary/30 to-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-white/55 hover:text-white/85",
               )}
             >
-              <span
-                className="absolute inset-0 rounded-full pointer-events-none opacity-0 group-active:opacity-100 transition-opacity duration-150"
-                style={{
-                  background:
-                    "radial-gradient(circle at center, hsl(var(--primary) / 0.35), transparent 70%)",
-                }}
-              />
-              <span className="relative">{t.label}</span>
+              {t.label}
             </button>
           ))}
         </div>
 
-        {/* Featured rail (only on Discover, no search) */}
-        {tab === "discover" && !search && featured.length > 0 && (
-          <section className="mb-7">
-            <div className="flex items-center gap-2 mb-3 px-1">
-              <Sparkles className="w-3.5 h-3.5 text-white/70" />
-              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55">
-                Featured
-              </h3>
-            </div>
-            <div className="flex gap-3 overflow-x-auto -mx-5 px-5 pb-2 snap-x snap-mandatory scrollbar-none">
-              {featured.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => navigate(`/community/group/${g.id}`)}
-                  className="snap-start shrink-0 w-[260px] text-left relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.09] via-white/[0.04] to-transparent backdrop-blur-2xl p-5 shadow-[0_14px_40px_-14px_rgba(0,0,0,0.7)] hover:border-white/20 transition"
-                >
-                  <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-white/[0.06] blur-2xl" />
-                  <div className="relative">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center mb-3">
-                      <Users className="w-5 h-5 text-white" />
-                    </div>
-                    <h4 className="font-playfair text-lg leading-tight line-clamp-2">
-                      {g.name}
-                    </h4>
-                    <div className="text-[10px] uppercase tracking-[0.16em] text-white/50 mt-2">
-                      {g.member_count} {g.member_count === 1 ? "member" : "members"}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* List */}
-        <section className="space-y-3">
+        <section className="space-y-2">
           {loading ? (
             <div className="flex items-center justify-center py-16 text-white/40">
               <Loader2 className="w-5 h-5 animate-spin" />
             </div>
           ) : filtered.length === 0 ? (
-            <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-10 text-center">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center mb-4">
-                <Users className="w-6 h-6 text-white/70" />
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center">
+              <div className="mx-auto w-12 h-12 rounded-xl bg-white/[0.06] ring-1 ring-white/15 flex items-center justify-center mb-3">
+                <Users className="w-5 h-5 text-white/70" />
               </div>
-              <h3 className="font-playfair text-xl mb-1">
+              <h3 className="font-playfair text-lg mb-1">
                 {tab === "mine"
-                  ? "You haven't created any groups yet"
+                  ? "No groups yet"
                   : tab === "joined"
-                    ? "You haven't joined any groups yet"
+                    ? "You haven't joined any groups"
                     : "No groups found"}
               </h3>
-              <p className="text-[13px] text-white/55 mb-5">
+              <p className="text-[12px] text-white/55 mb-4">
                 {tab === "mine"
-                  ? "Start a circle and invite others to walk in faith with you."
-                  : "Try a different search, or be the first to start one."}
+                  ? "Start a circle and invite others."
+                  : "Try a different search, or start one."}
               </p>
               <Button
                 onClick={() => setOpen(true)}
-                className="rounded-full bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
+                size="sm"
+                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-3.5 h-3.5" />
                 Create Group
               </Button>
             </div>
@@ -410,48 +374,46 @@ export default function GroupsPage() {
               return (
                 <div
                   key={g.id}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-4 hover:border-white/20 hover:bg-white/[0.06] transition"
+                  className="group relative rounded-xl border border-white/10 bg-white/[0.035] hover:bg-white/[0.06] hover:border-white/20 transition p-3"
                 >
-                  <div className="flex items-start gap-4">
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={() => navigate(`/community/group/${g.id}`)}
-                      className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center"
+                      className="shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-white/20 via-white/8 to-white/5 ring-1 ring-white/20 flex items-center justify-center"
                     >
-                      <Users className="w-6 h-6 text-white" />
+                      <Users className="w-5 h-5 text-white" />
                     </button>
                     <button
                       onClick={() => navigate(`/community/group/${g.id}`)}
                       className="flex-1 min-w-0 text-left"
                     >
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-playfair text-lg text-white leading-tight truncate">
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="text-[14px] font-semibold text-white leading-tight truncate">
                           {g.name}
                         </h4>
                         {isMine && (
-                          <span className="text-[9px] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full bg-white/10 text-white/70 border border-white/15">
+                          <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-white/10 text-white/70 border border-white/15">
                             Owner
                           </span>
                         )}
                       </div>
                       <div className="text-[11px] text-white/50 mt-0.5">
                         {g.member_count} {g.member_count === 1 ? "member" : "members"}
+                        {g.description && (
+                          <span className="text-white/40"> · {g.description}</span>
+                        )}
                       </div>
-                      {g.description && (
-                        <p className="text-[13px] text-white/65 mt-2 line-clamp-2 leading-relaxed">
-                          {g.description}
-                        </p>
-                      )}
                     </button>
                     <button
                       onClick={() => toggleJoin(g)}
                       disabled={isMine}
                       className={cn(
-                        "shrink-0 h-8 px-3 rounded-full text-[11px] uppercase tracking-[0.14em] font-medium transition-all active:scale-95",
+                        "shrink-0 h-7 px-3 rounded-full text-[11px] font-semibold transition-all active:scale-95",
                         isMine
                           ? "bg-white/5 text-white/40 border border-white/10 cursor-default"
                           : joined
-                            ? "bg-white/[0.06] text-white border border-white/15 hover:bg-white/10"
-                            : "text-white font-semibold bg-gradient-to-b from-primary/35 to-primary/10 border border-primary/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.55)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.45)] hover:from-primary/45 hover:to-primary/15",
+                            ? "bg-white/[0.06] text-white/80 border border-white/15 hover:bg-white/10"
+                            : "bg-primary text-primary-foreground hover:bg-primary/90",
                       )}
                     >
                       {isMine ? (
