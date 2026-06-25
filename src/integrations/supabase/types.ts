@@ -881,6 +881,7 @@ export type Database = {
           content: string
           created_at: string
           encourage_count: number
+          group_id: string | null
           hot_score: number
           id: string
           is_anonymous: boolean
@@ -901,6 +902,7 @@ export type Database = {
           content: string
           created_at?: string
           encourage_count?: number
+          group_id?: string | null
           hot_score?: number
           id?: string
           is_anonymous?: boolean
@@ -921,6 +923,7 @@ export type Database = {
           content?: string
           created_at?: string
           encourage_count?: number
+          group_id?: string | null
           hot_score?: number
           id?: string
           is_anonymous?: boolean
@@ -933,7 +936,15 @@ export type Database = {
           user_id?: string
           vote_score?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "posts_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       prayer_comments: {
         Row: {

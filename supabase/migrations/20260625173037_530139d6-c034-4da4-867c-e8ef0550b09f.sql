@@ -1,0 +1,2 @@
+ALTER TABLE public.posts ADD COLUMN IF NOT EXISTS group_id uuid REFERENCES public.groups(id) ON DELETE CASCADE;
+CREATE INDEX IF NOT EXISTS posts_group_id_created_idx ON public.posts (group_id, created_at DESC) WHERE group_id IS NOT NULL;
