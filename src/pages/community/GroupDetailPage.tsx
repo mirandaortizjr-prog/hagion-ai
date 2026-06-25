@@ -477,66 +477,54 @@ export default function GroupDetailPage() {
             </Dialog>
 
 
-            {/* Members */}
-            <section className="mt-8">
-              <div className="flex items-center justify-between mb-3 px-1">
+            {/* Members strip */}
+            <section className="mt-5">
+              <div className="flex items-center justify-between mb-2 px-1">
                 <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55">
-                  Members
+                  Members · {group.member_count}
                 </h3>
-                <span className="text-[11px] text-white/45">
-                  Showing {members.length} of {group.member_count}
-                </span>
+                {members.length > 8 && (
+                  <span className="text-[11px] text-white/45">+{group.member_count - 8} more</span>
+                )}
               </div>
               {members.length === 0 ? (
-                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center text-white/55 text-sm">
                   Be the first to join this circle.
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {members.map((m) => {
-                    const handle =
-                      m.profile?.username || m.profile?.name || "Member";
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+                  {members.slice(0, 12).map((m) => {
+                    const handle = m.profile?.username || m.profile?.name || "Member";
                     const initial = (handle || "?").charAt(0).toUpperCase();
                     return (
                       <button
                         key={m.user_id}
-                        onClick={() =>
-                          m.profile?.username &&
-                          navigate(`/u/${m.profile.username}`)
-                        }
-                        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-3 hover:bg-white/[0.07] hover:border-white/20 transition text-left"
+                        onClick={() => m.profile?.username && navigate(`/u/${m.profile.username}`)}
+                        className="flex flex-col items-center gap-1.5 shrink-0 w-14 group"
+                        title={handle}
                       >
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center overflow-hidden shrink-0">
+                        <div className="relative w-12 h-12 rounded-full bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center overflow-hidden group-hover:ring-white/40 transition">
                           {m.profile?.avatar_url ? (
-                            <img
-                              src={m.profile.avatar_url}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
+                            <img src={m.profile.avatar_url} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <span className="font-playfair text-base text-white">
-                              {initial}
+                            <span className="font-playfair text-base text-white">{initial}</span>
+                          )}
+                          {m.user_id === group.creator_id && (
+                            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-amber-300/90 ring-2 ring-black flex items-center justify-center">
+                              <Crown className="w-2.5 h-2.5 text-black" />
                             </span>
                           )}
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-sm text-white truncate">
-                            {handle}
-                          </div>
-                          <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">
-                            Joined{" "}
-                            {new Date(m.joined_at).toLocaleDateString()}
-                          </div>
-                        </div>
-                        {m.user_id === group.creator_id && (
-                          <Crown className="w-3.5 h-3.5 text-white/70 shrink-0" />
-                        )}
+                        <span className="text-[10px] text-white/60 truncate w-full text-center">
+                          {handle.split(" ")[0]}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
               )}
             </section>
+
 
             {/* Composer */}
             <section className="mt-8">
