@@ -142,7 +142,81 @@ export default function GroupDetailPage() {
       profile: profiles.find((p) => p.user_id === r.user_id),
     }));
     setMembers(merged);
+
+    // Group-scoped posts feed (Reddit-style)
+    const { data: gp } = await supabase
+      .from("posts")
+      .select("id,user_id,author_name,author_avatar,post_type,content,like_count,comment_count,pray_count,encourage_count,created_at")
+      .eq("group_id", id)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    setPosts((gp as GroupPost[]) || []);
+
+    if (u.user && gp && gp.length) {
+      const { data: ints } = await supabase
+        .from("post_interactions")
+        .select("post_id, interaction_type")
+        .eq("user_id", u.user.id)
+        .in("post_id", gp.map((p: any) => p.id));
+      const map: Record<string, Set<string>> = {};
+      (ints || []).forEach((r: any) => {
+        if (!map[r.post_id]) map[r.post_id] = new Set();
+        map[r.post_id].add(r.interaction_type);
+      });
+      setMyInteractions(map);
+    } else {
+      setMyInteractions({});
+    }
+
     setLoading(false);
+  };
+
+  const handlePost = async () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    if (!id || !composer.trim()) return;
+    if (!joined && !isOwner) {
+      toast({ title: "Join the group to post", variant: "destructive" });
+      return;
+    }
+    setPosting(true);
+    const { error } = await supabase.from("posts").insert({
+      user_id: user.id,
+      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      post_type: composerType,
+      content: composer.trim(),
+      group_id: id,
+    });
+    setPosting(false);
+    if (error) {
+      toast({ title: "Could not post", description: error.message, variant: "destructive" });
+      return;
+    }
+    setComposer("");
+    load();
+  };
+
+  const toggleInteraction = async (postId: string, type: "like" | "pray" | "encourage") => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    const has = myInteractions[postId]?.has(type);
+    if (has) {
+      await supabase
+        .from("post_interactions")
+        .delete()
+        .eq("post_id", postId)
+        .eq("user_id", user.id)
+        .eq("interaction_type", type);
+    } else {
+      await supabase
+        .from("post_interactions")
+        .insert({ post_id: postId, user_id: user.id, interaction_type: type });
+    }
+    load();
   };
 
   const isOwner = !!user && !!group && group.creator_id === user.id;
