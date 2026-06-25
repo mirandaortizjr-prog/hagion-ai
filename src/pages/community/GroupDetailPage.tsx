@@ -527,20 +527,17 @@ export default function GroupDetailPage() {
 
 
             {/* Composer */}
-            <section className="mt-8">
-              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
-                Share with the group
-              </h3>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4">
-                <div className="flex gap-1.5 mb-3">
+            <section className="mt-5">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-3">
+                <div className="flex gap-1 mb-2">
                   {(["post", "prayer", "testimony"] as const).map((t) => (
                     <button
                       key={t}
                       onClick={() => setComposerType(t)}
-                      className={`text-[10px] tracking-[0.18em] uppercase px-3 py-1.5 rounded-full border transition ${
+                      className={`text-[10px] tracking-[0.16em] uppercase px-2.5 py-1 rounded-full border transition ${
                         composerType === t
                           ? "bg-white text-black border-white"
-                          : "bg-white/[0.04] text-white/65 border-white/10 hover:bg-white/10"
+                          : "bg-transparent text-white/60 border-white/10 hover:bg-white/5"
                       }`}
                     >
                       {t}
@@ -561,25 +558,26 @@ export default function GroupDetailPage() {
                             ? "Share what God has done..."
                             : "What's on your heart?"
                   }
-                  rows={3}
+                  rows={2}
                   maxLength={1000}
                   disabled={!user || (!joined && !isOwner)}
-                  className="bg-white/5 border-white/15 text-white rounded-xl resize-none placeholder:text-white/35"
+                  className="bg-transparent border-0 text-white text-[14px] rounded-lg resize-none placeholder:text-white/35 focus-visible:ring-0 px-1 min-h-[44px]"
                 />
-                <div className="flex items-center justify-between mt-3">
+                <div className="flex items-center justify-between mt-1 pt-2 border-t border-white/5">
                   <span className="text-[10px] text-white/40">
                     {composer.length}/1000
                   </span>
                   <Button
                     onClick={handlePost}
                     disabled={posting || !composer.trim() || !user || (!joined && !isOwner)}
-                    className="rounded-full h-10 px-5 bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
+                    size="sm"
+                    className="rounded-full h-8 px-4 text-[12px] bg-white text-black hover:bg-white/90"
                   >
                     {posting ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
                       <>
-                        <Send className="w-3.5 h-3.5" /> Post
+                        <Send className="w-3 h-3" /> Post
                       </>
                     )}
                   </Button>
@@ -588,10 +586,11 @@ export default function GroupDetailPage() {
             </section>
 
             {/* Group feed */}
-            <section className="mt-8">
-              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
+            <section className="mt-5">
+              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-2 px-1">
                 {posts.length} {posts.length === 1 ? "post" : "posts"}
               </h3>
+
               {posts.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
                   No posts yet. Be the first to share.
