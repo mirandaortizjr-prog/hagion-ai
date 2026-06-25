@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { CommunityHeader } from "@/components/community/CommunityHeader";
 import { PremiumNav } from "@/components/PremiumNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,13 +20,22 @@ import {
   Pencil,
   Trash2,
   Share2,
-  Calendar,
   Heart,
   MessageCircle,
   HandHeart,
   Sparkles,
   Send,
+  ArrowLeft,
+  MoreHorizontal,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
