@@ -509,6 +509,146 @@ export default function GroupDetailPage() {
                 </div>
               )}
             </section>
+
+            {/* Composer */}
+            <section className="mt-8">
+              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
+                Share with the group
+              </h3>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4">
+                <div className="flex gap-1.5 mb-3">
+                  {(["post", "prayer", "testimony"] as const).map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setComposerType(t)}
+                      className={`text-[10px] tracking-[0.18em] uppercase px-3 py-1.5 rounded-full border transition ${
+                        composerType === t
+                          ? "bg-white text-black border-white"
+                          : "bg-white/[0.04] text-white/65 border-white/10 hover:bg-white/10"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <Textarea
+                  value={composer}
+                  onChange={(e) => setComposer(e.target.value)}
+                  placeholder={
+                    !user
+                      ? "Sign in to share with the group"
+                      : !joined && !isOwner
+                        ? "Join the group to post"
+                        : composerType === "prayer"
+                          ? "Share a prayer request..."
+                          : composerType === "testimony"
+                            ? "Share what God has done..."
+                            : "What's on your heart?"
+                  }
+                  rows={3}
+                  maxLength={1000}
+                  disabled={!user || (!joined && !isOwner)}
+                  className="bg-white/5 border-white/15 text-white rounded-xl resize-none placeholder:text-white/35"
+                />
+                <div className="flex items-center justify-between mt-3">
+                  <span className="text-[10px] text-white/40">
+                    {composer.length}/1000
+                  </span>
+                  <Button
+                    onClick={handlePost}
+                    disabled={posting || !composer.trim() || !user || (!joined && !isOwner)}
+                    className="rounded-full h-10 px-5 bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
+                  >
+                    {posting ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5" /> Post
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            {/* Group feed */}
+            <section className="mt-8">
+              <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-3 px-1">
+                {posts.length} {posts.length === 1 ? "post" : "posts"}
+              </h3>
+              {posts.length === 0 ? (
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
+                  No posts yet. Be the first to share.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {posts.map((p) => {
+                    const initial = (p.author_name || "?").charAt(0).toUpperCase();
+                    const liked = myInteractions[p.id]?.has("like");
+                    const prayed = myInteractions[p.id]?.has("pray");
+                    const encouraged = myInteractions[p.id]?.has("encourage");
+                    return (
+                      <article
+                        key={p.id}
+                        className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-4"
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-white/25 via-white/10 to-white/5 ring-1 ring-white/25 flex items-center justify-center overflow-hidden shrink-0">
+                            {p.author_avatar ? (
+                              <img src={p.author_avatar} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="font-playfair text-sm text-white">{initial}</span>
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm text-white truncate">{p.author_name || "Believer"}</div>
+                            <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">
+                              {p.post_type} · {formatDistanceToNow(new Date(p.created_at), { addSuffix: true })}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => navigate(`/community/post/${p.id}`)}
+                          className="block w-full text-left text-[14px] text-white/85 leading-relaxed whitespace-pre-wrap"
+                        >
+                          {p.content}
+                        </button>
+                        <div className="mt-3 flex items-center gap-4 text-[11px] text-white/55">
+                          <button
+                            onClick={() => toggleInteraction(p.id, "like")}
+                            className={`inline-flex items-center gap-1.5 transition ${liked ? "text-rose-300" : "hover:text-white"}`}
+                          >
+                            <Heart className={`w-3.5 h-3.5 ${liked ? "fill-current" : ""}`} />
+                            {p.like_count}
+                          </button>
+                          <button
+                            onClick={() => toggleInteraction(p.id, "pray")}
+                            className={`inline-flex items-center gap-1.5 transition ${prayed ? "text-amber-200" : "hover:text-white"}`}
+                          >
+                            <HandHeart className={`w-3.5 h-3.5 ${prayed ? "fill-current" : ""}`} />
+                            {p.pray_count}
+                          </button>
+                          <button
+                            onClick={() => toggleInteraction(p.id, "encourage")}
+                            className={`inline-flex items-center gap-1.5 transition ${encouraged ? "text-sky-200" : "hover:text-white"}`}
+                          >
+                            <Sparkles className={`w-3.5 h-3.5 ${encouraged ? "fill-current" : ""}`} />
+                            {p.encourage_count}
+                          </button>
+                          <button
+                            onClick={() => navigate(`/community/post/${p.id}`)}
+                            className="inline-flex items-center gap-1.5 hover:text-white ml-auto"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            {p.comment_count}
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
           </>
         )}
       </main>
