@@ -22,7 +22,13 @@ import {
   Trash2,
   Share2,
   Calendar,
+  Heart,
+  MessageCircle,
+  HandHeart,
+  Sparkles,
+  Send,
 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
 interface Group {
