@@ -84,6 +84,7 @@ export default function GroupDetailPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const handleBack = useSafeBackNavigation("/community/groups");
 
   // Edit dialog
   const [editOpen, setEditOpen] = useState(false);
