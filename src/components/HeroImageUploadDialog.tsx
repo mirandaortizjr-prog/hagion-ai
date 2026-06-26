@@ -27,6 +27,8 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
   const [active, setActive] = useState<Submission | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
