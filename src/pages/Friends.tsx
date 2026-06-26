@@ -270,6 +270,28 @@ export default function Friends() {
 
   const requestsCount = incoming.length + outgoing.length;
 
+  const handleInvite = async () => {
+    if (!myCode) {
+      toast({ title: "Generating your link…", description: "Try again in a moment." });
+      return;
+    }
+    const url = `${window.location.origin}/invite/${myCode}`;
+    const text = `Join me on Hagion AI — biblical wisdom, prayer & community. ${url}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Join me on Hagion AI", text, url });
+        return;
+      }
+    } catch {}
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({ title: "Invite link copied", description: url });
+    } catch {
+      toast({ title: "Your invite link", description: url });
+    }
+  };
+
+
   return (
     <div className="min-h-screen text-white">
       <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-2xl border-b border-white/10">
