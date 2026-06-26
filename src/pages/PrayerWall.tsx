@@ -25,6 +25,7 @@ import {
   Video,
   
   Plus,
+  Trash2,
   X,
 } from "lucide-react";
 import {
