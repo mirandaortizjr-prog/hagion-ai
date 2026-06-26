@@ -192,7 +192,7 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
               disabled={uploading}
               onChange={(e) => {
                 const f = e.target.files?.[0];
-                if (f) handleFile(f);
+                if (f) pickFile(f);
               }}
             />
             <div className="rounded-xl border-2 border-dashed border-white/15 hover:border-white/30 transition-colors p-8 text-center cursor-pointer bg-white/[0.02]">
