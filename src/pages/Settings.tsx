@@ -36,6 +36,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ImageCropDialog } from "@/components/ImageCropDialog";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -52,6 +53,8 @@ const Settings = () => {
   const [savingName, setSavingName] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [uploadingBanner, setUploadingBanner] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropKind, setCropKind] = useState<"avatar" | "banner">("avatar");
 
   useEffect(() => {
     (async () => {
@@ -129,7 +132,14 @@ const Settings = () => {
 
     input.onchange = () => {
       const file = input.files?.[0];
-      if (file) uploadImage(file, kind);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setCropKind(kind);
+          setCropSrc(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
       cleanup();
     };
 
@@ -444,6 +454,17 @@ const Settings = () => {
       </main>
 
       <PremiumNav />
+
+      <ImageCropDialog
+        open={!!cropSrc}
+        onOpenChange={(o) => { if (!o) setCropSrc(null); }}
+        imageSrc={cropSrc}
+        aspect={cropKind === "avatar" ? 1 : 16 / 9}
+        cropShape={cropKind === "avatar" ? "round" : "rect"}
+        title={cropKind === "avatar" ? "Adjust your photo" : "Adjust cover image"}
+        outputWidth={cropKind === "avatar" ? 800 : 1600}
+        onCropped={async (file) => { await uploadImage(file, cropKind); }}
+      />
     </div>
   );
 };
