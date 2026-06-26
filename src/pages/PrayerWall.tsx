@@ -243,7 +243,7 @@ export default function PrayerWall() {
   const loadProfile = async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("avatar_url, banner_url")
+      .select("avatar_url, banner_url, name, username")
       .eq("user_id", uid)
       .maybeSingle();
     if (data) setProfile(data as any);
