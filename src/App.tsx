@@ -72,6 +72,7 @@ import MessengerPage from "./pages/community/MessengerPage";
 import Friends from "./pages/Friends";
 import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
+import Invite from "./pages/Invite";
 import { FeatureGate } from "@/components/FeatureGate";
 
 const queryClient = new QueryClient();
@@ -84,8 +85,9 @@ const OnboardingGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const onboardingCompleted = localStorage.getItem("onboardingCompleted");
     const exemptRoutes = ["/", "/index", "/home", "/splash", "/onboarding", "/auth"];
-    
-    if (!onboardingCompleted && !exemptRoutes.includes(location.pathname)) {
+    const isExempt = exemptRoutes.includes(location.pathname) || location.pathname.startsWith("/invite/");
+
+    if (!onboardingCompleted && !isExempt) {
       navigate("/onboarding", { replace: true });
     }
   }, [location, navigate]);
@@ -179,6 +181,7 @@ const App = () => (
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
+            <Route path="/invite/:code" element={<Invite />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

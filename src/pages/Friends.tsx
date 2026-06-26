@@ -12,6 +12,7 @@ import {
   Check,
   X,
   Loader2,
+  Share2,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -60,12 +61,19 @@ export default function Friends() {
   const [searchResults, setSearchResults] = useState<ProfileRow[]>([]);
   const [searching, setSearching] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [myCode, setMyCode] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
-      if (data.user) loadAll(data.user.id);
-      else navigate("/auth");
+      if (!data.user) { navigate("/auth"); return; }
+      loadAll(data.user.id);
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("invite_code")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      setMyCode((prof as any)?.invite_code || null);
     });
   }, []);
 
@@ -262,6 +270,28 @@ export default function Friends() {
 
   const requestsCount = incoming.length + outgoing.length;
 
+  const handleInvite = async () => {
+    if (!myCode) {
+      toast({ title: "Generating your link…", description: "Try again in a moment." });
+      return;
+    }
+    const url = `${window.location.origin}/invite/${myCode}`;
+    const text = `Join me on Hagion AI — biblical wisdom, prayer & community. ${url}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Join me on Hagion AI", text, url });
+        return;
+      }
+    } catch {}
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({ title: "Invite link copied", description: url });
+    } catch {
+      toast({ title: "Your invite link", description: url });
+    }
+  };
+
+
   return (
     <div className="min-h-screen text-white">
       <header className="sticky top-0 z-30 bg-black/40 backdrop-blur-2xl border-b border-white/10">
@@ -274,6 +304,13 @@ export default function Friends() {
             <ArrowLeft className="w-4 h-4" />
           </button>
           <h1 className="font-playfair text-xl tracking-tight flex-1">Friends</h1>
+          <button
+            onClick={handleInvite}
+            aria-label="Invite friends"
+            className="h-9 px-3 rounded-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/40 flex items-center gap-1.5 text-xs font-medium text-white hover:from-primary/40 hover:to-primary/20"
+          >
+            <Share2 className="w-3.5 h-3.5" /> Invite
+          </button>
           <button
             onClick={() => navigate("/community/messages")}
             aria-label="Messages"

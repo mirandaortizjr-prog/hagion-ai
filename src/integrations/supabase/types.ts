@@ -1128,6 +1128,7 @@ export type Database = {
           following_count: number
           gender: string | null
           id: string
+          invite_code: string | null
           name: string | null
           updated_at: string
           user_id: string
@@ -1141,6 +1142,7 @@ export type Database = {
           following_count?: number
           gender?: string | null
           id?: string
+          invite_code?: string | null
           name?: string | null
           updated_at?: string
           user_id: string
@@ -1154,6 +1156,7 @@ export type Database = {
           following_count?: number
           gender?: string | null
           id?: string
+          invite_code?: string | null
           name?: string | null
           updated_at?: string
           user_id?: string
@@ -1628,6 +1631,8 @@ export type Database = {
           tier: string
         }[]
       }
+      claim_invite: { Args: { p_code: string }; Returns: Json }
+      generate_invite_code: { Args: never; Returns: string }
       get_user_tier: { Args: { p_user_id: string }; Returns: string }
       is_staff_email: { Args: { p_user_id: string }; Returns: boolean }
     }
