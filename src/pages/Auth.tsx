@@ -28,14 +28,28 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
+    const claimPendingInvite = async () => {
+      try {
+        const code = localStorage.getItem("pendingInviteCode");
+        if (!code) return;
+        await supabase.rpc("claim_invite", { p_code: code });
+      } catch {} finally {
+        try { localStorage.removeItem("pendingInviteCode"); } catch {}
+      }
+    };
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) navigate(redirectUrl || "/", { replace: true });
+      if (session) {
+        claimPendingInvite().finally(() => navigate(redirectUrl || "/", { replace: true }));
+      }
     });
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate(redirectUrl || "/", { replace: true });
+      if (session) {
+        claimPendingInvite().finally(() => navigate(redirectUrl || "/", { replace: true }));
+      }
     });
 
     return () => subscription.unsubscribe();
