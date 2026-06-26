@@ -36,6 +36,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ImageCropDialog } from "@/components/ImageCropDialog";
 
 const Settings = () => {
   const navigate = useNavigate();
