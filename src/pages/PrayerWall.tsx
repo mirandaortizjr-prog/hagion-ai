@@ -143,7 +143,7 @@ export default function PrayerWall() {
   const [myInteractions, setMyInteractions] = useState<Record<string, Set<string>>>({});
   const [authorMeta, setAuthorMeta] = useState<Record<string, { username: string | null; follower_count: number }>>({});
   const [myFollowing, setMyFollowing] = useState<Set<string>>(new Set());
-  const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
+  const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null; name: string | null; username: string | null } | null>(null);
   const [friendsCount, setFriendsCount] = useState(0);
   const [bannerUploading, setBannerUploading] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
@@ -243,7 +243,7 @@ export default function PrayerWall() {
   const loadProfile = async (uid: string) => {
     const { data } = await supabase
       .from("profiles")
-      .select("avatar_url, banner_url")
+      .select("avatar_url, banner_url, name, username")
       .eq("user_id", uid)
       .maybeSingle();
     if (data) setProfile(data as any);
@@ -283,7 +283,7 @@ export default function PrayerWall() {
       if (updErr) {
         toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
       } else {
-        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl }));
+        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl, name: p?.name || null, username: p?.username || null }));
         toast({ title: "Banner updated" });
       }
     };
@@ -397,7 +397,7 @@ export default function PrayerWall() {
     setPosting(true);
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
       post_type: composerType,
       content: composer.trim(),
     });
@@ -528,7 +528,7 @@ export default function PrayerWall() {
               </button>
               <div className="mt-2 flex items-center gap-5">
                 <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                  {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
                 </span>
                 <button
                   type="button"
