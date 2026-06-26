@@ -339,6 +339,13 @@ export default function PrayerWall() {
         .select("following_id")
         .eq("follower_id", authData.user.id);
       setMyFollowing(new Set((fws || []).map((f: any) => f.following_id)));
+
+      const { count: fc } = await supabase
+        .from("friendships")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${authData.user.id},addressee_id.eq.${authData.user.id}`);
+      setFriendsCount(fc || 0);
     }
   };
 
