@@ -72,6 +72,7 @@ import MessengerPage from "./pages/community/MessengerPage";
 import Friends from "./pages/Friends";
 import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
+import Invite from "./pages/Invite";
 import { FeatureGate } from "@/components/FeatureGate";
 
 const queryClient = new QueryClient();
