@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, MessageSquare, UserPlus, UserCheck, Loader2 } from "lucide-react";
+import { ArrowLeft, MessageSquare, UserPlus, UserCheck, Clock, Check, X, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
+
+type Rel =
+  | { kind: "none" }
+  | { kind: "friends"; id: string }
+  | { kind: "outgoing"; id: string }
+  | { kind: "incoming"; id: string };
 
 export default function PublicProfile() {
   const { handle } = useParams();
