@@ -590,54 +590,70 @@ export default function MessengerPage() {
             </div>
           </div>
         ) : (
-          /* ============== LIST VIEW ============== */
-          <div>
-            {/* Large iOS-style title header */}
-            <header className="px-4 pt-[max(1.25rem,env(safe-area-inset-top))]">
-              <div className="flex items-center justify-between py-2">
+          /* ============== LIST VIEW (iMessage-style) ============== */
+          <div className="relative">
+            {/* Ambient glow backdrop */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-[340px] opacity-70"
+              style={{
+                background:
+                  "radial-gradient(120% 80% at 50% -10%, hsl(var(--primary)/0.18), transparent 60%), radial-gradient(80% 60% at 90% 10%, rgba(10,132,255,0.14), transparent 70%)",
+              }}
+            />
+
+            {/* Sticky compact header */}
+            <header className="sticky top-0 z-30 bg-black/55 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.08]">
+              <div className="px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 flex items-center gap-2">
                 <button
                   onClick={handleBack}
-                  className="flex items-center gap-0.5 text-[#0A84FF] active:opacity-60 -ml-1 px-1"
                   aria-label="Back"
+                  className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/85 active:scale-95 transition-all"
                 >
-                  <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
-                  <span className="text-[15px] font-medium">Back</span>
+                  <ArrowLeft className="w-4 h-4" strokeWidth={2.4} />
                 </button>
+                <h1 className="flex-1 text-center text-[17px] font-semibold tracking-tight">
+                  Messages
+                </h1>
                 <button
                   onClick={() => {
                     impact("light");
                     setComposerOpen(true);
                     setSearchQuery("");
                   }}
-                  className="text-[#0A84FF] active:opacity-60 p-1"
                   aria-label="New message"
+                  className="h-9 w-9 rounded-full bg-gradient-to-br from-[#0A84FF] to-[#0066D6] text-white flex items-center justify-center shadow-[0_6px_18px_-6px_rgba(10,132,255,0.7)] active:scale-95 transition-all"
                 >
-                  <PenSquare className="w-[22px] h-[22px]" />
+                  <PenSquare className="w-[18px] h-[18px]" strokeWidth={2.2} />
                 </button>
               </div>
-              <h1 className="font-bold text-[34px] tracking-tight leading-tight pb-2">Messages</h1>
 
-              {/* Search bar */}
-              <div className="relative mb-3">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                <Input
-                  value={listFilter}
-                  onChange={(e) => setListFilter(e.target.value)}
-                  placeholder="Search"
-                  className="bg-white/[0.08] border-0 rounded-[10px] pl-9 h-9 text-[15px] text-white placeholder:text-white/40 focus-visible:ring-0"
-                />
+              {/* Search */}
+              <div className="px-3 pb-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/45" />
+                  <Input
+                    value={listFilter}
+                    onChange={(e) => setListFilter(e.target.value)}
+                    placeholder="Search messages"
+                    className="bg-white/[0.07] border border-white/[0.08] rounded-full pl-9 h-9 text-[14px] text-white placeholder:text-white/40 focus-visible:ring-1 focus-visible:ring-primary/40"
+                  />
+                </div>
               </div>
             </header>
 
-            {/* Conversations list */}
+            {/* Conversations */}
             {filteredConvs.length === 0 ? (
-              <div className="px-4 mt-16 text-center">
-                <div className="w-16 h-16 rounded-full bg-white/[0.06] mx-auto flex items-center justify-center mb-4">
-                  <MessageSquare className="w-7 h-7 text-white/40" />
+              <div className="relative px-4 mt-20 text-center">
+                <div className="relative mx-auto mb-5 w-20 h-20">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#0A84FF]/30 to-purple-500/20 blur-2xl" />
+                  <div className="relative w-20 h-20 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-xl flex items-center justify-center">
+                    <MessageSquare className="w-8 h-8 text-white/70" />
+                  </div>
                 </div>
-                <div className="text-white text-lg font-semibold mb-1">No Messages</div>
-                <div className="text-[13px] text-white/50 mb-6 max-w-[260px] mx-auto">
-                  Tap the compose button to start a conversation with another believer.
+                <div className="text-white text-[17px] font-semibold mb-1.5">No Messages Yet</div>
+                <div className="text-[13px] text-white/55 mb-6 max-w-[280px] mx-auto leading-relaxed">
+                  Start a private conversation with another believer in the community.
                 </div>
                 <Button
                   onClick={() => {
@@ -645,13 +661,13 @@ export default function MessengerPage() {
                     setComposerOpen(true);
                     setSearchQuery("");
                   }}
-                  className="rounded-full bg-[#0A84FF] hover:bg-[#0A84FF]/90 text-white"
+                  className="rounded-full bg-gradient-to-r from-[#0A84FF] to-[#0066D6] hover:from-[#0A84FF] hover:to-[#0066D6] text-white h-10 px-5 shadow-[0_8px_24px_-8px_rgba(10,132,255,0.7)]"
                 >
                   <PenSquare className="w-4 h-4 mr-2" /> New Message
                 </Button>
               </div>
             ) : (
-              <ul className="px-2">
+              <ul className="relative px-3 pt-3 space-y-1.5">
                 {filteredConvs.map((c) => {
                   const other = otherPartyOf(c);
                   return (
@@ -661,20 +677,20 @@ export default function MessengerPage() {
                           impact("light");
                           setActiveId(c.id);
                         }}
-                        className="w-full flex items-center gap-3 px-2 py-2.5 rounded-xl active:bg-white/[0.06] transition-colors text-left"
+                        className="group w-full flex items-center gap-3 p-2.5 rounded-2xl bg-white/[0.035] border border-white/[0.06] hover:bg-white/[0.06] hover:border-white/[0.1] active:scale-[0.99] transition-all text-left backdrop-blur-xl"
                       >
-                        <Avatar className="h-12 w-12 ring-1 ring-white/10 shrink-0">
+                        <Avatar className="h-12 w-12 ring-2 ring-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.5)] shrink-0">
                           {other?.avatar_url && <AvatarImage src={other.avatar_url} />}
-                          <AvatarFallback className="bg-gradient-to-br from-white/15 to-white/5 text-white text-sm">
+                          <AvatarFallback className="bg-gradient-to-br from-[#0A84FF]/40 to-purple-500/30 text-white text-sm font-semibold">
                             {initialOf(other)}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="flex-1 min-w-0 border-b border-white/[0.06] pb-2.5">
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-baseline justify-between gap-2">
-                            <div className="text-[15px] font-semibold truncate">
+                            <div className="text-[15px] font-semibold text-white truncate">
                               {displayName(other) || c.title || "Conversation"}
                             </div>
-                            <div className="text-[12px] text-white/40 shrink-0">
+                            <div className="text-[11px] text-white/45 shrink-0 font-medium">
                               {c.last_message_at &&
                                 formatDistanceToNow(new Date(c.last_message_at), {
                                   addSuffix: false,
@@ -685,7 +701,7 @@ export default function MessengerPage() {
                             {other?.username ? `@${other.username}` : "Tap to open"}
                           </div>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-white/25 shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-white/30 shrink-0 group-hover:text-white/60 group-hover:translate-x-0.5 transition-all" />
                       </button>
                     </li>
                   );
