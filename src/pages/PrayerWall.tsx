@@ -144,6 +144,7 @@ export default function PrayerWall() {
   const [authorMeta, setAuthorMeta] = useState<Record<string, { username: string | null; follower_count: number }>>({});
   const [myFollowing, setMyFollowing] = useState<Set<string>>(new Set());
   const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
+  const [friendsCount, setFriendsCount] = useState(0);
   const [bannerUploading, setBannerUploading] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
@@ -338,6 +339,13 @@ export default function PrayerWall() {
         .select("following_id")
         .eq("follower_id", authData.user.id);
       setMyFollowing(new Set((fws || []).map((f: any) => f.following_id)));
+
+      const { count: fc } = await supabase
+        .from("friendships")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${authData.user.id},addressee_id.eq.${authData.user.id}`);
+      setFriendsCount(fc || 0);
     }
   };
 
@@ -524,11 +532,11 @@ export default function PrayerWall() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => sonnerToast.success("Friend request sent")}
+                  onClick={() => navigate("/friends")}
                   className="text-[10px] font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                  aria-label="Add as friend"
+                  aria-label="View friends"
                 >
-                  Follow
+                  {friendsCount} {friendsCount === 1 ? "Friend" : "Friends"}
                 </button>
               </div>
             </div>
