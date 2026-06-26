@@ -352,6 +352,16 @@ const Profile = () => {
         </div>
       </div>
       <PremiumNav />
+      <ImageCropDialog
+        open={cropOpen}
+        onOpenChange={setCropOpen}
+        imageSrc={cropSrc}
+        aspect={1}
+        cropShape="round"
+        title="Adjust profile picture"
+        outputWidth={800}
+        onCropped={handleCroppedAvatar}
+      />
     </div>
   );
 };
