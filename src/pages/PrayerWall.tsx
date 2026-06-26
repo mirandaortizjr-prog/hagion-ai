@@ -144,6 +144,7 @@ export default function PrayerWall() {
   const [authorMeta, setAuthorMeta] = useState<Record<string, { username: string | null; follower_count: number }>>({});
   const [myFollowing, setMyFollowing] = useState<Set<string>>(new Set());
   const [profile, setProfile] = useState<{ avatar_url: string | null; banner_url: string | null } | null>(null);
+  const [friendsCount, setFriendsCount] = useState(0);
   const [bannerUploading, setBannerUploading] = useState(false);
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
