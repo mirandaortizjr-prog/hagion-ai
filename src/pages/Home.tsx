@@ -24,6 +24,7 @@ const Home = () => {
       .from("posts")
       .select("id, content, category, vote_score, comment_count, created_at, author_name, is_anonymous")
       .eq("post_type", "discussion")
+      .is("group_id", null)
       .order("hot_score", { ascending: false })
       .order("created_at", { ascending: false })
       .limit(3)

@@ -25,6 +25,7 @@ import {
   Video,
   
   Plus,
+  Trash2,
   X,
 } from "lucide-react";
 import {
@@ -290,7 +291,7 @@ export default function PrayerWall() {
 
   const loadAll = async () => {
     const [p, r, t, g, e, c] = await Promise.all([
-      supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(50),
+      supabase.from("posts").select("*").is("group_id", null).order("created_at", { ascending: false }).limit(50),
       supabase.from("reels").select("*").order("created_at", { ascending: false }).limit(20),
       supabase.from("teachings").select("*").order("created_at", { ascending: false }).limit(20),
       supabase.from("groups").select("*").order("member_count", { ascending: false }).limit(20),
@@ -423,6 +424,18 @@ export default function PrayerWall() {
         .insert({ post_id: postId, user_id: user.id, interaction_type: type });
     }
     loadAll();
+  };
+
+  const deletePost = async (postId: string) => {
+    if (!user) return;
+    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    const { error } = await supabase.from("posts").delete().eq("id", postId).eq("user_id", user.id);
+    if (error) {
+      toast({ title: "Could not delete", description: error.message, variant: "destructive" });
+      return;
+    }
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    toast({ title: "Post deleted" });
   };
 
   const sharePost = async (post: Post) => {
@@ -704,6 +717,13 @@ export default function PrayerWall() {
                         count={p.pray_count}
                         onClick={() => toggleInteraction(p.id, "pray")}
                       />
+                      {user?.id === p.user_id && (
+                        <ActionBtn
+                          icon={Trash2}
+                          label="Delete"
+                          onClick={() => deletePost(p.id)}
+                        />
+                      )}
                     </div>
                   </article>
                 );

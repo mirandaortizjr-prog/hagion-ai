@@ -69,7 +69,7 @@ export default function DiscussionsPage() {
 
   const load = async () => {
     setLoading(true);
-    let q = supabase.from("posts").select("*").eq("post_type", "discussion");
+    let q = supabase.from("posts").select("*").eq("post_type", "discussion").is("group_id", null);
     if (cat !== "all") q = q.eq("category", cat);
 
     if (sort === "new") q = q.order("created_at", { ascending: false });
