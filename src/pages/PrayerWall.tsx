@@ -290,7 +290,7 @@ export default function PrayerWall() {
 
   const loadAll = async () => {
     const [p, r, t, g, e, c] = await Promise.all([
-      supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(50),
+      supabase.from("posts").select("*").is("group_id", null).order("created_at", { ascending: false }).limit(50),
       supabase.from("reels").select("*").order("created_at", { ascending: false }).limit(20),
       supabase.from("teachings").select("*").order("created_at", { ascending: false }).limit(20),
       supabase.from("groups").select("*").order("member_count", { ascending: false }).limit(20),
