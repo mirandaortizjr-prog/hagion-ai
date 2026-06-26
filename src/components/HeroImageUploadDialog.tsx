@@ -220,6 +220,16 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
             "Las imágenes se revisan automáticamente y rotan de forma justa para que cada miembro tenga su momento.",
           )}
         </p>
+        <ImageCropDialog
+          open={cropOpen}
+          onOpenChange={setCropOpen}
+          imageSrc={cropSrc}
+          aspect={16 / 9}
+          cropShape="rect"
+          title={t("Adjust your hero image", "Ajusta tu imagen")}
+          outputWidth={1920}
+          onCropped={handleFile}
+        />
       </DialogContent>
     </Dialog>
   );
