@@ -454,6 +454,17 @@ const Settings = () => {
       </main>
 
       <PremiumNav />
+
+      <ImageCropDialog
+        open={!!cropSrc}
+        onOpenChange={(o) => { if (!o) setCropSrc(null); }}
+        imageSrc={cropSrc}
+        aspect={cropKind === "avatar" ? 1 : 16 / 9}
+        cropShape={cropKind === "avatar" ? "round" : "rect"}
+        title={cropKind === "avatar" ? "Adjust your photo" : "Adjust cover image"}
+        outputWidth={cropKind === "avatar" ? 800 : 1600}
+        onCropped={async (file) => { await uploadImage(file, cropKind); }}
+      />
     </div>
   );
 };
