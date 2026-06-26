@@ -397,7 +397,7 @@ export default function PrayerWall() {
     setPosting(true);
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
       post_type: composerType,
       content: composer.trim(),
     });
@@ -528,7 +528,7 @@ export default function PrayerWall() {
               </button>
               <div className="mt-2 flex items-center gap-5">
                 <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                  {user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
                 </span>
                 <button
                   type="button"
