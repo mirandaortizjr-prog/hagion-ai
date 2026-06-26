@@ -717,6 +717,13 @@ export default function PrayerWall() {
                         count={p.pray_count}
                         onClick={() => toggleInteraction(p.id, "pray")}
                       />
+                      {user?.id === p.user_id && (
+                        <ActionBtn
+                          icon={Trash2}
+                          label="Delete"
+                          onClick={() => deletePost(p.id)}
+                        />
+                      )}
                     </div>
                   </article>
                 );
