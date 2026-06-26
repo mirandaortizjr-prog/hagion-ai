@@ -61,6 +61,7 @@ export default function Friends() {
   const [searchResults, setSearchResults] = useState<ProfileRow[]>([]);
   const [searching, setSearching] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [myCode, setMyCode] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
