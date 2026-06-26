@@ -305,6 +305,13 @@ export default function Friends() {
           </button>
           <h1 className="font-playfair text-xl tracking-tight flex-1">Friends</h1>
           <button
+            onClick={handleInvite}
+            aria-label="Invite friends"
+            className="h-9 px-3 rounded-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/40 flex items-center gap-1.5 text-xs font-medium text-white hover:from-primary/40 hover:to-primary/20"
+          >
+            <Share2 className="w-3.5 h-3.5" /> Invite
+          </button>
+          <button
             onClick={() => navigate("/community/messages")}
             aria-label="Messages"
             className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
