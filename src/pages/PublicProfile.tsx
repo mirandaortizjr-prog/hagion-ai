@@ -23,10 +23,6 @@ export default function PublicProfile() {
   const [me, setMe] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
-
   const [rel, setRel] = useState<Rel>({ kind: "none" });
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
