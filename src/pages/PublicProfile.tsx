@@ -175,10 +175,9 @@ export default function PublicProfile() {
               {(profile.name?.[0] || profile.username?.[0] || "B").toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1 grid grid-cols-3 gap-2 text-center">
+          <div className="flex-1 grid grid-cols-2 gap-2 text-center">
             <Stat n={posts.length} label="Posts" />
-            <Stat n={profile.follower_count || 0} label="Followers" onClick={() => navigate("/friends?tab=followers")} clickable={isMe} />
-            <Stat n={profile.following_count || 0} label="Following" onClick={() => navigate("/friends?tab=following")} clickable={isMe} />
+            <Stat n={profile.follower_count || 0} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
           </div>
         </div>
 
@@ -199,28 +198,47 @@ export default function PublicProfile() {
             </Button>
           ) : (
             <>
-              <Button
-                onClick={toggleFollow}
-                disabled={busy}
-                className={cn(
-                  "flex-1 rounded-full",
-                  isFollowing
-                    ? "bg-white/10 text-white border border-white/20 hover:bg-white/15"
-                    : "bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
-                )}
-              >
-                {busy ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : isFollowing ? (
-                  <>
-                    <UserCheck className="w-4 h-4 mr-1" /> Following
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="w-4 h-4 mr-1" /> Follow
-                  </>
-                )}
-              </Button>
+              {rel.kind === "incoming" ? (
+                <>
+                  <Button
+                    onClick={accept}
+                    disabled={busy}
+                    className="flex-1 rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
+                  >
+                    {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> Accept</>)}
+                  </Button>
+                  <Button
+                    onClick={decline}
+                    disabled={busy}
+                    className="rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={
+                    rel.kind === "friends" || rel.kind === "outgoing" ? cancelOrUnfriend : sendRequest
+                  }
+                  disabled={busy}
+                  className={cn(
+                    "flex-1 rounded-full",
+                    rel.kind === "none"
+                      ? "bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                  )}
+                >
+                  {busy ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : rel.kind === "friends" ? (
+                    <><UserCheck className="w-4 h-4 mr-1" /> Friends</>
+                  ) : rel.kind === "outgoing" ? (
+                    <><Clock className="w-4 h-4 mr-1" /> Requested</>
+                  ) : (
+                    <><UserPlus className="w-4 h-4 mr-1" /> Add friend</>
+                  )}
+                </Button>
+              )}
               <Button
                 onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
                 className="flex-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
@@ -230,6 +248,7 @@ export default function PublicProfile() {
             </>
           )}
         </div>
+
 
         <div className="mt-8 grid grid-cols-3 gap-1">
           {posts.map((p) => (
