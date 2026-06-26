@@ -426,6 +426,18 @@ export default function PrayerWall() {
     loadAll();
   };
 
+  const deletePost = async (postId: string) => {
+    if (!user) return;
+    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    const { error } = await supabase.from("posts").delete().eq("id", postId).eq("user_id", user.id);
+    if (error) {
+      toast({ title: "Could not delete", description: error.message, variant: "destructive" });
+      return;
+    }
+    setPosts((prev) => prev.filter((p) => p.id !== postId));
+    toast({ title: "Post deleted" });
+  };
+
   const sharePost = async (post: Post) => {
     const url = `${window.location.origin}/community/post/${post.id}`;
     try {
