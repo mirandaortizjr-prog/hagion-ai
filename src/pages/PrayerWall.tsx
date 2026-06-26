@@ -532,11 +532,11 @@ export default function PrayerWall() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => sonnerToast.success("Friend request sent")}
+                  onClick={() => navigate("/friends")}
                   className="text-[10px] font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                  aria-label="Add as friend"
+                  aria-label="View friends"
                 >
-                  Follow
+                  {friendsCount} {friendsCount === 1 ? "Friend" : "Friends"}
                 </button>
               </div>
             </div>
