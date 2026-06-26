@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { usePremium } from "@/contexts/PremiumContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
+import { ImageCropDialog } from "@/components/ImageCropDialog";
 
 interface Props {
   open: boolean;
@@ -26,6 +27,8 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
   const [active, setActive] = useState<Submission | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -51,15 +54,24 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
     setLoading(false);
   };
 
-  const handleFile = async (file: File) => {
+  const pickFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
       toast.error(t("Please select an image", "Selecciona una imagen"));
       return;
     }
-    if (file.size > 8 * 1024 * 1024) {
-      toast.error(t("Image must be under 8MB", "La imagen debe ser menor a 8MB"));
+    if (file.size > 12 * 1024 * 1024) {
+      toast.error(t("Image must be under 12MB", "La imagen debe ser menor a 12MB"));
       return;
     }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropSrc(reader.result as string);
+      setCropOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFile = async (file: File) => {
 
     setUploading(true);
     try {
@@ -180,7 +192,7 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
               disabled={uploading}
               onChange={(e) => {
                 const f = e.target.files?.[0];
-                if (f) handleFile(f);
+                if (f) pickFile(f);
               }}
             />
             <div className="rounded-xl border-2 border-dashed border-white/15 hover:border-white/30 transition-colors p-8 text-center cursor-pointer bg-white/[0.02]">
@@ -208,6 +220,16 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
             "Las imágenes se revisan automáticamente y rotan de forma justa para que cada miembro tenga su momento.",
           )}
         </p>
+        <ImageCropDialog
+          open={cropOpen}
+          onOpenChange={setCropOpen}
+          imageSrc={cropSrc}
+          aspect={16 / 9}
+          cropShape="rect"
+          title={t("Adjust your hero image", "Ajusta tu imagen")}
+          outputWidth={1920}
+          onCropped={handleFile}
+        />
       </DialogContent>
     </Dialog>
   );

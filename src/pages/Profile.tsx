@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
+import { ImageCropDialog } from "@/components/ImageCropDialog";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const Profile = () => {
   const [gender, setGender] = useState<string>("");
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -108,40 +111,47 @@ const Profile = () => {
     };
     input.onchange = async () => {
       const f = input.files?.[0];
-      if (!f) { cleanup(); return; }
-      if (f.size > 5 * 1024 * 1024) {
-        toast({ title: t('error'), description: "Max 5MB", variant: "destructive" });
-        return;
-      }
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-      setUploadingAvatar(true);
-      const ext = f.name.split(".").pop() || "jpg";
-      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("community-media")
-        .upload(path, f, { contentType: f.type, upsert: true });
-      if (upErr) {
-        setUploadingAvatar(false);
-        cleanup();
-        toast({ title: t('error'), description: upErr.message, variant: "destructive" });
-        return;
-      }
-      const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
-      const cacheBustedUrl = `${pub.publicUrl}?t=${Date.now()}`;
-      const { error: updErr } = await supabase
-        .from("profiles")
-        .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
-      setUploadingAvatar(false);
       cleanup();
-      if (updErr) {
-        toast({ title: t('error'), description: updErr.message, variant: "destructive" });
-      } else {
-        setAvatarUrl(cacheBustedUrl);
-        toast({ title: t('success'), description: t('profile_updated') });
+      if (!f) return;
+      if (f.size > 10 * 1024 * 1024) {
+        toast({ title: t('error'), description: "Max 10MB", variant: "destructive" });
+        return;
       }
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCropSrc(reader.result as string);
+        setCropOpen(true);
+      };
+      reader.readAsDataURL(f);
     };
     input.click();
+  };
+
+  const handleCroppedAvatar = async (file: File) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    setUploadingAvatar(true);
+    const path = `${user.id}/avatar-${Date.now()}.jpg`;
+    const { error: upErr } = await supabase.storage
+      .from("community-media")
+      .upload(path, file, { contentType: "image/jpeg", upsert: true });
+    if (upErr) {
+      setUploadingAvatar(false);
+      toast({ title: t('error'), description: upErr.message, variant: "destructive" });
+      return;
+    }
+    const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
+    const cacheBustedUrl = `${pub.publicUrl}?t=${Date.now()}`;
+    const { error: updErr } = await supabase
+      .from("profiles")
+      .upsert({ user_id: user.id, avatar_url: pub.publicUrl }, { onConflict: "user_id" });
+    setUploadingAvatar(false);
+    if (updErr) {
+      toast({ title: t('error'), description: updErr.message, variant: "destructive" });
+    } else {
+      setAvatarUrl(cacheBustedUrl);
+      toast({ title: t('success'), description: t('profile_updated') });
+    }
   };
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
@@ -342,6 +352,16 @@ const Profile = () => {
         </div>
       </div>
       <PremiumNav />
+      <ImageCropDialog
+        open={cropOpen}
+        onOpenChange={setCropOpen}
+        imageSrc={cropSrc}
+        aspect={1}
+        cropShape="round"
+        title="Adjust profile picture"
+        outputWidth={800}
+        onCropped={handleCroppedAvatar}
+      />
     </div>
   );
 };
