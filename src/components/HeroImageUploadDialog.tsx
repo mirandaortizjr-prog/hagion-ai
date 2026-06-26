@@ -54,15 +54,24 @@ export const HeroImageUploadDialog = ({ open, onOpenChange }: Props) => {
     setLoading(false);
   };
 
-  const handleFile = async (file: File) => {
+  const pickFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
       toast.error(t("Please select an image", "Selecciona una imagen"));
       return;
     }
-    if (file.size > 8 * 1024 * 1024) {
-      toast.error(t("Image must be under 8MB", "La imagen debe ser menor a 8MB"));
+    if (file.size > 12 * 1024 * 1024) {
+      toast.error(t("Image must be under 12MB", "La imagen debe ser menor a 12MB"));
       return;
     }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropSrc(reader.result as string);
+      setCropOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFile = async (file: File) => {
 
     setUploading(true);
     try {
