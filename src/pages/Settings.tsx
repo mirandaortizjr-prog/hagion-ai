@@ -53,6 +53,8 @@ const Settings = () => {
   const [savingName, setSavingName] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [uploadingBanner, setUploadingBanner] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [cropKind, setCropKind] = useState<"avatar" | "banner">("avatar");
 
   useEffect(() => {
     (async () => {
