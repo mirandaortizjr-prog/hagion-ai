@@ -283,7 +283,7 @@ export default function PrayerWall() {
       if (updErr) {
         toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
       } else {
-        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl }));
+        setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl, name: p?.name || null, username: p?.username || null }));
         toast({ title: "Banner updated" });
       }
     };
