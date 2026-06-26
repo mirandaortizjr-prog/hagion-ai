@@ -132,7 +132,14 @@ const Settings = () => {
 
     input.onchange = () => {
       const file = input.files?.[0];
-      if (file) uploadImage(file, kind);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setCropKind(kind);
+          setCropSrc(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
       cleanup();
     };
 
