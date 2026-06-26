@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, MessageSquare, UserPlus, UserCheck, Loader2 } from "lucide-react";
+import { ArrowLeft, MessageSquare, UserPlus, UserCheck, Clock, Check, X, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
+
+type Rel =
+  | { kind: "none" }
+  | { kind: "friends"; id: string }
+  | { kind: "outgoing"; id: string }
+  | { kind: "incoming"; id: string };
 
 export default function PublicProfile() {
   const { handle } = useParams();
@@ -17,7 +23,7 @@ export default function PublicProfile() {
   const [me, setMe] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [rel, setRel] = useState<Rel>({ kind: "none" });
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
 
@@ -53,45 +59,68 @@ export default function PublicProfile() {
 
       if (auth.user && auth.user.id !== prof.user_id) {
         const { data: f } = await supabase
-          .from("follows")
-          .select("id")
-          .eq("follower_id", auth.user.id)
-          .eq("following_id", prof.user_id)
+          .from("friendships")
+          .select("id, requester_id, addressee_id, status")
+          .or(
+            `and(requester_id.eq.${auth.user.id},addressee_id.eq.${prof.user_id}),and(requester_id.eq.${prof.user_id},addressee_id.eq.${auth.user.id})`
+          )
           .maybeSingle();
-        setIsFollowing(!!f);
+        if (f) {
+          if (f.status === "accepted") setRel({ kind: "friends", id: f.id });
+          else if (f.status === "pending") {
+            if (f.requester_id === auth.user.id) setRel({ kind: "outgoing", id: f.id });
+            else setRel({ kind: "incoming", id: f.id });
+          } else setRel({ kind: "none" });
+        } else setRel({ kind: "none" });
       }
     }
     setLoading(false);
   };
 
-  const toggleFollow = async () => {
-    if (!me) {
-      navigate("/auth");
-      return;
-    }
+  const sendRequest = async () => {
+    if (!me) { navigate("/auth"); return; }
     if (!profile) return;
     setBusy(true);
-    if (isFollowing) {
-      await supabase
-        .from("follows")
-        .delete()
-        .eq("follower_id", me.id)
-        .eq("following_id", profile.user_id);
-      setIsFollowing(false);
-    } else {
-      const { error } = await supabase
-        .from("follows")
-        .insert({ follower_id: me.id, following_id: profile.user_id });
-      if (error) {
-        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
-        setBusy(false);
-        return;
-      }
-      setIsFollowing(true);
+    const { error } = await supabase
+      .from("friendships")
+      .insert({ requester_id: me.id, addressee_id: profile.user_id, status: "pending" });
+    setBusy(false);
+    if (error) {
+      toast({ title: "Could not send request", description: error.message, variant: "destructive" });
+      return;
     }
+    toast({ title: "Friend request sent" });
+    load();
+  };
+
+  const cancelOrUnfriend = async () => {
+    if (rel.kind !== "outgoing" && rel.kind !== "friends") return;
+    setBusy(true);
+    await supabase.from("friendships").delete().eq("id", rel.id);
     setBusy(false);
     load();
   };
+
+  const accept = async () => {
+    if (rel.kind !== "incoming") return;
+    setBusy(true);
+    await supabase
+      .from("friendships")
+      .update({ status: "accepted", responded_at: new Date().toISOString() })
+      .eq("id", rel.id);
+    setBusy(false);
+    toast({ title: "You're now friends" });
+    load();
+  };
+
+  const decline = async () => {
+    if (rel.kind !== "incoming") return;
+    setBusy(true);
+    await supabase.from("friendships").delete().eq("id", rel.id);
+    setBusy(false);
+    load();
+  };
+
 
   if (loading) {
     return (
@@ -146,10 +175,9 @@ export default function PublicProfile() {
               {(profile.name?.[0] || profile.username?.[0] || "B").toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1 grid grid-cols-3 gap-2 text-center">
+          <div className="flex-1 grid grid-cols-2 gap-2 text-center">
             <Stat n={posts.length} label="Posts" />
-            <Stat n={profile.follower_count || 0} label="Followers" onClick={() => navigate("/friends?tab=followers")} clickable={isMe} />
-            <Stat n={profile.following_count || 0} label="Following" onClick={() => navigate("/friends?tab=following")} clickable={isMe} />
+            <Stat n={profile.follower_count || 0} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
           </div>
         </div>
 
@@ -170,28 +198,47 @@ export default function PublicProfile() {
             </Button>
           ) : (
             <>
-              <Button
-                onClick={toggleFollow}
-                disabled={busy}
-                className={cn(
-                  "flex-1 rounded-full",
-                  isFollowing
-                    ? "bg-white/10 text-white border border-white/20 hover:bg-white/15"
-                    : "bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
-                )}
-              >
-                {busy ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : isFollowing ? (
-                  <>
-                    <UserCheck className="w-4 h-4 mr-1" /> Following
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="w-4 h-4 mr-1" /> Follow
-                  </>
-                )}
-              </Button>
+              {rel.kind === "incoming" ? (
+                <>
+                  <Button
+                    onClick={accept}
+                    disabled={busy}
+                    className="flex-1 rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
+                  >
+                    {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> Accept</>)}
+                  </Button>
+                  <Button
+                    onClick={decline}
+                    disabled={busy}
+                    className="rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={
+                    rel.kind === "friends" || rel.kind === "outgoing" ? cancelOrUnfriend : sendRequest
+                  }
+                  disabled={busy}
+                  className={cn(
+                    "flex-1 rounded-full",
+                    rel.kind === "none"
+                      ? "bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/15"
+                  )}
+                >
+                  {busy ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : rel.kind === "friends" ? (
+                    <><UserCheck className="w-4 h-4 mr-1" /> Friends</>
+                  ) : rel.kind === "outgoing" ? (
+                    <><Clock className="w-4 h-4 mr-1" /> Requested</>
+                  ) : (
+                    <><UserPlus className="w-4 h-4 mr-1" /> Add friend</>
+                  )}
+                </Button>
+              )}
               <Button
                 onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
                 className="flex-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
@@ -201,6 +248,7 @@ export default function PublicProfile() {
             </>
           )}
         </div>
+
 
         <div className="mt-8 grid grid-cols-3 gap-1">
           {posts.map((p) => (
