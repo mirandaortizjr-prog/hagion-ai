@@ -64,10 +64,16 @@ export default function Friends() {
   const [myCode, setMyCode] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
-      if (data.user) loadAll(data.user.id);
-      else navigate("/auth");
+      if (!data.user) { navigate("/auth"); return; }
+      loadAll(data.user.id);
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("invite_code")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      setMyCode((prof as any)?.invite_code || null);
     });
   }, []);
 
