@@ -27,6 +27,10 @@ export default function PublicProfile() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
 
+  const [rel, setRel] = useState<Rel>({ kind: "none" });
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+
   useEffect(() => {
     load();
   }, [handle]);
@@ -59,45 +63,68 @@ export default function PublicProfile() {
 
       if (auth.user && auth.user.id !== prof.user_id) {
         const { data: f } = await supabase
-          .from("follows")
-          .select("id")
-          .eq("follower_id", auth.user.id)
-          .eq("following_id", prof.user_id)
+          .from("friendships")
+          .select("id, requester_id, addressee_id, status")
+          .or(
+            `and(requester_id.eq.${auth.user.id},addressee_id.eq.${prof.user_id}),and(requester_id.eq.${prof.user_id},addressee_id.eq.${auth.user.id})`
+          )
           .maybeSingle();
-        setIsFollowing(!!f);
+        if (f) {
+          if (f.status === "accepted") setRel({ kind: "friends", id: f.id });
+          else if (f.status === "pending") {
+            if (f.requester_id === auth.user.id) setRel({ kind: "outgoing", id: f.id });
+            else setRel({ kind: "incoming", id: f.id });
+          } else setRel({ kind: "none" });
+        } else setRel({ kind: "none" });
       }
     }
     setLoading(false);
   };
 
-  const toggleFollow = async () => {
-    if (!me) {
-      navigate("/auth");
-      return;
-    }
+  const sendRequest = async () => {
+    if (!me) { navigate("/auth"); return; }
     if (!profile) return;
     setBusy(true);
-    if (isFollowing) {
-      await supabase
-        .from("follows")
-        .delete()
-        .eq("follower_id", me.id)
-        .eq("following_id", profile.user_id);
-      setIsFollowing(false);
-    } else {
-      const { error } = await supabase
-        .from("follows")
-        .insert({ follower_id: me.id, following_id: profile.user_id });
-      if (error) {
-        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
-        setBusy(false);
-        return;
-      }
-      setIsFollowing(true);
+    const { error } = await supabase
+      .from("friendships")
+      .insert({ requester_id: me.id, addressee_id: profile.user_id, status: "pending" });
+    setBusy(false);
+    if (error) {
+      toast({ title: "Could not send request", description: error.message, variant: "destructive" });
+      return;
     }
+    toast({ title: "Friend request sent" });
+    load();
+  };
+
+  const cancelOrUnfriend = async () => {
+    if (rel.kind !== "outgoing" && rel.kind !== "friends") return;
+    setBusy(true);
+    await supabase.from("friendships").delete().eq("id", rel.id);
     setBusy(false);
     load();
   };
+
+  const accept = async () => {
+    if (rel.kind !== "incoming") return;
+    setBusy(true);
+    await supabase
+      .from("friendships")
+      .update({ status: "accepted", responded_at: new Date().toISOString() })
+      .eq("id", rel.id);
+    setBusy(false);
+    toast({ title: "You're now friends" });
+    load();
+  };
+
+  const decline = async () => {
+    if (rel.kind !== "incoming") return;
+    setBusy(true);
+    await supabase.from("friendships").delete().eq("id", rel.id);
+    setBusy(false);
+    load();
+  };
+
 
   if (loading) {
     return (
