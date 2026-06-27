@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Plus,
   X,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
