@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   Plus,
   X,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -245,6 +246,18 @@ export default function PrayerWallPage() {
     if (next) toast.success(t("Praise God! 🎉", "¡Gloria a Dios! 🎉"));
   };
 
+  const deletePrayer = async (prayer: Prayer) => {
+    if (!user || prayer.user_id !== user.id) return;
+    if (!confirm(t("Delete this prayer? This cannot be undone.", "¿Eliminar esta oración? No se puede deshacer."))) return;
+    const { error } = await supabase.from("prayers").delete().eq("id", prayer.id).eq("user_id", user.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setPrayers((list) => list.filter((p) => p.id !== prayer.id));
+    toast.success(t("Prayer deleted", "Oración eliminada"));
+  };
+
   const livePrayingTotal = prayers.reduce((s, p) => s + p.praying_count, 0);
 
   return (
@@ -365,6 +378,7 @@ export default function PrayerWallPage() {
                 }
                 onReact={(r) => toggleReaction(p, r)}
                 onMarkAnswered={() => markAnswered(p)}
+                onDelete={() => deletePrayer(p)}
                 t={t}
               />
             ))}
@@ -474,6 +488,7 @@ interface CardProps {
   onToggleComments: () => void;
   onReact: (r: Reaction) => void;
   onMarkAnswered: () => void;
+  onDelete: () => void;
   t: (en: string, es: string) => string;
 }
 
@@ -486,6 +501,7 @@ const PrayerCard = ({
   onToggleComments,
   onReact,
   onMarkAnswered,
+  onDelete,
   t,
 }: CardProps) => {
   const isOwn = userId && prayer.user_id === userId;
@@ -593,18 +609,27 @@ const PrayerCard = ({
       </div>
 
       {isOwn && (
-        <button
-          onClick={onMarkAnswered}
-          className={cn(
-            "mt-3 inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase transition",
-            prayer.is_answered
-              ? "text-amber-200 hover:text-amber-100"
-              : "text-white/45 hover:text-amber-200"
-          )}
-        >
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          {prayer.is_answered ? t("Unmark answered", "Desmarcar respondida") : t("Mark as answered", "Marcar respondida")}
-        </button>
+        <div className="mt-3 flex items-center gap-4">
+          <button
+            onClick={onMarkAnswered}
+            className={cn(
+              "inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase transition",
+              prayer.is_answered
+                ? "text-amber-200 hover:text-amber-100"
+                : "text-white/45 hover:text-amber-200"
+            )}
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            {prayer.is_answered ? t("Unmark answered", "Desmarcar respondida") : t("Mark as answered", "Marcar respondida")}
+          </button>
+          <button
+            onClick={onDelete}
+            className="ml-auto inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-white/40 hover:text-rose-300 transition"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            {t("Delete", "Eliminar")}
+          </button>
+        </div>
       )}
 
       {/* Comments */}
