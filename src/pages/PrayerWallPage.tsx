@@ -488,6 +488,7 @@ interface CardProps {
   onToggleComments: () => void;
   onReact: (r: Reaction) => void;
   onMarkAnswered: () => void;
+  onDelete: () => void;
   t: (en: string, es: string) => string;
 }
 
@@ -500,6 +501,7 @@ const PrayerCard = ({
   onToggleComments,
   onReact,
   onMarkAnswered,
+  onDelete,
   t,
 }: CardProps) => {
   const isOwn = userId && prayer.user_id === userId;
