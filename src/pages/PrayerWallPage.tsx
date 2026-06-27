@@ -378,6 +378,7 @@ export default function PrayerWallPage() {
                 }
                 onReact={(r) => toggleReaction(p, r)}
                 onMarkAnswered={() => markAnswered(p)}
+                onDelete={() => deletePrayer(p)}
                 t={t}
               />
             ))}
