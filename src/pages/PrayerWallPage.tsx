@@ -246,6 +246,18 @@ export default function PrayerWallPage() {
     if (next) toast.success(t("Praise God! 🎉", "¡Gloria a Dios! 🎉"));
   };
 
+  const deletePrayer = async (prayer: Prayer) => {
+    if (!user || prayer.user_id !== user.id) return;
+    if (!confirm(t("Delete this prayer? This cannot be undone.", "¿Eliminar esta oración? No se puede deshacer."))) return;
+    const { error } = await supabase.from("prayers").delete().eq("id", prayer.id).eq("user_id", user.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setPrayers((list) => list.filter((p) => p.id !== prayer.id));
+    toast.success(t("Prayer deleted", "Oración eliminada"));
+  };
+
   const livePrayingTotal = prayers.reduce((s, p) => s + p.praying_count, 0);
 
   return (
