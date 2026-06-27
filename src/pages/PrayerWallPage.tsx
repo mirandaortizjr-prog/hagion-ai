@@ -262,49 +262,57 @@ export default function PrayerWallPage() {
 
   return (
     <div className="min-h-screen text-white relative overflow-hidden">
-      {/* Consistent dark gradient background */}
+      {/* Ambient background */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(ellipse at center, #2B5681 0%, #000000 100%)",
+            "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(56,135,255,0.18) 0%, transparent 60%), radial-gradient(ellipse at center, #14233a 0%, #05070d 70%)",
         }}
       />
 
-      <main className="px-5 sm:px-8 pb-32 max-w-2xl mx-auto">
-        {/* Header */}
-        <header className="pt-6 pb-4 animate-fade-in flex flex-col items-center text-center relative">
+      {/* Sticky premium header */}
+      <header className="sticky top-0 z-30 backdrop-blur-2xl bg-[#05070d]/70 border-b border-white/[0.06]">
+        <div className="max-w-2xl mx-auto px-4 h-12 flex items-center justify-between">
           <button
             onClick={() => navigate("/home")}
             aria-label={t("Back", "Atrás")}
-            className="absolute left-0 top-6 w-8 h-8 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-xl text-white/80 hover:text-white hover:bg-white/10 transition flex items-center justify-center"
+            className="w-8 h-8 -ml-1 rounded-full flex items-center justify-center text-white/75 hover:text-white hover:bg-white/[0.06] transition"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-[18px] h-[18px]" />
           </button>
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-300/30 to-blue-600/30 border border-sky-300/30 backdrop-blur-xl flex items-center justify-center shadow-[0_8px_30px_-6px_rgba(56,135,255,0.55)] mb-3">
-            <HandHeart className="w-6 h-6 text-sky-100" />
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-gradient-to-br from-sky-300/40 to-blue-600/40 border border-sky-300/30 flex items-center justify-center">
+              <HandHeart className="w-3 h-3 text-sky-100" />
+            </div>
+            <h1 className="text-[15px] font-semibold tracking-tight text-white font-inter">
+              {t("Prayer Wall", "Muro de Oración")}
+            </h1>
           </div>
-          <h1 className="font-playfair text-2xl sm:text-3xl leading-[1.05] tracking-tight bg-gradient-to-b from-white via-white to-sky-200/90 bg-clip-text text-transparent drop-shadow-[0_4px_20px_rgba(56,135,255,0.35)]">
-            {t("Prayer Wall", "Muro de Oración")}
-          </h1>
-          <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-sky-400/70 to-transparent" />
-          <p className="mt-2 italic text-white/70 text-[12px] font-playfair max-w-xs">
-            {t(
-              "“Bear one another's burdens, and so fulfill the law of Christ.” — Galatians 6:2",
-              "“Sobrellevad los unos las cargas de los otros.” — Gálatas 6:2"
-            )}
-          </p>
-          {livePrayingTotal > 0 && (
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/5 px-3 py-1 text-[10.5px] tracking-[0.16em] uppercase text-sky-100/85">
+          <div className="w-8 h-8" />
+        </div>
+        {livePrayingTotal > 0 && (
+          <div className="max-w-2xl mx-auto px-4 pb-2 flex justify-center">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-sky-300/20 bg-sky-300/[0.06] px-2.5 py-0.5 text-[10px] tracking-[0.14em] uppercase text-sky-100/85">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inset-0 rounded-full bg-sky-300 animate-ping opacity-75" />
                 <span className="relative rounded-full bg-sky-300 h-1.5 w-1.5" />
               </span>
               {livePrayingTotal} {t("prayers lifted", "oraciones elevadas")}
             </div>
+          </div>
+        )}
+      </header>
+
+      <main className="px-4 sm:px-6 pt-4 pb-32 max-w-2xl mx-auto">
+        {/* Verse */}
+        <p className="text-center italic text-white/55 text-[12px] leading-relaxed font-playfair max-w-sm mx-auto mb-4">
+          {t(
+            "“Bear one another's burdens, and so fulfill the law of Christ.” — Galatians 6:2",
+            "“Sobrellevad los unos las cargas de los otros.” — Gálatas 6:2"
           )}
-        </header>
+        </p>
 
         {/* Filter chips */}
         <div className="flex gap-1.5 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
@@ -319,10 +327,10 @@ export default function PrayerWallPage() {
               key={f.v}
               onClick={() => setFilter(f.v)}
               className={cn(
-                "shrink-0 px-3 py-1.5 rounded-full text-[11px] tracking-[0.06em] font-inter transition border",
+                "shrink-0 px-3 py-1 rounded-full text-[11.5px] font-medium font-inter transition border",
                 filter === f.v
-                  ? "bg-gradient-to-r from-sky-400/30 to-blue-500/30 border-sky-300/50 text-white shadow-[0_4px_18px_-6px_rgba(56,135,255,0.6)]"
-                  : "bg-white/[0.03] border-white/10 text-white/60 hover:text-white/90"
+                  ? "bg-white/[0.09] border-white/25 text-white"
+                  : "bg-transparent border-white/10 text-white/55 hover:text-white/85 hover:border-white/20"
               )}
             >
               {f.label}
@@ -331,28 +339,30 @@ export default function PrayerWallPage() {
         </div>
 
         {/* Sort */}
-        <div className="flex justify-between items-center mt-3 mb-3">
-          <div className="flex gap-1 text-[10.5px]">
-            {(
-              [
-                { v: "recent" as SortMode, label: t("Recent", "Reciente") },
-                { v: "needs" as SortMode, label: t("Needs prayer", "Necesita oración") },
-                { v: "supported" as SortMode, label: t("Most supported", "Más apoyo") },
-              ]
-            ).map((s) => (
-              <button
-                key={s.v}
-                onClick={() => setSort(s.v)}
-                className={cn(
-                  "px-2.5 py-1 rounded-full uppercase tracking-[0.16em] font-inter transition",
-                  sort === s.v ? "bg-white/15 text-white" : "text-white/45 hover:text-white/80"
-                )}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center mt-2 mb-4 border-b border-white/[0.06]">
+          {(
+            [
+              { v: "recent" as SortMode, label: t("Recent", "Reciente") },
+              { v: "needs" as SortMode, label: t("Needs prayer", "Necesita oración") },
+              { v: "supported" as SortMode, label: t("Most supported", "Más apoyo") },
+            ]
+          ).map((s) => (
+            <button
+              key={s.v}
+              onClick={() => setSort(s.v)}
+              className={cn(
+                "relative px-3 py-2 text-[11px] uppercase tracking-[0.14em] font-inter transition",
+                sort === s.v ? "text-white" : "text-white/40 hover:text-white/70"
+              )}
+            >
+              {s.label}
+              {sort === s.v && (
+                <span className="absolute left-2 right-2 -bottom-px h-px bg-gradient-to-r from-transparent via-sky-300 to-transparent" />
+              )}
+            </button>
+          ))}
         </div>
+
 
         {/* List */}
         {loading ? (
