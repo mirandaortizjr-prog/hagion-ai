@@ -609,18 +609,27 @@ const PrayerCard = ({
       </div>
 
       {isOwn && (
-        <button
-          onClick={onMarkAnswered}
-          className={cn(
-            "mt-3 inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase transition",
-            prayer.is_answered
-              ? "text-amber-200 hover:text-amber-100"
-              : "text-white/45 hover:text-amber-200"
-          )}
-        >
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          {prayer.is_answered ? t("Unmark answered", "Desmarcar respondida") : t("Mark as answered", "Marcar respondida")}
-        </button>
+        <div className="mt-3 flex items-center gap-4">
+          <button
+            onClick={onMarkAnswered}
+            className={cn(
+              "inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase transition",
+              prayer.is_answered
+                ? "text-amber-200 hover:text-amber-100"
+                : "text-white/45 hover:text-amber-200"
+            )}
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            {prayer.is_answered ? t("Unmark answered", "Desmarcar respondida") : t("Mark as answered", "Marcar respondida")}
+          </button>
+          <button
+            onClick={onDelete}
+            className="ml-auto inline-flex items-center gap-1.5 text-[11px] tracking-[0.1em] uppercase text-white/40 hover:text-rose-300 transition"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            {t("Delete", "Eliminar")}
+          </button>
+        </div>
       )}
 
       {/* Comments */}
