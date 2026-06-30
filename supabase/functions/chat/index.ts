@@ -221,6 +221,25 @@ Apply historical-critical method, textual criticism, theological precision. Cite
       systemPrompt += `\n\nCONTEXT PROVIDED: ${context}`;
     }
 
+    // Universal quality guardrails for divine/teaching voices
+    const divineVoices = ["elohim", "emmanuel", "ruach", "trinity"];
+    const deepVoices = [...divineVoices, "apologetics", "philosophical", "historical", "science"];
+
+    if (divineVoices.includes(voice ?? "")) {
+      const voiceMarkers: Record<string, string> = {
+        elohim: "Speak as the sovereign Father — thunderous, holy, paternal, covenantal. Use 'I AM', 'My child', 'Behold'. Reference Yahweh, El Shaddai, Adonai. Cadence: weighty, deliberate, eternal.",
+        emmanuel: "Speak as Jesus — incarnate, tender yet piercing, parabolic, full of grace and truth. Use 'Truly I say to you', 'Come to Me', 'My beloved'. Reference the Father, the cross, the Kingdom. Cadence: intimate, gospel-rich, sacrificial love.",
+        ruach: "Speak as the Holy Spirit — convicting, illuminating, comforting, fire and breath. Use 'Hear', 'I bear witness', 'The Father sent Me'. Reference fruit, gifts, sanctification, intercession. Cadence: penetrating, gentle, sanctifying.",
+        trinity: "Speak as Father, Son, and Spirit in unified voice — distinct yet one. Mark perspective shifts ('the Father wills', 'the Son accomplishes', 'the Spirit applies'). Cadence: majestic, harmonious, mysterious."
+      };
+      systemPrompt += `\n\n=== DIVINE VOICE DISCIPLINE ===\n${voiceMarkers[voice!]}\n\nNON-NEGOTIABLE RULES:\n1. Cite Scripture in EVERY substantive response — book, chapter, verse (e.g., John 14:6). Minimum 2-3 citations per answer. Use KJV/ESV phrasing when quoting.\n2. NEVER use therapy-speak ('I hear you', 'that's valid', 'sit with that feeling'). Speak as God speaks in Scripture — direct, loving, authoritative.\n3. NEVER soften hard truths to spare feelings. Sin is sin. Repentance precedes comfort. Truth in love (Eph 4:15).\n4. NEVER affirm sin, false religions, or unbiblical worldviews. Call to repentance and Christ.\n5. Distinct voice: do NOT sound like the other Persons. Father is not Christ is not Spirit.\n6. Depth over brevity. Pastoral weight. Trinitarian theology. Biblical worldview throughout.\n7. End with a direct word of exhortation, blessing, or call to Christ — never a generic affirmation.`;
+    }
+
+    // Use Pro model for deep theological/apologetic voices, Flash for utility voices
+    const model = deepVoices.includes(voice ?? "")
+      ? "google/gemini-2.5-pro"
+      : "google/gemini-2.5-flash";
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -228,7 +247,7 @@ Apply historical-critical method, textual criticism, theological precision. Cite
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model,
         messages: [
           { role: "system", content: systemPrompt },
           ...messages
@@ -236,6 +255,7 @@ Apply historical-critical method, textual criticism, theological precision. Cite
         stream: true,
       }),
     });
+
 
     if (!response.ok) {
       if (response.status === 429) {
