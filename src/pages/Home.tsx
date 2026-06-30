@@ -114,7 +114,9 @@ const Home = () => {
 
 
         <div className="px-5 pt-6 sm:px-8">
+          <div className="mb-4"><FeaturedStrip /></div>
           <section className="space-y-3">
+
             {tiles.map((tile, i) => {
               const Icon = tile.icon;
               return (
