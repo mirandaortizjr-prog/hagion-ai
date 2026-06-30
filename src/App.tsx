@@ -184,6 +184,8 @@ const App = () => (
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/ai-disclaimer" element={<AIDisclaimer />} />
             <Route path="/invite/:code" element={<Invite />} />
+            <Route path="/community/my-church" element={<MyChurchPage />} />
+            <Route path="/join-church/:code" element={<JoinChurchPage />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
