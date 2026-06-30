@@ -11,6 +11,7 @@ import { getVerseOfTheDay } from "@/data/versesOfTheDay";
 import { supabase } from "@/integrations/supabase/client";
 import { getCategory } from "@/data/discussionCategories";
 import { formatDistanceToNow } from "date-fns";
+import { FeaturedStrip } from "@/components/community/FeaturedStrip";
 
 const Home = () => {
   const navigate = useNavigate();
