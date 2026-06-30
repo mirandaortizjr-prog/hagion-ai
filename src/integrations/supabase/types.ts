@@ -44,35 +44,85 @@ export type Database = {
         }
         Relationships: []
       }
+      church_members: {
+        Row: {
+          church_id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          church_id: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          church_id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "church_members_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       churches: {
         Row: {
+          city: string | null
+          country: string | null
           created_at: string
           description: string | null
           id: string
           image_url: string | null
+          invite_code: string
           location: string | null
+          member_count: number
           name: string
+          pastor_id: string | null
+          state: string | null
           updated_at: string
+          verified: boolean
           website: string | null
         }
         Insert: {
+          city?: string | null
+          country?: string | null
           created_at?: string
           description?: string | null
           id?: string
           image_url?: string | null
+          invite_code?: string
           location?: string | null
+          member_count?: number
           name: string
+          pastor_id?: string | null
+          state?: string | null
           updated_at?: string
+          verified?: boolean
           website?: string | null
         }
         Update: {
+          city?: string | null
+          country?: string | null
           created_at?: string
           description?: string | null
           id?: string
           image_url?: string | null
+          invite_code?: string
           location?: string | null
+          member_count?: number
           name?: string
+          pastor_id?: string | null
+          state?: string | null
           updated_at?: string
+          verified?: boolean
           website?: string | null
         }
         Relationships: []
@@ -422,6 +472,42 @@ export type Database = {
         }
         Relationships: []
       }
+      featured_content: {
+        Row: {
+          created_at: string
+          ends_at: string
+          id: string
+          kind: string
+          link: string | null
+          ref_id: string | null
+          starts_at: string
+          subtitle: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          ends_at?: string
+          id?: string
+          kind: string
+          link?: string | null
+          ref_id?: string | null
+          starts_at?: string
+          subtitle?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          ends_at?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          ref_id?: string | null
+          starts_at?: string
+          subtitle?: string | null
+          title?: string | null
+        }
+        Relationships: []
+      }
       follows: {
         Row: {
           created_at: string
@@ -562,6 +648,7 @@ export type Database = {
           id: string
           member_count: number
           name: string
+          room_type: string
           updated_at: string
         }
         Insert: {
@@ -572,6 +659,7 @@ export type Database = {
           id?: string
           member_count?: number
           name: string
+          room_type?: string
           updated_at?: string
         }
         Update: {
@@ -582,6 +670,7 @@ export type Database = {
           id?: string
           member_count?: number
           name?: string
+          room_type?: string
           updated_at?: string
         }
         Relationships: []
@@ -907,6 +996,7 @@ export type Database = {
           author_avatar: string | null
           author_name: string | null
           category: string
+          church_id: string | null
           comment_count: number
           content: string
           created_at: string
@@ -922,12 +1012,14 @@ export type Database = {
           pray_count: number
           updated_at: string
           user_id: string
+          visibility: string
           vote_score: number
         }
         Insert: {
           author_avatar?: string | null
           author_name?: string | null
           category?: string
+          church_id?: string | null
           comment_count?: number
           content: string
           created_at?: string
@@ -943,12 +1035,14 @@ export type Database = {
           pray_count?: number
           updated_at?: string
           user_id: string
+          visibility?: string
           vote_score?: number
         }
         Update: {
           author_avatar?: string | null
           author_name?: string | null
           category?: string
+          church_id?: string | null
           comment_count?: number
           content?: string
           created_at?: string
@@ -964,9 +1058,17 @@ export type Database = {
           pray_count?: number
           updated_at?: string
           user_id?: string
+          visibility?: string
           vote_score?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "posts_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "posts_group_id_fkey"
             columns: ["group_id"]
@@ -1235,6 +1337,50 @@ export type Database = {
           view_count?: number
         }
         Relationships: []
+      }
+      room_requests: {
+        Row: {
+          approved_group_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          rationale: string | null
+          requester_id: string
+          reviewed_at: string | null
+          status: string
+        }
+        Insert: {
+          approved_group_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          rationale?: string | null
+          requester_id: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Update: {
+          approved_group_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          rationale?: string | null
+          requester_id?: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_requests_approved_group_id_fkey"
+            columns: ["approved_group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       salvation_acceptances: {
         Row: {
@@ -1559,6 +1705,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_story_views: {
         Row: {
           id: string
@@ -1634,10 +1801,18 @@ export type Database = {
       claim_invite: { Args: { p_code: string }; Returns: Json }
       generate_invite_code: { Args: never; Returns: string }
       get_user_tier: { Args: { p_user_id: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       is_staff_email: { Args: { p_user_id: string }; Returns: boolean }
+      join_church_by_code: { Args: { p_code: string }; Returns: Json }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1764,6 +1939,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator"],
+    },
   },
 } as const
