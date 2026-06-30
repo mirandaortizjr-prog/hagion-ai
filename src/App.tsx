@@ -73,6 +73,8 @@ import Friends from "./pages/Friends";
 import PublicProfile from "./pages/PublicProfile";
 import NotFound from "./pages/NotFound";
 import Invite from "./pages/Invite";
+import MyChurchPage from "./pages/community/MyChurchPage";
+import JoinChurchPage from "./pages/community/JoinChurchPage";
 import { FeatureGate } from "@/components/FeatureGate";
 
 const queryClient = new QueryClient();
