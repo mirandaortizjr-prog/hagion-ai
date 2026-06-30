@@ -80,10 +80,10 @@ export default function GroupsPage() {
 
   const load = async () => {
     setLoading(true);
-    const { data: g } = await supabase
-      .from("groups")
+    const { data: g } = await (supabase
+      .from("groups") as any)
       .select("*")
-      .eq("room_type" as any, "room")
+      .eq("room_type", "room")
       .order("member_count", { ascending: false })
       .limit(100);
     setRooms((g as any) || []);
