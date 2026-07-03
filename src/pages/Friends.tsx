@@ -581,6 +581,14 @@ export default function Friends() {
       </AlertDialog>
 
       <PremiumNav />
+
+      <InviteSheet
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
+        inviteUrl={myCode ? `${window.location.origin}/invite/${myCode}` : null}
+        inviterName={myName}
+      />
+
     </div>
   );
 }
