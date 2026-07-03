@@ -238,7 +238,7 @@ export default function PublicProfile() {
                     {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> Accept</>)}
                   </Button>
                   <Button
-                    onClick={decline}
+                    onClick={askDecline}
                     disabled={busy}
                     className="rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
                   >
