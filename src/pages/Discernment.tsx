@@ -6,10 +6,8 @@ import {
   Music,
   Globe,
   Church,
-  ScrollText,
   ChevronRight,
   Search,
-  BookOpen,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
@@ -24,8 +22,8 @@ const Discernment = () => {
     {
       title: t("Test the Spirits", "Probad los Espíritus"),
       desc: t(
-        "Submit teachings, claims, or movements and weigh them against Scripture line by line.",
-        "Somete enseñanzas y movimientos a la prueba de las Escrituras línea por línea."
+        "Submit teachings, claims, movements, or modern prophecies and weigh them against Scripture line by line.",
+        "Somete enseñanzas, afirmaciones, movimientos o profecías modernas a la prueba de las Escrituras línea por línea."
       ),
       icon: ShieldCheck,
       onClick: () => navigate("/discernment/test-spirits"),
@@ -79,35 +77,13 @@ const Discernment = () => {
     {
       title: t("Belief Systems", "Sistemas de Creencias"),
       desc: t(
-        "Evaluate denominations, movements, and world religions for theological soundness against orthodox Christianity.",
-        "Evalúa denominaciones, movimientos y religiones mundiales por solidez teológica frente al cristianismo ortodoxo."
+        "Evaluate denominations, movements, and sacred writings — including modern revelations and extrabiblical texts — against orthodox Christianity.",
+        "Evalúa denominaciones, movimientos y escritos sagrados — incluidas revelaciones modernas y textos extrabíblicos — frente al cristianismo ortodoxo."
       ),
       icon: Search,
       onClick: () => navigate("/discernment/belief-systems"),
       glow: "from-cyan-300/70 via-sky-400/40 to-blue-500/60",
       edgeColor: "56,189,248",
-    },
-    {
-      title: t("Religious Texts", "Textos Religiosos"),
-      desc: t(
-        "Test sacred writings, modern revelations, and extrabiblical texts for theological integrity and scriptural alignment.",
-        "Prueba escritos sagrados, revelaciones modernas y textos extrabíblicos por integridad teológica y alineación con la Escritura."
-      ),
-      icon: BookOpen,
-      onClick: () => navigate("/discernment/religious-texts"),
-      glow: "from-blue-300/70 via-indigo-400/40 to-purple-500/60",
-      edgeColor: "96,165,250",
-    },
-    {
-      title: t("Prophecy Checker", "Verificador de Profecía"),
-      desc: t(
-        "Test modern prophecies and prophets by the unchanging standard of Scripture.",
-        "Prueba profecías y profetas modernos por el estándar inmutable de la Escritura."
-      ),
-      icon: ScrollText,
-      onClick: () => navigate("/discernment/prophecy-checker"),
-      glow: "from-yellow-300/70 via-amber-400/40 to-orange-500/60",
-      edgeColor: "252,211,77",
     },
   ];
 

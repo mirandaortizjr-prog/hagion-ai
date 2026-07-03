@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Search, Users, BookOpen, Loader2, Sparkles } from "lucide-react";
+import { ArrowLeft, Search, Users, BookOpen, Loader2, Sparkles, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 
-type InputMode = "denomination" | "movement" | "doctrine";
+type InputMode = "denomination" | "movement" | "doctrine" | "text";
 
 const BeliefSystemsChecker = () => {
   const navigate = useNavigate();
@@ -29,6 +29,7 @@ const BeliefSystemsChecker = () => {
     { id: "denomination", label: t("Denomination", "Denominación"), placeholder: t("e.g. Roman Catholicism, Reformed, Pentecostal…", "ej. Catolicismo, Reformado, Pentecostal…"), icon: Users },
     { id: "movement", label: t("Movement", "Movimiento"), placeholder: t("e.g. NAR, Word of Faith, Progressive Christianity…", "ej. NAR, Palabra de Fe, Cristianismo Progresivo…"), icon: Search },
     { id: "doctrine", label: t("Doctrine / claim", "Doctrina"), placeholder: t("Paste the teaching, claim, or doctrinal statement to test…", "Pega la enseñanza, afirmación o declaración doctrinal a evaluar…"), icon: BookOpen, multiline: true },
+    { id: "text", label: t("Sacred text", "Texto sagrado"), placeholder: t("Name or paste a sacred writing, modern revelation, or extrabiblical text (e.g. Book of Mormon, Qur'an, Gnostic gospel)…", "Nombra o pega un escrito sagrado, revelación moderna o texto extrabíblico (ej. Libro de Mormón, Corán, evangelio gnóstico)…"), icon: ScrollText, multiline: true },
   ];
 
   const active = modes.find((m) => m.id === mode)!;
@@ -38,6 +39,7 @@ const BeliefSystemsChecker = () => {
       denomination: t("DENOMINATION / TRADITION", "DENOMINACIÓN / TRADICIÓN"),
       movement: t("MOVEMENT", "MOVIMIENTO"),
       doctrine: t("DOCTRINE / CLAIM", "DOCTRINA / AFIRMACIÓN"),
+      text: t("SACRED TEXT / EXTRABIBLICAL WRITING (test for scriptural alignment, contradictions with the 66-book canon, and doctrinal integrity)", "TEXTO SAGRADO / ESCRITO EXTRABÍBLICO (evalúa alineación con la Escritura, contradicciones con el canon de 66 libros e integridad doctrinal)"),
     };
     const parts = [`${labels[mode]}:\n${value.trim()}`];
     if (founder.trim()) parts.push(`${t("FOUNDER / KEY FIGURE", "FUNDADOR / FIGURA CLAVE")}: ${founder.trim()}`);
@@ -182,7 +184,7 @@ Biblical Christianity / Mixed — use discernment / Sect / False religion. A bri
           )}
         </p>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {modes.map((m) => {
             const Icon = m.icon;
             const isActive = m.id === mode;
