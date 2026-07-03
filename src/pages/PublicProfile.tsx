@@ -58,6 +58,14 @@ export default function PublicProfile() {
         .limit(30);
       setPosts(ps || []);
 
+      const { count: fcount } = await supabase
+        .from("friendships")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${prof.user_id},addressee_id.eq.${prof.user_id}`);
+      setFriendsCount(fcount || 0);
+
+
       if (auth.user && auth.user.id !== prof.user_id) {
         const { data: f } = await supabase
           .from("friendships")
