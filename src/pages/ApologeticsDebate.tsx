@@ -530,7 +530,7 @@ const ApologeticsDebate = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background text-primary-foreground flex flex-col">
       <header className="flex items-center gap-4 px-4 py-4 border-b">
         <Button variant="ghost" size="icon" onClick={() => navigate('/main-menu')}>
           <ArrowLeft className="w-6 h-6" />
@@ -566,15 +566,15 @@ const ApologeticsDebate = () => {
                   className={`max-w-[95%] rounded-2xl px-4 py-3 ${
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
-                      : "text-foreground"
+                      : "text-primary-foreground"
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <p className={`text-xs font-bold mb-1 ${currentPersona?.color}`}>
+                    <p className="text-xs font-bold mb-1 text-primary-foreground/90">
                       {currentPersona?.name}
                     </p>
                   )}
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-sm whitespace-pre-wrap text-primary-foreground">{message.content}</p>
                 </div>
               </div>
               
@@ -598,12 +598,12 @@ const ApologeticsDebate = () => {
                     )}
                     
                     {suggestedResponses[index] && (
-                      <Card className="p-4 bg-accent/50 border-primary/20">
+                      <Card className="p-4 bg-accent/20 border-primary/20 text-primary-foreground">
                         <div className="flex items-start gap-2 mb-2">
-                          <Lightbulb className="w-4 h-4 text-primary mt-0.5" />
-                          <p className="text-xs font-semibold text-primary">📖 {t('miranda_ortiz_response')}</p>
+                          <Lightbulb className="w-4 h-4 text-primary-foreground mt-0.5" />
+                          <p className="text-xs font-semibold text-primary-foreground">📖 {t('miranda_ortiz_response')}</p>
                         </div>
-                        <p className="text-sm whitespace-pre-wrap mb-3">{suggestedResponses[index]}</p>
+                        <p className="text-sm whitespace-pre-wrap mb-3 text-primary-foreground">{suggestedResponses[index]}</p>
                         <Button
                           variant="secondary"
                           size="sm"
@@ -638,7 +638,7 @@ const ApologeticsDebate = () => {
           <input
             type="text"
             placeholder="Present your argument..."
-            className="flex-1 rounded-full px-4 py-3 bg-background border text-white placeholder:text-white/60 outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 rounded-full px-4 py-3 bg-background border text-primary-foreground placeholder:text-primary-foreground/60 outline-none focus:ring-2 focus:ring-primary"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !isLoading && handleSend()}
