@@ -23,6 +23,7 @@ export default function PublicProfile() {
   const [me, setMe] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
+  const [friendsCount, setFriendsCount] = useState(0);
   const [rel, setRel] = useState<Rel>({ kind: "none" });
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -56,6 +57,14 @@ export default function PublicProfile() {
         .order("created_at", { ascending: false })
         .limit(30);
       setPosts(ps || []);
+
+      const { count: fcount } = await supabase
+        .from("friendships")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "accepted")
+        .or(`requester_id.eq.${prof.user_id},addressee_id.eq.${prof.user_id}`);
+      setFriendsCount(fcount || 0);
+
 
       if (auth.user && auth.user.id !== prof.user_id) {
         const { data: f } = await supabase
@@ -177,7 +186,7 @@ export default function PublicProfile() {
           </Avatar>
           <div className="flex-1 grid grid-cols-2 gap-2 text-center">
             <Stat n={posts.length} label="Posts" />
-            <Stat n={profile.follower_count || 0} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
+            <Stat n={friendsCount} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
           </div>
         </div>
 
