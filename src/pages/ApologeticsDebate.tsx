@@ -566,7 +566,7 @@ const ApologeticsDebate = () => {
                   className={`max-w-[95%] rounded-2xl px-4 py-3 ${
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                      : "text-foreground"
                   }`}
                 >
                   {message.role === "assistant" && (
