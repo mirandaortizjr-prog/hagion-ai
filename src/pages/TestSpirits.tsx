@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Link2, Quote, Users, FileText, Loader2, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, Link2, Quote, Users, FileText, Loader2, ShieldCheck, Sparkles, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { PremiumNav } from "@/components/PremiumNav";
 import { cn } from "@/lib/utils";
 
-type InputMode = "url" | "claim" | "movement" | "text";
+type InputMode = "url" | "claim" | "movement" | "text" | "prophecy";
 
 const TestSpirits = () => {
   const navigate = useNavigate();
@@ -50,6 +50,13 @@ const TestSpirits = () => {
       icon: FileText,
       multiline: true,
     },
+    {
+      id: "prophecy",
+      label: t("Prophecy", "Profecía"),
+      placeholder: t("Paste a prophetic word, dream, or vision — or name a modern prophet to test…", "Pega una palabra profética, sueño o visión — o nombra a un profeta moderno a evaluar…"),
+      icon: ScrollText,
+      multiline: true,
+    },
   ];
 
   const active = modes.find((m) => m.id === mode)!;
@@ -60,6 +67,7 @@ const TestSpirits = () => {
       claim: t("CLAIM TO TEST", "AFIRMACIÓN A PROBAR"),
       movement: t("MOVEMENT/FIGURE TO TEST", "MOVIMIENTO/FIGURA A PROBAR"),
       text: t("TEXT TO TEST", "TEXTO A PROBAR"),
+      prophecy: t("PROPHECY / PROPHET TO TEST (apply Deut. 13 & 18 — 100% accuracy, no false gods, faithful to Scripture)", "PROFECÍA / PROFETA A PROBAR (aplica Deut. 13 y 18 — 100% de cumplimiento, sin dioses falsos, fiel a la Escritura)"),
     };
     return `${labels[mode]}:\n${value.trim()}`;
   };
@@ -221,7 +229,7 @@ If given only a URL with no context, evaluate what is publicly known about the r
         </p>
 
         {/* Mode tabs */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-5 gap-2">
           {modes.map((m) => {
             const Icon = m.icon;
             const isActive = m.id === mode;
