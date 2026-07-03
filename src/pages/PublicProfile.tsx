@@ -5,6 +5,16 @@ import { ArrowLeft, MessageSquare, UserPlus, UserCheck, Clock, Check, X, Loader2
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { PremiumNav } from "@/components/PremiumNav";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
@@ -31,6 +41,29 @@ export default function PublicProfile() {
   useEffect(() => {
     load();
   }, [handle]);
+
+  // Live-update when the friendship row for this pair changes on either side
+  useEffect(() => {
+    if (!me?.id || !profile?.user_id) return;
+    const channel = supabase
+      .channel(`pp-friendship-${me.id}-${profile.user_id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "friendships" },
+        (payload: any) => {
+          const row = (payload.new || payload.old) as any;
+          if (!row) return;
+          const pair =
+            (row.requester_id === me.id && row.addressee_id === profile.user_id) ||
+            (row.requester_id === profile.user_id && row.addressee_id === me.id);
+          if (pair) load();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [me?.id, profile?.user_id]);
 
   const load = async () => {
     setLoading(true);
@@ -90,22 +123,28 @@ export default function PublicProfile() {
     if (!me) { navigate("/auth"); return; }
     if (!profile) return;
     setBusy(true);
-    const { error } = await supabase
-      .from("friendships")
-      .insert({ requester_id: me.id, addressee_id: profile.user_id, status: "pending" });
+    const { data, error } = await supabase.rpc("send_friend_request", { p_target: profile.user_id });
     setBusy(false);
     if (error) {
       toast({ title: "Could not send request", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Friend request sent" });
+    const status = (data as any)?.status;
+    toast({
+      title:
+        status === "accepted"
+          ? "You're now friends"
+          : status === "pending"
+          ? "Friend request sent"
+          : "Done",
+    });
     load();
   };
 
-  const cancelOrUnfriend = async () => {
-    if (rel.kind !== "outgoing" && rel.kind !== "friends") return;
+  const doRemove = async () => {
+    if (!profile) return;
     setBusy(true);
-    await supabase.from("friendships").delete().eq("id", rel.id);
+    await supabase.rpc("remove_friendship", { p_target: profile.user_id });
     setBusy(false);
     load();
   };
@@ -113,22 +152,37 @@ export default function PublicProfile() {
   const accept = async () => {
     if (rel.kind !== "incoming") return;
     setBusy(true);
-    await supabase
-      .from("friendships")
-      .update({ status: "accepted", responded_at: new Date().toISOString() })
-      .eq("id", rel.id);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: rel.id,
+      p_accept: true,
+    });
     setBusy(false);
+    if (error) {
+      toast({ title: "Could not accept", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "You're now friends" });
     load();
   };
 
-  const decline = async () => {
+  const doDecline = async () => {
     if (rel.kind !== "incoming") return;
     setBusy(true);
-    await supabase.from("friendships").delete().eq("id", rel.id);
+    await supabase.rpc("respond_friend_request", { p_friendship_id: rel.id, p_accept: false });
     setBusy(false);
     load();
   };
+
+  const [confirmKind, setConfirmKind] = useState<null | "decline" | "cancel" | "unfriend">(null);
+  const askDecline = () => setConfirmKind("decline");
+  const cancelOrUnfriend = () => setConfirmKind(rel.kind === "friends" ? "unfriend" : "cancel");
+  const runConfirmed = async () => {
+    const k = confirmKind;
+    setConfirmKind(null);
+    if (k === "decline") await doDecline();
+    else await doRemove();
+  };
+
 
 
   if (loading) {
@@ -217,7 +271,7 @@ export default function PublicProfile() {
                     {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> Accept</>)}
                   </Button>
                   <Button
-                    onClick={decline}
+                    onClick={askDecline}
                     disabled={busy}
                     className="rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
                   >
@@ -280,6 +334,42 @@ export default function PublicProfile() {
           <div className="mt-8 text-center text-white/50 text-sm">No posts yet.</div>
         )}
       </main>
+
+      <AlertDialog open={!!confirmKind} onOpenChange={(o) => !o && setConfirmKind(null)}>
+        <AlertDialogContent className="bg-zinc-900 border border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirmKind === "decline"
+                ? `Decline request from ${profile?.name || profile?.username || "this person"}?`
+                : confirmKind === "cancel"
+                ? `Cancel friend request?`
+                : `Remove ${profile?.name || profile?.username || "this person"} as a friend?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/60">
+              {confirmKind === "decline"
+                ? "They will not be notified."
+                : confirmKind === "cancel"
+                ? "Your pending request will be removed."
+                : "You can send a new friend request later."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
+              Keep
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={runConfirmed}
+              className="bg-red-500/90 hover:bg-red-500 text-white"
+            >
+              {confirmKind === "decline"
+                ? "Decline"
+                : confirmKind === "cancel"
+                ? "Cancel request"
+                : "Remove"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <PremiumNav />
     </div>

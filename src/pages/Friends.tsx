@@ -18,6 +18,16 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { PremiumNav } from "@/components/PremiumNav";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
@@ -63,6 +73,13 @@ export default function Friends() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [myCode, setMyCode] = useState<string | null>(null);
 
+  const [confirmAction, setConfirmAction] = useState<null | {
+    type: "decline" | "cancel" | "unfriend";
+    friendshipId?: string;
+    targetId: string;
+    name: string;
+  }>(null);
+
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
@@ -74,6 +91,25 @@ export default function Friends() {
         .eq("user_id", data.user.id)
         .maybeSingle();
       setMyCode((prof as any)?.invite_code || null);
+
+      // Realtime — both parties see updates instantly
+      const channel = supabase
+        .channel("friendships-" + data.user.id)
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "friendships" },
+          (payload: any) => {
+            const row = (payload.new || payload.old) as any;
+            if (!row) return;
+            if (row.requester_id === data.user!.id || row.addressee_id === data.user!.id) {
+              loadAll(data.user!.id);
+            }
+          }
+        )
+        .subscribe();
+      return () => {
+        supabase.removeChannel(channel);
+      };
     });
   }, []);
 
@@ -158,22 +194,28 @@ export default function Friends() {
   const sendRequest = async (targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase
-      .from("friendships")
-      .insert({ requester_id: user.id, addressee_id: targetId, status: "pending" });
+    const { data, error } = await supabase.rpc("send_friend_request", { p_target: targetId });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not send request", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Friend request sent" });
+    const status = (data as any)?.status;
+    toast({
+      title:
+        status === "accepted"
+          ? "You're now friends"
+          : status === "pending"
+          ? "Friend request sent"
+          : "Done",
+    });
     loadAll(user.id);
   };
 
-  const cancelOrRemove = async (friendshipId: string, targetId: string) => {
+  const doRemove = async (targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase.from("friendships").delete().eq("id", friendshipId);
+    const { error } = await supabase.rpc("remove_friendship", { p_target: targetId });
     setBusyId(null);
     if (error) {
       toast({ title: "Action failed", description: error.message, variant: "destructive" });
@@ -185,10 +227,10 @@ export default function Friends() {
   const accept = async (friendshipId: string, targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase
-      .from("friendships")
-      .update({ status: "accepted", responded_at: new Date().toISOString() })
-      .eq("id", friendshipId);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: friendshipId,
+      p_accept: true,
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not accept", description: error.message, variant: "destructive" });
@@ -198,10 +240,13 @@ export default function Friends() {
     loadAll(user.id);
   };
 
-  const decline = async (friendshipId: string, targetId: string) => {
+  const doDecline = async (friendshipId: string, targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase.from("friendships").delete().eq("id", friendshipId);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: friendshipId,
+      p_accept: false,
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not decline", description: error.message, variant: "destructive" });
@@ -210,6 +255,26 @@ export default function Friends() {
     loadAll(user.id);
   };
 
+  // Wrappers that first ask for confirmation
+  const askDecline = (friendshipId: string, targetId: string, name: string) =>
+    setConfirmAction({ type: "decline", friendshipId, targetId, name });
+  const askCancel = (friendshipId: string, targetId: string, name: string) =>
+    setConfirmAction({ type: "cancel", friendshipId, targetId, name });
+  const askUnfriend = (targetId: string, name: string) =>
+    setConfirmAction({ type: "unfriend", targetId, name });
+
+  const runConfirmed = async () => {
+    if (!confirmAction) return;
+    const c = confirmAction;
+    setConfirmAction(null);
+    if (c.type === "decline" && c.friendshipId) {
+      await doDecline(c.friendshipId, c.targetId);
+    } else {
+      await doRemove(c.targetId);
+    }
+  };
+
+
   const renderDiscoverAction = (p: ProfileRow) => {
     const rel = relMap.get(p.user_id) || { kind: "none" as const };
     const isBusy = busyId === p.user_id;
@@ -217,7 +282,7 @@ export default function Friends() {
       return (
         <Button
           size="sm"
-          onClick={() => cancelOrRemove(rel.id, p.user_id)}
+          onClick={() => askUnfriend(p.user_id, p.name || p.username || "this person")}
           disabled={isBusy}
           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
         >
@@ -228,7 +293,7 @@ export default function Friends() {
       return (
         <Button
           size="sm"
-          onClick={() => cancelOrRemove(rel.id, p.user_id)}
+          onClick={() => askCancel(rel.id, p.user_id, p.name || p.username || "this person")}
           disabled={isBusy}
           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
         >
@@ -248,7 +313,7 @@ export default function Friends() {
           </Button>
           <Button
             size="sm"
-            onClick={() => decline(rel.id, p.user_id)}
+            onClick={() => askDecline(rel.id, p.user_id, p.name || p.username || "this person")}
             disabled={isBusy}
             className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
           >
@@ -424,7 +489,7 @@ export default function Friends() {
                         </Button>
                         <Button
                           size="sm"
-                          onClick={() => decline(p.friendshipId, p.user_id)}
+                          onClick={() => askDecline(p.friendshipId, p.user_id, p.name || p.username || "this person")}
                           disabled={busyId === p.user_id}
                           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                         >
@@ -453,7 +518,7 @@ export default function Friends() {
                       <ProfileLink p={p} onClick={() => navigate(`/u/${p.username || p.user_id}`)} />
                       <Button
                         size="sm"
-                        onClick={() => cancelOrRemove(p.friendshipId, p.user_id)}
+                        onClick={() => askCancel(p.friendshipId, p.user_id, p.name || p.username || "this person")}
                         disabled={busyId === p.user_id}
                         className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                       >
@@ -493,6 +558,42 @@ export default function Friends() {
           )
         )}
       </main>
+
+      <AlertDialog open={!!confirmAction} onOpenChange={(o) => !o && setConfirmAction(null)}>
+        <AlertDialogContent className="bg-zinc-900 border border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirmAction?.type === "decline"
+                ? `Decline request from ${confirmAction?.name}?`
+                : confirmAction?.type === "cancel"
+                ? `Cancel request to ${confirmAction?.name}?`
+                : `Remove ${confirmAction?.name} as a friend?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/60">
+              {confirmAction?.type === "decline"
+                ? "They will not be notified, and the request will disappear."
+                : confirmAction?.type === "cancel"
+                ? "The pending request will be removed."
+                : "You can send a new friend request later."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
+              Keep
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={runConfirmed}
+              className="bg-red-500/90 hover:bg-red-500 text-white"
+            >
+              {confirmAction?.type === "decline"
+                ? "Decline"
+                : confirmAction?.type === "cancel"
+                ? "Cancel request"
+                : "Remove"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <PremiumNav />
     </div>
