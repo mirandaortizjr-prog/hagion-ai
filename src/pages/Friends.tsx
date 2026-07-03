@@ -549,6 +549,42 @@ export default function Friends() {
         )}
       </main>
 
+      <AlertDialog open={!!confirmAction} onOpenChange={(o) => !o && setConfirmAction(null)}>
+        <AlertDialogContent className="bg-zinc-900 border border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {confirmAction?.type === "decline"
+                ? `Decline request from ${confirmAction?.name}?`
+                : confirmAction?.type === "cancel"
+                ? `Cancel request to ${confirmAction?.name}?`
+                : `Remove ${confirmAction?.name} as a friend?`}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-white/60">
+              {confirmAction?.type === "decline"
+                ? "They will not be notified, and the request will disappear."
+                : confirmAction?.type === "cancel"
+                ? "The pending request will be removed."
+                : "You can send a new friend request later."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
+              Keep
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={runConfirmed}
+              className="bg-red-500/90 hover:bg-red-500 text-white"
+            >
+              {confirmAction?.type === "decline"
+                ? "Decline"
+                : confirmAction?.type === "cancel"
+                ? "Cancel request"
+                : "Remove"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <PremiumNav />
     </div>
   );
