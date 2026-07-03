@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { InviteSheet } from "@/components/InviteSheet";
 
 type Tab = "friends" | "requests" | "discover";
 
