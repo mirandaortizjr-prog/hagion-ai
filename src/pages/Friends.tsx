@@ -90,10 +90,11 @@ export default function Friends() {
       loadAll(data.user.id);
       const { data: prof } = await supabase
         .from("profiles")
-        .select("invite_code")
+        .select("invite_code, name, username")
         .eq("user_id", data.user.id)
         .maybeSingle();
       setMyCode((prof as any)?.invite_code || null);
+      setMyName((prof as any)?.name || (prof as any)?.username || null);
 
       // Realtime — both parties see updates instantly
       const channel = supabase
