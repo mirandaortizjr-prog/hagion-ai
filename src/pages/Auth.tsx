@@ -28,28 +28,37 @@ const Auth = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
-    const claimPendingInvite = async () => {
+    const claimPendingInvite = async (): Promise<string | null> => {
       try {
         const code = localStorage.getItem("pendingInviteCode");
-        if (!code) return;
-        await supabase.rpc("claim_invite", { p_code: code });
-      } catch {} finally {
+        if (!code) return null;
+        const { data } = await supabase.rpc("claim_invite", { p_code: code });
         try { localStorage.removeItem("pendingInviteCode"); } catch {}
+        const inviterId = (data as any)?.inviter_id;
+        return inviterId || null;
+      } catch {
+        try { localStorage.removeItem("pendingInviteCode"); } catch {}
+        return null;
+      }
+    };
+
+    const goAfterAuth = async () => {
+      const inviterId = await claimPendingInvite();
+      if (inviterId) {
+        navigate(`/u/${inviterId}`, { replace: true });
+      } else {
+        navigate(redirectUrl || "/", { replace: true });
       }
     };
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        claimPendingInvite().finally(() => navigate(redirectUrl || "/", { replace: true }));
-      }
+      if (session) goAfterAuth();
     });
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        claimPendingInvite().finally(() => navigate(redirectUrl || "/", { replace: true }));
-      }
+      if (session) goAfterAuth();
     });
 
     return () => subscription.unsubscribe();
