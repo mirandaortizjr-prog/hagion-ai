@@ -42,6 +42,29 @@ export default function PublicProfile() {
     load();
   }, [handle]);
 
+  // Live-update when the friendship row for this pair changes on either side
+  useEffect(() => {
+    if (!me?.id || !profile?.user_id) return;
+    const channel = supabase
+      .channel(`pp-friendship-${me.id}-${profile.user_id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "friendships" },
+        (payload: any) => {
+          const row = (payload.new || payload.old) as any;
+          if (!row) return;
+          const pair =
+            (row.requester_id === me.id && row.addressee_id === profile.user_id) ||
+            (row.requester_id === profile.user_id && row.addressee_id === me.id);
+          if (pair) load();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [me?.id, profile?.user_id]);
+
   const load = async () => {
     setLoading(true);
     const { data: auth } = await supabase.auth.getUser();
