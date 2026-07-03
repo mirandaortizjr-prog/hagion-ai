@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { InviteSheet } from "@/components/InviteSheet";
 
 type Tab = "friends" | "requests" | "discover";
 
@@ -72,6 +73,8 @@ export default function Friends() {
   const [searching, setSearching] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [myCode, setMyCode] = useState<string | null>(null);
+  const [myName, setMyName] = useState<string | null>(null);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   const [confirmAction, setConfirmAction] = useState<null | {
     type: "decline" | "cancel" | "unfriend";
@@ -87,10 +90,11 @@ export default function Friends() {
       loadAll(data.user.id);
       const { data: prof } = await supabase
         .from("profiles")
-        .select("invite_code")
+        .select("invite_code, name, username")
         .eq("user_id", data.user.id)
         .maybeSingle();
       setMyCode((prof as any)?.invite_code || null);
+      setMyName((prof as any)?.name || (prof as any)?.username || null);
 
       // Realtime — both parties see updates instantly
       const channel = supabase
@@ -335,26 +339,7 @@ export default function Friends() {
 
   const requestsCount = incoming.length + outgoing.length;
 
-  const handleInvite = async () => {
-    if (!myCode) {
-      toast({ title: "Generating your link…", description: "Try again in a moment." });
-      return;
-    }
-    const url = `${window.location.origin}/invite/${myCode}`;
-    const text = `Join me on Hagion AI — biblical wisdom, prayer & community. ${url}`;
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: "Join me on Hagion AI", text, url });
-        return;
-      }
-    } catch {}
-    try {
-      await navigator.clipboard.writeText(url);
-      toast({ title: "Invite link copied", description: url });
-    } catch {
-      toast({ title: "Your invite link", description: url });
-    }
-  };
+  const handleInvite = () => setInviteOpen(true);
 
 
   return (
@@ -596,6 +581,14 @@ export default function Friends() {
       </AlertDialog>
 
       <PremiumNav />
+
+      <InviteSheet
+        open={inviteOpen}
+        onOpenChange={setInviteOpen}
+        inviteUrl={myCode ? `${window.location.origin}/invite/${myCode}` : null}
+        inviterName={myName}
+      />
+
     </div>
   );
 }
