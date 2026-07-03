@@ -585,7 +585,7 @@ export default function Friends() {
       <InviteSheet
         open={inviteOpen}
         onOpenChange={setInviteOpen}
-        inviteUrl={myCode ? `${window.location.origin}/invite/${myCode}` : null}
+        inviteUrl={myCode ? `https://hagion-ai.lovable.app/invite/${myCode}` : null}
         inviterName={myName}
       />
 
