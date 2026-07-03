@@ -508,7 +508,7 @@ export default function Friends() {
                       <ProfileLink p={p} onClick={() => navigate(`/u/${p.username || p.user_id}`)} />
                       <Button
                         size="sm"
-                        onClick={() => cancelOrRemove(p.friendshipId, p.user_id)}
+                        onClick={() => askCancel(p.friendshipId, p.user_id, p.name || p.username || "this person")}
                         disabled={busyId === p.user_id}
                         className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                       >
