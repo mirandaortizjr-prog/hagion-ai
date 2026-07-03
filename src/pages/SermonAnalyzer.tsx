@@ -145,6 +145,46 @@ Sound / Mixed — use discernment / False. A brief final exhortation.`;
         return;
       }
 
+      // If the user pasted a YouTube link, fetch the captions first and analyze the real transcript.
+      let userContent = buildPrompt();
+      if (mode === "video") {
+        try {
+          const { data: fetched, error: fetchErr } = await supabase.functions.invoke(
+            "fetch-youtube-transcript",
+            { body: { url: value.trim() } },
+          );
+          if (fetchErr) throw fetchErr;
+          if (fetched?.transcript) {
+            const meta = [
+              fetched.title ? `${t("VIDEO TITLE", "TÍTULO DEL VIDEO")}: ${fetched.title}` : null,
+              fetched.author ? `${t("CHANNEL", "CANAL")}: ${fetched.author}` : null,
+              `${t("SOURCE URL", "URL FUENTE")}: ${value.trim()}`,
+            ].filter(Boolean).join("\n");
+            const labelTranscript = t("FETCHED SERMON TRANSCRIPT (from YouTube captions)", "TRANSCRIPCIÓN OBTENIDA DEL SERMÓN (desde subtítulos de YouTube)");
+            const extras = [
+              preacher.trim() ? `${t("PREACHER / SOURCE", "PREDICADOR / FUENTE")}: ${preacher.trim()}` : null,
+              scripture.trim() ? `${t("STATED TEXT", "TEXTO DECLARADO")}: ${scripture.trim()}` : null,
+            ].filter(Boolean).join("\n");
+            userContent = `${meta}\n\n${labelTranscript}:\n${fetched.transcript}${extras ? `\n\n${extras}` : ""}`;
+            toast({
+              title: t("Transcript loaded", "Transcripción cargada"),
+              description: t("Analyzing the actual sermon…", "Analizando el sermón real…"),
+            });
+          } else {
+            toast({
+              title: t("No captions found", "Sin subtítulos"),
+              description: t("Analyzing from what's publicly known. Paste the transcript for a full review.", "Analizando desde lo que se conoce públicamente. Pega la transcripción para una revisión completa."),
+            });
+          }
+        } catch (err) {
+          console.warn("Transcript fetch failed, falling back", err);
+          toast({
+            title: t("Couldn't fetch captions", "No se pudieron obtener subtítulos"),
+            description: t("Analyzing from what's publicly known instead.", "Analizando desde lo que se conoce públicamente."),
+          });
+        }
+      }
+
       const chatUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
       const response = await fetch(chatUrl, {
         method: "POST",
@@ -155,7 +195,7 @@ Sound / Mixed — use discernment / False. A brief final exhortation.`;
         body: JSON.stringify({
           messages: [
             { role: "system", content: systemPrompt },
-            { role: "user", content: buildPrompt() },
+            { role: "user", content: userContent },
           ],
           language,
         }),
