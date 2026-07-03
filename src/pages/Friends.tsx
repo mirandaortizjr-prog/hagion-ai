@@ -184,22 +184,28 @@ export default function Friends() {
   const sendRequest = async (targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase
-      .from("friendships")
-      .insert({ requester_id: user.id, addressee_id: targetId, status: "pending" });
+    const { data, error } = await supabase.rpc("send_friend_request", { p_target: targetId });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not send request", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Friend request sent" });
+    const status = (data as any)?.status;
+    toast({
+      title:
+        status === "accepted"
+          ? "You're now friends"
+          : status === "pending"
+          ? "Friend request sent"
+          : "Done",
+    });
     loadAll(user.id);
   };
 
-  const cancelOrRemove = async (friendshipId: string, targetId: string) => {
+  const doRemove = async (targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase.from("friendships").delete().eq("id", friendshipId);
+    const { error } = await supabase.rpc("remove_friendship", { p_target: targetId });
     setBusyId(null);
     if (error) {
       toast({ title: "Action failed", description: error.message, variant: "destructive" });
@@ -211,10 +217,10 @@ export default function Friends() {
   const accept = async (friendshipId: string, targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase
-      .from("friendships")
-      .update({ status: "accepted", responded_at: new Date().toISOString() })
-      .eq("id", friendshipId);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: friendshipId,
+      p_accept: true,
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not accept", description: error.message, variant: "destructive" });
@@ -224,10 +230,13 @@ export default function Friends() {
     loadAll(user.id);
   };
 
-  const decline = async (friendshipId: string, targetId: string) => {
+  const doDecline = async (friendshipId: string, targetId: string) => {
     if (!user) return;
     setBusyId(targetId);
-    const { error } = await supabase.from("friendships").delete().eq("id", friendshipId);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: friendshipId,
+      p_accept: false,
+    });
     setBusyId(null);
     if (error) {
       toast({ title: "Could not decline", description: error.message, variant: "destructive" });
@@ -235,6 +244,26 @@ export default function Friends() {
     }
     loadAll(user.id);
   };
+
+  // Wrappers that first ask for confirmation
+  const askDecline = (friendshipId: string, targetId: string, name: string) =>
+    setConfirmAction({ type: "decline", friendshipId, targetId, name });
+  const askCancel = (friendshipId: string, targetId: string, name: string) =>
+    setConfirmAction({ type: "cancel", friendshipId, targetId, name });
+  const askUnfriend = (targetId: string, name: string) =>
+    setConfirmAction({ type: "unfriend", targetId, name });
+
+  const runConfirmed = async () => {
+    if (!confirmAction) return;
+    const c = confirmAction;
+    setConfirmAction(null);
+    if (c.type === "decline" && c.friendshipId) {
+      await doDecline(c.friendshipId, c.targetId);
+    } else {
+      await doRemove(c.targetId);
+    }
+  };
+
 
   const renderDiscoverAction = (p: ProfileRow) => {
     const rel = relMap.get(p.user_id) || { kind: "none" as const };
