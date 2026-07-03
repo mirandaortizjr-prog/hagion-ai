@@ -90,22 +90,28 @@ export default function PublicProfile() {
     if (!me) { navigate("/auth"); return; }
     if (!profile) return;
     setBusy(true);
-    const { error } = await supabase
-      .from("friendships")
-      .insert({ requester_id: me.id, addressee_id: profile.user_id, status: "pending" });
+    const { data, error } = await supabase.rpc("send_friend_request", { p_target: profile.user_id });
     setBusy(false);
     if (error) {
       toast({ title: "Could not send request", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Friend request sent" });
+    const status = (data as any)?.status;
+    toast({
+      title:
+        status === "accepted"
+          ? "You're now friends"
+          : status === "pending"
+          ? "Friend request sent"
+          : "Done",
+    });
     load();
   };
 
-  const cancelOrUnfriend = async () => {
-    if (rel.kind !== "outgoing" && rel.kind !== "friends") return;
+  const doRemove = async () => {
+    if (!profile) return;
     setBusy(true);
-    await supabase.from("friendships").delete().eq("id", rel.id);
+    await supabase.rpc("remove_friendship", { p_target: profile.user_id });
     setBusy(false);
     load();
   };
@@ -113,22 +119,37 @@ export default function PublicProfile() {
   const accept = async () => {
     if (rel.kind !== "incoming") return;
     setBusy(true);
-    await supabase
-      .from("friendships")
-      .update({ status: "accepted", responded_at: new Date().toISOString() })
-      .eq("id", rel.id);
+    const { error } = await supabase.rpc("respond_friend_request", {
+      p_friendship_id: rel.id,
+      p_accept: true,
+    });
     setBusy(false);
+    if (error) {
+      toast({ title: "Could not accept", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "You're now friends" });
     load();
   };
 
-  const decline = async () => {
+  const doDecline = async () => {
     if (rel.kind !== "incoming") return;
     setBusy(true);
-    await supabase.from("friendships").delete().eq("id", rel.id);
+    await supabase.rpc("respond_friend_request", { p_friendship_id: rel.id, p_accept: false });
     setBusy(false);
     load();
   };
+
+  const [confirmKind, setConfirmKind] = useState<null | "decline" | "cancel" | "unfriend">(null);
+  const askDecline = () => setConfirmKind("decline");
+  const cancelOrUnfriend = () => setConfirmKind(rel.kind === "friends" ? "unfriend" : "cancel");
+  const runConfirmed = async () => {
+    const k = confirmKind;
+    setConfirmKind(null);
+    if (k === "decline") await doDecline();
+    else await doRemove();
+  };
+
 
 
   if (loading) {
