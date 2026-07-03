@@ -303,7 +303,7 @@ export default function Friends() {
           </Button>
           <Button
             size="sm"
-            onClick={() => decline(rel.id, p.user_id)}
+            onClick={() => askDecline(rel.id, p.user_id, p.name || p.username || "this person")}
             disabled={isBusy}
             className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
           >
