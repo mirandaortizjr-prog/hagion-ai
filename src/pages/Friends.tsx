@@ -63,6 +63,13 @@ export default function Friends() {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [myCode, setMyCode] = useState<string | null>(null);
 
+  const [confirmAction, setConfirmAction] = useState<null | {
+    type: "decline" | "cancel" | "unfriend";
+    friendshipId?: string;
+    targetId: string;
+    name: string;
+  }>(null);
+
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user);
@@ -74,6 +81,25 @@ export default function Friends() {
         .eq("user_id", data.user.id)
         .maybeSingle();
       setMyCode((prof as any)?.invite_code || null);
+
+      // Realtime — both parties see updates instantly
+      const channel = supabase
+        .channel("friendships-" + data.user.id)
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "friendships" },
+          (payload: any) => {
+            const row = (payload.new || payload.old) as any;
+            if (!row) return;
+            if (row.requester_id === data.user!.id || row.addressee_id === data.user!.id) {
+              loadAll(data.user!.id);
+            }
+          }
+        )
+        .subscribe();
+      return () => {
+        supabase.removeChannel(channel);
+      };
     });
   }, []);
 
