@@ -186,7 +186,7 @@ export default function PublicProfile() {
           </Avatar>
           <div className="flex-1 grid grid-cols-2 gap-2 text-center">
             <Stat n={posts.length} label="Posts" />
-            <Stat n={profile.follower_count || 0} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
+            <Stat n={friendsCount} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
           </div>
         </div>
 
