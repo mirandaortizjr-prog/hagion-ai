@@ -283,7 +283,7 @@ export default function Friends() {
       return (
         <Button
           size="sm"
-          onClick={() => cancelOrRemove(rel.id, p.user_id)}
+          onClick={() => askCancel(rel.id, p.user_id, p.name || p.username || "this person")}
           disabled={isBusy}
           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
         >
