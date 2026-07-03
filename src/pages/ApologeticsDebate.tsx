@@ -638,7 +638,7 @@ const ApologeticsDebate = () => {
           <input
             type="text"
             placeholder="Present your argument..."
-            className="flex-1 rounded-full px-4 py-3 bg-background border outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 rounded-full px-4 py-3 bg-background border text-white placeholder:text-white/60 outline-none focus:ring-2 focus:ring-primary"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !isLoading && handleSend()}
