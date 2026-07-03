@@ -1810,6 +1810,12 @@ export type Database = {
       }
       is_staff_email: { Args: { p_user_id: string }; Returns: boolean }
       join_church_by_code: { Args: { p_code: string }; Returns: Json }
+      remove_friendship: { Args: { p_target: string }; Returns: Json }
+      respond_friend_request: {
+        Args: { p_accept: boolean; p_friendship_id: string }
+        Returns: Json
+      }
+      send_friend_request: { Args: { p_target: string }; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator"
