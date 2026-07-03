@@ -73,6 +73,8 @@ export default function Friends() {
   const [searching, setSearching] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [myCode, setMyCode] = useState<string | null>(null);
+  const [myName, setMyName] = useState<string | null>(null);
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   const [confirmAction, setConfirmAction] = useState<null | {
     type: "decline" | "cancel" | "unfriend";
