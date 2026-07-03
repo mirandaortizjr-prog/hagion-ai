@@ -566,7 +566,7 @@ const ApologeticsDebate = () => {
                   className={`max-w-[95%] rounded-2xl px-4 py-3 ${
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                      : "text-foreground"
                   }`}
                 >
                   {message.role === "assistant" && (
@@ -620,7 +620,7 @@ const ApologeticsDebate = () => {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-muted rounded-2xl px-4 py-3">
+              <div className="rounded-2xl px-4 py-3">
                 <div className="flex gap-1">
                   <div className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                   <div className="w-2 h-2 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
