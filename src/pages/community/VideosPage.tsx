@@ -35,6 +35,7 @@ interface VideoItem {
   video_url: string | null;
   thumbnail_url: string | null;
   author_name: string;
+  author_avatar_url?: string | null;
   view_count: number;
   duration_seconds: number | null;
   created_at: string;
@@ -120,6 +121,11 @@ export default function VideosPage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
   const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("videos_liked", JSON.stringify([...liked]));
@@ -144,6 +150,24 @@ export default function VideosPage() {
 
       let list = (data as VideoItem[]) || [];
       if (list.length === 0) list = SAMPLE_VIDEOS;
+
+      const uids = Array.from(new Set(list.map((v) => v.user_id).filter(Boolean))) as string[];
+      if (uids.length > 0) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("user_id, avatar_url, name, username")
+          .in("user_id", uids);
+        const map = new Map((profs || []).map((p: any) => [p.user_id, p]));
+        list = list.map((v) => {
+          const p = v.user_id ? map.get(v.user_id) : null;
+          return {
+            ...v,
+            author_avatar_url: p?.avatar_url ?? null,
+            author_name: v.author_name || p?.name || p?.username || "believer",
+          };
+        });
+      }
+
       setVideos(list);
       if (list.length) setActiveId((prev) => prev ?? list[0].id);
     } finally {
@@ -376,6 +400,7 @@ export default function VideosPage() {
               onShare={() => handleShare(v)}
               onComment={() => setCommentsFor(v)}
               onMore={() => setMoreFor(v)}
+              isSelf={!!currentUserId && v.user_id === currentUserId}
               onFollow={() => toast({ title: `Following @${v.author_name || "user"}` })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
@@ -468,6 +493,7 @@ interface VideoFeedItemProps {
   onComment: () => void;
   onMore: () => void;
   onFollow: () => void;
+  isSelf?: boolean;
   onSeek: (ratio: number) => void;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
@@ -491,6 +517,7 @@ function VideoFeedItem({
   onComment,
   onMore,
   onFollow,
+  isSelf,
   onSeek,
   onPlaybackError,
   registerVideo,
@@ -601,20 +628,30 @@ function VideoFeedItem({
 
         <div className="relative mt-1">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white/35 via-white/15 to-white/5 ring-2 ring-white/40 flex items-center justify-center overflow-hidden">
-            <span className="font-playfair text-base text-white">{initial}</span>
+            {video.author_avatar_url ? (
+              <img
+                src={video.author_avatar_url}
+                alt={video.author_name || "avatar"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="font-playfair text-base text-white">{initial}</span>
+            )}
           </div>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              onFollow();
-            }}
-            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
-            aria-label="Follow"
-          >
-            <Plus className="w-3 h-3 text-white" strokeWidth={3} />
-          </button>
+          {!isSelf && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onFollow();
+              }}
+              className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
+              aria-label="Follow"
+            >
+              <Plus className="w-3 h-3 text-white" strokeWidth={3} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -623,10 +660,14 @@ function VideoFeedItem({
           <div className="text-sm font-medium text-white">
             @{video.author_name || "anonymous"}
           </div>
-          <span className="w-1 h-1 rounded-full bg-white/40" />
-          <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
-            Follow
-          </button>
+          {!isSelf && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-white/40" />
+              <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
+                Follow
+              </button>
+            </>
+          )}
           <span className="ml-auto text-[10px] uppercase tracking-[0.18em] text-white/60">
             {formatCount(video.view_count || 0)} views
           </span>

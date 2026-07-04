@@ -34,6 +34,7 @@ interface Reel {
   video_url: string;
   thumbnail_url: string | null;
   author_name: string | null;
+  author_avatar_url?: string | null;
   like_count: number;
   view_count: number;
   created_at: string;
@@ -121,7 +122,12 @@ export default function ReelsFeedPage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
   const [moreFor, setMoreFor] = useState<Reel | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("reels_liked", JSON.stringify([...liked]));
@@ -145,6 +151,24 @@ export default function ReelsFeedPage() {
 
       let list = (data as Reel[]) || [];
       if (list.length === 0) list = SAMPLE_REELS;
+
+      const uids = Array.from(new Set(list.map((r) => r.user_id).filter((u) => u && u !== "sample"))) as string[];
+      if (uids.length > 0) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("user_id, avatar_url, name, username")
+          .in("user_id", uids);
+        const map = new Map((profs || []).map((p: any) => [p.user_id, p]));
+        list = list.map((r) => {
+          const p = r.user_id ? map.get(r.user_id) : null;
+          return {
+            ...r,
+            author_avatar_url: p?.avatar_url ?? null,
+            author_name: r.author_name || p?.name || p?.username || "believer",
+          };
+        });
+      }
+
       setReels(list);
       if (list.length) setActiveId((prev) => prev ?? list[0].id);
     } finally {
@@ -425,6 +449,7 @@ export default function ReelsFeedPage() {
               onShare={() => handleShare(reel)}
               onComment={() => setCommentsFor(reel)}
               onMore={() => setMoreFor(reel)}
+              isSelf={!!currentUserId && reel.user_id === currentUserId}
               onFollow={() => toast({ title: `Following @${reel.author_name || "user"}` })}
               onPlaybackError={() => handlePlaybackError(reel.title)}
               registerVideo={(el) => {
@@ -502,6 +527,7 @@ interface ReelItemProps {
   onComment: () => void;
   onMore: () => void;
   onFollow: () => void;
+  isSelf?: boolean;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
@@ -523,6 +549,7 @@ function ReelItem({
   onComment,
   onMore,
   onFollow,
+  isSelf,
   onPlaybackError,
   registerVideo,
   onProgress,
@@ -626,18 +653,28 @@ function ReelItem({
 
         <div className="relative mt-1">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white/35 via-white/15 to-white/5 ring-2 ring-white/40 flex items-center justify-center overflow-hidden">
-            <span className="font-playfair text-base text-white">{initial}</span>
+            {reel.author_avatar_url ? (
+              <img
+                src={reel.author_avatar_url}
+                alt={reel.author_name || "avatar"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="font-playfair text-base text-white">{initial}</span>
+            )}
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onFollow();
-            }}
-            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
-            aria-label="Follow"
-          >
-            <Plus className="w-3 h-3 text-white" strokeWidth={3} />
-          </button>
+          {!isSelf && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onFollow();
+              }}
+              className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
+              aria-label="Follow"
+            >
+              <Plus className="w-3 h-3 text-white" strokeWidth={3} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -646,10 +683,14 @@ function ReelItem({
           <div className="text-sm font-medium text-white">
             @{reel.author_name || "anonymous"}
           </div>
-          <span className="w-1 h-1 rounded-full bg-white/40" />
-          <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
-            Follow
-          </button>
+          {!isSelf && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-white/40" />
+              <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
+                Follow
+              </button>
+            </>
+          )}
         </div>
         {reel.title && (
           <h3 className="font-playfair text-[15px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1">
