@@ -26,6 +26,7 @@ import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 import MediaMoreSheet from "@/components/community/MediaMoreSheet";
 import MediaSearchSheet from "@/components/community/MediaSearchSheet";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VideoItem {
   id: string;
@@ -99,6 +100,8 @@ const SAMPLE_VIDEOS: VideoItem[] = [
 export default function VideosPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
@@ -278,8 +281,8 @@ export default function VideosPage() {
       return n;
     });
     toast({
-      title: wasSaved ? "Removed from saved" : "Saved to your collection",
-      description: wasSaved ? undefined : "View under Profile › Saved",
+      title: wasSaved ? t("Removed from saved", "Eliminado de guardados") : t("Saved to your collection", "Guardado en tu colección"),
+      description: wasSaved ? undefined : t("View under Profile › Saved", "Ver en Perfil › Guardados"),
     });
   };
 
@@ -297,7 +300,7 @@ export default function VideosPage() {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied", description: url });
+        toast({ title: t("Link copied", "Enlace copiado"), description: url });
         return;
       }
     } catch {}
@@ -310,9 +313,9 @@ export default function VideosPage() {
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
-      toast({ title: "Link copied", description: url });
+      toast({ title: t("Link copied", "Enlace copiado"), description: url });
     } catch {
-      toast({ title: "Share link", description: url });
+      toast({ title: t("Share link", "Enlace para compartir"), description: url });
     }
   };
 
@@ -331,7 +334,7 @@ export default function VideosPage() {
         <button
           onClick={handleBack}
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-          aria-label="Back"
+          aria-label={t("Back", "Atrás")}
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -342,21 +345,21 @@ export default function VideosPage() {
           <button
             onClick={() => setSearchOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Search vids"
+            aria-label={t("Search vids", "Buscar vids")}
           >
             <Search className="w-5 h-5" />
           </button>
           <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Upload vid"
+            aria-label={t("Upload vid", "Subir vid")}
           >
             <Plus className="w-5 h-5" />
           </button>
           <button
             onClick={() => setMuted((m) => !m)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label={muted ? "Unmute" : "Mute"}
+            aria-label={muted ? t("Unmute", "Activar sonido") : t("Mute", "Silenciar")}
           >
             {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
           </button>
@@ -368,12 +371,12 @@ export default function VideosPage() {
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
-              Loading videos
+              {t("Loading videos", "Cargando videos")}
             </div>
           </div>
         </div>
       ) : videos.length === 0 ? (
-        <EmptyState onBack={handleBack} />
+        <EmptyState onBack={handleBack} t={t} />
       ) : (
         <div
           ref={containerRef}
@@ -383,6 +386,7 @@ export default function VideosPage() {
           {videos.map((v) => (
             <VideoFeedItem
               key={v.id}
+              t={t}
               video={v}
               isActive={v.id === activeId}
               muted={muted}
@@ -401,7 +405,7 @@ export default function VideosPage() {
               onComment={() => setCommentsFor(v)}
               onMore={() => setMoreFor(v)}
               isSelf={!!currentUserId && v.user_id === currentUserId}
-              onFollow={() => toast({ title: `Following @${v.author_name || "user"}` })}
+              onFollow={() => toast({ title: t(`Following @${v.author_name || "user"}`, `Siguiendo a @${v.author_name || "usuario"}`) })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
@@ -424,8 +428,8 @@ export default function VideosPage() {
               }}
               onPlaybackError={() =>
                 toast({
-                  title: "Video unavailable",
-                  description: `${v.title} could not be played.`,
+                  title: t("Video unavailable", "Video no disponible"),
+                  description: t(`${v.title} could not be played.`, `${v.title} no se pudo reproducir.`),
                 })
               }
             />
@@ -460,7 +464,7 @@ export default function VideosPage() {
           author_name: v.author_name,
           thumbnail_url: v.thumbnail_url,
         }))}
-        placeholder="Search vids…"
+        placeholder={t("Search vids…", "Buscar vids…")}
         onClose={() => setSearchOpen(false)}
         onSelect={(it) => {
           setActiveId(it.id);
@@ -498,6 +502,7 @@ interface VideoFeedItemProps {
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number, currentTime: number, duration: number) => void;
+  t: (en: string, es: string) => string;
 }
 
 function VideoFeedItem({
@@ -522,6 +527,7 @@ function VideoFeedItem({
   onPlaybackError,
   registerVideo,
   onProgress,
+  t,
 }: VideoFeedItemProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -596,7 +602,7 @@ function VideoFeedItem({
         <button
           onClick={onTogglePause}
           className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
-          aria-label="Play"
+          aria-label={t("Play", "Reproducir")}
         >
           <div className="w-20 h-20 rounded-full bg-white/15 backdrop-blur-xl ring-1 ring-white/30 flex items-center justify-center animate-fade-in">
             <Play className="w-9 h-9 text-white fill-white" />
@@ -617,12 +623,12 @@ function VideoFeedItem({
           label={formatCount((liked ? 1 : 0))}
           onClick={onLike}
         />
-        <ActionButton icon={MessageCircle} label="Chat" onClick={onComment} />
-        <ActionButton icon={Share2} label="Share" onClick={onShare} />
+        <ActionButton icon={MessageCircle} label={t("Chat", "Chat")} onClick={onComment} />
+        <ActionButton icon={Share2} label={t("Share", "Compartir")} onClick={onShare} />
         <ActionButton
           icon={Bookmark}
           active={saved}
-          label={saved ? "Saved" : "Save"}
+          label={saved ? t("Saved", "Guardado") : t("Save", "Guardar")}
           onClick={onSave}
         />
         <ActionButton icon={MoreHorizontal} label="" onClick={onMore} />
@@ -648,7 +654,7 @@ function VideoFeedItem({
                 onFollow();
               }}
               className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition cursor-pointer"
-              aria-label="Follow"
+              aria-label={t("Follow", "Seguir")}
             >
               <Plus className="w-3 h-3 text-white" strokeWidth={3} />
             </button>
@@ -659,18 +665,18 @@ function VideoFeedItem({
       <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-6 pt-10">
         <div className="flex items-center gap-2 mb-3">
           <div className="text-sm font-medium text-white">
-            @{video.author_name || "anonymous"}
+            @{video.author_name || t("anonymous", "anónimo")}
           </div>
           {!isSelf && (
             <>
               <span className="w-1 h-1 rounded-full bg-white/40" />
               <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
-                Follow
+                {t("Follow", "Seguir")}
               </button>
             </>
           )}
           <span className="ml-auto text-[10px] uppercase tracking-[0.18em] text-white/60">
-            {formatCount(video.view_count || 0)} views
+            {formatCount(video.view_count || 0)} {t("views", "vistas")}
           </span>
         </div>
         {video.title && (
@@ -697,7 +703,7 @@ function VideoFeedItem({
           <button
             onClick={onTogglePause}
             className="w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-            aria-label={paused ? "Play" : "Pause"}
+            aria-label={paused ? t("Play", "Reproducir") : t("Pause", "Pausar")}
           >
             {paused ? (
               <Play className="w-3 h-3 fill-white text-white" />
@@ -809,21 +815,21 @@ function ActionButton({
   );
 }
 
-function EmptyState({ onBack }: { onBack: () => void }) {
+function EmptyState({ onBack, t }: { onBack: () => void; t: (en: string, es: string) => string }) {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center mb-5">
         <Film className="w-9 h-9 text-white/80" />
       </div>
-      <h2 className="font-playfair text-2xl mb-2">No vids yet</h2>
+      <h2 className="font-playfair text-2xl mb-2">{t("No vids yet", "Aún no hay vids")}</h2>
       <p className="text-white/55 text-[14px] max-w-xs leading-relaxed mb-6">
-        Long-form vids from the community will appear here.
+        {t("Long-form vids from the community will appear here.", "Los vids largos de la comunidad aparecerán aquí.")}
       </p>
       <Button
         onClick={onBack}
         className="rounded-full h-11 px-6 bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
       >
-        Go Back
+        {t("Go Back", "Volver")}
       </Button>
     </div>
   );
