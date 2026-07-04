@@ -554,7 +554,8 @@ function VideoFeedItem({
     <section
       data-video-id={video.id}
       onPointerDown={showControls}
-      className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
+      className="relative w-full h-[100dvh] snap-start snap-always overflow-hidden bg-black"
+      style={{ scrollSnapStop: "always" }}
     >
       {video.video_url ? (
         <video
