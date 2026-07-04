@@ -456,7 +456,7 @@ export default function PrayerWall() {
         await navigator.share({ title: "Hagion Community", text: post.content.slice(0, 80), url });
       } else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: t("Link copied", "Enlace copiado") });
       }
     } catch {}
   };
