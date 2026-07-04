@@ -347,7 +347,7 @@ export default function ReelsFeedPage() {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied", description: url });
+        toast({ title: t("Link copied", "Enlace copiado"), description: url });
         return;
       }
     } catch {}
@@ -361,9 +361,9 @@ export default function ReelsFeedPage() {
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
-      toast({ title: "Link copied", description: url });
+      toast({ title: t("Link copied", "Enlace copiado"), description: url });
     } catch {
-      toast({ title: "Share link", description: url });
+      toast({ title: t("Share link", "Compartir enlace"), description: url });
     }
   };
 
