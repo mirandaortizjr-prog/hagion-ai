@@ -25,6 +25,7 @@ import VideoUploadSheet from "@/components/community/VideoUploadSheet";
 import MediaCommentsSheet from "@/components/community/MediaCommentsSheet";
 import MediaMoreSheet from "@/components/community/MediaMoreSheet";
 import MediaSearchSheet from "@/components/community/MediaSearchSheet";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Reel {
   id: string;
