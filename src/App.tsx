@@ -162,6 +162,7 @@ const App = () => (
             <Route path="/devotional-library" element={<DevotionalLibrary />} />
             <Route path="/devotional/:id" element={<UserDevotionalDetail />} />
             <Route path="/my-devotionals" element={<MyDevotionals />} />
+            <Route path="/community-guidelines" element={<CommunityGuidelines />} />
             <Route path="/library" element={<Library />} />
             <Route path="/community/discussions" element={<DiscussionsPage />} />
             <Route path="/community/post/:id" element={<PostDetailPage />} />
