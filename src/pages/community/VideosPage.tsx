@@ -376,7 +376,7 @@ export default function VideosPage() {
           </div>
         </div>
       ) : videos.length === 0 ? (
-        <EmptyState onBack={handleBack} />
+        <EmptyState onBack={handleBack} t={t} />
       ) : (
         <div
           ref={containerRef}
