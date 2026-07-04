@@ -180,7 +180,7 @@ export default function PrayerWall() {
     });
     setCreatingEvent(false);
     if (error) {
-      toast({ title: "Could not create event", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not create event", "No se pudo crear el evento"), description: error.message, variant: "destructive" });
       return;
     }
     setNewEventTitle("");
@@ -188,7 +188,7 @@ export default function PrayerWall() {
     setNewEventLocation("");
     setNewEventDesc("");
     setCreateEventOpen(false);
-    toast({ title: "Event created" });
+    toast({ title: t("Event created", "Evento creado") });
     loadAll();
   };
 
