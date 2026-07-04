@@ -281,8 +281,8 @@ export default function VideosPage() {
       return n;
     });
     toast({
-      title: wasSaved ? "Removed from saved" : "Saved to your collection",
-      description: wasSaved ? undefined : "View under Profile › Saved",
+      title: wasSaved ? t("Removed from saved", "Eliminado de guardados") : t("Saved to your collection", "Guardado en tu colección"),
+      description: wasSaved ? undefined : t("View under Profile › Saved", "Ver en Perfil › Guardados"),
     });
   };
 
