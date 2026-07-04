@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, ShieldCheck } from "lucide-react";
 
 const DRAFT_KEY = "user_devotional_draft_v1";
+const GUIDELINES_ACK_KEY = "user_devotional_guidelines_ack_v1";
 
 export function DevotionalSubmitDialog({
   open,
@@ -30,6 +33,9 @@ export function DevotionalSubmitDialog({
   const [prayer, setPrayer] = useState("");
   const [tags, setTags] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [acknowledged, setAcknowledged] = useState(false);
+  const alreadyAcked = typeof window !== "undefined" && localStorage.getItem(GUIDELINES_ACK_KEY) === "1";
+
 
   // Auto-save + restore draft
   useEffect(() => {
@@ -57,6 +63,7 @@ export function DevotionalSubmitDialog({
   }, [open, title, scriptureRef, scriptureText, reflection, prayer, tags]);
 
   const submit = async () => {
+    if (!alreadyAcked && !acknowledged) { toast.error(t("Please acknowledge the Community Guidelines", "Por favor acepta las Normas de la Comunidad")); return; }
     if (!title.trim() || title.length > 120) { toast.error(t("Title required (max 120 chars)", "Título requerido (máx 120)")); return; }
     if (!scriptureRef.trim() || scriptureRef.length > 100) { toast.error(t("Scripture reference required", "Referencia bíblica requerida")); return; }
     if (reflection.trim().length < 100) { toast.error(t("Reflection is too short (min 100 chars)", "La reflexión es muy corta (mín 100)")); return; }
@@ -111,6 +118,7 @@ export function DevotionalSubmitDialog({
     } else if (modData?.status === "approved") {
       toast.success(t("Approved! Your devotional is in the library.", "¡Aprobado! Tu devocional está en la biblioteca."));
       localStorage.removeItem(DRAFT_KEY);
+      localStorage.setItem(GUIDELINES_ACK_KEY, "1");
       setTitle(""); setScriptureRef(""); setScriptureText(""); setReflection(""); setPrayer(""); setTags("");
     } else if (modData?.status === "needs_revision") {
       toast.warning(t("Needs revision. See feedback in My Devotionals.", "Necesita revisión. Ver feedback en Mis Devocionales."));
@@ -136,6 +144,39 @@ export function DevotionalSubmitDialog({
         </DialogHeader>
 
         <div className="space-y-4 pt-2">
+          {!alreadyAcked && (
+            <div className="rounded-2xl border border-amber-300/25 bg-amber-500/5 p-4">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="h-5 w-5 text-amber-300 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-amber-100">
+                    {t("Before your first submission", "Antes de tu primer envío")}
+                  </p>
+                  <p className="text-xs text-white/70 mt-1 leading-relaxed">
+                    {t(
+                      "Every devotional must align with orthodox Christian doctrine and be free of self-promotion, spam, or personal attacks.",
+                      "Cada devocional debe alinearse con la doctrina cristiana ortodoxa y estar libre de autopromoción, spam o ataques personales."
+                    )}
+                  </p>
+                  <label className="mt-3 flex items-start gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={acknowledged}
+                      onCheckedChange={(v) => setAcknowledged(v === true)}
+                      className="mt-0.5"
+                    />
+                    <span className="text-xs text-white/80 leading-relaxed">
+                      {t("I have read and agree to the", "He leído y acepto las")}{" "}
+                      <Link to="/community-guidelines" target="_blank" className="text-amber-300 underline">
+                        {t("Community Guidelines", "Normas de la Comunidad")}
+                      </Link>
+                      .
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <Label className="text-xs uppercase tracking-wider text-white/60">{t("Title", "Título")}</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} placeholder={t("A short, clear title", "Un título claro y breve")} />
