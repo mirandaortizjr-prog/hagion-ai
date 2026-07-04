@@ -150,6 +150,24 @@ export default function VideosPage() {
 
       let list = (data as VideoItem[]) || [];
       if (list.length === 0) list = SAMPLE_VIDEOS;
+
+      const uids = Array.from(new Set(list.map((v) => v.user_id).filter(Boolean))) as string[];
+      if (uids.length > 0) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("user_id, avatar_url, name, username")
+          .in("user_id", uids);
+        const map = new Map((profs || []).map((p: any) => [p.user_id, p]));
+        list = list.map((v) => {
+          const p = v.user_id ? map.get(v.user_id) : null;
+          return {
+            ...v,
+            author_avatar_url: p?.avatar_url ?? null,
+            author_name: v.author_name || p?.name || p?.username || "believer",
+          };
+        });
+      }
+
       setVideos(list);
       if (list.length) setActiveId((prev) => prev ?? list[0].id);
     } finally {
