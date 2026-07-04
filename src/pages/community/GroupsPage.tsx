@@ -384,7 +384,7 @@ export default function GroupsPage() {
                       {myChurch.verified && <CheckCircle2 className="w-3.5 h-3.5 text-sky-300" />}
                     </div>
                     <div className="text-[11.5px] text-white/55 mt-0.5">
-                      {[myChurch.city, myChurch.state].filter(Boolean).join(", ") || "Your local body"} · {myChurch.member_count || 0} members
+                      {[myChurch.city, myChurch.state].filter(Boolean).join(", ") || t("Your local body", "Tu cuerpo local")} · {myChurch.member_count || 0} {t("members", "miembros")}
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 text-white/40" />
@@ -397,24 +397,24 @@ export default function GroupsPage() {
                     <ChurchIcon className="w-5 h-5 text-amber-100" />
                   </div>
                   <div>
-                    <h3 className="font-playfair text-[16px]">Join your church</h3>
-                    <p className="text-[11.5px] text-white/55">Enter the invite code from your pastor.</p>
+                    <h3 className="font-playfair text-[16px]">{t("Join your church", "Únete a tu iglesia")}</h3>
+                    <p className="text-[11.5px] text-white/55">{t("Enter the invite code from your pastor.", "Ingresa el código de invitación de tu pastor.")}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <Input
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value)}
-                    placeholder="invite code"
+                    placeholder={t("invite code", "código de invitación")}
                     className="h-10 rounded-xl bg-white/5 border-white/15 text-white placeholder:text-white/35 font-mono tracking-wider"
                   />
                   <Button onClick={handleJoinChurch} disabled={joining || !joinCode.trim()}
                     className="h-10 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4">
-                    {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
+                    {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : t("Join", "Unirse")}
                   </Button>
                 </div>
                 <p className="mt-3 text-[11px] text-white/45">
-                  Are you a pastor? <button onClick={() => navigate("/community/my-church?register=1")} className="underline hover:text-white/80">Register your church</button>
+                  {t("Are you a pastor?", "¿Eres pastor?")} <button onClick={() => navigate("/community/my-church?register=1")} className="underline hover:text-white/80">{t("Register your church", "Registra tu iglesia")}</button>
                 </p>
               </div>
             )}
