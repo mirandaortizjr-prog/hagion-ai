@@ -608,7 +608,7 @@ function ReelItem({
         <button
           onClick={onTap}
           className="absolute inset-0 z-20 flex items-center justify-center bg-black/20"
-          aria-label="Play"
+          aria-label={t("Play", "Reproducir")}
         >
           <div className="w-20 h-20 rounded-full bg-white/15 backdrop-blur-xl ring-1 ring-white/30 flex items-center justify-center animate-fade-in">
             <Play className="w-9 h-9 text-white fill-white" />
