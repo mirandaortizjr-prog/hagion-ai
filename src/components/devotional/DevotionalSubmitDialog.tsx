@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, ShieldCheck } from "lucide-react";
 
 const DRAFT_KEY = "user_devotional_draft_v1";
+const GUIDELINES_ACK_KEY = "user_devotional_guidelines_ack_v1";
 
 export function DevotionalSubmitDialog({
   open,
