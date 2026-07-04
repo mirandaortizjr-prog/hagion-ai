@@ -404,7 +404,7 @@ export default function VideosPage() {
               onComment={() => setCommentsFor(v)}
               onMore={() => setMoreFor(v)}
               isSelf={!!currentUserId && v.user_id === currentUserId}
-              onFollow={() => toast({ title: `Following @${v.author_name || "user"}` })}
+              onFollow={() => toast({ title: t(`Following @${v.author_name || "user"}`, `Siguiendo a @${v.author_name || "usuario"}`) })}
               onSeek={(r) => handleSeek(v.id, r)}
               registerVideo={(el) => {
                 if (el) videoRefs.current.set(v.id, el);
