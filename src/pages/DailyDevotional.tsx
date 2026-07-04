@@ -96,9 +96,6 @@ const DailyDevotional = () => {
       picked.author_name = (p as any)?.name || (p as any)?.username || "Friend";
       setUserDev(picked);
       setSeedDev(null);
-      // best-effort read count
-      supabase.rpc as any;
-      supabase.from("user_devotionals").update({ read_count: undefined as any }).eq("id", picked.id); // no-op safe
     } else {
       // 3. Fall back to Hagion's seeded devotional
       const { data } = await supabase
