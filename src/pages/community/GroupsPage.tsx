@@ -143,7 +143,7 @@ export default function GroupsPage() {
     if (!user) return navigate("/auth");
     const n = reqName.trim();
     if (!n) {
-      toast({ title: "Room name is required", variant: "destructive" });
+      toast({ title: t("Room name is required", "El nombre de la sala es obligatorio"), variant: "destructive" });
       return;
     }
     setSubmitting(true);
