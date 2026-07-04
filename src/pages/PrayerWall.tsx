@@ -376,7 +376,7 @@ export default function PrayerWall() {
     } else {
       const { error } = await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
       if (error) {
-        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
+        toast({ title: t("Could not follow", "No se pudo seguir"), description: error.message, variant: "destructive" });
         return;
       }
       setMyFollowing((s) => new Set(s).add(targetId));
