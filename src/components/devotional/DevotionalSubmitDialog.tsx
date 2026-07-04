@@ -70,27 +70,35 @@ export function DevotionalSubmitDialog({
     setSubmitting(true);
     const tagArr = tags.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean).slice(0, 6);
 
-    const { data: inserted, error } = await supabase
-      .from("user_devotionals")
-      .insert({
-        author_id: userData.user.id,
-        title: title.trim(),
-        scripture_ref: scriptureRef.trim(),
-        scripture_text: scriptureText.trim() || null,
-        reflection: reflection.trim(),
-        prayer: prayer.trim(),
-        tags: tagArr,
-        language,
-        status: "pending",
-      })
-      .select("id")
-      .single();
+    const { data: rpcData, error } = await supabase.rpc("submit_user_devotional", {
+      p_title: title.trim(),
+      p_scripture_ref: scriptureRef.trim(),
+      p_scripture_text: scriptureText.trim() || null,
+      p_reflection: reflection.trim(),
+      p_prayer: prayer.trim(),
+      p_tags: tagArr,
+      p_language: language,
+    });
 
-    if (error || !inserted) {
+    const row = Array.isArray(rpcData) ? rpcData[0] : rpcData;
+
+    if (error || !row?.allowed) {
       setSubmitting(false);
-      toast.error(error?.message || t("Submission failed", "Error al enviar"));
+      const code = row?.error;
+      if (code === "rate_limited") {
+        toast.error(t("Daily submission limit reached (3 per day). Try again tomorrow.", "Límite diario alcanzado (3 por día). Intenta mañana."));
+      } else if (code === "premium_required") {
+        toast.error(t("Premium required to submit devotionals.", "Se requiere Premium para enviar devocionales."));
+      } else if (code === "not_authenticated") {
+        toast.error(t("Sign in to submit", "Inicia sesión para enviar"));
+      } else {
+        toast.error(error?.message || t("Submission failed", "Error al enviar"));
+      }
       return;
     }
+
+    const insertedId = row.id as string;
+
 
     toast.loading(t("Moderating with AI…", "Moderando con IA…"), { id: "mod" });
     const { data: modData, error: modErr } = await supabase.functions.invoke("moderate-user-devotional", {
