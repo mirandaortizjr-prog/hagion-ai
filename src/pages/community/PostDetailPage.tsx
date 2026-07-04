@@ -11,6 +11,7 @@ import { getCategory } from "@/data/discussionCategories";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PostDetailPage() {
   const { id } = useParams();
