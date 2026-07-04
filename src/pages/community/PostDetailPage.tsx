@@ -16,6 +16,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 export default function PostDetailPage() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [post, setPost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
