@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Loader2, Check } from "lucide-react";
@@ -9,6 +10,8 @@ import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS } from "@/lib/sermonSteps";
 
 const SermonStepEditor = () => {
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const { id, stepNum } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -30,7 +33,7 @@ const SermonStepEditor = () => {
         .eq("id", id)
         .maybeSingle();
       if (error || !data) {
-        toast({ title: "Sermon not found", variant: "destructive" });
+        toast({ title: t("Sermon not found", "Sermón no encontrado"), variant: "destructive" });
         navigate("/public-speaking");
         return;
       }
@@ -55,7 +58,7 @@ const SermonStepEditor = () => {
         .eq("id", id!);
       if (error) {
         setSaveState("idle");
-        toast({ title: "Save failed", description: error.message, variant: "destructive" });
+        toast({ title: t("Save failed", "Error al guardar"), description: error.message, variant: "destructive" });
         return;
       }
       initial.current = text;
@@ -90,7 +93,7 @@ const SermonStepEditor = () => {
           </Button>
           <div className="flex-1 text-center">
             <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
-              Step {step.num} of 10
+              {t(`Step ${step.num} of 10`, `Paso ${step.num} de 10`)}
             </p>
           </div>
           <div className="w-10 flex items-center justify-end">
@@ -116,7 +119,7 @@ const SermonStepEditor = () => {
 
           <div className="border border-white/10 rounded-2xl p-4 bg-white/[0.03] backdrop-blur-sm mb-6">
             <p className="text-[11px] uppercase tracking-[0.25em] text-accent mb-3 font-semibold">
-              Prompt
+              {t("Prompt", "Indicación")}
             </p>
             <p className="text-[13.5px] text-white/75 leading-relaxed">{step.prompt}</p>
           </div>
@@ -124,7 +127,7 @@ const SermonStepEditor = () => {
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Write here…"
+            placeholder={t("Write here…", "Escribe aquí…")}
             className="min-h-[320px] bg-white/[0.03] border-white/10 text-white placeholder:text-white/40 focus-visible:ring-accent/40 resize-none rounded-2xl backdrop-blur-sm"
           />
 
@@ -135,21 +138,21 @@ const SermonStepEditor = () => {
               disabled={step.num === 1}
               className="rounded-full text-white/70 disabled:opacity-30"
             >
-              ← Previous
+              {t("← Previous", "← Anterior")}
             </Button>
             {step.num < 10 ? (
               <Button
                 onClick={() => goToStep(step.num + 1)}
                 className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"
               >
-                Next →
+                {t("Next →", "Siguiente →")}
               </Button>
             ) : (
               <Button
                 onClick={() => navigate(`/sermon-lab/${id}/refine`)}
                 className="rounded-full bg-accent text-accent-foreground hover:bg-accent/90"
               >
-                Refine →
+                {t("Refine →", "Pulir →")}
               </Button>
             )}
           </div>

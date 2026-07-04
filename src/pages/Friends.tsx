@@ -596,7 +596,10 @@ export default function Friends() {
   );
 }
 
-const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => (
+const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => {
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+  return (
   <button onClick={onClick} className="flex items-center gap-3 flex-1 min-w-0 text-left">
     <Avatar className="w-12 h-12 ring-1 ring-white/20">
       {p.avatar_url && <AvatarImage src={p.avatar_url} />}
@@ -606,9 +609,11 @@ const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => 
     </Avatar>
     <div className="min-w-0">
       <div className="text-sm font-semibold text-white truncate">
-        {p.name || p.username || "Believer"}
+        {p.name || p.username || t("Believer", "Creyente")}
       </div>
       {p.username && <div className="text-[12px] text-white/50 truncate">@{p.username}</div>}
     </div>
   </button>
 );
+  );
+};
