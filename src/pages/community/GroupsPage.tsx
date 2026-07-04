@@ -174,13 +174,13 @@ export default function GroupsPage() {
     setJoining(false);
     if (error || !(data as any)?.ok) {
       toast({
-        title: "Could not join",
-        description: (data as any)?.error === "invalid_code" ? "Invite code not found" : (error?.message || "Try again"),
+        title: t("Could not join", "No se pudo unir"),
+        description: (data as any)?.error === "invalid_code" ? t("Invite code not found", "Código de invitación no encontrado") : (error?.message || t("Try again", "Inténtalo de nuevo")),
         variant: "destructive",
       });
       return;
     }
-    toast({ title: "Welcome to your church 🏛️" });
+    toast({ title: t("Welcome to your church 🏛️", "Bienvenido a tu iglesia 🏛️") });
     setJoinCode("");
     load();
   };
