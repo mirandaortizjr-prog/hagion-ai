@@ -803,21 +803,21 @@ function ActionButton({
   );
 }
 
-function EmptyState({ onBack }: { onBack: () => void }) {
+function EmptyState({ onBack, t }: { onBack: () => void; t: (en: string, es: string) => string }) {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
       <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-white/20 via-white/10 to-white/5 ring-1 ring-white/20 flex items-center justify-center mb-5">
         <Sparkles className="w-9 h-9 text-white/80" />
       </div>
-      <h2 className="font-playfair text-2xl mb-2">No clips yet</h2>
+      <h2 className="font-playfair text-2xl mb-2">{t("No clips yet", "Aún no hay clips")}</h2>
       <p className="text-white/55 text-[14px] max-w-xs leading-relaxed mb-6">
-        Be the first to share a short, sacred moment with the community.
+        {t("Be the first to share a short, sacred moment with the community.", "Sé el primero en compartir un momento breve y sagrado con la comunidad.")}
       </p>
       <Button
         onClick={onBack}
         className="rounded-full h-11 px-6 bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
       >
-        Go Back
+        {t("Go Back", "Regresar")}
       </Button>
     </div>
   );
