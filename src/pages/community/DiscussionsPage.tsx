@@ -328,7 +328,7 @@ export default function DiscussionsPage() {
                             ? "text-amber-300 bg-amber-300/15"
                             : "text-white/50 hover:text-white hover:bg-white/10"
                         )}
-                        aria-label="upvote"
+                        aria-label={t("upvote", "votar a favor")}
                       >
                         <ArrowBigUp className="w-5 h-5" strokeWidth={voted ? 2.4 : 2} />
                       </button>
