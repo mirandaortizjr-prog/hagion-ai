@@ -665,18 +665,18 @@ function VideoFeedItem({
       <div className="absolute left-0 right-20 bottom-0 z-30 px-5 pb-6 pt-10">
         <div className="flex items-center gap-2 mb-3">
           <div className="text-sm font-medium text-white">
-            @{video.author_name || "anonymous"}
+            @{video.author_name || t("anonymous", "anónimo")}
           </div>
           {!isSelf && (
             <>
               <span className="w-1 h-1 rounded-full bg-white/40" />
               <button className="text-[11px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2.5 py-0.5 active:scale-95 transition">
-                Follow
+                {t("Follow", "Seguir")}
               </button>
             </>
           )}
           <span className="ml-auto text-[10px] uppercase tracking-[0.18em] text-white/60">
-            {formatCount(video.view_count || 0)} views
+            {formatCount(video.view_count || 0)} {t("views", "vistas")}
           </span>
         </div>
         {video.title && (
