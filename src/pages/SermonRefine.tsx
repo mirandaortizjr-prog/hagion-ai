@@ -1,12 +1,13 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Sparkles, Loader2, Copy, BookOpen, GitCompare, AlertCircle, Lightbulb, Download } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, {t("Copy", "Copiar")}, BookOpen, GitCompare, AlertCircle, Lightbulb, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { assembleSermon, type SermonDraft } from "@/lib/sermonSteps";
-import jsPDF from "jspdf";
+import js{t("PDF", "PDF")} from "jspdf";
 
 const downloadSermonPdf = (
   title: string,
@@ -14,7 +15,7 @@ const downloadSermonPdf = (
   body: string,
   filenameSuffix: string,
 ) => {
-  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const doc = new js{t("PDF", "PDF")}({ unit: "pt", format: "letter" });
   const margin = 56;
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -87,6 +88,8 @@ type Refinement = {
   polished_sermon: string;
 };
 
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
 const SermonRefine = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -106,7 +109,7 @@ const SermonRefine = () => {
         .eq("id", id)
         .maybeSingle();
       if (error || !data) {
-        toast({ title: "Sermon not found", variant: "destructive" });
+        toast({ title: t("Sermon not found", "Sermón no encontrado"), variant: "destructive" });
         navigate("/public-speaking");
         return;
       }
@@ -134,7 +137,7 @@ const SermonRefine = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast({ title: "Sign in required", variant: "destructive" });
+        toast({ title: t("Sign in required", "Se requiere iniciar sesión"), variant: "destructive" });
         return;
       }
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/refine-sermon`;
@@ -153,7 +156,7 @@ const SermonRefine = () => {
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
         toast({
-          title: resp.status === 429 ? "Rate limited" : resp.status === 402 ? "Credits exhausted" : "Refine failed",
+          title: resp.status === 429 ? t("Rate limited", "Límite de velocidad") : resp.status === 402 ? t("Credits exhausted", "Créditos agotados") : t("Refine failed", "Error al pulir"),
           description: err?.error || `Status ${resp.status}`,
           variant: "destructive",
         });
@@ -176,7 +179,7 @@ const SermonRefine = () => {
       setTab("feedback");
     } catch (e) {
       console.error(e);
-      toast({ title: "Network error", variant: "destructive" });
+      toast({ title: t("Network error", "Error de red"), variant: "destructive" });
     } finally {
       setRefining(false);
     }
@@ -184,7 +187,7 @@ const SermonRefine = () => {
 
   const copyText = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    toast({ title: `${label} copied` });
+    toast({ title: t(`${label} copied`, `${label} copiado`) });
   };
 
   if (loading || !draft) {
@@ -209,7 +212,7 @@ const SermonRefine = () => {
           </Button>
           <div className="flex-1 text-center">
             <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
-              Refine Sermon
+              {t("Refine Sermon", "Pulir Sermón")}
             </p>
           </div>
           <div className="w-10" />
@@ -235,12 +238,12 @@ const SermonRefine = () => {
             {refining ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Examining sermon…
+                {t("Examining sermon…", "Analizando sermón…")}
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4 mr-2" />
-                {result ? "Refine Again" : "Refine with AI"}
+                {result ? t("Refine Again", "Pulir de nuevo") : t("Refine with AI", "Pulir con IA")}
               </>
             )}
           </Button>
@@ -249,9 +252,9 @@ const SermonRefine = () => {
           {result && (
             <div className="flex gap-2 mb-6 overflow-x-auto">
               {([
-                ["feedback", "Feedback"],
-                ["rewrite", "Polished"],
-                ["original", "Original"],
+                ["feedback", t("Feedback", "Comentarios")],
+                ["rewrite", t("Polished", "Pulido")],
+                ["original", t("Original", "Original")],
               ] as const).map(([key, label]) => (
                 <button
                   key={key}
@@ -271,20 +274,20 @@ const SermonRefine = () => {
           {!result && (
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
               <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold mb-3">
-                Assembled Draft
+                {t("Assembled Draft", "Borrador Ensamblado")}
               </p>
               <div className="text-[13.5px] leading-[1.8] text-white/85 whitespace-pre-wrap max-h-[60vh] overflow-y-auto">
-                {assembled || "Nothing written yet."}
+                {assembled || t("Nothing written yet.", "Aún no hay nada escrito.")}
               </div>
             </div>
           )}
 
           {result && tab === "feedback" && (
             <div className="space-y-4">
-              <FeedbackCard icon={<BookOpen className="w-3.5 h-3.5" />} title="Theological Review" body={result.theological_review} />
-              <FeedbackCard icon={<GitCompare className="w-3.5 h-3.5" />} title="Consistency" body={result.consistency_review} />
-              <FeedbackCard icon={<AlertCircle className="w-3.5 h-3.5" />} title="Grammar & Clarity" body={result.grammar_clarity} />
-              <FeedbackCard icon={<Lightbulb className="w-3.5 h-3.5" />} title="Advice" body={result.advice} />
+              <FeedbackCard icon={<BookOpen className="w-3.5 h-3.5" />} title={t("Theological Review", "Revisión Teológica")} body={result.theological_review} />
+              <FeedbackCard icon={<GitCompare className="w-3.5 h-3.5" />} title={t("Consistency", "Consistencia")} body={result.consistency_review} />
+              <FeedbackCard icon={<AlertCircle className="w-3.5 h-3.5" />} title={t("Grammar title="Grammar & Clarity" Clarity", "Gramática y Claridad")} body={result.grammar_clarity} />
+              <FeedbackCard icon={<Lightbulb className="w-3.5 h-3.5" />} title={t("Advice", "Consejos")} body={result.advice} />
             </div>
           )}
 
@@ -292,14 +295,14 @@ const SermonRefine = () => {
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
               <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
-                  Polished Sermon
+                  {t("Polished Sermon", "Sermón Pulido")}
                 </p>
                 <div className="flex gap-1">
-                  <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, "Polished sermon")} className="rounded-full text-white/70 h-8">
-                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  <Button size="sm" variant="ghost" onClick={() => copyText(result.polished_sermon, t("Polished sermon", "Sermón pulido"))} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> {t("Copy", "Copiar")}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, result.polished_sermon, "polished")} className="rounded-full text-white/70 h-8">
-                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                    <Download className="w-3.5 h-3.5 mr-1" /> {t("PDF", "PDF")}
                   </Button>
                 </div>
               </div>
@@ -313,14 +316,14 @@ const SermonRefine = () => {
             <div className="border border-white/10 rounded-2xl p-5 bg-white/[0.03] backdrop-blur-sm">
               <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
                 <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-semibold">
-                  Your Draft
+                  {t("Your Draft", "Tu Borrador")}
                 </p>
                 <div className="flex gap-1">
-                  <Button size="sm" variant="ghost" onClick={() => copyText(assembled, "Draft")} className="rounded-full text-white/70 h-8">
-                    <Copy className="w-3.5 h-3.5 mr-1" /> Copy
+                  <Button size="sm" variant="ghost" onClick={() => copyText(assembled, t("Draft", "Borrador"))} className="rounded-full text-white/70 h-8">
+                    <Copy className="w-3.5 h-3.5 mr-1" /> {t("Copy", "Copiar")}
                   </Button>
                   <Button size="sm" variant="ghost" onClick={() => downloadSermonPdf(draft.title, draft.scripture_ref, assembled, "draft")} className="rounded-full text-white/70 h-8">
-                    <Download className="w-3.5 h-3.5 mr-1" /> PDF
+                    <Download className="w-3.5 h-3.5 mr-1" /> {t("PDF", "PDF")}
                   </Button>
                 </div>
               </div>
