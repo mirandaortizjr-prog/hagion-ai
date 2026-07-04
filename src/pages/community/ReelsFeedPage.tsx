@@ -549,6 +549,7 @@ function ReelItem({
   onComment,
   onMore,
   onFollow,
+  isSelf,
   onPlaybackError,
   registerVideo,
   onProgress,
