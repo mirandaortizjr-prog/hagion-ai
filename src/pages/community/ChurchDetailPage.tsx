@@ -4,10 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { CommunityHeader } from "@/components/community/CommunityHeader";
 import { PremiumNav } from "@/components/PremiumNav";
 import { Church, MapPin, Globe } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ChurchDetailPage() {
   const { id } = useParams();
   const [c, setC] = useState<any>(null);
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
 
   useEffect(() => {
     if (!id) return;
@@ -17,7 +20,7 @@ export default function ChurchDetailPage() {
   return (
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Church" />
+        <CommunityHeader title={t("Church", "Iglesia")} />
         {c && (
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-6">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/30 via-white/10 to-white/5 ring-1 ring-white/30 flex items-center justify-center mb-4">
@@ -38,7 +41,7 @@ export default function ChurchDetailPage() {
                 rel="noreferrer"
                 className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm text-white hover:bg-white/15"
               >
-                <Globe className="w-4 h-4" /> Visit website
+                <Globe className="w-4 h-4" /> {t("Visit website", "Visitar sitio web")}
               </a>
             )}
           </div>

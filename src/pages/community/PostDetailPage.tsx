@@ -11,10 +11,13 @@ import { getCategory } from "@/data/discussionCategories";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function PostDetailPage() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [post, setPost] = useState<any>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
@@ -49,7 +52,7 @@ export default function PostDetailPage() {
 
   const toggleVote = async () => {
     if (!user || !post) {
-      toast({ title: "Please sign in" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión") });
       return;
     }
     if (voted) {
@@ -67,7 +70,7 @@ export default function PostDetailPage() {
 
   const submit = async () => {
     if (!user) {
-      toast({ title: "Please sign in" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión") });
       return;
     }
     if (!text.trim() || !id) return;
@@ -81,14 +84,14 @@ export default function PostDetailPage() {
       prof?.username?.trim() ||
       user.user_metadata?.name ||
       user.user_metadata?.full_name ||
-      "Believer";
+      t("Believer", "Creyente");
     const { error } = await supabase.from("post_comments").insert({
       post_id: id,
       user_id: user.id,
       author_name,
       content: text.trim(),
     });
-    if (error) toast({ title: "Could not comment", variant: "destructive" });
+    if (error) toast({ title: t("Could not comment", "No se pudo comentar"), variant: "destructive" });
     else {
       setText("");
       load();
@@ -98,7 +101,7 @@ export default function PostDetailPage() {
   if (!post) {
     return (
       <div className="min-h-screen text-white px-5 max-w-3xl mx-auto">
-        <CommunityHeader title="Post" />
+        <CommunityHeader title={t("Post", "Publicación")} />
         <PremiumNav />
       </div>
     );
@@ -107,7 +110,7 @@ export default function PostDetailPage() {
   return (
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Post" />
+        <CommunityHeader title={t("Post", "Publicación")} />
 
         <article className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-5 mb-6">
           <div className="flex items-center gap-3 mb-3">
@@ -118,7 +121,7 @@ export default function PostDetailPage() {
             </Avatar>
             <div>
               <div className="text-sm font-semibold">
-                {post.is_anonymous ? "Anonymous" : post.author_name || "Believer"}
+                {post.is_anonymous ? t("Anonymous", "Anónimo") : post.author_name || t("Believer", "Creyente")}
               </div>
               <div className="text-[11px] text-white/50">
                 {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
@@ -134,7 +137,7 @@ export default function PostDetailPage() {
               <>
                 <div className="mb-2">
                   <span className="px-2 py-0.5 rounded-full bg-white/10 text-white/80 text-[11px]">
-                    {cat.emoji} {cat.en}
+                    {cat.emoji} {language === "es" ? cat.es : cat.en}
                   </span>
                 </div>
                 {title && <h1 className="font-playfair text-2xl mb-3">{title}</h1>}
@@ -176,11 +179,11 @@ export default function PostDetailPage() {
           </div>
         </article>
 
-        <h2 className="font-playfair text-xl mb-3 px-1">Comments</h2>
+        <h2 className="font-playfair text-xl mb-3 px-1">{t("Comments", "Comentarios")}</h2>
         <div className="space-y-3 mb-6">
           {comments.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 text-center text-white/60">
-              No comments yet. Be the first to encourage.
+              {t("No comments yet. Be the first to encourage.", "Aún no hay comentarios. Sé el primero en animar.")}
             </div>
           ) : (
             comments.map((c) => (
@@ -194,7 +197,7 @@ export default function PostDetailPage() {
                       {c.author_name?.[0]?.toUpperCase() || "B"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="text-xs font-semibold">{c.author_name || "Believer"}</div>
+                  <div className="text-xs font-semibold">{c.author_name || t("Believer", "Creyente")}</div>
                   <div className="text-[10px] text-white/40">
                     {formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}
                   </div>
@@ -209,7 +212,7 @@ export default function PostDetailPage() {
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Write a comment..."
+            placeholder={t("Write a comment...", "Escribe un comentario...")}
             rows={2}
             className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
           />
@@ -219,7 +222,7 @@ export default function PostDetailPage() {
               disabled={!text.trim()}
               className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black"
             >
-              <Send className="w-4 h-4 mr-1" /> Post
+              <Send className="w-4 h-4 mr-1" /> {t("Post", "Publicar")}
             </Button>
           </div>
         </div>

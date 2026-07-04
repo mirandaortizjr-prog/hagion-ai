@@ -4,11 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Church as ChurchIcon, Loader2, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function JoinChurchPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [church, setChurch] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
@@ -36,10 +39,10 @@ export default function JoinChurchPage() {
     const { data, error } = await supabase.rpc("join_church_by_code" as any, { p_code: code });
     setJoining(false);
     if (error || !(data as any)?.ok) {
-      toast({ title: "Could not join", description: (data as any)?.error || error?.message, variant: "destructive" });
+      toast({ title: t("Could not join", "No se pudo unir"), description: (data as any)?.error || error?.message, variant: "destructive" });
       return;
     }
-    toast({ title: `Welcome to ${church.name}` });
+    toast({ title: t(`Welcome to ${church.name}`, `Bienvenido a ${church.name}`) });
     navigate("/community/my-church");
   };
 
@@ -50,9 +53,9 @@ export default function JoinChurchPage() {
           <Loader2 className="w-6 h-6 animate-spin mx-auto text-white/50" />
         ) : !church ? (
           <>
-            <h2 className="font-playfair text-xl mb-2">Invite not found</h2>
-            <p className="text-white/55 text-[13px] mb-4">This church invite code is invalid or expired.</p>
-            <Button onClick={() => navigate("/community")} variant="outline" className="rounded-full border-white/20 bg-white/5">Back to community</Button>
+            <h2 className="font-playfair text-xl mb-2">{t("Invite not found", "Invitación no encontrada")}</h2>
+            <p className="text-white/55 text-[13px] mb-4">{t("This church invite code is invalid or expired.", "Este código de invitación es inválido o expiró.")}</p>
+            <Button onClick={() => navigate("/community")} variant="outline" className="rounded-full border-white/20 bg-white/5">{t("Back to community", "Volver a la comunidad")}</Button>
           </>
         ) : (
           <>
@@ -66,10 +69,10 @@ export default function JoinChurchPage() {
             <p className="text-white/60 text-[13px] mb-1">
               {[church.city, church.state, church.country].filter(Boolean).join(", ")}
             </p>
-            <p className="text-white/45 text-[11.5px] mb-5">{church.member_count || 0} members</p>
+            <p className="text-white/45 text-[11.5px] mb-5">{church.member_count || 0} {t("members", "miembros")}</p>
             {church.description && <p className="text-white/70 text-[13px] mb-5">{church.description}</p>}
             <Button onClick={join} disabled={joining} className="w-full h-11 rounded-full bg-primary text-primary-foreground">
-              {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join this church"}
+              {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : t("Join this church", "Únete a esta iglesia")}
             </Button>
           </>
         )}
