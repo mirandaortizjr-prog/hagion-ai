@@ -84,7 +84,7 @@ export default function PostDetailPage() {
       prof?.username?.trim() ||
       user.user_metadata?.name ||
       user.user_metadata?.full_name ||
-      "Believer";
+      t("Believer", "Creyente");
     const { error } = await supabase.from("post_comments").insert({
       post_id: id,
       user_id: user.id,
