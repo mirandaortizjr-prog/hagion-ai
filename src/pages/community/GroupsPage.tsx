@@ -342,7 +342,7 @@ export default function GroupsPage() {
                         >
                           <h4 className="text-[14px] font-semibold text-white leading-tight truncate">{g.name}</h4>
                           <div className="text-[11px] text-white/50 mt-0.5">
-                            {g.member_count} {g.member_count === 1 ? "member" : "members"}
+                            {g.member_count} {g.member_count === 1 ? t("member", "miembro") : t("members", "miembros")}
                             {g.description && <span className="text-white/40"> · {g.description}</span>}
                           </div>
                         </button>
@@ -356,8 +356,8 @@ export default function GroupsPage() {
                           )}
                         >
                           {joined ? (
-                            <span className="inline-flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Joined</span>
-                          ) : "Join"}
+                            <span className="inline-flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> {t("Joined", "Unido")}</span>
+                          ) : t("Join", "Unirse")}
                         </button>
                       </div>
                     </div>
