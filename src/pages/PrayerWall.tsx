@@ -264,7 +264,7 @@ export default function PrayerWall() {
       const f = input.files?.[0];
       if (!f) return;
       if (f.size > 10 * 1024 * 1024) {
-        toast({ title: "File too large", description: "Max 10MB", variant: "destructive" });
+        toast({ title: t("File too large", "Archivo demasiado grande"), description: t("Max 10MB", "Máx. 10MB"), variant: "destructive" });
         return;
       }
       setBannerUploading(true);
