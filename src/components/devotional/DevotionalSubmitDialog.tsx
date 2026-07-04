@@ -144,6 +144,39 @@ export function DevotionalSubmitDialog({
         </DialogHeader>
 
         <div className="space-y-4 pt-2">
+          {!alreadyAcked && (
+            <div className="rounded-2xl border border-amber-300/25 bg-amber-500/5 p-4">
+              <div className="flex items-start gap-3">
+                <ShieldCheck className="h-5 w-5 text-amber-300 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-amber-100">
+                    {t("Before your first submission", "Antes de tu primer envío")}
+                  </p>
+                  <p className="text-xs text-white/70 mt-1 leading-relaxed">
+                    {t(
+                      "Every devotional must align with orthodox Christian doctrine and be free of self-promotion, spam, or personal attacks.",
+                      "Cada devocional debe alinearse con la doctrina cristiana ortodoxa y estar libre de autopromoción, spam o ataques personales."
+                    )}
+                  </p>
+                  <label className="mt-3 flex items-start gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={acknowledged}
+                      onCheckedChange={(v) => setAcknowledged(v === true)}
+                      className="mt-0.5"
+                    />
+                    <span className="text-xs text-white/80 leading-relaxed">
+                      {t("I have read and agree to the", "He leído y acepto las")}{" "}
+                      <Link to="/community-guidelines" target="_blank" className="text-amber-300 underline">
+                        {t("Community Guidelines", "Normas de la Comunidad")}
+                      </Link>
+                      .
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <Label className="text-xs uppercase tracking-wider text-white/60">{t("Title", "Título")}</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} placeholder={t("A short, clear title", "Un título claro y breve")} />
