@@ -47,6 +47,8 @@ type Tab = "rooms" | "church";
 export default function GroupsPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const handleBack = useSafeBackNavigation("/community");
 
   const [user, setUser] = useState<any>(null);
