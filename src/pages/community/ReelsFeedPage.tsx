@@ -498,7 +498,7 @@ export default function ReelsFeedPage() {
           author_name: r.author_name,
           thumbnail_url: r.thumbnail_url,
         }))}
-        placeholder="Search clips…"
+        placeholder={t("Search clips…", "Buscar clips…")}
         onClose={() => setSearchOpen(false)}
         onSelect={(it) => {
           setActiveId(it.id);
