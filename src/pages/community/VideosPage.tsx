@@ -623,12 +623,12 @@ function VideoFeedItem({
           label={formatCount((liked ? 1 : 0))}
           onClick={onLike}
         />
-        <ActionButton icon={MessageCircle} label="Chat" onClick={onComment} />
-        <ActionButton icon={Share2} label="Share" onClick={onShare} />
+        <ActionButton icon={MessageCircle} label={t("Chat", "Chat")} onClick={onComment} />
+        <ActionButton icon={Share2} label={t("Share", "Compartir")} onClick={onShare} />
         <ActionButton
           icon={Bookmark}
           active={saved}
-          label={saved ? "Saved" : "Save"}
+          label={saved ? t("Saved", "Guardado") : t("Save", "Guardar")}
           onClick={onSave}
         />
         <ActionButton icon={MoreHorizontal} label="" onClick={onMore} />
