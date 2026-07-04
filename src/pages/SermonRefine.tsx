@@ -1,13 +1,13 @@
-import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Sparkles, Loader2, {t("Copy", "Copiar")}, BookOpen, GitCompare, AlertCircle, Lightbulb, Download } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, Copy, BookOpen, GitCompare, AlertCircle, Lightbulb, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { assembleSermon, type SermonDraft } from "@/lib/sermonSteps";
-import js{t("PDF", "PDF")} from "jspdf";
+import { useLanguage } from "@/contexts/LanguageContext";
+import jsPDF from "jspdf";
 
 const downloadSermonPdf = (
   title: string,
@@ -15,7 +15,7 @@ const downloadSermonPdf = (
   body: string,
   filenameSuffix: string,
 ) => {
-  const doc = new js{t("PDF", "PDF")}({ unit: "pt", format: "letter" });
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
   const margin = 56;
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
@@ -51,7 +51,6 @@ const downloadSermonPdf = (
       y += lineHeight / 2;
       continue;
     }
-    // Treat markdown headings as bold
     const headingMatch = trimmed.match(/^#{1,6}\s+(.*)/);
     if (headingMatch) {
       doc.setFont("times", "bold");
@@ -88,12 +87,13 @@ type Refinement = {
   polished_sermon: string;
 };
 
-  const { language } = useLanguage();
-  const t = (en: string, es: string) => (language === "es" ? es : en);
 const SermonRefine = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+
   const [draft, setDraft] = useState<SermonDraft | null>(null);
   const [loading, setLoading] = useState(true);
   const [refining, setRefining] = useState(false);
@@ -115,7 +115,6 @@ const SermonRefine = () => {
       }
       const d = data as SermonDraft;
       setDraft(d);
-      // Restore previous AI output
       if (d.ai_feedback && d.ai_rewrite) {
         try {
           const parsed = JSON.parse(d.ai_feedback);
@@ -126,7 +125,7 @@ const SermonRefine = () => {
       }
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, navigate, toast, language]);
 
   const assembled = draft ? assembleSermon(draft) : "";
 
@@ -156,7 +155,11 @@ const SermonRefine = () => {
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
         toast({
-          title: resp.status === 429 ? t("Rate limited", "Límite de velocidad") : resp.status === 402 ? t("Credits exhausted", "Créditos agotados") : t("Refine failed", "Error al pulir"),
+          title: resp.status === 429 
+            ? t("Rate limited", "Límite de velocidad") 
+            : resp.status === 402 
+              ? t("Credits exhausted", "Créditos agotados") 
+              : t("Refine failed", "Error al pulir"),
           description: err?.error || `Status ${resp.status}`,
           variant: "destructive",
         });
@@ -165,7 +168,6 @@ const SermonRefine = () => {
       const parsed: Refinement = await resp.json();
       setResult(parsed);
 
-      // Save back to draft
       const { theological_review, consistency_review, grammar_clarity, advice, polished_sermon } = parsed;
       await supabase
         .from("sermon_drafts")
@@ -248,7 +250,6 @@ const SermonRefine = () => {
             )}
           </Button>
 
-          {/* Tabs */}
           {result && (
             <div className="flex gap-2 mb-6 overflow-x-auto">
               {([
@@ -286,7 +287,7 @@ const SermonRefine = () => {
             <div className="space-y-4">
               <FeedbackCard icon={<BookOpen className="w-3.5 h-3.5" />} title={t("Theological Review", "Revisión Teológica")} body={result.theological_review} />
               <FeedbackCard icon={<GitCompare className="w-3.5 h-3.5" />} title={t("Consistency", "Consistencia")} body={result.consistency_review} />
-              <FeedbackCard icon={<AlertCircle className="w-3.5 h-3.5" />} title={t("Grammar title="Grammar & Clarity" Clarity", "Gramática y Claridad")} body={result.grammar_clarity} />
+              <FeedbackCard icon={<AlertCircle className="w-3.5 h-3.5" />} title={t("Grammar & Clarity", "Gramática y Claridad")} body={result.grammar_clarity} />
               <FeedbackCard icon={<Lightbulb className="w-3.5 h-3.5" />} title={t("Advice", "Consejos")} body={result.advice} />
             </div>
           )}
