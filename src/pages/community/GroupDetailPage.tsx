@@ -37,7 +37,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
 import { formatDistanceToNow } from "date-fns";
+import { es as esLocale } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Group {
   id: string;
@@ -77,6 +79,9 @@ export default function GroupDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+  const locale = language === "es" ? esLocale : undefined;
 
   const [group, setGroup] = useState<Group | null>(null);
   const [user, setUser] = useState<any>(null);
@@ -187,20 +192,20 @@ export default function GroupDetailPage() {
     }
     if (!id || !composer.trim()) return;
     if (!joined && !isOwner) {
-      toast({ title: "Join the group to post", variant: "destructive" });
+      toast({ title: t("Join the group to post", "Únete al grupo para publicar"), variant: "destructive" });
       return;
     }
     setPosting(true);
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: user.user_metadata?.name || user.email?.split("@")[0] || t("Believer", "Creyente"),
       post_type: composerType,
       content: composer.trim(),
       group_id: id,
     });
     setPosting(false);
     if (error) {
-      toast({ title: "Could not post", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not post", "No se pudo publicar"), description: error.message, variant: "destructive" });
       return;
     }
     setComposer("");
@@ -256,7 +261,7 @@ export default function GroupDetailPage() {
     if (!group) return;
     const n = editName.trim();
     if (!n) {
-      toast({ title: "Name is required", variant: "destructive" });
+      toast({ title: t("Name is required", "Se requiere el nombre"), variant: "destructive" });
       return;
     }
     setSaving(true);
@@ -266,23 +271,23 @@ export default function GroupDetailPage() {
       .eq("id", group.id);
     setSaving(false);
     if (error) {
-      toast({ title: "Could not save", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not save", "No se pudo guardar"), description: error.message, variant: "destructive" });
       return;
     }
     setEditOpen(false);
-    toast({ title: "Group updated" });
+    toast({ title: t("Group updated", "Grupo actualizado") });
     load();
   };
 
   const handleDelete = async () => {
     if (!group) return;
-    if (!confirm(`Delete "${group.name}"? This cannot be undone.`)) return;
+    if (!confirm(t(`Delete "${group.name}"? This cannot be undone.`, `¿Eliminar "${group.name}"? Esto no se puede deshacer.`))) return;
     const { error } = await supabase.from("groups").delete().eq("id", group.id);
     if (error) {
-      toast({ title: "Could not delete", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not delete", "No se pudo eliminar"), description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Group deleted" });
+    toast({ title: t("Group deleted", "Grupo eliminado") });
     navigate("/community/groups");
   };
 
@@ -293,7 +298,7 @@ export default function GroupDetailPage() {
         await navigator.share({ title: group?.name, url });
       } else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: t("Link copied", "Enlace copiado") });
       }
     } catch {}
   };
@@ -312,19 +317,19 @@ export default function GroupDetailPage() {
             <button
               onClick={handleBack}
               className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
-              aria-label="Back"
+              aria-label={t("Back", "Atrás")}
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <h1 className="flex-1 text-center text-[13px] font-medium tracking-wide text-white/90 truncate px-2">
-              {group?.name || "Group"}
+              {group?.name || t("Group", "Grupo")}
             </h1>
             {group ? (
               <>
                 <button
                   onClick={handleShare}
                   className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
-                  aria-label="Share"
+                  aria-label={t("Share", "Compartir")}
                 >
                   <Share2 className="w-4 h-4" />
                 </button>
@@ -333,7 +338,7 @@ export default function GroupDetailPage() {
                     <DropdownMenuTrigger asChild>
                       <button
                         className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:bg-white/10 transition"
-                        aria-label="More"
+                        aria-label={t("More", "Más")}
                       >
                         <MoreHorizontal className="w-4 h-4" />
                       </button>
@@ -346,14 +351,14 @@ export default function GroupDetailPage() {
                         onClick={() => setEditOpen(true)}
                         className="gap-2 focus:bg-white/10"
                       >
-                        <Pencil className="w-4 h-4" /> Edit group
+                        <Pencil className="w-4 h-4" /> {t("Edit group", "Editar grupo")}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator className="bg-white/10" />
                       <DropdownMenuItem
                         onClick={handleDelete}
                         className="gap-2 text-red-300 focus:bg-red-500/10 focus:text-red-200"
                       >
-                        <Trash2 className="w-4 h-4" /> Delete group
+                        <Trash2 className="w-4 h-4" /> {t("Delete group", "Eliminar grupo")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -373,7 +378,7 @@ export default function GroupDetailPage() {
           </div>
         ) : !group ? (
           <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-2xl p-10 text-center text-white/60">
-            Group not found.
+            {t("Group not found.", "Grupo no encontrado.")}
           </div>
         ) : (
           <>
@@ -395,9 +400,9 @@ export default function GroupDetailPage() {
                     {isOwner && <Crown className="w-3.5 h-3.5 text-amber-200/80 shrink-0" />}
                   </div>
                   <div className="mt-0.5 flex items-center gap-2 text-[11px] text-white/50">
-                    <span>{group.member_count} {group.member_count === 1 ? "member" : "members"}</span>
+                    <span>{group.member_count} {group.member_count === 1 ? t("member", "miembro") : t("members", "miembros")}</span>
                     <span className="w-0.5 h-0.5 rounded-full bg-white/30" />
-                    <span>{new Date(group.created_at).toLocaleDateString()}</span>
+                    <span>{new Date(group.created_at).toLocaleDateString(language === "es" ? "es" : undefined)}</span>
                   </div>
                 </div>
                 <Button
@@ -415,13 +420,13 @@ export default function GroupDetailPage() {
                   {busy ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : isOwner ? (
-                    "Owner"
+                    t("Owner", "Propietario")
                   ) : joined ? (
                     <>
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Joined
+                      <CheckCircle2 className="w-3.5 h-3.5" /> {t("Joined", "Unido")}
                     </>
                   ) : (
-                    "Join"
+                    t("Join", "Unirse")
                   )}
                 </Button>
               </div>
@@ -438,13 +443,13 @@ export default function GroupDetailPage() {
               <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
                 <DialogHeader>
                   <DialogTitle className="font-playfair text-2xl text-center">
-                    Edit Group
+                    {t("Edit Group", "Editar grupo")}
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-2">
                   <div>
                     <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                      Name
+                      {t("Name", "Nombre")}
                     </label>
                     <Input
                       value={editName}
@@ -455,7 +460,7 @@ export default function GroupDetailPage() {
                   </div>
                   <div>
                     <label className="text-[10px] uppercase tracking-[0.18em] text-white/50">
-                      Description
+                      {t("Description", "Descripción")}
                     </label>
                     <Textarea
                       value={editDesc}
@@ -470,7 +475,7 @@ export default function GroupDetailPage() {
                     disabled={saving}
                     className="w-full h-11 rounded-full bg-gradient-to-b from-white to-white/85 text-black hover:from-white hover:to-white/95"
                   >
-                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+                    {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : t("Save", "Guardar")}
                   </Button>
                 </div>
               </DialogContent>
@@ -481,20 +486,20 @@ export default function GroupDetailPage() {
             <section className="mt-5">
               <div className="flex items-center justify-between mb-2 px-1">
                 <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55">
-                  Members · {group.member_count}
+                  {t("Members", "Miembros")} · {group.member_count}
                 </h3>
                 {members.length > 8 && (
-                  <span className="text-[11px] text-white/45">+{group.member_count - 8} more</span>
+                  <span className="text-[11px] text-white/45">+{group.member_count - 8} {t("more", "más")}</span>
                 )}
               </div>
               {members.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center text-white/55 text-sm">
-                  Be the first to join this circle.
+                  {t("Be the first to join this circle.", "Sé el primero en unirte a este círculo.")}
                 </div>
               ) : (
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
                   {members.slice(0, 12).map((m) => {
-                    const handle = m.profile?.username || m.profile?.name || "Member";
+                    const handle = m.profile?.username || m.profile?.name || t("Member", "Miembro");
                     const initial = (handle || "?").charAt(0).toUpperCase();
                     return (
                       <button
@@ -530,17 +535,17 @@ export default function GroupDetailPage() {
             <section className="mt-5">
               <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-3">
                 <div className="flex gap-1 mb-2">
-                  {(["post", "prayer", "testimony"] as const).map((t) => (
+                  {(["post", "prayer", "testimony"] as const).map((tp) => (
                     <button
-                      key={t}
-                      onClick={() => setComposerType(t)}
+                      key={tp}
+                      onClick={() => setComposerType(tp)}
                       className={`text-[10px] tracking-[0.16em] uppercase px-2.5 py-1 rounded-full border transition ${
-                        composerType === t
+                        composerType === tp
                           ? "bg-white text-black border-white"
                           : "bg-transparent text-white/60 border-white/10 hover:bg-white/5"
                       }`}
                     >
-                      {t}
+                      {tp === "post" ? t("post", "publicación") : tp === "prayer" ? t("prayer", "oración") : t("testimony", "testimonio")}
                     </button>
                   ))}
                 </div>
@@ -549,14 +554,14 @@ export default function GroupDetailPage() {
                   onChange={(e) => setComposer(e.target.value)}
                   placeholder={
                     !user
-                      ? "Sign in to share with the group"
+                      ? t("Sign in to share with the group", "Inicia sesión para compartir con el grupo")
                       : !joined && !isOwner
-                        ? "Join the group to post"
+                        ? t("Join the group to post", "Únete al grupo para publicar")
                         : composerType === "prayer"
-                          ? "Share a prayer request..."
+                          ? t("Share a prayer request...", "Comparte una petición de oración...")
                           : composerType === "testimony"
-                            ? "Share what God has done..."
-                            : "What's on your heart?"
+                            ? t("Share what God has done...", "Comparte lo que Dios ha hecho...")
+                            : t("What's on your heart?", "¿Qué hay en tu corazón?")
                   }
                   rows={2}
                   maxLength={1000}
@@ -577,7 +582,7 @@ export default function GroupDetailPage() {
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
                       <>
-                        <Send className="w-3 h-3" /> Post
+                        <Send className="w-3 h-3" /> {t("Post", "Publicar")}
                       </>
                     )}
                   </Button>
@@ -588,12 +593,12 @@ export default function GroupDetailPage() {
             {/* Group feed */}
             <section className="mt-5">
               <h3 className="text-[10px] tracking-[0.22em] uppercase text-white/55 mb-2 px-1">
-                {posts.length} {posts.length === 1 ? "post" : "posts"}
+                {posts.length} {posts.length === 1 ? t("post", "publicación") : t("posts", "publicaciones")}
               </h3>
 
               {posts.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center text-white/55 text-sm">
-                  No posts yet. Be the first to share.
+                  {t("No posts yet. Be the first to share.", "Aún no hay publicaciones. Sé el primero en compartir.")}
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -616,9 +621,9 @@ export default function GroupDetailPage() {
                             )}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <div className="text-sm text-white truncate">{p.author_name || "Believer"}</div>
+                            <div className="text-sm text-white truncate">{p.author_name || t("Believer", "Creyente")}</div>
                             <div className="text-[10px] uppercase tracking-[0.14em] text-white/45">
-                              {p.post_type} · {formatDistanceToNow(new Date(p.created_at), { addSuffix: true })}
+                              {p.post_type === "post" ? t("post", "publicación") : p.post_type === "prayer" ? t("prayer", "oración") : p.post_type === "testimony" ? t("testimony", "testimonio") : p.post_type} · {formatDistanceToNow(new Date(p.created_at), { addSuffix: true, locale })}
                             </div>
                           </div>
                         </div>
