@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Rel =
   | { kind: "none" }
@@ -30,6 +31,8 @@ export default function PublicProfile() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const handleBack = useSafeBackNavigation("/community");
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [me, setMe] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [posts, setPosts] = useState<any[]>([]);
@@ -126,17 +129,17 @@ export default function PublicProfile() {
     const { data, error } = await supabase.rpc("send_friend_request", { p_target: profile.user_id });
     setBusy(false);
     if (error) {
-      toast({ title: "Could not send request", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not send request", "No se pudo enviar la solicitud"), description: error.message, variant: "destructive" });
       return;
     }
     const status = (data as any)?.status;
     toast({
       title:
         status === "accepted"
-          ? "You're now friends"
+          ? t("You're now friends", "Ahora son amigos")
           : status === "pending"
-          ? "Friend request sent"
-          : "Done",
+          ? t("Friend request sent", "Solicitud de amistad enviada")
+          : t("Done", "Listo"),
     });
     load();
   };
@@ -158,10 +161,10 @@ export default function PublicProfile() {
     });
     setBusy(false);
     if (error) {
-      toast({ title: "Could not accept", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not accept", "No se pudo aceptar"), description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "You're now friends" });
+    toast({ title: t("You're now friends", "Ahora son amigos") });
     load();
   };
 
@@ -196,8 +199,8 @@ export default function PublicProfile() {
   if (!profile) {
     return (
       <div className="min-h-screen text-white px-6 py-20 text-center">
-        <p className="text-white/70">Profile not found.</p>
-        <Button onClick={handleBack} className="mt-4">Go back</Button>
+        <p className="text-white/70">{t("Profile not found.", "Perfil no encontrado.")}</p>
+        <Button onClick={handleBack} className="mt-4">{t("Go back", "Volver")}</Button>
       </div>
     );
   }
@@ -210,18 +213,18 @@ export default function PublicProfile() {
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             onClick={handleBack}
-            aria-label="Back"
+            aria-label={t("Back", "Atrás")}
             className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <h1 className="font-playfair text-lg tracking-tight flex-1 truncate">
-            {profile.name || profile.username || "Profile"}
+            {profile.name || profile.username || t("Profile", "Perfil")}
           </h1>
           {!isMe && (
             <button
               onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
-              aria-label="Message"
+              aria-label={t("Message", "Mensaje")}
               className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
             >
               <MessageSquare className="w-4 h-4" />
@@ -239,13 +242,13 @@ export default function PublicProfile() {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 grid grid-cols-2 gap-2 text-center">
-            <Stat n={posts.length} label="Posts" />
-            <Stat n={friendsCount} label="Friends" onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
+            <Stat n={posts.length} label={t("Posts", "Publicaciones")} />
+            <Stat n={friendsCount} label={t("Friends", "Amigos")} onClick={() => navigate("/friends?tab=friends")} clickable={isMe} />
           </div>
         </div>
 
         <div className="mt-4">
-          <div className="text-lg font-semibold text-white">{profile.name || "Believer"}</div>
+          <div className="text-lg font-semibold text-white">{profile.name || t("Believer", "Creyente")}</div>
           {profile.username && (
             <div className="text-sm text-white/55">@{profile.username}</div>
           )}
@@ -257,7 +260,7 @@ export default function PublicProfile() {
               onClick={() => navigate("/settings")}
               className="flex-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
             >
-              Edit profile
+              {t("Edit profile", "Editar perfil")}
             </Button>
           ) : (
             <>
@@ -268,7 +271,7 @@ export default function PublicProfile() {
                     disabled={busy}
                     className="flex-1 rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
                   >
-                    {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> Accept</>)}
+                    {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : (<><Check className="w-4 h-4 mr-1" /> {t("Accept", "Aceptar")}</>)}
                   </Button>
                   <Button
                     onClick={askDecline}
@@ -294,11 +297,11 @@ export default function PublicProfile() {
                   {busy ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : rel.kind === "friends" ? (
-                    <><UserCheck className="w-4 h-4 mr-1" /> Friends</>
+                    <><UserCheck className="w-4 h-4 mr-1" /> {t("Friends", "Amigos")}</>
                   ) : rel.kind === "outgoing" ? (
-                    <><Clock className="w-4 h-4 mr-1" /> Requested</>
+                    <><Clock className="w-4 h-4 mr-1" /> {t("Requested", "Solicitado")}</>
                   ) : (
-                    <><UserPlus className="w-4 h-4 mr-1" /> Add friend</>
+                    <><UserPlus className="w-4 h-4 mr-1" /> {t("Add friend", "Añadir amigo")}</>
                   )}
                 </Button>
               )}
@@ -306,7 +309,7 @@ export default function PublicProfile() {
                 onClick={() => navigate(`/community/messages?to=${profile.user_id}`)}
                 className="flex-1 rounded-full bg-white/10 text-white border border-white/20 hover:bg-white/15"
               >
-                Message
+                {t("Message", "Mensaje")}
               </Button>
             </>
           )}
@@ -324,14 +327,14 @@ export default function PublicProfile() {
                 <img src={p.media_url} alt="" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-[10px] text-white/60 px-2 text-center line-clamp-4">
-                  {p.content?.slice(0, 80) || "Post"}
+                  {p.content?.slice(0, 80) || t("Post", "Publicación")}
                 </div>
               )}
             </button>
           ))}
         </div>
         {posts.length === 0 && (
-          <div className="mt-8 text-center text-white/50 text-sm">No posts yet.</div>
+          <div className="mt-8 text-center text-white/50 text-sm">{t("No posts yet.", "Aún no hay publicaciones.")}</div>
         )}
       </main>
 
@@ -340,32 +343,32 @@ export default function PublicProfile() {
           <AlertDialogHeader>
             <AlertDialogTitle>
               {confirmKind === "decline"
-                ? `Decline request from ${profile?.name || profile?.username || "this person"}?`
+                ? t(`Decline request from ${profile?.name || profile?.username || "this person"}?`, `¿Rechazar solicitud de ${profile?.name || profile?.username || "esta persona"}?`)
                 : confirmKind === "cancel"
-                ? `Cancel friend request?`
-                : `Remove ${profile?.name || profile?.username || "this person"} as a friend?`}
+                ? t(`Cancel friend request?`, `¿Cancelar solicitud de amistad?`)
+                : t(`Remove ${profile?.name || profile?.username || "this person"} as a friend?`, `¿Eliminar a ${profile?.name || profile?.username || "esta persona"} como amigo?`)}
             </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
               {confirmKind === "decline"
-                ? "They will not be notified."
+                ? t("They will not be notified.", "No se les notificará.")
                 : confirmKind === "cancel"
-                ? "Your pending request will be removed."
-                : "You can send a new friend request later."}
+                ? t("Your pending request will be removed.", "Se eliminará tu solicitud pendiente.")
+                : t("You can send a new friend request later.", "Puedes enviar una nueva solicitud de amistad más tarde.")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
-              Keep
+              {t("Keep", "Mantener")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={runConfirmed}
               className="bg-red-500/90 hover:bg-red-500 text-white"
             >
               {confirmKind === "decline"
-                ? "Decline"
+                ? t("Decline", "Rechazar")
                 : confirmKind === "cancel"
-                ? "Cancel request"
-                : "Remove"}
+                ? t("Cancel request", "Cancelar solicitud")
+                : t("Remove", "Eliminar")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

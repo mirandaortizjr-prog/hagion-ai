@@ -362,7 +362,7 @@ export default function Friends() {
             aria-label={t("Invite friends", "Invitar amigos")}
             className="h-9 px-3 rounded-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/40 flex items-center gap-1.5 text-xs font-medium text-white hover:from-primary/40 hover:to-primary/20"
           >
-            <Share2 className="w-3.5 h-3.5" /> Invite
+            <Share2 className="w-3.5 h-3.5" /> {t("Invite", "Invitar")}
           </button>
           <button
             onClick={() => navigate("/community/messages")}
@@ -373,7 +373,7 @@ export default function Friends() {
           </button>
         </div>
         <div className="max-w-3xl mx-auto px-4 pb-3 flex gap-2">
-          {(["friends", "requests", "discover"] as Tab[]).map((t) => {
+          {(["friends", "requests", "discover"] as Tab[]).map((tabOption) => {
             const count = tabOption === "friends" ? friends.length : tabOption === "requests" ? requestsCount : null;
             return (
               <button
@@ -567,7 +567,7 @@ export default function Friends() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
-              t("Keep", "Mantener")
+              {t("Keep", "Mantener")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={runConfirmed}

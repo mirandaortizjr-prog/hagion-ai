@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, Circle, Sparkles, Loader2, Pencil } from "lucide-react";
@@ -9,6 +10,8 @@ import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS, type SermonDraft } from "@/lib/sermonSteps";
 
 const SermonWorkspace = () => {
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -27,7 +30,7 @@ const SermonWorkspace = () => {
         .eq("id", id)
         .maybeSingle();
       if (error || !data) {
-        toast({ title: "Sermon not found", variant: "destructive" });
+        toast({ title: t("Sermon not found", "Sermón no encontrado"), variant: "destructive" });
         navigate("/public-speaking");
         return;
       }
@@ -48,7 +51,7 @@ const SermonWorkspace = () => {
       .update({ title: newTitle, scripture_ref: newScripture })
       .eq("id", draft.id);
     if (error) {
-      toast({ title: "Save failed", variant: "destructive" });
+      toast({ title: t("Save failed", "Error al guardar"), variant: "destructive" });
       return;
     }
     setDraft({ ...draft, title: newTitle, scripture_ref: newScripture });
@@ -81,7 +84,7 @@ const SermonWorkspace = () => {
           </Button>
           <div className="flex-1 text-center">
             <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
-              Sermon Lab
+              {t("Sermon Lab", "Laboratorio de Sermones")}
             </p>
           </div>
           <div className="w-10" />
@@ -96,13 +99,13 @@ const SermonWorkspace = () => {
                 autoFocus
                 value={titleDraft}
                 onChange={(e) => setTitleDraft(e.target.value)}
-                placeholder="Sermon title"
+                placeholder={t("Sermon title", "Título del sermón")}
                 className="bg-transparent border-white/10 text-white text-lg font-semibold"
               />
               <Input
                 value={scriptureDraft}
                 onChange={(e) => setScriptureDraft(e.target.value)}
-                placeholder="Scripture reference (e.g. Romans 8:28-39)"
+                placeholder={t("Scripture reference (e.g. Romans 8:28-39)", "Referencia bíblica (ej. Romanos 8:28-39)")}
                 className="bg-transparent border-white/10 text-white/90 text-sm"
               />
               <div className="flex gap-2">
@@ -123,15 +126,15 @@ const SermonWorkspace = () => {
                 <p className="text-[13px] text-accent/90 italic">{draft.scripture_ref}</p>
               )}
               <p className="text-[10px] uppercase tracking-[0.25em] text-white/40 mt-2 flex items-center justify-center gap-1">
-                <Pencil className="w-3 h-3" /> Tap to edit
+                <Pencil className="w-3 h-3" /> {t("Tap to edit", "Toca para editar")}
               </p>
             </button>
           )}
 
-          {/* Progress */}
+          {/* {t("Progress", "Progreso")} */}
           <div className="mb-8">
             <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em] text-white/60 mb-2">
-              <span>Progress</span>
+              <span>{t("Progress", "Progreso")}</span>
               <span>{completed}/10</span>
             </div>
             <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
@@ -177,11 +180,11 @@ const SermonWorkspace = () => {
             className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90 rounded-full text-[14px] font-semibold"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            Assemble & Refine with AI
+            {t("Assemble & Refine with AI", "Ensamblar & Pulir con IA")}
           </Button>
           {completed === 0 && (
             <p className="text-center text-[12px] text-white/40 mt-3">
-              Write at least one step to enable AI refinement.
+              {t("Write at least one step to enable AI refinement.", "Escribe al menos un paso para habilitar el pulido con IA.")}
             </p>
           )}
         </div>
