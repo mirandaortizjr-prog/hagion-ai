@@ -161,7 +161,7 @@ export default function DiscussionsPage() {
       prof?.username?.trim() ||
       user.user_metadata?.name ||
       user.user_metadata?.full_name ||
-      "Believer";
+      t("Believer", "Creyente");
     const content = `**${title}**\n\n${body}`;
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
@@ -328,7 +328,7 @@ export default function DiscussionsPage() {
                             ? "text-amber-300 bg-amber-300/15"
                             : "text-white/50 hover:text-white hover:bg-white/10"
                         )}
-                        aria-label="upvote"
+                        aria-label={t("upvote", "votar a favor")}
                       >
                         <ArrowBigUp className="w-5 h-5" strokeWidth={voted ? 2.4 : 2} />
                       </button>
@@ -344,7 +344,7 @@ export default function DiscussionsPage() {
                           {c.emoji} {language === "es" ? c.es : c.en}
                         </span>
                         <span>·</span>
-                        <span>{p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || "Believer"}</span>
+                        <span>{p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || t("Believer", "Creyente")}</span>
                         <span>·</span>
                         <span>{formatDistanceToNow(new Date(p.created_at), { addSuffix: true })}</span>
                       </div>

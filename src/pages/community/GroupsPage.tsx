@@ -29,6 +29,7 @@ import {
   DoorOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Group {
   id: string;
@@ -46,6 +47,8 @@ type Tab = "rooms" | "church";
 export default function GroupsPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const handleBack = useSafeBackNavigation("/community");
 
   const [user, setUser] = useState<any>(null);
@@ -140,7 +143,7 @@ export default function GroupsPage() {
     if (!user) return navigate("/auth");
     const n = reqName.trim();
     if (!n) {
-      toast({ title: "Room name is required", variant: "destructive" });
+      toast({ title: t("Room name is required", "El nombre de la sala es obligatorio"), variant: "destructive" });
       return;
     }
     setSubmitting(true);
@@ -152,14 +155,14 @@ export default function GroupsPage() {
     });
     setSubmitting(false);
     if (error) {
-      toast({ title: "Could not submit", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not submit", "No se pudo enviar"), description: error.message, variant: "destructive" });
       return;
     }
     setReqName("");
     setReqDesc("");
     setReqWhy("");
     setRequestOpen(false);
-    toast({ title: "Request submitted", description: "We'll review it shortly." });
+    toast({ title: t("Request submitted", "Solicitud enviada"), description: t("We'll review it shortly.", "La revisaremos pronto.") });
   };
 
   const handleJoinChurch = async () => {
@@ -171,13 +174,13 @@ export default function GroupsPage() {
     setJoining(false);
     if (error || !(data as any)?.ok) {
       toast({
-        title: "Could not join",
-        description: (data as any)?.error === "invalid_code" ? "Invite code not found" : (error?.message || "Try again"),
+        title: t("Could not join", "No se pudo unir"),
+        description: (data as any)?.error === "invalid_code" ? t("Invite code not found", "Código de invitación no encontrado") : (error?.message || t("Try again", "Inténtalo de nuevo")),
         variant: "destructive",
       });
       return;
     }
-    toast({ title: "Welcome to your church 🏛️" });
+    toast({ title: t("Welcome to your church 🏛️", "Bienvenido a tu iglesia 🏛️") });
     setJoinCode("");
     load();
   };
@@ -190,21 +193,21 @@ export default function GroupsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleBack}
-              aria-label="Back"
+              aria-label={t("Back", "Atrás")}
               className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
 
             <h1 className="flex-1 font-playfair text-xl leading-none tracking-tight text-white truncate">
-              {tab === "rooms" ? "Rooms" : "My Church"}
+              {tab === "rooms" ? t("Rooms", "Salas") : t("My Church", "Mi Iglesia")}
             </h1>
 
             {tab === "rooms" && (
               !searchOpen ? (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  aria-label="Search"
+                  aria-label={t("Search", "Buscar")}
                   className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
                 >
                   <Search className="w-4 h-4" />
@@ -212,7 +215,7 @@ export default function GroupsPage() {
               ) : (
                 <button
                   onClick={() => { setSearchOpen(false); setSearch(""); }}
-                  aria-label="Close search"
+                  aria-label={t("Close search", "Cerrar búsqueda")}
                   className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
                 >
                   <X className="w-4 h-4" />
@@ -228,7 +231,7 @@ export default function GroupsPage() {
                 ref={searchRef}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search rooms"
+                placeholder={t("Search rooms", "Buscar salas")}
                 className="pl-9 h-9 text-[13px] rounded-full bg-white/[0.05] border-white/10 text-white placeholder:text-white/40"
               />
             </div>
@@ -239,24 +242,24 @@ export default function GroupsPage() {
         <div className="flex items-center gap-1 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/10">
           {(
             [
-              { id: "rooms", label: "Rooms", icon: DoorOpen },
-              { id: "church", label: "My Church", icon: ChurchIcon },
+              { id: "rooms", label: t("Rooms", "Salas"), icon: DoorOpen },
+              { id: "church", label: t("My Church", "Mi Iglesia"), icon: ChurchIcon },
             ] as const
-          ).map((t) => {
-            const Icon = t.icon;
+          ).map((tab_) => {
+            const Icon = tab_.icon;
             return (
               <button
-                key={t.id}
-                onClick={() => setTab(t.id as Tab)}
+                key={tab_.id}
+                onClick={() => setTab(tab_.id as Tab)}
                 className={cn(
                   "flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 rounded-full text-[11.5px] tracking-wide font-medium transition-all active:scale-95",
-                  tab === t.id
+                  tab === tab_.id
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-white/55 hover:text-white/85",
                 )}
               >
                 <Icon className="w-3.5 h-3.5" />
-                {t.label}
+                {tab_.label}
               </button>
             );
           })}
@@ -271,36 +274,36 @@ export default function GroupsPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-[13px] font-medium text-white leading-tight">
-                  Open to the whole Body
+                  {t("Open to the whole Body", "Abierto a todo el Cuerpo")}
                 </div>
                 <div className="text-[11px] text-white/55 mt-0.5">
-                  Jump into any room. Same family, different conversations.
+                  {t("Jump into any room. Same family, different conversations.", "Únete a cualquier sala. Misma familia, distintas conversaciones.")}
                 </div>
               </div>
               <Dialog open={requestOpen} onOpenChange={setRequestOpen}>
                 <DialogTrigger asChild>
                   <Button size="sm" className="rounded-full h-8 px-3 text-[12px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90">
                     <Plus className="w-3.5 h-3.5" />
-                    Request
+                    {t("Request", "Solicitar")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
                   <DialogHeader>
-                    <DialogTitle className="font-playfair text-xl">Request a Room</DialogTitle>
+                    <DialogTitle className="font-playfair text-xl">{t("Request a Room", "Solicitar una Sala")}</DialogTitle>
                     <DialogDescription className="text-white/55 text-[13px]">
-                      We curate Rooms to keep conversations focused. Tell us what you'd add.
+                      {t("We curate Rooms to keep conversations focused. Tell us what you'd add.", "Curamos las Salas para mantener las conversaciones enfocadas. Cuéntanos qué aportarías.")}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-3 mt-2">
-                    <Input value={reqName} onChange={(e) => setReqName(e.target.value)} placeholder="Room name" maxLength={60}
+                    <Input value={reqName} onChange={(e) => setReqName(e.target.value)} placeholder={t("Room name", "Nombre de la sala")} maxLength={60}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 h-10 rounded-xl" />
-                    <Textarea value={reqDesc} onChange={(e) => setReqDesc(e.target.value)} placeholder="What's it about?" rows={2} maxLength={200}
+                    <Textarea value={reqDesc} onChange={(e) => setReqDesc(e.target.value)} placeholder={t("What's it about?", "¿De qué se trata?")} rows={2} maxLength={200}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none" />
-                    <Textarea value={reqWhy} onChange={(e) => setReqWhy(e.target.value)} placeholder="Why does it belong? (optional)" rows={2} maxLength={300}
+                    <Textarea value={reqWhy} onChange={(e) => setReqWhy(e.target.value)} placeholder={t("Why does it belong? (optional)", "¿Por qué encaja? (opcional)")} rows={2} maxLength={300}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none" />
                     <Button onClick={submitRequest} disabled={submitting || !reqName.trim()}
                       className="w-full h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                      {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Submit Request <ArrowRight className="w-4 h-4" /></>}
+                      {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{t("Submit Request", "Enviar solicitud")} <ArrowRight className="w-4 h-4" /></>}
                     </Button>
                   </div>
                 </DialogContent>
@@ -318,8 +321,8 @@ export default function GroupsPage() {
                   <div className="mx-auto w-12 h-12 rounded-xl bg-white/[0.06] ring-1 ring-white/15 flex items-center justify-center mb-3">
                     <DoorOpen className="w-5 h-5 text-white/70" />
                   </div>
-                  <h3 className="font-playfair text-lg mb-1">No rooms found</h3>
-                  <p className="text-[12px] text-white/55">Try a different search.</p>
+                  <h3 className="font-playfair text-lg mb-1">{t("No rooms found", "No se encontraron salas")}</h3>
+                  <p className="text-[12px] text-white/55">{t("Try a different search.", "Prueba otra búsqueda.")}</p>
                 </div>
               ) : (
                 filtered.map((g) => {
@@ -339,7 +342,7 @@ export default function GroupsPage() {
                         >
                           <h4 className="text-[14px] font-semibold text-white leading-tight truncate">{g.name}</h4>
                           <div className="text-[11px] text-white/50 mt-0.5">
-                            {g.member_count} {g.member_count === 1 ? "member" : "members"}
+                            {g.member_count} {g.member_count === 1 ? t("member", "miembro") : t("members", "miembros")}
                             {g.description && <span className="text-white/40"> · {g.description}</span>}
                           </div>
                         </button>
@@ -353,8 +356,8 @@ export default function GroupsPage() {
                           )}
                         >
                           {joined ? (
-                            <span className="inline-flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Joined</span>
-                          ) : "Join"}
+                            <span className="inline-flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> {t("Joined", "Unido")}</span>
+                          ) : t("Join", "Unirse")}
                         </button>
                       </div>
                     </div>
@@ -381,7 +384,7 @@ export default function GroupsPage() {
                       {myChurch.verified && <CheckCircle2 className="w-3.5 h-3.5 text-sky-300" />}
                     </div>
                     <div className="text-[11.5px] text-white/55 mt-0.5">
-                      {[myChurch.city, myChurch.state].filter(Boolean).join(", ") || "Your local body"} · {myChurch.member_count || 0} members
+                      {[myChurch.city, myChurch.state].filter(Boolean).join(", ") || t("Your local body", "Tu cuerpo local")} · {myChurch.member_count || 0} {t("members", "miembros")}
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 text-white/40" />
@@ -394,24 +397,24 @@ export default function GroupsPage() {
                     <ChurchIcon className="w-5 h-5 text-amber-100" />
                   </div>
                   <div>
-                    <h3 className="font-playfair text-[16px]">Join your church</h3>
-                    <p className="text-[11.5px] text-white/55">Enter the invite code from your pastor.</p>
+                    <h3 className="font-playfair text-[16px]">{t("Join your church", "Únete a tu iglesia")}</h3>
+                    <p className="text-[11.5px] text-white/55">{t("Enter the invite code from your pastor.", "Ingresa el código de invitación de tu pastor.")}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <Input
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value)}
-                    placeholder="invite code"
+                    placeholder={t("invite code", "código de invitación")}
                     className="h-10 rounded-xl bg-white/5 border-white/15 text-white placeholder:text-white/35 font-mono tracking-wider"
                   />
                   <Button onClick={handleJoinChurch} disabled={joining || !joinCode.trim()}
                     className="h-10 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 px-4">
-                    {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join"}
+                    {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : t("Join", "Unirse")}
                   </Button>
                 </div>
                 <p className="mt-3 text-[11px] text-white/45">
-                  Are you a pastor? <button onClick={() => navigate("/community/my-church?register=1")} className="underline hover:text-white/80">Register your church</button>
+                  {t("Are you a pastor?", "¿Eres pastor?")} <button onClick={() => navigate("/community/my-church?register=1")} className="underline hover:text-white/80">{t("Register your church", "Registra tu iglesia")}</button>
                 </p>
               </div>
             )}
