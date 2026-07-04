@@ -406,7 +406,7 @@ export default function PrayerWall() {
     });
     setPosting(false);
     if (error) {
-      toast({ title: "Could not post", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not post", "No se pudo publicar"), description: error.message, variant: "destructive" });
     } else {
       setComposer("");
       loadAll();
