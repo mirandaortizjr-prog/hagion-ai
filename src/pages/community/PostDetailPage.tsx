@@ -110,7 +110,7 @@ export default function PostDetailPage() {
   return (
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Post" />
+        <CommunityHeader title={t("Post", "Publicación")} />
 
         <article className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] p-5 mb-6">
           <div className="flex items-center gap-3 mb-3">
