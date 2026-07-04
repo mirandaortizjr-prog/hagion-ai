@@ -428,7 +428,7 @@ export default function ReelsFeedPage() {
           </div>
         </div>
       ) : reels.length === 0 ? (
-        <EmptyState onBack={handleBack} />
+        <EmptyState onBack={handleBack} t={t} />
       ) : (
         <div
           ref={containerRef}
