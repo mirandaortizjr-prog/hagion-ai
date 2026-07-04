@@ -179,11 +179,11 @@ export default function PostDetailPage() {
           </div>
         </article>
 
-        <h2 className="font-playfair text-xl mb-3 px-1">Comments</h2>
+        <h2 className="font-playfair text-xl mb-3 px-1">{t("Comments", "Comentarios")}</h2>
         <div className="space-y-3 mb-6">
           {comments.length === 0 ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 text-center text-white/60">
-              No comments yet. Be the first to encourage.
+              {t("No comments yet. Be the first to encourage.", "Aún no hay comentarios. Sé el primero en animar.")}
             </div>
           ) : (
             comments.map((c) => (
