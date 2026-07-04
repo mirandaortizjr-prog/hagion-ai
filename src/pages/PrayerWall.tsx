@@ -561,10 +561,10 @@ export default function PrayerWall() {
           <section className="w-full mt-1.5">
             <div className="grid grid-cols-2 items-center gap-2 sm:gap-3 max-w-sm mx-auto px-2">
               {[
-                { label: "Clips", icon: Play, onClick: () => navigate("/community/reels/feed") },
-                { label: "Vids", icon: Video, onClick: () => navigate("/community/videos") },
-              ].map((t, i) => {
-                const Icon = t.icon;
+                { label: t("Clips", "Clips"), icon: Play, onClick: () => navigate("/community/reels/feed") },
+                { label: t("Vids", "Vids"), icon: Video, onClick: () => navigate("/community/videos") },
+              ].map((tab, i) => {
+                const Icon = tab.icon;
                 return (
                 <button
                     key={i}
