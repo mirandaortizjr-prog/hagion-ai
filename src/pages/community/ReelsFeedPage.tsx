@@ -653,18 +653,28 @@ function ReelItem({
 
         <div className="relative mt-1">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-white/35 via-white/15 to-white/5 ring-2 ring-white/40 flex items-center justify-center overflow-hidden">
-            <span className="font-playfair text-base text-white">{initial}</span>
+            {reel.author_avatar_url ? (
+              <img
+                src={reel.author_avatar_url}
+                alt={reel.author_name || "avatar"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="font-playfair text-base text-white">{initial}</span>
+            )}
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onFollow();
-            }}
-            className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
-            aria-label="Follow"
-          >
-            <Plus className="w-3 h-3 text-white" strokeWidth={3} />
-          </button>
+          {!isSelf && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onFollow();
+              }}
+              className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-rose-500 ring-2 ring-black flex items-center justify-center active:scale-90 transition"
+              aria-label="Follow"
+            >
+              <Plus className="w-3 h-3 text-white" strokeWidth={3} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -673,10 +683,14 @@ function ReelItem({
           <div className="text-sm font-medium text-white">
             @{reel.author_name || "anonymous"}
           </div>
-          <span className="w-1 h-1 rounded-full bg-white/40" />
-          <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
-            Follow
-          </button>
+          {!isSelf && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-white/40" />
+              <button className="text-[10px] uppercase tracking-[0.18em] text-white/85 border border-white/30 rounded-full px-2 py-0.5 active:scale-95 transition">
+                Follow
+              </button>
+            </>
+          )}
         </div>
         {reel.title && (
           <h3 className="font-playfair text-[15px] leading-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] mb-1">
