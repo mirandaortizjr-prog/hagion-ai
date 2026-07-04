@@ -374,6 +374,35 @@ export type Database = {
           },
         ]
       }
+      devotional_daily_pick: {
+        Row: {
+          created_at: string
+          devotional_id: string
+          language: string
+          pick_date: string
+        }
+        Insert: {
+          created_at?: string
+          devotional_id: string
+          language?: string
+          pick_date: string
+        }
+        Update: {
+          created_at?: string
+          devotional_id?: string
+          language?: string
+          pick_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_daily_pick_devotional_id_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "user_devotionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       discernment_usage: {
         Row: {
           count: number
@@ -1681,6 +1710,190 @@ export type Database = {
         }
         Relationships: []
       }
+      user_devotional_comment_reactions: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          reaction: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          reaction: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          reaction?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_devotional_comment_reactions_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "user_devotional_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_devotional_comments: {
+        Row: {
+          amen_count: number
+          author_id: string
+          body: string
+          created_at: string
+          devotional_id: string
+          encouraged_count: number
+          id: string
+          insight_count: number
+          parent_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amen_count?: number
+          author_id: string
+          body: string
+          created_at?: string
+          devotional_id: string
+          encouraged_count?: number
+          id?: string
+          insight_count?: number
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amen_count?: number
+          author_id?: string
+          body?: string
+          created_at?: string
+          devotional_id?: string
+          encouraged_count?: number
+          id?: string
+          insight_count?: number
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_devotional_comments_devotional_id_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "user_devotionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_devotional_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "user_devotional_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_devotional_saves: {
+        Row: {
+          created_at: string
+          devotional_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          devotional_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          devotional_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_devotional_saves_devotional_id_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "user_devotionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_devotionals: {
+        Row: {
+          amen_count: number
+          author_id: string
+          comment_count: number
+          created_at: string
+          featured_count: number
+          id: string
+          language: string
+          last_featured_at: string | null
+          moderation_feedback: Json | null
+          moderation_score: number | null
+          prayer: string
+          read_count: number
+          reflection: string
+          save_count: number
+          scripture_ref: string
+          scripture_text: string | null
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amen_count?: number
+          author_id: string
+          comment_count?: number
+          created_at?: string
+          featured_count?: number
+          id?: string
+          language?: string
+          last_featured_at?: string | null
+          moderation_feedback?: Json | null
+          moderation_score?: number | null
+          prayer: string
+          read_count?: number
+          reflection: string
+          save_count?: number
+          scripture_ref: string
+          scripture_text?: string | null
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amen_count?: number
+          author_id?: string
+          comment_count?: number
+          created_at?: string
+          featured_count?: number
+          id?: string
+          language?: string
+          last_featured_at?: string | null
+          moderation_feedback?: Json | null
+          moderation_score?: number | null
+          prayer?: string
+          read_count?: number
+          reflection?: string
+          save_count?: number
+          scripture_ref?: string
+          scripture_text?: string | null
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_message_usage: {
         Row: {
           created_at: string
@@ -1810,6 +2023,7 @@ export type Database = {
       }
       is_staff_email: { Args: { p_user_id: string }; Returns: boolean }
       join_church_by_code: { Args: { p_code: string }; Returns: Json }
+      pick_daily_devotional: { Args: { p_date?: string }; Returns: string }
       remove_friendship: { Args: { p_target: string }; Returns: Json }
       respond_friend_request: {
         Args: { p_accept: boolean; p_friendship_id: string }
