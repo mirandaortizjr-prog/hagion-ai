@@ -313,9 +313,9 @@ export default function VideosPage() {
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
-      toast({ title: "Link copied", description: url });
+      toast({ title: t("Link copied", "Enlace copiado"), description: url });
     } catch {
-      toast({ title: "Share link", description: url });
+      toast({ title: t("Share link", "Enlace para compartir"), description: url });
     }
   };
 
