@@ -527,6 +527,7 @@ function VideoFeedItem({
   onPlaybackError,
   registerVideo,
   onProgress,
+  t,
 }: VideoFeedItemProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [expanded, setExpanded] = useState(false);
