@@ -218,13 +218,13 @@ export default function PrayerWall() {
     }
     setCreatingGroup(false);
     if (error) {
-      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not create group", "No se pudo crear el grupo"), description: error.message, variant: "destructive" });
       return;
     }
     setNewGroupName("");
     setNewGroupDesc("");
     setCreateGroupOpen(false);
-    toast({ title: "Group created" });
+    toast({ title: t("Group created", "Grupo creado") });
     loadAll();
     navigate(`/community/group/${data!.id}`);
   };
