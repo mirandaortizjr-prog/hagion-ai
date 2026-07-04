@@ -535,6 +535,7 @@ interface ReelItemProps {
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
+  t: (en: string, es: string) => string;
 }
 
 function ReelItem({
