@@ -19,12 +19,16 @@ import {
   Users,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { es as esLocale } from "date-fns/locale";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MyChurchPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [params] = useSearchParams();
   const handleBack = useSafeBackNavigation("/community/groups");
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
 
   const [user, setUser] = useState<any>(null);
   const [church, setChurch] = useState<any>(null);
@@ -70,7 +74,7 @@ export default function MyChurchPage() {
 
   const registerChurch = async () => {
     if (!user) return navigate("/auth");
-    if (!name.trim()) { toast({ title: "Church name required", variant: "destructive" }); return; }
+    if (!name.trim()) { toast({ title: t("Church name required", "Se requiere el nombre de la iglesia"), variant: "destructive" }); return; }
     setSubmitting(true);
     const { data, error } = await (supabase.from("churches") as any).insert({
       name: name.trim(),
@@ -82,7 +86,7 @@ export default function MyChurchPage() {
     }).select().single();
     if (error || !data) {
       setSubmitting(false);
-      toast({ title: "Could not register", description: error?.message, variant: "destructive" });
+      toast({ title: t("Could not register", "No se pudo registrar"), description: error?.message, variant: "destructive" });
       return;
     }
     // auto-join as pastor
@@ -90,14 +94,14 @@ export default function MyChurchPage() {
       church_id: data.id, user_id: user.id, role: "pastor",
     });
     setSubmitting(false);
-    toast({ title: "Church registered 🏛️" });
+    toast({ title: t("Church registered 🏛️", "Iglesia registrada 🏛️") });
     setRegistering(false);
     window.location.reload();
   };
 
   const leaveChurch = async () => {
     if (!user || !church) return;
-    if (!window.confirm(`Leave ${church.name}?`)) return;
+    if (!window.confirm(t(`Leave ${church.name}?`, `¿Salir de ${church.name}?`))) return;
     await supabase.from("church_members" as any).delete().eq("user_id", user.id).eq("church_id", church.id);
     window.location.reload();
   };
@@ -105,7 +109,7 @@ export default function MyChurchPage() {
   const copyCode = async () => {
     if (!church?.invite_code) return;
     await navigator.clipboard.writeText(church.invite_code);
-    toast({ title: "Invite code copied" });
+    toast({ title: t("Invite code copied", "Código de invitación copiado") });
   };
 
   const shareLink = async () => {
@@ -113,7 +117,7 @@ export default function MyChurchPage() {
     const url = `${window.location.origin}/join-church/${church.invite_code}`;
     try {
       if (navigator.share) await navigator.share({ title: church.name, url });
-      else { await navigator.clipboard.writeText(url); toast({ title: "Link copied" }); }
+      else { await navigator.clipboard.writeText(url); toast({ title: t("Link copied", "Enlace copiado") }); }
     } catch {}
   };
 
@@ -122,14 +126,14 @@ export default function MyChurchPage() {
     setPosting(true);
     const { error } = await (supabase.from("posts") as any).insert({
       user_id: user.id,
-      author_name: user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: user.user_metadata?.name || user.email?.split("@")[0] || t("Believer", "Creyente"),
       content: composer.trim(),
       post_type: "post",
       church_id: church.id,
       visibility: "church",
     });
     setPosting(false);
-    if (error) { toast({ title: "Could not post", description: error.message, variant: "destructive" }); return; }
+    if (error) { toast({ title: t("Could not post", "No se pudo publicar"), description: error.message, variant: "destructive" }); return; }
     setComposer("");
     const { data: p } = await (supabase.from("posts") as any)
       .select("*").eq("church_id", church.id).order("created_at", { ascending: false }).limit(50);
@@ -143,15 +147,15 @@ export default function MyChurchPage() {
           <button onClick={handleBack} className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95">
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <h1 className="flex-1 font-playfair text-xl tracking-tight truncate">My Church</h1>
+          <h1 className="flex-1 font-playfair text-xl tracking-tight truncate">{t("My Church", "Mi Iglesia")}</h1>
         </header>
 
         {loading ? (
           <div className="flex items-center justify-center py-20 text-white/40"><Loader2 className="w-5 h-5 animate-spin" /></div>
         ) : !user ? (
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center">
-            <p className="text-white/70 mb-3">Sign in to join your church.</p>
-            <Button onClick={() => navigate("/auth")} className="rounded-full">Sign in</Button>
+            <p className="text-white/70 mb-3">{t("Sign in to join your church.", "Inicia sesión para unirte a tu iglesia.")}</p>
+            <Button onClick={() => navigate("/auth")} className="rounded-full">{t("Sign in", "Iniciar sesión")}</Button>
           </div>
         ) : registering || (!church && params.get("register") === "1") ? (
           <section className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-5 space-y-3 animate-fade-in">
@@ -160,28 +164,28 @@ export default function MyChurchPage() {
                 <ChurchIcon className="w-5 h-5 text-amber-100" />
               </div>
               <div>
-                <h3 className="font-playfair text-[16px]">Register your church</h3>
-                <p className="text-[11.5px] text-white/55">For pastors and church leaders.</p>
+                <h3 className="font-playfair text-[16px]">{t("Register your church", "Registra tu iglesia")}</h3>
+                <p className="text-[11.5px] text-white/55">{t("For pastors and church leaders.", "Para pastores y líderes de iglesia.")}</p>
               </div>
             </div>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Church name" maxLength={120} className="h-10 rounded-xl bg-white/5 border-white/15" />
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("Church name", "Nombre de la iglesia")} maxLength={120} className="h-10 rounded-xl bg-white/5 border-white/15" />
             <div className="grid grid-cols-2 gap-2">
-              <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" className="h-10 rounded-xl bg-white/5 border-white/15" />
-              <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State" className="h-10 rounded-xl bg-white/5 border-white/15" />
+              <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("City", "Ciudad")} className="h-10 rounded-xl bg-white/5 border-white/15" />
+              <Input value={state} onChange={(e) => setState(e.target.value)} placeholder={t("State", "Estado")} className="h-10 rounded-xl bg-white/5 border-white/15" />
             </div>
-            <Input value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Country" className="h-10 rounded-xl bg-white/5 border-white/15" />
-            <Textarea value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Brief description (optional)" rows={2} className="rounded-xl bg-white/5 border-white/15 resize-none" />
+            <Input value={country} onChange={(e) => setCountry(e.target.value)} placeholder={t("Country", "País")} className="h-10 rounded-xl bg-white/5 border-white/15" />
+            <Textarea value={desc} onChange={(e) => setDesc(e.target.value)} placeholder={t("Brief description (optional)", "Breve descripción (opcional)")} rows={2} className="rounded-xl bg-white/5 border-white/15 resize-none" />
             <Button onClick={registerChurch} disabled={submitting || !name.trim()} className="w-full h-10 rounded-full bg-primary text-primary-foreground">
-              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Register Church"}
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : t("Register Church", "Registrar Iglesia")}
             </Button>
-            <p className="text-[10.5px] text-white/45 text-center">Verification by Hagion staff happens after registration.</p>
+            <p className="text-[10.5px] text-white/45 text-center">{t("Verification by Hagion staff happens after registration.", "La verificación por el equipo de Hagion se realiza tras el registro.")}</p>
           </section>
         ) : !church ? (
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-center space-y-3">
-            <p className="text-white/70">You haven't joined a church yet.</p>
+            <p className="text-white/70">{t("You haven't joined a church yet.", "Aún no te has unido a una iglesia.")}</p>
             <div className="flex gap-2 justify-center">
-              <Button onClick={() => navigate("/community/groups")} variant="outline" className="rounded-full border-white/20 bg-white/5">Find via invite</Button>
-              <Button onClick={() => setRegistering(true)} className="rounded-full">Register church</Button>
+              <Button onClick={() => navigate("/community/groups")} variant="outline" className="rounded-full border-white/20 bg-white/5">{t("Find via invite", "Buscar por invitación")}</Button>
+              <Button onClick={() => setRegistering(true)} className="rounded-full">{t("Register church", "Registrar iglesia")}</Button>
             </div>
           </div>
         ) : (
@@ -203,7 +207,7 @@ export default function MyChurchPage() {
                     </div>
                   )}
                   <div className="text-[11.5px] text-white/55 mt-0.5 inline-flex items-center gap-1">
-                    <Users className="w-3 h-3" /> {church.member_count || 0} members
+                    <Users className="w-3 h-3" /> {church.member_count || 0} {t("members", "miembros")}
                   </div>
                 </div>
               </div>
@@ -211,16 +215,16 @@ export default function MyChurchPage() {
               {/* Invite */}
               <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-2.5 flex items-center gap-2">
                 <code className="flex-1 font-mono text-[12px] tracking-wider text-white/80 px-2">{church.invite_code}</code>
-                <button onClick={copyCode} className="h-7 w-7 rounded-md hover:bg-white/10 flex items-center justify-center" aria-label="Copy">
+                <button onClick={copyCode} className="h-7 w-7 rounded-md hover:bg-white/10 flex items-center justify-center" aria-label={t("Copy", "Copiar")}>
                   <Copy className="w-3.5 h-3.5 text-white/70" />
                 </button>
-                <button onClick={shareLink} className="h-7 w-7 rounded-md hover:bg-white/10 flex items-center justify-center" aria-label="Share">
+                <button onClick={shareLink} className="h-7 w-7 rounded-md hover:bg-white/10 flex items-center justify-center" aria-label={t("Share", "Compartir")}>
                   <Share2 className="w-3.5 h-3.5 text-white/70" />
                 </button>
               </div>
 
               <button onClick={leaveChurch} className="mt-2 text-[11px] text-white/40 hover:text-white/70 inline-flex items-center gap-1">
-                <LogOut className="w-3 h-3" /> Leave church
+                <LogOut className="w-3 h-3" /> {t("Leave church", "Salir de la iglesia")}
               </button>
             </section>
 
@@ -229,14 +233,14 @@ export default function MyChurchPage() {
               <Textarea
                 value={composer}
                 onChange={(e) => setComposer(e.target.value)}
-                placeholder={`Share with ${church.name}…`}
+                placeholder={t(`Share with ${church.name}…`, `Comparte con ${church.name}…`)}
                 rows={2}
                 className="resize-none bg-transparent border-0 focus-visible:ring-0 text-[14px] text-white placeholder:text-white/40"
               />
               <div className="flex items-center justify-between mt-1">
-                <p className="text-[10.5px] text-white/40">Only members see church posts.</p>
+                <p className="text-[10.5px] text-white/40">{t("Only members see church posts.", "Solo los miembros ven las publicaciones de la iglesia.")}</p>
                 <Button size="sm" onClick={post} disabled={posting || !composer.trim()} className="h-8 rounded-full">
-                  {posting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Post"}
+                  {posting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : t("Post", "Publicar")}
                 </Button>
               </div>
             </section>
@@ -245,13 +249,13 @@ export default function MyChurchPage() {
             <section className="space-y-2">
               {posts.length === 0 ? (
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center text-white/50 text-[13px]">
-                  No posts yet. Be the first to share.
+                  {t("No posts yet. Be the first to share.", "Aún no hay publicaciones. Sé el primero en compartir.")}
                 </div>
               ) : posts.map((p) => (
                 <article key={p.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-3.5">
                   <div className="text-[12px] text-white/65 mb-1.5 flex items-center gap-2">
-                    <span className="font-medium text-white/90">{p.author_name || "Believer"}</span>
-                    <span className="text-white/35">· {formatDistanceToNow(new Date(p.created_at), { addSuffix: true })}</span>
+                    <span className="font-medium text-white/90">{p.author_name || t("Believer", "Creyente")}</span>
+                    <span className="text-white/35">· {formatDistanceToNow(new Date(p.created_at), { addSuffix: true, locale: language === "es" ? esLocale : undefined })}</span>
                   </div>
                   <p className="text-[14px] leading-relaxed text-white/90 whitespace-pre-wrap">{p.content}</p>
                 </article>
