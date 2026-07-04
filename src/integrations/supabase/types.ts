@@ -127,6 +127,45 @@ export type Database = {
         }
         Relationships: []
       }
+      content_reports: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          reporter_id: string
+          reviewer_notes: string | null
+          status: string
+          target_id: string
+          target_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          reporter_id: string
+          reviewer_notes?: string | null
+          status?: string
+          target_id: string
+          target_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          reporter_id?: string
+          reviewer_notes?: string | null
+          status?: string
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           created_at: string
@@ -2030,6 +2069,24 @@ export type Database = {
         Returns: Json
       }
       send_friend_request: { Args: { p_target: string }; Returns: Json }
+      submit_user_devotional: {
+        Args: {
+          p_language: string
+          p_prayer: string
+          p_reflection: string
+          p_scripture_ref: string
+          p_scripture_text: string
+          p_tags: string[]
+          p_title: string
+        }
+        Returns: {
+          allowed: boolean
+          daily_limit: number
+          error: string
+          id: string
+          remaining: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator"
