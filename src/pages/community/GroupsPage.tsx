@@ -231,7 +231,7 @@ export default function GroupsPage() {
                 ref={searchRef}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search rooms"
+                placeholder={t("Search rooms", "Buscar salas")}
                 className="pl-9 h-9 text-[13px] rounded-full bg-white/[0.05] border-white/10 text-white placeholder:text-white/40"
               />
             </div>
