@@ -212,7 +212,7 @@ export default function PostDetailPage() {
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Write a comment..."
+            placeholder={t("Write a comment...", "Escribe un comentario...")}
             rows={2}
             className="resize-none bg-black/30 border-white/10 text-white placeholder:text-white/40 rounded-xl"
           />
@@ -222,7 +222,7 @@ export default function PostDetailPage() {
               disabled={!text.trim()}
               className="rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black"
             >
-              <Send className="w-4 h-4 mr-1" /> Post
+              <Send className="w-4 h-4 mr-1" /> {t("Post", "Publicar")}
             </Button>
           </div>
         </div>
