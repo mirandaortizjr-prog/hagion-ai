@@ -193,21 +193,21 @@ export default function GroupsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleBack}
-              aria-label="Back"
+              aria-label={t("Back", "Atrás")}
               className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
 
             <h1 className="flex-1 font-playfair text-xl leading-none tracking-tight text-white truncate">
-              {tab === "rooms" ? "Rooms" : "My Church"}
+              {tab === "rooms" ? t("Rooms", "Salas") : t("My Church", "Mi Iglesia")}
             </h1>
 
             {tab === "rooms" && (
               !searchOpen ? (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  aria-label="Search"
+                  aria-label={t("Search", "Buscar")}
                   className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
                 >
                   <Search className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default function GroupsPage() {
               ) : (
                 <button
                   onClick={() => { setSearchOpen(false); setSearch(""); }}
-                  aria-label="Close search"
+                  aria-label={t("Close search", "Cerrar búsqueda")}
                   className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition active:scale-95"
                 >
                   <X className="w-4 h-4" />
