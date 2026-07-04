@@ -463,7 +463,7 @@ export default function VideosPage() {
           author_name: v.author_name,
           thumbnail_url: v.thumbnail_url,
         }))}
-        placeholder="Search vids…"
+        placeholder={t("Search vids…", "Buscar vids…")}
         onClose={() => setSearchOpen(false)}
         onSelect={(it) => {
           setActiveId(it.id);
