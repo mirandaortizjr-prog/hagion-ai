@@ -38,6 +38,7 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
   const [posting, setPosting] = useState(false);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [myReactions, setMyReactions] = useState<Record<string, Set<string>>>({});
+  const [reportTargetId, setReportTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUid(data.user?.id ?? null));
