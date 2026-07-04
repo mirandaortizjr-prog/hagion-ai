@@ -531,15 +531,15 @@ export default function PrayerWall() {
               </button>
               <div className="mt-2 flex items-center gap-5">
                 <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || t("Believer", "Creyente")}
                 </span>
                 <button
                   type="button"
                   onClick={() => navigate("/friends")}
                   className="text-[10px] font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                  aria-label="View friends"
+                  aria-label={t("View friends", "Ver amigos")}
                 >
-                  {friendsCount} {friendsCount === 1 ? "Friend" : "Friends"}
+                  {friendsCount} {friendsCount === 1 ? t("Friend", "Amigo") : t("Friends", "Amigos")}
                 </button>
               </div>
             </div>
