@@ -118,6 +118,7 @@ export function DevotionalSubmitDialog({
     } else if (modData?.status === "approved") {
       toast.success(t("Approved! Your devotional is in the library.", "¡Aprobado! Tu devocional está en la biblioteca."));
       localStorage.removeItem(DRAFT_KEY);
+      localStorage.setItem(GUIDELINES_ACK_KEY, "1");
       setTitle(""); setScriptureRef(""); setScriptureText(""); setReflection(""); setPrayer(""); setTags("");
     } else if (modData?.status === "needs_revision") {
       toast.warning(t("Needs revision. See feedback in My Devotionals.", "Necesita revisión. Ver feedback en Mis Devocionales."));
