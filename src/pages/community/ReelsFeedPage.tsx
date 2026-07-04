@@ -558,6 +558,7 @@ function ReelItem({
   onPlaybackError,
   registerVideo,
   onProgress,
+  t,
 }: ReelItemProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [expanded, setExpanded] = useState(false);
