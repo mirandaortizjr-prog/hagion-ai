@@ -427,8 +427,8 @@ export default function VideosPage() {
               }}
               onPlaybackError={() =>
                 toast({
-                  title: "Video unavailable",
-                  description: `${v.title} could not be played.`,
+                  title: t("Video unavailable", "Video no disponible"),
+                  description: t(`${v.title} could not be played.`, `${v.title} no se pudo reproducir.`),
                 })
               }
             />
