@@ -197,7 +197,7 @@ export default function PostDetailPage() {
                       {c.author_name?.[0]?.toUpperCase() || "B"}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="text-xs font-semibold">{c.author_name || "Believer"}</div>
+                  <div className="text-xs font-semibold">{c.author_name || t("Believer", "Creyente")}</div>
                   <div className="text-[10px] text-white/40">
                     {formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}
                   </div>
