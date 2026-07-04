@@ -527,6 +527,7 @@ interface ReelItemProps {
   onComment: () => void;
   onMore: () => void;
   onFollow: () => void;
+  isSelf?: boolean;
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number) => void;
