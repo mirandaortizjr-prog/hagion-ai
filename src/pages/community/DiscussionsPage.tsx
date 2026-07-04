@@ -161,7 +161,7 @@ export default function DiscussionsPage() {
       prof?.username?.trim() ||
       user.user_metadata?.name ||
       user.user_metadata?.full_name ||
-      "Believer";
+      t("Believer", "Creyente");
     const content = `**${title}**\n\n${body}`;
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
