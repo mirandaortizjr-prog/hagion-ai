@@ -41,6 +41,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Post {
   id: string;
@@ -130,6 +131,8 @@ const SectionHeader = ({
 export default function PrayerWall() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [user, setUser] = useState<any>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [reels, setReels] = useState<Reel[]>([]);
@@ -164,7 +167,7 @@ export default function PrayerWall() {
     }
     const title = newEventTitle.trim();
     if (!title || !newEventDate) {
-      toast({ title: "Title and date are required", variant: "destructive" });
+      toast({ title: t("Title and date are required", "El título y la fecha son obligatorios"), variant: "destructive" });
       return;
     }
     setCreatingEvent(true);
@@ -177,7 +180,7 @@ export default function PrayerWall() {
     });
     setCreatingEvent(false);
     if (error) {
-      toast({ title: "Could not create event", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not create event", "No se pudo crear el evento"), description: error.message, variant: "destructive" });
       return;
     }
     setNewEventTitle("");
@@ -185,7 +188,7 @@ export default function PrayerWall() {
     setNewEventLocation("");
     setNewEventDesc("");
     setCreateEventOpen(false);
-    toast({ title: "Event created" });
+    toast({ title: t("Event created", "Evento creado") });
     loadAll();
   };
 
@@ -196,7 +199,7 @@ export default function PrayerWall() {
     }
     const name = newGroupName.trim();
     if (!name) {
-      toast({ title: "Group name is required", variant: "destructive" });
+      toast({ title: t("Group name is required", "El nombre del grupo es obligatorio"), variant: "destructive" });
       return;
     }
     setCreatingGroup(true);
@@ -215,13 +218,13 @@ export default function PrayerWall() {
     }
     setCreatingGroup(false);
     if (error) {
-      toast({ title: "Could not create group", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not create group", "No se pudo crear el grupo"), description: error.message, variant: "destructive" });
       return;
     }
     setNewGroupName("");
     setNewGroupDesc("");
     setCreateGroupOpen(false);
-    toast({ title: "Group created" });
+    toast({ title: t("Group created", "Grupo creado") });
     loadAll();
     navigate(`/community/group/${data!.id}`);
   };
@@ -261,7 +264,7 @@ export default function PrayerWall() {
       const f = input.files?.[0];
       if (!f) return;
       if (f.size > 10 * 1024 * 1024) {
-        toast({ title: "File too large", description: "Max 10MB", variant: "destructive" });
+        toast({ title: t("File too large", "Archivo demasiado grande"), description: t("Max 10MB", "Máx. 10MB"), variant: "destructive" });
         return;
       }
       setBannerUploading(true);
@@ -272,7 +275,7 @@ export default function PrayerWall() {
         .upload(path, f, { contentType: f.type, upsert: true });
       if (upErr) {
         setBannerUploading(false);
-        toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+        toast({ title: t("Upload failed", "Error al subir"), description: upErr.message, variant: "destructive" });
         return;
       }
       const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
@@ -281,10 +284,10 @@ export default function PrayerWall() {
         .upsert({ user_id: user.id, banner_url: pub.publicUrl }, { onConflict: "user_id" });
       setBannerUploading(false);
       if (updErr) {
-        toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
+        toast({ title: t("Could not save banner", "No se pudo guardar el banner"), description: updErr.message, variant: "destructive" });
       } else {
         setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl, name: p?.name || null, username: p?.username || null }));
-        toast({ title: "Banner updated" });
+        toast({ title: t("Banner updated", "Banner actualizado") });
       }
     };
     input.click();
@@ -373,7 +376,7 @@ export default function PrayerWall() {
     } else {
       const { error } = await supabase.from("follows").insert({ follower_id: user.id, following_id: targetId });
       if (error) {
-        toast({ title: "Could not follow", description: error.message, variant: "destructive" });
+        toast({ title: t("Could not follow", "No se pudo seguir"), description: error.message, variant: "destructive" });
         return;
       }
       setMyFollowing((s) => new Set(s).add(targetId));
@@ -389,7 +392,7 @@ export default function PrayerWall() {
 
   const handlePost = async () => {
     if (!user) {
-      toast({ title: "Please sign in", description: "Sign in to share with the community" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión"), description: t("Sign in to share with the community", "Inicia sesión para compartir con la comunidad") });
       navigate("/auth");
       return;
     }
@@ -397,13 +400,13 @@ export default function PrayerWall() {
     setPosting(true);
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || t("Believer", "Creyente"),
       post_type: composerType,
       content: composer.trim(),
     });
     setPosting(false);
     if (error) {
-      toast({ title: "Could not post", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not post", "No se pudo publicar"), description: error.message, variant: "destructive" });
     } else {
       setComposer("");
       loadAll();
@@ -436,14 +439,14 @@ export default function PrayerWall() {
 
   const deletePost = async (postId: string) => {
     if (!user) return;
-    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    if (!window.confirm(t("Delete this post? This cannot be undone.", "¿Eliminar esta publicación? No se puede deshacer."))) return;
     const { error } = await supabase.from("posts").delete().eq("id", postId).eq("user_id", user.id);
     if (error) {
-      toast({ title: "Could not delete", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not delete", "No se pudo eliminar"), description: error.message, variant: "destructive" });
       return;
     }
     setPosts((prev) => prev.filter((p) => p.id !== postId));
-    toast({ title: "Post deleted" });
+    toast({ title: t("Post deleted", "Publicación eliminada") });
   };
 
   const sharePost = async (post: Post) => {
@@ -453,7 +456,7 @@ export default function PrayerWall() {
         await navigator.share({ title: "Hagion Community", text: post.content.slice(0, 80), url });
       } else {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied" });
+        toast({ title: t("Link copied", "Enlace copiado") });
       }
     } catch {}
   };
@@ -483,7 +486,7 @@ export default function PrayerWall() {
             {/* Settings button - floats over the hero banner */}
             <button
               onClick={() => navigate("/settings")}
-              aria-label="Open settings"
+              aria-label={t("Open settings", "Abrir ajustes")}
               className="absolute right-3 sm:right-5 top-3 z-20 w-9 h-9 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-xl text-white/90 hover:text-white hover:bg-white/[0.14] transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.6)]"
             >
               <Settings className="w-4 h-4" />
@@ -498,11 +501,11 @@ export default function PrayerWall() {
                   type="button"
                   onClick={() => navigate("/settings")}
                   className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/40 hover:text-white/60 transition"
-                  aria-label="Add a cover picture in settings"
+                  aria-label={t("Add a cover picture in settings", "Añade una imagen de portada en ajustes")}
                 >
                   <ImagePlus className="w-6 h-6" />
                   <span className="text-[11px] tracking-[0.18em] uppercase">
-                    Add a picture
+                    {t("Add a picture", "Añadir imagen")}
                   </span>
                 </button>
               )}
@@ -517,7 +520,7 @@ export default function PrayerWall() {
               <button
                 onClick={() => navigate("/profile")}
                 className="rounded-full ring-4 ring-background shadow-[0_8px_30px_-10px_rgba(0,0,0,0.8)] hover:ring-white/40 transition"
-                aria-label="Open profile"
+                aria-label={t("Open profile", "Abrir perfil")}
               >
                 <Avatar className="h-20 w-20">
                   {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt="profile" />}
@@ -528,15 +531,15 @@ export default function PrayerWall() {
               </button>
               <div className="mt-2 flex items-center gap-5">
                 <span className="text-lg font-semibold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || "Believer"}
+                  {profile?.name || profile?.username || user?.user_metadata?.name || user?.email?.split("@")[0] || t("Believer", "Creyente")}
                 </span>
                 <button
                   type="button"
                   onClick={() => navigate("/friends")}
                   className="text-[10px] font-semibold uppercase tracking-wider text-primary hover:text-primary/80 active:scale-95 transition drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                  aria-label="View friends"
+                  aria-label={t("View friends", "Ver amigos")}
                 >
-                  {friendsCount} {friendsCount === 1 ? "Friend" : "Friends"}
+                  {friendsCount} {friendsCount === 1 ? t("Friend", "Amigo") : t("Friends", "Amigos")}
                 </button>
               </div>
             </div>
@@ -545,7 +548,7 @@ export default function PrayerWall() {
               type="button"
               onClick={() => navigate("/community/messages")}
               className="absolute right-3 sm:right-5 top-[65%] translate-y-[44px] z-10 p-2 rounded-full bg-white/[0.08] backdrop-blur-md ring-1 ring-white/15 text-white hover:bg-white/[0.14] active:scale-95 transition shadow-[0_4px_20px_-6px_rgba(0,0,0,0.6)]"
-              aria-label="Open messages"
+              aria-label={t("Open messages", "Abrir mensajes")}
             >
               <MessageSquare className="w-5 h-5" />
             </button>
@@ -558,19 +561,19 @@ export default function PrayerWall() {
           <section className="w-full mt-1.5">
             <div className="grid grid-cols-2 items-center gap-2 sm:gap-3 max-w-sm mx-auto px-2">
               {[
-                { label: "Clips", icon: Play, onClick: () => navigate("/community/reels/feed") },
-                { label: "Vids", icon: Video, onClick: () => navigate("/community/videos") },
-              ].map((t, i) => {
-                const Icon = t.icon;
+                { label: t("Clips", "Clips"), icon: Play, onClick: () => navigate("/community/reels/feed") },
+                { label: t("Vids", "Vids"), icon: Video, onClick: () => navigate("/community/videos") },
+              ].map((tab, i) => {
+                const Icon = tab.icon;
                 return (
                 <button
                     key={i}
-                    onClick={t.onClick}
+                    onClick={tab.onClick}
                     className="group relative inline-flex w-full items-center justify-center gap-1.5 rounded-full px-3.5 py-1.5 bg-gradient-to-b from-primary/25 to-primary/5 border border-primary/30 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)] hover:from-primary/35 hover:to-primary/10 active:scale-95 transition-all"
                   >
                     <Icon className="relative w-3 h-3 text-white" />
                     <span className="relative text-[10px] font-playfair tracking-[0.18em] uppercase text-white">
-                      {t.label}
+                      {tab.label}
                     </span>
                   </button>
                 );
@@ -587,11 +590,11 @@ export default function PrayerWall() {
       <section className="w-full border-t border-white/10 bg-black/20">
         <div className="max-w-3xl mx-auto px-5 sm:px-8 py-2">
           <h2 className="font-playfair text-lg text-white tracking-tight px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-            Feed
+            {t("Feed", "Muro")}
           </h2>
           {posts.length === 0 ? (
             <div className="px-4 py-12 text-center text-white/50 text-sm">
-              No posts yet. Tap the + button to share something.
+              {t("No posts yet. Tap the + button to share something.", "Aún no hay publicaciones. Toca el botón + para compartir algo.")}
             </div>
           ) : (
             <div className="divide-y divide-white/10 sm:space-y-4 sm:divide-y-0">
@@ -631,13 +634,13 @@ export default function PrayerWall() {
                                 disabled={p.is_anonymous}
                                 className="text-sm font-semibold text-white truncate text-left hover:underline disabled:no-underline disabled:cursor-default block max-w-full"
                               >
-                                {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
+                                {p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || t("Believer", "Creyente")}
                               </button>
                               <div className="text-[11px] text-white/50 flex items-center gap-1.5 flex-wrap">
                                 {!p.is_anonymous && (
                                   <>
                                     <span className="text-white/60">
-                                      {followers.toLocaleString()} {followers === 1 ? "follower" : "followers"}
+                                      {followers.toLocaleString()} {followers === 1 ? t("follower", "seguidor") : t("followers", "seguidores")}
                                     </span>
                                     <span>·</span>
                                   </>
@@ -667,7 +670,7 @@ export default function PrayerWall() {
                                     : "bg-white text-black hover:bg-white/90 shadow-[0_4px_14px_-4px_rgba(255,255,255,0.4)]"
                                 )}
                               >
-                                {isFollowing ? "Following" : "Follow"}
+                                {isFollowing ? t("Following", "Siguiendo") : t("Follow", "Seguir")}
                               </button>
                             )}
                           </>
@@ -707,20 +710,20 @@ export default function PrayerWall() {
                     <div className="flex items-center gap-1 px-2 py-2 border-t border-white/5">
                       <ActionBtn
                         icon={Heart}
-                        label="Like"
+                        label={t("Like", "Me gusta")}
                         active={mine.has("like")}
                         count={p.like_count}
                         onClick={() => toggleInteraction(p.id, "like")}
                       />
                       <ActionBtn
                         icon={MessageCircle}
-                        label="Comment"
+                        label={t("Comment", "Comentar")}
                         count={p.comment_count}
                         onClick={() => navigate(`/community/post/${p.id}`)}
                       />
                       <ActionBtn
                         icon={HandHeart}
-                        label="Pray"
+                        label={t("Pray", "Orar")}
                         active={mine.has("pray")}
                         count={p.pray_count}
                         onClick={() => toggleInteraction(p.id, "pray")}
@@ -728,7 +731,7 @@ export default function PrayerWall() {
                       {user?.id === p.user_id && (
                         <ActionBtn
                           icon={Trash2}
-                          label="Delete"
+                          label={t("Delete", "Eliminar")}
                           onClick={() => deletePost(p.id)}
                         />
                       )}
