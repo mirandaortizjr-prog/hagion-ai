@@ -501,11 +501,11 @@ export default function PrayerWall() {
                   type="button"
                   onClick={() => navigate("/settings")}
                   className="w-full h-full flex flex-col items-center justify-center gap-2 text-white/40 hover:text-white/60 transition"
-                  aria-label="Add a cover picture in settings"
+                  aria-label={t("Add a cover picture in settings", "Añade una imagen de portada en ajustes")}
                 >
                   <ImagePlus className="w-6 h-6" />
                   <span className="text-[11px] tracking-[0.18em] uppercase">
-                    Add a picture
+                    {t("Add a picture", "Añadir imagen")}
                   </span>
                 </button>
               )}
