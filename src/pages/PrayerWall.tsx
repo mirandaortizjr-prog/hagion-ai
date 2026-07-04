@@ -275,7 +275,7 @@ export default function PrayerWall() {
         .upload(path, f, { contentType: f.type, upsert: true });
       if (upErr) {
         setBannerUploading(false);
-        toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+        toast({ title: t("Upload failed", "Error al subir"), description: upErr.message, variant: "destructive" });
         return;
       }
       const { data: pub } = supabase.storage.from("community-media").getPublicUrl(path);
@@ -284,10 +284,10 @@ export default function PrayerWall() {
         .upsert({ user_id: user.id, banner_url: pub.publicUrl }, { onConflict: "user_id" });
       setBannerUploading(false);
       if (updErr) {
-        toast({ title: "Could not save banner", description: updErr.message, variant: "destructive" });
+        toast({ title: t("Could not save banner", "No se pudo guardar el banner"), description: updErr.message, variant: "destructive" });
       } else {
         setProfile((p) => ({ avatar_url: p?.avatar_url || null, banner_url: pub.publicUrl, name: p?.name || null, username: p?.username || null }));
-        toast({ title: "Banner updated" });
+        toast({ title: t("Banner updated", "Banner actualizado") });
       }
     };
     input.click();
