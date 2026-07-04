@@ -151,6 +151,24 @@ export default function ReelsFeedPage() {
 
       let list = (data as Reel[]) || [];
       if (list.length === 0) list = SAMPLE_REELS;
+
+      const uids = Array.from(new Set(list.map((r) => r.user_id).filter((u) => u && u !== "sample"))) as string[];
+      if (uids.length > 0) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("user_id, avatar_url, name, username")
+          .in("user_id", uids);
+        const map = new Map((profs || []).map((p: any) => [p.user_id, p]));
+        list = list.map((r) => {
+          const p = r.user_id ? map.get(r.user_id) : null;
+          return {
+            ...r,
+            author_avatar_url: p?.avatar_url ?? null,
+            author_name: r.author_name || p?.name || p?.username || "believer",
+          };
+        });
+      }
+
       setReels(list);
       if (list.length) setActiveId((prev) => prev ?? list[0].id);
     } finally {
