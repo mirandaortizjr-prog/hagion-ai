@@ -176,6 +176,15 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
                 {replyTo === c.id ? t("Cancel", "Cancelar") : t("Reply", "Responder")}
               </button>
             )}
+            {uid && uid !== c.author_id && (
+              <button
+                onClick={() => setReportTargetId(c.id)}
+                className="text-[11px] text-white/40 hover:text-amber-300 ml-auto"
+                aria-label={t("Report", "Reportar")}
+              >
+                <Flag className="h-3 w-3" />
+              </button>
+            )}
             {uid === c.author_id && (
               <button onClick={() => del(c.id)} className="text-[11px] text-white/40 hover:text-rose-300 ml-auto">
                 <Trash2 className="h-3 w-3" />
