@@ -128,6 +128,7 @@ const UserDevotionalDetail = () => {
           </>
         )}
       </main>
+      {dev && <ReportDialog open={reportOpen} onOpenChange={setReportOpen} targetType="user_devotional" targetId={dev.id} />}
     </div>
   );
 };
