@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatDistanceToNow } from "date-fns";
-import { Loader2, Send, Trash2, HandHeart, Heart, Lightbulb } from "lucide-react";
+import { Loader2, Send, Trash2, HandHeart, Heart, Lightbulb, Flag } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { ReportDialog } from "@/components/ReportDialog";
 
 type Comment = {
   id: string;
