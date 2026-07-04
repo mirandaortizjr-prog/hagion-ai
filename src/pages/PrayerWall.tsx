@@ -486,7 +486,7 @@ export default function PrayerWall() {
             {/* Settings button - floats over the hero banner */}
             <button
               onClick={() => navigate("/settings")}
-              aria-label="Open settings"
+              aria-label={t("Open settings", "Abrir ajustes")}
               className="absolute right-3 sm:right-5 top-3 z-20 w-9 h-9 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-xl text-white/90 hover:text-white hover:bg-white/[0.14] transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.6)]"
             >
               <Settings className="w-4 h-4" />
