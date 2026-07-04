@@ -370,8 +370,8 @@ export default function ReelsFeedPage() {
   const handlePlaybackError = useCallback(
     (title: string) => {
       toast({
-        title: "Video unavailable",
-        description: `${title} could not be played.`,
+        title: t("Video unavailable", "Video no disponible"),
+        description: t(`${title} could not be played.`, `No se pudo reproducir ${title}.`),
       });
     },
     [toast],
