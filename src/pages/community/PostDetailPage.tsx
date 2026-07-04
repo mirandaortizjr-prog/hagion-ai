@@ -137,7 +137,7 @@ export default function PostDetailPage() {
               <>
                 <div className="mb-2">
                   <span className="px-2 py-0.5 rounded-full bg-white/10 text-white/80 text-[11px]">
-                    {cat.emoji} {cat.en}
+                    {cat.emoji} {language === "es" ? cat.es : cat.en}
                   </span>
                 </div>
                 {title && <h1 className="font-playfair text-2xl mb-3">{title}</h1>}
