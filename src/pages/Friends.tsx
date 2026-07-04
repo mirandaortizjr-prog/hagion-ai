@@ -614,6 +614,5 @@ const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => 
       {p.username && <div className="text-[12px] text-white/50 truncate">@{p.username}</div>}
     </div>
   </button>
-);
   );
 };
