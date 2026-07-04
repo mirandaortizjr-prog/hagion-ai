@@ -386,7 +386,7 @@ export default function ReelsFeedPage() {
         <button
           onClick={handleBack}
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-          aria-label="Back"
+          aria-label={t("Back", "Atrás")}
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -397,21 +397,21 @@ export default function ReelsFeedPage() {
           <button
             onClick={() => setSearchOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Search clips"
+            aria-label={t("Search clips", "Buscar clips")}
           >
             <Search className="w-5 h-5" />
           </button>
           <button
             onClick={() => setUploadOpen(true)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label="Upload clip"
+            aria-label={t("Upload clip", "Subir clip")}
           >
             <Plus className="w-5 h-5" />
           </button>
           <button
             onClick={() => setMuted((m) => !m)}
             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-            aria-label={muted ? "Unmute" : "Mute"}
+            aria-label={muted ? t("Unmute", "Activar sonido") : t("Mute", "Silenciar")}
           >
             {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
           </button>
