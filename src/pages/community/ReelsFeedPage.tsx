@@ -34,6 +34,7 @@ interface Reel {
   video_url: string;
   thumbnail_url: string | null;
   author_name: string | null;
+  author_avatar_url?: string | null;
   like_count: number;
   view_count: number;
   created_at: string;
