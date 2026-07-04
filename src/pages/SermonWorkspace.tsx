@@ -7,11 +7,28 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { PremiumNav } from "@/components/PremiumNav";
 import { SERMON_STEPS, type SermonDraft } from "@/lib/sermonSteps";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SermonWorkspace = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+
+  const stepTranslations: Record<number, { title: string; desc: string }> = {
+    1: { title: "Oración y Escritura", desc: "Comienza con oración y selecciona un pasaje bíblico." },
+    2: { title: "Estudia el Texto", desc: "Investiga el contexto histórico, el idioma original y el significado teológico." },
+    3: { title: "Identifica el Punto Principal", desc: "Determina el mensaje central que Dios quiere comunicar." },
+    4: { title: "Estructura el Sermón", desc: "Esboza la introducción, los puntos principales y la conclusión." },
+    5: { title: "Desarrolla Aplicaciones", desc: "Muestra cómo el texto se aplica a la vida moderna." },
+    6: { title: "Agrega Ilustraciones", desc: "Usa historias y ejemplos para que los puntos sean memorables." },
+    7: { title: "Escribe la Introducción", desc: "Atrapa a la audiencia e introduce el tema." },
+    8: { title: "Escribe el Cuerpo", desc: "Expande cada punto con las Escrituras y una explicación." },
+    9: { title: "Escribe la Conclusión", desc: "Resume y llama al oyente a la acción." },
+    10: { title: "Revisar y Pulir", desc: "Edita para mayor claridad, tiempo y precisión teológica." },
+  };
+
   const [draft, setDraft] = useState<SermonDraft | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingTitle, setEditingTitle] = useState(false);
@@ -27,7 +44,7 @@ const SermonWorkspace = () => {
         .eq("id", id)
         .maybeSingle();
       if (error || !data) {
-        toast({ title: "Sermon not found", variant: "destructive" });
+        toast({ title: t("Sermon not found", "Sermón no encontrado"), variant: "destructive" });
         navigate("/public-speaking");
         return;
       }
@@ -37,7 +54,7 @@ const SermonWorkspace = () => {
       setScriptureDraft(d.scripture_ref || "");
       setLoading(false);
     })();
-  }, [id]);
+  }, [id, navigate, toast, t]);
 
   const saveTitle = async () => {
     if (!draft) return;
@@ -48,7 +65,7 @@ const SermonWorkspace = () => {
       .update({ title: newTitle, scripture_ref: newScripture })
       .eq("id", draft.id);
     if (error) {
-      toast({ title: "Save failed", variant: "destructive" });
+      toast({ title: t("Save failed", "Error al guardar"), variant: "destructive" });
       return;
     }
     setDraft({ ...draft, title: newTitle, scripture_ref: newScripture });
@@ -81,7 +98,7 @@ const SermonWorkspace = () => {
           </Button>
           <div className="flex-1 text-center">
             <p className="text-[11px] uppercase tracking-[0.25em] text-foreground/60">
-              Sermon Lab
+              {t("Sermon Lab", "Laboratorio de Sermones")}
             </p>
           </div>
           <div className="w-10" />
@@ -96,21 +113,21 @@ const SermonWorkspace = () => {
                 autoFocus
                 value={titleDraft}
                 onChange={(e) => setTitleDraft(e.target.value)}
-                placeholder="Sermon title"
+                placeholder={t("Sermon title", "Título del sermón")}
                 className="bg-transparent border-white/10 text-white text-lg font-semibold"
               />
               <Input
                 value={scriptureDraft}
                 onChange={(e) => setScriptureDraft(e.target.value)}
-                placeholder="Scripture reference (e.g. Romans 8:28-39)"
+                placeholder={t("Scripture reference (e.g. Romans 8:28-39)", "Referencia bíblica (ej. Romanos 8:28-39)")}
                 className="bg-transparent border-white/10 text-white/90 text-sm"
               />
               <div className="flex gap-2">
                 <Button onClick={saveTitle} size="sm" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90 rounded-full">
-                  Save
+                  {t("Save", "Guardar")}
                 </Button>
                 <Button onClick={() => { setEditingTitle(false); setTitleDraft(draft.title); setScriptureDraft(draft.scripture_ref || ""); }} size="sm" variant="ghost" className="rounded-full text-white/70">
-                  Cancel
+                  {t("Cancel", "Cancelar")}
                 </Button>
               </div>
             </div>
@@ -123,15 +140,14 @@ const SermonWorkspace = () => {
                 <p className="text-[13px] text-accent/90 italic">{draft.scripture_ref}</p>
               )}
               <p className="text-[10px] uppercase tracking-[0.25em] text-white/40 mt-2 flex items-center justify-center gap-1">
-                <Pencil className="w-3 h-3" /> Tap to edit
+                <Pencil className="w-3 h-3" /> {t("Tap to edit", "Toca para editar")}
               </p>
             </button>
           )}
 
-          {/* Progress */}
           <div className="mb-8">
             <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.25em] text-white/60 mb-2">
-              <span>Progress</span>
+              <span>{t("Progress", "Progreso")}</span>
               <span>{completed}/10</span>
             </div>
             <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
@@ -142,10 +158,10 @@ const SermonWorkspace = () => {
             </div>
           </div>
 
-          {/* Steps */}
           <ol className="space-y-3 mb-8">
             {SERMON_STEPS.map((s) => {
               const filled = ((draft as any)[s.key] as string)?.trim().length > 0;
+              const trans = language === "es" ? stepTranslations[s.num] : s;
               return (
                 <li key={s.num}>
                   <button
@@ -156,8 +172,8 @@ const SermonWorkspace = () => {
                       {s.num}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-white text-[14.5px] font-medium leading-snug">{s.title}</p>
-                      <p className="text-[13px] text-white/60 mt-0.5 leading-relaxed">{s.desc}</p>
+                      <p className="text-white text-[14.5px] font-medium leading-snug">{trans.title}</p>
+                      <p className="text-[13px] text-white/60 mt-0.5 leading-relaxed">{trans.desc}</p>
                     </div>
                     {filled ? (
                       <CheckCircle2 className="w-5 h-5 text-accent shrink-0" />
@@ -170,18 +186,17 @@ const SermonWorkspace = () => {
             })}
           </ol>
 
-          {/* Refine CTA */}
           <Button
             onClick={() => navigate(`/sermon-lab/${draft.id}/refine`)}
             disabled={completed === 0}
             className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90 rounded-full text-[14px] font-semibold"
           >
             <Sparkles className="w-4 h-4 mr-2" />
-            Assemble & Refine with AI
+            {t("Assemble & Refine with AI", "Ensamblar & Pulir con IA")}
           </Button>
           {completed === 0 && (
             <p className="text-center text-[12px] text-white/40 mt-3">
-              Write at least one step to enable AI refinement.
+              {t("Write at least one step to enable AI refinement.", "Escribe al menos un paso para habilitar el pulido con IA.")}
             </p>
           )}
         </div>

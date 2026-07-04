@@ -3,11 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Check, AlertCircle } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Invite() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
-  const [msg, setMsg] = useState("Setting things up…");
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+  const [msg, setMsg] = useState(t("Setting things up…", "Preparando todo…"));
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
   const consumed = useRef(false);
 
@@ -26,7 +29,7 @@ export default function Invite() {
     const claim = async () => {
       if (consumed.current) return;
       consumed.current = true;
-      setMsg("Connecting you with your friend…");
+      setMsg(t("Connecting you with your friend…", "Conectándote con tu amigo…"));
       try {
         const { data, error } = await supabase.rpc("claim_invite", { p_code: c });
         try { localStorage.removeItem("pendingInviteCode"); } catch {}
@@ -34,13 +37,13 @@ export default function Invite() {
         if (error || !res?.ok) {
           setStatus("error");
           setMsg(res?.error === "self_invite"
-            ? "That's your own invite link."
-            : "This invite link is invalid or expired.");
+            ? t("That's your own invite link.", "Ese es tu propio enlace de invitación.")
+            : t("This invite link is invalid or expired.", "Este enlace de invitación no es válido o ha expirado."));
           setTimeout(() => navigate("/", { replace: true }), 1800);
           return;
         }
         setStatus("ok");
-        setMsg("You're connected! Opening their profile…");
+        setMsg(t("You're connected! Opening their profile…", "¡Estás conectado! Abriendo su perfil…"));
         const inviterId = res?.inviter_id;
         setTimeout(() => {
           if (inviterId) navigate(`/u/${inviterId}`, { replace: true });
@@ -48,7 +51,7 @@ export default function Invite() {
         }, 700);
       } catch (e) {
         setStatus("error");
-        setMsg("Something went wrong. Please try again.");
+        setMsg(t("Something went wrong. Please try again.", "Algo salió mal. Inténtalo de nuevo."));
         setTimeout(() => navigate("/", { replace: true }), 1800);
       }
     };
@@ -58,7 +61,7 @@ export default function Invite() {
       if (data.session) {
         claim();
       } else {
-        setMsg("Sign in to accept your invite…");
+        setMsg(t("Sign in to accept your invite…", "Inicia sesión para aceptar tu invitación…"));
         // Send to auth; keep the invite code so Auth.tsx can claim after signin
         navigate("/auth?redirect=" + encodeURIComponent(`/invite/${c}`), { replace: true });
       }

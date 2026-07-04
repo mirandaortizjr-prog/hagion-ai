@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -57,6 +58,8 @@ type RelState =
 export default function Friends() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [params, setParams] = useSearchParams();
   const initialTab = (params.get("tab") as Tab) || "friends";
   const [tab, setTab] = useState<Tab>(initialTab);
@@ -201,17 +204,17 @@ export default function Friends() {
     const { data, error } = await supabase.rpc("send_friend_request", { p_target: targetId });
     setBusyId(null);
     if (error) {
-      toast({ title: "Could not send request", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not send request", "No se pudo enviar la solicitud"), description: error.message, variant: "destructive" });
       return;
     }
     const status = (data as any)?.status;
     toast({
       title:
         status === "accepted"
-          ? "You're now friends"
+          ? t("You're now friends", "Ahora sois amigos")
           : status === "pending"
-          ? "Friend request sent"
-          : "Done",
+          ? t("Friend request sent", "Solicitud de amistad enviada")
+          : t("Done", "Hecho"),
     });
     loadAll(user.id);
   };
@@ -222,7 +225,7 @@ export default function Friends() {
     const { error } = await supabase.rpc("remove_friendship", { p_target: targetId });
     setBusyId(null);
     if (error) {
-      toast({ title: "Action failed", description: error.message, variant: "destructive" });
+      toast({ title: t("Action failed", "La acción falló"), description: error.message, variant: "destructive" });
       return;
     }
     loadAll(user.id);
@@ -237,10 +240,10 @@ export default function Friends() {
     });
     setBusyId(null);
     if (error) {
-      toast({ title: "Could not accept", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not accept", "No se pudo aceptar"), description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "You're now friends" });
+    toast({ title: t("You're now friends", "Ahora sois amigos") });
     loadAll(user.id);
   };
 
@@ -253,7 +256,7 @@ export default function Friends() {
     });
     setBusyId(null);
     if (error) {
-      toast({ title: "Could not decline", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not decline", "No se pudo rechazar"), description: error.message, variant: "destructive" });
       return;
     }
     loadAll(user.id);
@@ -286,22 +289,22 @@ export default function Friends() {
       return (
         <Button
           size="sm"
-          onClick={() => askUnfriend(p.user_id, p.name || p.username || "this person")}
+          onClick={() => askUnfriend(p.user_id, p.name || p.username || t("this person", "esta persona"))}
           disabled={isBusy}
           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
         >
-          <UserCheck className="w-3.5 h-3.5 mr-1" /> Friends
+          <UserCheck className="w-3.5 h-3.5 mr-1" /> {t("Friends", "Amigos")}
         </Button>
       );
     if (rel.kind === "outgoing")
       return (
         <Button
           size="sm"
-          onClick={() => askCancel(rel.id, p.user_id, p.name || p.username || "this person")}
+          onClick={() => askCancel(rel.id, p.user_id, p.name || p.username || t("this person", "esta persona"))}
           disabled={isBusy}
           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
         >
-          <Clock className="w-3.5 h-3.5 mr-1" /> Requested
+          <Clock className="w-3.5 h-3.5 mr-1" /> {t("Requested", "Solicitado")}
         </Button>
       );
     if (rel.kind === "incoming")
@@ -313,11 +316,11 @@ export default function Friends() {
             disabled={isBusy}
             className="rounded-full text-xs bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
           >
-            <Check className="w-3.5 h-3.5 mr-1" /> Accept
+            <Check className="w-3.5 h-3.5 mr-1" /> {t("Accept", "Aceptar")}
           </Button>
           <Button
             size="sm"
-            onClick={() => askDecline(rel.id, p.user_id, p.name || p.username || "this person")}
+            onClick={() => askDecline(rel.id, p.user_id, p.name || p.username || t("this person", "esta persona"))}
             disabled={isBusy}
             className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
           >
@@ -332,7 +335,7 @@ export default function Friends() {
         disabled={isBusy}
         className="rounded-full text-xs bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
       >
-        <UserPlus className="w-3.5 h-3.5 mr-1" /> Add
+        <UserPlus className="w-3.5 h-3.5 mr-1" /> {t("Add", "Añadir")}
       </Button>
     );
   };
@@ -348,53 +351,53 @@ export default function Friends() {
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/community"))}
-            aria-label="Back"
+            aria-label={t("Back", "Volver")}
             className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <h1 className="font-playfair text-xl tracking-tight flex-1">Friends</h1>
+          <h1 className="font-playfair text-xl tracking-tight flex-1">{t("Friends", "Amigos")}</h1>
           <button
             onClick={handleInvite}
-            aria-label="Invite friends"
+            aria-label={t("Invite friends", "Invitar amigos")}
             className="h-9 px-3 rounded-full bg-gradient-to-r from-primary/30 to-primary/10 border border-primary/40 flex items-center gap-1.5 text-xs font-medium text-white hover:from-primary/40 hover:to-primary/20"
           >
-            <Share2 className="w-3.5 h-3.5" /> Invite
+            <Share2 className="w-3.5 h-3.5" /> {t("Invite", "Invitar")}
           </button>
           <button
             onClick={() => navigate("/community/messages")}
-            aria-label="Messages"
+            aria-label={t("Messages", "Mensajes")}
             className="w-9 h-9 rounded-full bg-white/[0.06] border border-white/15 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10"
           >
             <MessageSquare className="w-4 h-4" />
           </button>
         </div>
         <div className="max-w-3xl mx-auto px-4 pb-3 flex gap-2">
-          {(["friends", "requests", "discover"] as Tab[]).map((t) => {
-            const count = t === "friends" ? friends.length : t === "requests" ? requestsCount : null;
+          {(["friends", "requests", "discover"] as Tab[]).map((tabOption) => {
+            const count = tabOption === "friends" ? friends.length : tabOption === "requests" ? requestsCount : null;
             return (
               <button
-                key={t}
-                onClick={() => setTab(t)}
+                key={tabOption}
+                onClick={() => setTab(tabOption)}
                 className={cn(
                   "group relative flex-1 py-2 rounded-full text-[10px] tracking-[0.14em] uppercase font-medium",
                   "transition-all duration-300 ease-out active:scale-95",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
-                  tab === t
+                  tab === tabOption
                     ? "text-white font-semibold bg-gradient-to-b from-primary/30 to-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_4px_16px_-4px_hsl(var(--primary)/0.5)] drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
                     : "text-white/60 hover:text-white bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] backdrop-blur-xl"
                 )}
               >
                 <span className="relative inline-flex items-center gap-1.5">
-                  {t === "friends" ? "Friends" : t === "requests" ? "Requests" : "Discover"}
+                  {tabOption === "friends" ? t("Friends", "Amigos") : tabOption === "requests" ? t("Requests", "Solicitudes") : t("Discover", "Descubrir")}
                   {count !== null && (
                     <span
                       className={cn(
                         "inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full text-[9px] font-semibold",
-                        tab === t
+                        tab === tabOption
                           ? "bg-primary/30 text-white ring-1 ring-primary/50"
                           : "bg-white/10 text-white/70",
-                        t === "requests" && incoming.length > 0 && "bg-primary/60 text-white ring-1 ring-primary"
+                        tabOption === "requests" && incoming.length > 0 && "bg-primary/60 text-white ring-1 ring-primary"
                       )}
                     >
                       {count}
@@ -412,7 +415,7 @@ export default function Friends() {
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name or @username"
+                placeholder={t("Search by name or @username", "Buscar por nombre o @usuario")}
                 className="pl-9 bg-white/5 border-white/15 text-white placeholder:text-white/40"
               />
             </div>
@@ -424,7 +427,7 @@ export default function Friends() {
         {tab === "friends" && (
           friends.length === 0 ? (
             <div className="text-center text-white/50 text-sm py-12">
-              No friends yet. Try Discover to find believers.
+              {t("No friends yet. Try Discover to find believers.", "Aún no tienes amigos. Prueba a Descubrir para encontrar creyentes.")}
             </div>
           ) : (
             <ul className="space-y-2">
@@ -439,7 +442,7 @@ export default function Friends() {
                     onClick={() => navigate(`/community/messages?to=${p.user_id}`)}
                     className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 mr-1" /> Message
+                    <MessageSquare className="w-3.5 h-3.5 mr-1" /> {t("Message", "Mensaje")}
                   </Button>
                 </li>
               ))}
@@ -451,10 +454,10 @@ export default function Friends() {
           <div className="space-y-6">
             <section>
               <h2 className="text-[11px] uppercase tracking-[0.18em] text-white/50 mb-2 px-1">
-                Incoming {incoming.length > 0 && `(${incoming.length})`}
+                 {t("Incoming", "Recibidas")} {incoming.length > 0 && `(${incoming.length})`}
               </h2>
               {incoming.length === 0 ? (
-                <div className="text-center text-white/40 text-xs py-6">No new requests.</div>
+                <div className="text-center text-white/40 text-xs py-6">{t("No new requests.", "No hay nuevas solicitudes.")}</div>
               ) : (
                 <ul className="space-y-2">
                   {incoming.map((p) => (
@@ -470,11 +473,11 @@ export default function Friends() {
                           disabled={busyId === p.user_id}
                           className="rounded-full text-xs bg-gradient-to-r from-white/95 to-white/80 text-black hover:from-white"
                         >
-                          <Check className="w-3.5 h-3.5 mr-1" /> Accept
+                          <Check className="w-3.5 h-3.5 mr-1" /> {t("Accept", "Aceptar")}
                         </Button>
                         <Button
                           size="sm"
-                          onClick={() => askDecline(p.friendshipId, p.user_id, p.name || p.username || "this person")}
+                          onClick={() => askDecline(p.friendshipId, p.user_id, p.name || p.username || t("this person", "esta persona"))}
                           disabled={busyId === p.user_id}
                           className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                         >
@@ -489,10 +492,10 @@ export default function Friends() {
 
             <section>
               <h2 className="text-[11px] uppercase tracking-[0.18em] text-white/50 mb-2 px-1">
-                Sent {outgoing.length > 0 && `(${outgoing.length})`}
+                 {t("Sent", "Enviadas")} {outgoing.length > 0 && `(${outgoing.length})`}
               </h2>
               {outgoing.length === 0 ? (
-                <div className="text-center text-white/40 text-xs py-6">No pending sent requests.</div>
+                <div className="text-center text-white/40 text-xs py-6">{t("No pending sent requests.", "No hay solicitudes enviadas pendientes.")}</div>
               ) : (
                 <ul className="space-y-2">
                   {outgoing.map((p) => (
@@ -503,11 +506,11 @@ export default function Friends() {
                       <ProfileLink p={p} onClick={() => navigate(`/u/${p.username || p.user_id}`)} />
                       <Button
                         size="sm"
-                        onClick={() => askCancel(p.friendshipId, p.user_id, p.name || p.username || "this person")}
+                        onClick={() => askCancel(p.friendshipId, p.user_id, p.name || p.username || t("this person", "esta persona"))}
                         disabled={busyId === p.user_id}
                         className="rounded-full text-xs bg-white/10 text-white border border-white/20 hover:bg-white/15"
                       >
-                        <UserX className="w-3.5 h-3.5 mr-1" /> Cancel
+                        <UserX className="w-3.5 h-3.5 mr-1" /> {t("Cancel", "Cancelar")}
                       </Button>
                     </li>
                   ))}
@@ -520,14 +523,14 @@ export default function Friends() {
         {tab === "discover" && (
           !search.trim() ? (
             <div className="text-center text-white/50 text-sm py-12">
-              Type a name or @username to find believers.
+              {t("Type a name or @username to find believers.", "Escribe un nombre o @usuario para encontrar creyentes.")}
             </div>
           ) : searching ? (
             <div className="flex justify-center py-12">
               <Loader2 className="w-5 h-5 animate-spin text-white/60" />
             </div>
           ) : searchResults.length === 0 ? (
-            <div className="text-center text-white/50 text-sm py-12">No matches found.</div>
+            <div className="text-center text-white/50 text-sm py-12">{t("No matches found.", "No se encontraron coincidencias.")}</div>
           ) : (
             <ul className="space-y-2">
               {searchResults.map((p) => (
@@ -549,32 +552,32 @@ export default function Friends() {
           <AlertDialogHeader>
             <AlertDialogTitle>
               {confirmAction?.type === "decline"
-                ? `Decline request from ${confirmAction?.name}?`
+                ? t(`Decline request from ${confirmAction?.name}?`, `¿Rechazar solicitud de ${confirmAction?.name}?`)
                 : confirmAction?.type === "cancel"
-                ? `Cancel request to ${confirmAction?.name}?`
-                : `Remove ${confirmAction?.name} as a friend?`}
+                ? t(`Cancel request to ${confirmAction?.name}?`, `¿Cancelar solicitud a ${confirmAction?.name}?`)
+                : t(`Remove ${confirmAction?.name} as a friend?`, `¿Eliminar a ${confirmAction?.name} de tus amigos?`)}
             </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
               {confirmAction?.type === "decline"
-                ? "They will not be notified, and the request will disappear."
+                ? t("They will not be notified, and the request will disappear.", "No se les notificará y la solicitud desaparecerá.")
                 : confirmAction?.type === "cancel"
-                ? "The pending request will be removed."
-                : "You can send a new friend request later."}
+                ? t("The pending request will be removed.", "Se eliminará la solicitud pendiente.")
+                : t("You can send a new friend request later.", "Puedes enviar una nueva solicitud de amistad más tarde.")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-white/5 border-white/15 text-white hover:bg-white/10">
-              Keep
+              {t("Keep", "Mantener")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={runConfirmed}
               className="bg-red-500/90 hover:bg-red-500 text-white"
             >
               {confirmAction?.type === "decline"
-                ? "Decline"
+                ? t("Decline", "Rechazar")
                 : confirmAction?.type === "cancel"
-                ? "Cancel request"
-                : "Remove"}
+                ? t("Cancel request", "Cancelar solicitud")
+                : t("Remove", "Eliminar")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -593,7 +596,10 @@ export default function Friends() {
   );
 }
 
-const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => (
+const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => {
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+  return (
   <button onClick={onClick} className="flex items-center gap-3 flex-1 min-w-0 text-left">
     <Avatar className="w-12 h-12 ring-1 ring-white/20">
       {p.avatar_url && <AvatarImage src={p.avatar_url} />}
@@ -603,9 +609,10 @@ const ProfileLink = ({ p, onClick }: { p: ProfileRow; onClick: () => void }) => 
     </Avatar>
     <div className="min-w-0">
       <div className="text-sm font-semibold text-white truncate">
-        {p.name || p.username || "Believer"}
+        {p.name || p.username || t("Believer", "Creyente")}
       </div>
       {p.username && <div className="text-[12px] text-white/50 truncate">@{p.username}</div>}
     </div>
   </button>
-);
+  );
+};
