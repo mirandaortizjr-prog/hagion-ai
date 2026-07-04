@@ -203,7 +203,6 @@ export default function VideosPage() {
         }
       } else {
         video.pause();
-        video.currentTime = 0;
       }
     });
   }, [activeId, muted, paused]);
