@@ -274,36 +274,36 @@ export default function GroupsPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-[13px] font-medium text-white leading-tight">
-                  Open to the whole Body
+                  {t("Open to the whole Body", "Abierto a todo el Cuerpo")}
                 </div>
                 <div className="text-[11px] text-white/55 mt-0.5">
-                  Jump into any room. Same family, different conversations.
+                  {t("Jump into any room. Same family, different conversations.", "Únete a cualquier sala. Misma familia, distintas conversaciones.")}
                 </div>
               </div>
               <Dialog open={requestOpen} onOpenChange={setRequestOpen}>
                 <DialogTrigger asChild>
                   <Button size="sm" className="rounded-full h-8 px-3 text-[12px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90">
                     <Plus className="w-3.5 h-3.5" />
-                    Request
+                    {t("Request", "Solicitar")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="border-white/10 bg-[#0b0b0f]/95 backdrop-blur-2xl text-white max-w-md rounded-3xl">
                   <DialogHeader>
-                    <DialogTitle className="font-playfair text-xl">Request a Room</DialogTitle>
+                    <DialogTitle className="font-playfair text-xl">{t("Request a Room", "Solicitar una Sala")}</DialogTitle>
                     <DialogDescription className="text-white/55 text-[13px]">
-                      We curate Rooms to keep conversations focused. Tell us what you'd add.
+                      {t("We curate Rooms to keep conversations focused. Tell us what you'd add.", "Curamos las Salas para mantener las conversaciones enfocadas. Cuéntanos qué aportarías.")}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-3 mt-2">
-                    <Input value={reqName} onChange={(e) => setReqName(e.target.value)} placeholder="Room name" maxLength={60}
+                    <Input value={reqName} onChange={(e) => setReqName(e.target.value)} placeholder={t("Room name", "Nombre de la sala")} maxLength={60}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 h-10 rounded-xl" />
-                    <Textarea value={reqDesc} onChange={(e) => setReqDesc(e.target.value)} placeholder="What's it about?" rows={2} maxLength={200}
+                    <Textarea value={reqDesc} onChange={(e) => setReqDesc(e.target.value)} placeholder={t("What's it about?", "¿De qué se trata?")} rows={2} maxLength={200}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none" />
-                    <Textarea value={reqWhy} onChange={(e) => setReqWhy(e.target.value)} placeholder="Why does it belong? (optional)" rows={2} maxLength={300}
+                    <Textarea value={reqWhy} onChange={(e) => setReqWhy(e.target.value)} placeholder={t("Why does it belong? (optional)", "¿Por qué encaja? (opcional)")} rows={2} maxLength={300}
                       className="bg-white/5 border-white/15 text-white placeholder:text-white/35 rounded-xl resize-none" />
                     <Button onClick={submitRequest} disabled={submitting || !reqName.trim()}
                       className="w-full h-10 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                      {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Submit Request <ArrowRight className="w-4 h-4" /></>}
+                      {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{t("Submit Request", "Enviar solicitud")} <ArrowRight className="w-4 h-4" /></>}
                     </Button>
                   </div>
                 </DialogContent>
