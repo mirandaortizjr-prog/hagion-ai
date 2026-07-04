@@ -466,6 +466,7 @@ export default function ReelsFeedPage() {
                     : prev,
                 )
               }
+              t={t}
             />
           ))}
         </div>
