@@ -70,7 +70,7 @@ export default function PostDetailPage() {
 
   const submit = async () => {
     if (!user) {
-      toast({ title: "Please sign in" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión") });
       return;
     }
     if (!text.trim() || !id) return;
