@@ -334,7 +334,7 @@ export default function VideosPage() {
         <button
           onClick={handleBack}
           className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/15 flex items-center justify-center hover:bg-white/15 active:scale-95 transition"
-          aria-label="Back"
+          aria-label={t("Back", "Atrás")}
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
