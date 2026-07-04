@@ -121,6 +121,11 @@ export default function VideosPage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<VideoItem | null>(null);
   const [moreFor, setMoreFor] = useState<VideoItem | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("videos_liked", JSON.stringify([...liked]));
