@@ -63,6 +63,7 @@ export function DevotionalSubmitDialog({
   }, [open, title, scriptureRef, scriptureText, reflection, prayer, tags]);
 
   const submit = async () => {
+    if (!alreadyAcked && !acknowledged) { toast.error(t("Please acknowledge the Community Guidelines", "Por favor acepta las Normas de la Comunidad")); return; }
     if (!title.trim() || title.length > 120) { toast.error(t("Title required (max 120 chars)", "Título requerido (máx 120)")); return; }
     if (!scriptureRef.trim() || scriptureRef.length > 100) { toast.error(t("Scripture reference required", "Referencia bíblica requerida")); return; }
     if (reflection.trim().length < 100) { toast.error(t("Reflection is too short (min 100 chars)", "La reflexión es muy corta (mín 100)")); return; }
