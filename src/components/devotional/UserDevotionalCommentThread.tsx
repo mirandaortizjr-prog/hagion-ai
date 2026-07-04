@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatDistanceToNow } from "date-fns";
-import { Loader2, Send, Trash2, HandHeart, Heart, Lightbulb } from "lucide-react";
+import { Loader2, Send, Trash2, HandHeart, Heart, Lightbulb, Flag } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { ReportDialog } from "@/components/ReportDialog";
 
 type Comment = {
   id: string;
@@ -37,6 +38,7 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
   const [posting, setPosting] = useState(false);
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [myReactions, setMyReactions] = useState<Record<string, Set<string>>>({});
+  const [reportTargetId, setReportTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUid(data.user?.id ?? null));
@@ -174,6 +176,15 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
                 {replyTo === c.id ? t("Cancel", "Cancelar") : t("Reply", "Responder")}
               </button>
             )}
+            {uid && uid !== c.author_id && (
+              <button
+                onClick={() => setReportTargetId(c.id)}
+                className="text-[11px] text-white/40 hover:text-amber-300 ml-auto"
+                aria-label={t("Report", "Reportar")}
+              >
+                <Flag className="h-3 w-3" />
+              </button>
+            )}
             {uid === c.author_id && (
               <button onClick={() => del(c.id)} className="text-[11px] text-white/40 hover:text-rose-300 ml-auto">
                 <Trash2 className="h-3 w-3" />
@@ -237,6 +248,14 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
         </p>
       ) : (
         roots.map((c) => <CommentCard key={c.id} c={c} />)
+      )}
+      {reportTargetId && (
+        <ReportDialog
+          open={!!reportTargetId}
+          onOpenChange={(o) => !o && setReportTargetId(null)}
+          targetType="user_devotional_comment"
+          targetId={reportTargetId}
+        />
       )}
     </div>
   );

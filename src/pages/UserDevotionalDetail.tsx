@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
-import { ArrowLeft, Loader2, Bookmark, BookmarkCheck, MessageCircle } from "lucide-react";
+import { ArrowLeft, Loader2, Bookmark, BookmarkCheck, MessageCircle, Flag } from "lucide-react";
 import { UserDevotionalCommentThread } from "@/components/devotional/UserDevotionalCommentThread";
+import { ReportDialog } from "@/components/ReportDialog";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { toast } from "sonner";
 
@@ -19,6 +20,7 @@ const UserDevotionalDetail = () => {
   const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUid(data.user?.id ?? null));
@@ -65,9 +67,14 @@ const UserDevotionalDetail = () => {
           <button onClick={back} className="p-2 rounded-full hover:bg-white/10"><ArrowLeft className="h-5 w-5" /></button>
           <h1 className="font-playfair text-lg tracking-tight flex-1">{t("Devotional", "Devocional")}</h1>
           {dev && (
-            <button onClick={toggleSave} className="p-2 rounded-full hover:bg-white/10">
-              {saved ? <BookmarkCheck className="h-5 w-5 text-amber-300" /> : <Bookmark className="h-5 w-5" />}
-            </button>
+            <>
+              <button onClick={() => setReportOpen(true)} className="p-2 rounded-full hover:bg-white/10" aria-label={t("Report", "Reportar")}>
+                <Flag className="h-4 w-4 text-white/70" />
+              </button>
+              <button onClick={toggleSave} className="p-2 rounded-full hover:bg-white/10">
+                {saved ? <BookmarkCheck className="h-5 w-5 text-amber-300" /> : <Bookmark className="h-5 w-5" />}
+              </button>
+            </>
           )}
         </div>
       </header>
@@ -121,6 +128,7 @@ const UserDevotionalDetail = () => {
           </>
         )}
       </main>
+      {dev && <ReportDialog open={reportOpen} onOpenChange={setReportOpen} targetType="user_devotional" targetId={dev.id} />}
     </div>
   );
 };
