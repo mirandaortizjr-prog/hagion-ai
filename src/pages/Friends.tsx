@@ -552,17 +552,17 @@ export default function Friends() {
           <AlertDialogHeader>
             <AlertDialogTitle>
               {confirmAction?.type === "decline"
-                ? `Decline request from ${confirmAction?.name}?`
+                ? t(`Decline request from ${confirmAction?.name}?`, `¿Rechazar solicitud de ${confirmAction?.name}?`)
                 : confirmAction?.type === "cancel"
-                ? `Cancel request to ${confirmAction?.name}?`
-                : `Remove ${confirmAction?.name} as a friend?`}
+                ? t(`Cancel request to ${confirmAction?.name}?`, `¿Cancelar solicitud a ${confirmAction?.name}?`)
+                : t(`Remove ${confirmAction?.name} as a friend?`, `¿Eliminar a ${confirmAction?.name} de tus amigos?`)}
             </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
               {confirmAction?.type === "decline"
-                ? "They will not be notified, and the request will disappear."
+                ? t("They will not be notified, and the request will disappear.", "No se les notificará y la solicitud desaparecerá.")
                 : confirmAction?.type === "cancel"
-                ? "The pending request will be removed."
-                : "You can send a new friend request later."}
+                ? t("The pending request will be removed.", "Se eliminará la solicitud pendiente.")
+                : t("You can send a new friend request later.", "Puedes enviar una nueva solicitud de amistad más tarde.")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
