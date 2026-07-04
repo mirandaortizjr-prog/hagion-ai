@@ -703,7 +703,7 @@ function VideoFeedItem({
           <button
             onClick={onTogglePause}
             className="w-6 h-6 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-            aria-label={paused ? "Play" : "Pause"}
+            aria-label={paused ? t("Play", "Reproducir") : t("Pause", "Pausar")}
           >
             {paused ? (
               <Play className="w-3 h-3 fill-white text-white" />
