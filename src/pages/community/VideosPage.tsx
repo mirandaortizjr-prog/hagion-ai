@@ -371,7 +371,7 @@ export default function VideosPage() {
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
             <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
-              Loading videos
+              {t("Loading videos", "Cargando videos")}
             </div>
           </div>
         </div>
