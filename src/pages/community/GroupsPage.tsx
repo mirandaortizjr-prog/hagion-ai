@@ -321,8 +321,8 @@ export default function GroupsPage() {
                   <div className="mx-auto w-12 h-12 rounded-xl bg-white/[0.06] ring-1 ring-white/15 flex items-center justify-center mb-3">
                     <DoorOpen className="w-5 h-5 text-white/70" />
                   </div>
-                  <h3 className="font-playfair text-lg mb-1">No rooms found</h3>
-                  <p className="text-[12px] text-white/55">Try a different search.</p>
+                  <h3 className="font-playfair text-lg mb-1">{t("No rooms found", "No se encontraron salas")}</h3>
+                  <p className="text-[12px] text-white/55">{t("Try a different search.", "Prueba otra búsqueda.")}</p>
                 </div>
               ) : (
                 filtered.map((g) => {
