@@ -634,7 +634,7 @@ export default function PrayerWall() {
                                 disabled={p.is_anonymous}
                                 className="text-sm font-semibold text-white truncate text-left hover:underline disabled:no-underline disabled:cursor-default block max-w-full"
                               >
-                                {p.is_anonymous ? "Anonymous" : p.author_name || "Believer"}
+                                {p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || t("Believer", "Creyente")}
                               </button>
                               <div className="text-[11px] text-white/50 flex items-center gap-1.5 flex-wrap">
                                 {!p.is_anonymous && (
