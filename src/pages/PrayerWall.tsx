@@ -640,7 +640,7 @@ export default function PrayerWall() {
                                 {!p.is_anonymous && (
                                   <>
                                     <span className="text-white/60">
-                                      {followers.toLocaleString()} {followers === 1 ? "follower" : "followers"}
+                                      {followers.toLocaleString()} {followers === 1 ? t("follower", "seguidor") : t("followers", "seguidores")}
                                     </span>
                                     <span>·</span>
                                   </>
