@@ -73,53 +73,112 @@ export type Database = {
           },
         ]
       }
+      church_subscriptions: {
+        Row: {
+          church_id: string
+          created_at: string
+          current_period_end: string | null
+          id: string
+          owner_user_id: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          tier: string
+          updated_at: string
+        }
+        Insert: {
+          church_id: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          owner_user_id: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: string
+          updated_at?: string
+        }
+        Update: {
+          church_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          owner_user_id?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "church_subscriptions_church_id_fkey"
+            columns: ["church_id"]
+            isOneToOne: false
+            referencedRelation: "churches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       churches: {
         Row: {
+          banner_url: string | null
           city: string | null
           country: string | null
           created_at: string
           description: string | null
+          featured_until: string | null
           id: string
           image_url: string | null
           invite_code: string
+          is_featured: boolean
           location: string | null
           member_count: number
           name: string
           pastor_id: string | null
+          pro_tier: string | null
           state: string | null
           updated_at: string
           verified: boolean
           website: string | null
         }
         Insert: {
+          banner_url?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           description?: string | null
+          featured_until?: string | null
           id?: string
           image_url?: string | null
           invite_code?: string
+          is_featured?: boolean
           location?: string | null
           member_count?: number
           name: string
           pastor_id?: string | null
+          pro_tier?: string | null
           state?: string | null
           updated_at?: string
           verified?: boolean
           website?: string | null
         }
         Update: {
+          banner_url?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           description?: string | null
+          featured_until?: string | null
           id?: string
           image_url?: string | null
           invite_code?: string
+          is_featured?: boolean
           location?: string | null
           member_count?: number
           name?: string
           pastor_id?: string | null
+          pro_tier?: string | null
           state?: string | null
           updated_at?: string
           verified?: boolean
@@ -510,7 +569,9 @@ export type Database = {
           event_date: string
           id: string
           image_url: string | null
+          is_sponsored: boolean
           location: string | null
+          sponsored_until: string | null
           title: string
           updated_at: string
         }
@@ -522,7 +583,9 @@ export type Database = {
           event_date: string
           id?: string
           image_url?: string | null
+          is_sponsored?: boolean
           location?: string | null
+          sponsored_until?: string | null
           title: string
           updated_at?: string
         }
@@ -534,7 +597,9 @@ export type Database = {
           event_date?: string
           id?: string
           image_url?: string | null
+          is_sponsored?: boolean
           location?: string | null
+          sponsored_until?: string | null
           title?: string
           updated_at?: string
         }
@@ -1073,11 +1138,15 @@ export type Database = {
           hot_score: number
           id: string
           is_anonymous: boolean
+          is_sponsored: boolean
           like_count: number
           media_type: string | null
           media_url: string | null
           post_type: string
           pray_count: number
+          sponsor_name: string | null
+          sponsor_url: string | null
+          sponsored_until: string | null
           updated_at: string
           user_id: string
           visibility: string
@@ -1096,11 +1165,15 @@ export type Database = {
           hot_score?: number
           id?: string
           is_anonymous?: boolean
+          is_sponsored?: boolean
           like_count?: number
           media_type?: string | null
           media_url?: string | null
           post_type?: string
           pray_count?: number
+          sponsor_name?: string | null
+          sponsor_url?: string | null
+          sponsored_until?: string | null
           updated_at?: string
           user_id: string
           visibility?: string
@@ -1119,11 +1192,15 @@ export type Database = {
           hot_score?: number
           id?: string
           is_anonymous?: boolean
+          is_sponsored?: boolean
           like_count?: number
           media_type?: string | null
           media_url?: string | null
           post_type?: string
           pray_count?: number
+          sponsor_name?: string | null
+          sponsor_url?: string | null
+          sponsored_until?: string | null
           updated_at?: string
           user_id?: string
           visibility?: string
@@ -1596,6 +1673,60 @@ export type Database = {
         }
         Relationships: []
       }
+      sponsorships: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          duration_days: number
+          ends_at: string | null
+          id: string
+          sponsor_name: string | null
+          sponsor_url: string | null
+          sponsor_user_id: string
+          starts_at: string | null
+          status: string
+          stripe_checkout_session_id: string | null
+          stripe_payment_intent_id: string | null
+          target_id: string
+          target_type: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          duration_days: number
+          ends_at?: string | null
+          id?: string
+          sponsor_name?: string | null
+          sponsor_url?: string | null
+          sponsor_user_id: string
+          starts_at?: string | null
+          status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          target_id: string
+          target_type: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          duration_days?: number
+          ends_at?: string | null
+          id?: string
+          sponsor_name?: string | null
+          sponsor_url?: string | null
+          sponsor_user_id?: string
+          starts_at?: string | null
+          status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_payment_intent_id?: string | null
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -1651,6 +1782,8 @@ export type Database = {
           description: string | null
           duration_seconds: number | null
           id: string
+          is_sponsored: boolean
+          sponsored_until: string | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -1664,6 +1797,8 @@ export type Database = {
           description?: string | null
           duration_seconds?: number | null
           id?: string
+          is_sponsored?: boolean
+          sponsored_until?: string | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -1677,6 +1812,8 @@ export type Database = {
           description?: string | null
           duration_seconds?: number | null
           id?: string
+          is_sponsored?: boolean
+          sponsored_until?: string | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
