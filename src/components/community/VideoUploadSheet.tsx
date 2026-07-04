@@ -160,13 +160,35 @@ export default function VideoUploadSheet({ open, onOpenChange, kind, lang = "en"
       const ext = (file.name.split(".").pop() || "mp4").toLowerCase();
       const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-      const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: file.type || "video/mp4",
+      // XHR upload with real progress — much better UX than opaque fetch upload
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL as string;
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", `${supabaseUrl}/storage/v1/object/${bucket}/${path}`, true);
+        xhr.setRequestHeader("Authorization", `Bearer ${accessToken}`);
+        xhr.setRequestHeader("x-upsert", "false");
+        xhr.setRequestHeader("cache-control", "3600");
+        xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            // Reserve 5% for finalization
+            const pct = Math.min(95, Math.round((e.loaded / e.total) * 95));
+            setProgress(pct);
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error(xhr.responseText || `Upload failed (${xhr.status})`));
+        };
+        xhr.onerror = () => reject(new Error("Network error during upload"));
+        xhr.onabort = () => reject(new Error("Upload aborted"));
+        xhr.send(file);
       });
-      if (upErr) throw upErr;
-      setProgress(75);
+
+      setProgress(95);
 
       const { data: pub } = supabase.storage.from(bucket).getPublicUrl(path);
       const videoUrl = pub.publicUrl;

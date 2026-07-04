@@ -548,7 +548,7 @@ function ReelItem({
         muted={muted}
         playsInline
         autoPlay={isActive && !paused}
-        preload={isActive ? "auto" : "metadata"}
+        preload={isActive ? "auto" : "none"}
         onClick={onTap}
         onLoadedData={(e) => {
           const video = e.currentTarget;
