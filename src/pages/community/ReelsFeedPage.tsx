@@ -719,7 +719,7 @@ function ReelItem({
           <Music2 className="w-3 h-3" />
           <div className="overflow-hidden whitespace-nowrap">
             <div className="inline-block animate-[marquee_18s_linear_infinite] pr-12">
-              Original audio · {reel.author_name || "Unknown"} · Hagion
+              {t("Original audio", "Audio original")} · {reel.author_name || t("Unknown", "Desconocido")} · Hagion
             </div>
           </div>
         </div>
