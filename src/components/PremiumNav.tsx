@@ -85,7 +85,7 @@ export const PremiumNav = () => {
     input.onchange = () => {
       const f = input.files?.[0];
       if (!f) return;
-      const maxMb = kind === "image" ? 10 : 50;
+      const maxMb = kind === "image" ? 25 : 200;
       if (f.size > maxMb * 1024 * 1024) {
         toast({ title: `File too large`, description: `Max ${maxMb}MB`, variant: "destructive" });
         return;
