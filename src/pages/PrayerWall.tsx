@@ -199,7 +199,7 @@ export default function PrayerWall() {
     }
     const name = newGroupName.trim();
     if (!name) {
-      toast({ title: "Group name is required", variant: "destructive" });
+      toast({ title: t("Group name is required", "El nombre del grupo es obligatorio"), variant: "destructive" });
       return;
     }
     setCreatingGroup(true);
