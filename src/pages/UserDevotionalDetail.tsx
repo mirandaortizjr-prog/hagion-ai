@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
-import { ArrowLeft, Loader2, Bookmark, BookmarkCheck, MessageCircle } from "lucide-react";
+import { ArrowLeft, Loader2, Bookmark, BookmarkCheck, MessageCircle, Flag } from "lucide-react";
 import { UserDevotionalCommentThread } from "@/components/devotional/UserDevotionalCommentThread";
+import { ReportDialog } from "@/components/ReportDialog";
 import heroLiquidLight from "@/assets/hero-liquid-light.jpg";
 import { toast } from "sonner";
 
@@ -19,6 +20,7 @@ const UserDevotionalDetail = () => {
   const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUid(data.user?.id ?? null));
