@@ -19,11 +19,13 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { es as esLocale } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import { useHaptics } from "@/hooks/useNativeFeatures";
 import { useCamera } from "@/hooks/useCamera";
 import { useVoiceRecorder } from "@/hooks/useVoiceRecorder";
 import { useSafeBackNavigation } from "@/hooks/useSafeBackNavigation";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type MediaPayload = { url: string; type: "image" | "audio"; durationMs?: number };
 type Profile = { user_id: string; name: string | null; username: string | null; avatar_url: string | null };
@@ -35,7 +37,7 @@ const formatRecTime = (ms: number) => {
 
 const initialOf = (p?: Profile | null) =>
   ((p?.name || p?.username || "?").trim()[0] || "?").toUpperCase();
-const displayName = (p?: Profile | null) => p?.name || p?.username || "Friend";
+const displayName = (p?: Profile | null, fallback = "Friend") => p?.name || p?.username || fallback;
 
 export default function MessengerPage() {
   const { toast } = useToast();
@@ -45,6 +47,9 @@ export default function MessengerPage() {
   const { impact, notification } = useHaptics();
   const camera = useCamera();
   const recorder = useVoiceRecorder();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
+  const friend = t("Friend", "Amigo");
 
   const [user, setUser] = useState<any>(null);
   const [conversations, setConversations] = useState<any[]>([]);
@@ -195,7 +200,7 @@ export default function MessengerPage() {
       .single();
 
     if (error) {
-      toast({ title: "Could not start conversation", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not start conversation", "No se pudo iniciar la conversación"), description: error.message, variant: "destructive" });
       return null;
     }
 
@@ -252,7 +257,7 @@ export default function MessengerPage() {
       .from("message-attachments")
       .upload(path, blob, { contentType: blob.type, upsert: false });
     if (error) {
-      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+      toast({ title: t("Upload failed", "Error al subir"), description: error.message, variant: "destructive" });
       return null;
     }
     const { data: signed } = await supabase.storage
@@ -295,7 +300,7 @@ export default function MessengerPage() {
     if (error) {
       notification("error");
       console.error("send message error", error);
-      toast({ title: "Could not send", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not send", "No se pudo enviar"), description: error.message, variant: "destructive" });
     } else {
       // Optimistically append (realtime will dedupe by id)
       if (inserted) {
@@ -337,7 +342,7 @@ export default function MessengerPage() {
       return;
     }
     if (result.durationMs < 500) {
-      toast({ title: "Hold to record", description: "Press and hold the mic." });
+      toast({ title: t("Hold to record", "Mantén presionado para grabar"), description: t("Press and hold the mic.", "Presiona y mantén el micrófono.") });
       return;
     }
 
@@ -389,8 +394,8 @@ export default function MessengerPage() {
     return (
       <div className="min-h-screen text-white">
         <main className="px-5 max-w-3xl mx-auto pt-16 text-center">
-          <h1 className="font-playfair text-3xl mb-2">Messages</h1>
-          <p className="text-white/60 text-sm">Sign in to message other believers.</p>
+          <h1 className="font-playfair text-3xl mb-2">{t("Messages", "Mensajes")}</h1>
+          <p className="text-white/60 text-sm">{t("Sign in to message other believers.", "Inicia sesión para enviar mensajes a otros creyentes.")}</p>
         </main>
         <PremiumNav />
       </div>
@@ -413,10 +418,10 @@ export default function MessengerPage() {
                 <button
                   onClick={() => setActiveId(null)}
                   className="flex items-center gap-0.5 text-[#0A84FF] active:opacity-60 px-1 py-1 -ml-1"
-                  aria-label="Back to messages"
+                  aria-label={t("Back to messages", "Volver a mensajes")}
                 >
                   <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
-                  <span className="text-[15px] font-medium">Messages</span>
+                  <span className="text-[15px] font-medium">{t("Messages", "Mensajes")}</span>
                 </button>
                 <div className="flex-1 flex flex-col items-center -ml-12">
                   <Avatar className="h-7 w-7 ring-1 ring-white/15">
@@ -426,7 +431,7 @@ export default function MessengerPage() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-[11px] text-white/60 mt-0.5 truncate max-w-[160px]">
-                    {displayName(activeOther)}
+                    {displayName(activeOther, friend)}
                   </div>
                 </div>
                 <div className="w-16" />
@@ -437,7 +442,7 @@ export default function MessengerPage() {
             <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-4 space-y-1.5">
               {messages.length === 0 && (
                 <div className="text-center text-white/40 text-sm pt-12">
-                  Say hi to {displayName(activeOther)} 👋
+                  {t(`Say hi to ${displayName(activeOther, friend)} 👋`, `Saluda a ${displayName(activeOther, friend)} 👋`)}
                 </div>
               )}
               {messages.map((m, i) => {
@@ -496,12 +501,12 @@ export default function MessengerPage() {
                   <button
                     onClick={() => setPendingImage(null)}
                     className="absolute -top-2 -right-2 bg-black/80 rounded-full p-1"
-                    aria-label="Remove image"
+                    aria-label={t("Remove image", "Quitar imagen")}
                   >
                     <X className="w-3 h-3 text-white" />
                   </button>
                 </div>
-                <div className="text-xs text-white/60">Photo ready to send</div>
+                <div className="text-xs text-white/60">{t("Photo ready to send", "Foto lista para enviar")}</div>
               </div>
             )}
 
@@ -519,10 +524,10 @@ export default function MessengerPage() {
                 >
                   {recordCancelled ? (
                     <>
-                      <Trash2 className="w-3 h-3" /> Release to cancel
+                      <Trash2 className="w-3 h-3" /> {t("Release to cancel", "Suelta para cancelar")}
                     </>
                   ) : (
-                    <>↑ Slide up to cancel</>
+                    <>{t("↑ Slide up to cancel", "↑ Desliza hacia arriba para cancelar")}</>
                   )}
                 </div>
               </div>
@@ -537,7 +542,7 @@ export default function MessengerPage() {
                 variant="ghost"
                 disabled={sending || recorder.isRecording}
                 className="rounded-full text-[#0A84FF] hover:text-[#0A84FF] hover:bg-white/10 shrink-0 h-9 w-9"
-                aria-label="Add photo"
+                aria-label={t("Add photo", "Añadir foto")}
               >
                 <ImagePlus className="w-5 h-5" />
               </Button>
@@ -547,7 +552,7 @@ export default function MessengerPage() {
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   rows={1}
-                  placeholder={recorder.isRecording ? "Recording..." : "iMessage"}
+                  placeholder={recorder.isRecording ? t("Recording...", "Grabando...") : t("iMessage", "Mensaje")}
                   disabled={recorder.isRecording}
                   className="resize-none bg-transparent border-0 text-white placeholder:text-white/40 p-0 min-h-[24px] focus-visible:ring-0 text-[15px]"
                   onKeyDown={(e) => {
@@ -565,7 +570,7 @@ export default function MessengerPage() {
                   disabled={sending}
                   size="icon"
                   className="rounded-full bg-[#0A84FF] hover:bg-[#0A84FF]/90 text-white shrink-0 h-9 w-9"
-                  aria-label="Send"
+                  aria-label={t("Send", "Enviar")}
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -582,7 +587,7 @@ export default function MessengerPage() {
                       ? "bg-red-500 text-white scale-110"
                       : "bg-[#1C1C1E] text-[#0A84FF] border border-white/10"
                   } transition-transform`}
-                  aria-label="Hold to record voice note"
+                  aria-label={t("Hold to record voice note", "Mantén para grabar nota de voz")}
                 >
                   <Mic className="w-4 h-4" />
                 </Button>
@@ -607,13 +612,13 @@ export default function MessengerPage() {
               <div className="px-3 pt-[max(0.5rem,env(safe-area-inset-top))] pb-2 flex items-center gap-2">
                 <button
                   onClick={handleBack}
-                  aria-label="Back"
+                  aria-label={t("Back", "Atrás")}
                   className="h-9 w-9 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/85 active:scale-95 transition-all"
                 >
                   <ArrowLeft className="w-4 h-4" strokeWidth={2.4} />
                 </button>
                 <h1 className="flex-1 text-center text-[17px] font-semibold tracking-tight">
-                  Messages
+                  {t("Messages", "Mensajes")}
                 </h1>
                 <button
                   onClick={() => {
@@ -621,7 +626,7 @@ export default function MessengerPage() {
                     setComposerOpen(true);
                     setSearchQuery("");
                   }}
-                  aria-label="New message"
+                  aria-label={t("New message", "Nuevo mensaje")}
                   className="h-9 w-9 rounded-full bg-gradient-to-br from-[#0A84FF] to-[#0066D6] text-white flex items-center justify-center shadow-[0_6px_18px_-6px_rgba(10,132,255,0.7)] active:scale-95 transition-all"
                 >
                   <PenSquare className="w-[18px] h-[18px]" strokeWidth={2.2} />
@@ -635,7 +640,7 @@ export default function MessengerPage() {
                   <Input
                     value={listFilter}
                     onChange={(e) => setListFilter(e.target.value)}
-                    placeholder="Search messages"
+                    placeholder={t("Search messages", "Buscar mensajes")}
                     className="bg-white/[0.07] border border-white/[0.08] rounded-full pl-9 h-9 text-[14px] text-white placeholder:text-white/40 focus-visible:ring-1 focus-visible:ring-primary/40"
                   />
                 </div>
@@ -651,9 +656,9 @@ export default function MessengerPage() {
                     <MessageSquare className="w-8 h-8 text-white/70" />
                   </div>
                 </div>
-                <div className="text-white text-[17px] font-semibold mb-1.5">No Messages Yet</div>
+                <div className="text-white text-[17px] font-semibold mb-1.5">{t("No Messages Yet", "Aún no hay mensajes")}</div>
                 <div className="text-[13px] text-white/55 mb-6 max-w-[280px] mx-auto leading-relaxed">
-                  Start a private conversation with another believer in the community.
+                  {t("Start a private conversation with another believer in the community.", "Inicia una conversación privada con otro creyente de la comunidad.")}
                 </div>
                 <Button
                   onClick={() => {
@@ -663,7 +668,7 @@ export default function MessengerPage() {
                   }}
                   className="rounded-full bg-gradient-to-r from-[#0A84FF] to-[#0066D6] hover:from-[#0A84FF] hover:to-[#0066D6] text-white h-10 px-5 shadow-[0_8px_24px_-8px_rgba(10,132,255,0.7)]"
                 >
-                  <PenSquare className="w-4 h-4 mr-2" /> New Message
+                  <PenSquare className="w-4 h-4 mr-2" /> {t("New Message", "Nuevo mensaje")}
                 </Button>
               </div>
             ) : (
@@ -688,17 +693,18 @@ export default function MessengerPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-baseline justify-between gap-2">
                             <div className="text-[15px] font-semibold text-white truncate">
-                              {displayName(other) || c.title || "Conversation"}
+                              {displayName(other, friend) || c.title || t("Conversation", "Conversación")}
                             </div>
                             <div className="text-[11px] text-white/45 shrink-0 font-medium">
                               {c.last_message_at &&
                                 formatDistanceToNow(new Date(c.last_message_at), {
                                   addSuffix: false,
+                                  locale: language === "es" ? esLocale : undefined,
                                 })}
                             </div>
                           </div>
                           <div className="text-[13px] text-white/55 truncate mt-0.5">
-                            {other?.username ? `@${other.username}` : "Tap to open"}
+                            {other?.username ? `@${other.username}` : t("Tap to open", "Toca para abrir")}
                           </div>
                         </div>
                         <ChevronRight className="w-4 h-4 text-white/30 shrink-0 group-hover:text-white/60 group-hover:translate-x-0.5 transition-all" />
@@ -720,9 +726,9 @@ export default function MessengerPage() {
                   onClick={() => setComposerOpen(false)}
                   className="text-[#0A84FF] active:opacity-60 text-[15px] font-medium px-1"
                 >
-                  Cancel
+                  {t("Cancel", "Cancelar")}
                 </button>
-                <div className="text-[15px] font-semibold">New Message</div>
+                <div className="text-[15px] font-semibold">{t("New Message", "Nuevo mensaje")}</div>
                 <div className="w-14" />
               </div>
               <div className="relative mt-2">
@@ -731,7 +737,7 @@ export default function MessengerPage() {
                   autoFocus
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="To: name or @username"
+                  placeholder={t("To: name or @username", "Para: nombre o @usuario")}
                   className="bg-white/[0.08] border-0 rounded-[10px] pl-9 h-10 text-[15px] text-white placeholder:text-white/40 focus-visible:ring-0"
                 />
               </div>
@@ -739,11 +745,11 @@ export default function MessengerPage() {
 
             <div className="flex-1 overflow-y-auto">
               {searching && (
-                <div className="text-center text-white/40 text-sm py-6">Searching…</div>
+                <div className="text-center text-white/40 text-sm py-6">{t("Searching…", "Buscando…")}</div>
               )}
               {!searching && searchResults.length === 0 && (
                 <div className="text-center text-white/40 text-sm py-12">
-                  {searchQuery ? "No people found" : "Start typing to find someone"}
+                  {searchQuery ? t("No people found", "No se encontraron personas") : t("Start typing to find someone", "Empieza a escribir para encontrar a alguien")}
                 </div>
               )}
               <ul className="px-2">
@@ -767,7 +773,7 @@ export default function MessengerPage() {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0 border-b border-white/[0.06] pb-2.5">
-                        <div className="text-[15px] font-semibold truncate">{displayName(p)}</div>
+                        <div className="text-[15px] font-semibold truncate">{displayName(p, friend)}</div>
                         {p.username && (
                           <div className="text-[13px] text-white/50 truncate">@{p.username}</div>
                         )}
