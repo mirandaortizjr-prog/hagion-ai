@@ -642,18 +642,18 @@ function ReelItem({
         />
         <ActionButton
           icon={MessageCircle}
-          label="Chat"
+          label={t("Chat", "Chat")}
           onClick={onComment}
         />
         <ActionButton
           icon={Share2}
-          label="Share"
+          label={t("Share", "Compartir")}
           onClick={onShare}
         />
         <ActionButton
           icon={Bookmark}
           active={saved}
-          label={saved ? "Saved" : "Save"}
+          label={saved ? t("Saved", "Guardado") : t("Save", "Guardar")}
           onClick={onSave}
         />
         <ActionButton icon={MoreHorizontal} label="" onClick={onMore} />
