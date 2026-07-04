@@ -33,6 +33,9 @@ export function DevotionalSubmitDialog({
   const [prayer, setPrayer] = useState("");
   const [tags, setTags] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [acknowledged, setAcknowledged] = useState(false);
+  const alreadyAcked = typeof window !== "undefined" && localStorage.getItem(GUIDELINES_ACK_KEY) === "1";
+
 
   // Auto-save + restore draft
   useEffect(() => {
