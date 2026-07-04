@@ -91,7 +91,7 @@ export default function PostDetailPage() {
       author_name,
       content: text.trim(),
     });
-    if (error) toast({ title: "Could not comment", variant: "destructive" });
+    if (error) toast({ title: t("Could not comment", "No se pudo comentar"), variant: "destructive" });
     else {
       setText("");
       load();
