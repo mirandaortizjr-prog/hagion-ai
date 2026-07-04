@@ -562,7 +562,8 @@ function ReelItem({
   return (
     <section
       data-reel-id={reel.id}
-      className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
+      className="relative w-full h-[100dvh] snap-start snap-always overflow-hidden bg-black"
+      style={{ scrollSnapStop: "always" }}
     >
       <video
         ref={(el) => {
