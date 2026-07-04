@@ -344,7 +344,7 @@ export default function DiscussionsPage() {
                           {c.emoji} {language === "es" ? c.es : c.en}
                         </span>
                         <span>·</span>
-                        <span>{p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || "Believer"}</span>
+                        <span>{p.is_anonymous ? t("Anonymous", "Anónimo") : p.author_name || t("Believer", "Creyente")}</span>
                         <span>·</span>
                         <span>{formatDistanceToNow(new Date(p.created_at), { addSuffix: true })}</span>
                       </div>
