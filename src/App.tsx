@@ -55,6 +55,9 @@ import PrayerWall from "./pages/PrayerWall";
 import PrayerWallPage from "./pages/PrayerWallPage";
 import DailyWisdom from "./pages/DailyWisdom";
 import DailyDevotional from "./pages/DailyDevotional";
+import DevotionalLibrary from "./pages/DevotionalLibrary";
+import UserDevotionalDetail from "./pages/UserDevotionalDetail";
+import MyDevotionals from "./pages/MyDevotionals";
 import Library from "./pages/Library";
 import PostDetailPage from "./pages/community/PostDetailPage";
 import DiscussionsPage from "./pages/community/DiscussionsPage";
@@ -155,6 +158,9 @@ const App = () => (
             <Route path="/prayer-wall" element={<PrayerWallPage />} />
             <Route path="/daily-wisdom" element={<DailyWisdom />} />
             <Route path="/daily-devotional" element={<DailyDevotional />} />
+            <Route path="/devotional-library" element={<DevotionalLibrary />} />
+            <Route path="/devotional/:id" element={<UserDevotionalDetail />} />
+            <Route path="/my-devotionals" element={<MyDevotionals />} />
             <Route path="/library" element={<Library />} />
             <Route path="/community/discussions" element={<DiscussionsPage />} />
             <Route path="/community/post/:id" element={<PostDetailPage />} />
