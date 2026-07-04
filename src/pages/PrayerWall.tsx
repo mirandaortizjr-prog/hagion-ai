@@ -400,7 +400,7 @@ export default function PrayerWall() {
     setPosting(true);
     const { error } = await supabase.from("posts").insert({
       user_id: user.id,
-      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || "Believer",
+      author_name: profile?.name || profile?.username || user.user_metadata?.name || user.email?.split("@")[0] || t("Believer", "Creyente"),
       post_type: composerType,
       content: composer.trim(),
     });
