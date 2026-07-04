@@ -122,7 +122,12 @@ export default function ReelsFeedPage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [commentsFor, setCommentsFor] = useState<Reel | null>(null);
   const [moreFor, setMoreFor] = useState<Reel | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const lastTapRef = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUserId(data.user?.id ?? null));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("reels_liked", JSON.stringify([...liked]));
