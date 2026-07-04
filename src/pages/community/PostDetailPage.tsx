@@ -121,7 +121,7 @@ export default function PostDetailPage() {
             </Avatar>
             <div>
               <div className="text-sm font-semibold">
-                {post.is_anonymous ? "Anonymous" : post.author_name || "Believer"}
+                {post.is_anonymous ? t("Anonymous", "Anónimo") : post.author_name || t("Believer", "Creyente")}
               </div>
               <div className="text-[11px] text-white/50">
                 {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
