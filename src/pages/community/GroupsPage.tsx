@@ -155,14 +155,14 @@ export default function GroupsPage() {
     });
     setSubmitting(false);
     if (error) {
-      toast({ title: "Could not submit", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not submit", "No se pudo enviar"), description: error.message, variant: "destructive" });
       return;
     }
     setReqName("");
     setReqDesc("");
     setReqWhy("");
     setRequestOpen(false);
-    toast({ title: "Request submitted", description: "We'll review it shortly." });
+    toast({ title: t("Request submitted", "Solicitud enviada"), description: t("We'll review it shortly.", "La revisaremos pronto.") });
   };
 
   const handleJoinChurch = async () => {
