@@ -439,14 +439,14 @@ export default function PrayerWall() {
 
   const deletePost = async (postId: string) => {
     if (!user) return;
-    if (!window.confirm("Delete this post? This cannot be undone.")) return;
+    if (!window.confirm(t("Delete this post? This cannot be undone.", "¿Eliminar esta publicación? No se puede deshacer."))) return;
     const { error } = await supabase.from("posts").delete().eq("id", postId).eq("user_id", user.id);
     if (error) {
-      toast({ title: "Could not delete", description: error.message, variant: "destructive" });
+      toast({ title: t("Could not delete", "No se pudo eliminar"), description: error.message, variant: "destructive" });
       return;
     }
     setPosts((prev) => prev.filter((p) => p.id !== postId));
-    toast({ title: "Post deleted" });
+    toast({ title: t("Post deleted", "Publicación eliminada") });
   };
 
   const sharePost = async (post: Post) => {
