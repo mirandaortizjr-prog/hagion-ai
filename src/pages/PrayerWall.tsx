@@ -167,7 +167,7 @@ export default function PrayerWall() {
     }
     const title = newEventTitle.trim();
     if (!title || !newEventDate) {
-      toast({ title: "Title and date are required", variant: "destructive" });
+      toast({ title: t("Title and date are required", "El título y la fecha son obligatorios"), variant: "destructive" });
       return;
     }
     setCreatingEvent(true);
