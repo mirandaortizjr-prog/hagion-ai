@@ -102,7 +102,7 @@ export function DevotionalSubmitDialog({
 
     toast.loading(t("Moderating with AI…", "Moderando con IA…"), { id: "mod" });
     const { data: modData, error: modErr } = await supabase.functions.invoke("moderate-user-devotional", {
-      body: { devotional_id: inserted.id },
+      body: { devotional_id: insertedId },
     });
     toast.dismiss("mod");
 
