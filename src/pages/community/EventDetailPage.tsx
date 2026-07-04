@@ -6,10 +6,13 @@ import { PremiumNav } from "@/components/PremiumNav";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function EventDetailPage() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { language } = useLanguage();
+  const t = (en: string, es: string) => (language === "es" ? es : en);
   const [ev, setEv] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
   const [joined, setJoined] = useState(false);
@@ -37,7 +40,7 @@ export default function EventDetailPage() {
 
   const toggle = async () => {
     if (!user || !id) {
-      toast({ title: "Please sign in" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión") });
       return;
     }
     if (joined) {
@@ -51,7 +54,7 @@ export default function EventDetailPage() {
   return (
     <div className="min-h-screen text-white">
       <main className="px-5 sm:px-8 pb-32 max-w-3xl mx-auto">
-        <CommunityHeader title="Event" />
+        <CommunityHeader title={t("Event", "Evento")} />
         {ev && (
           <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden">
             {ev.image_url && <img src={ev.image_url} alt={ev.title} className="w-full aspect-video object-cover" />}
@@ -60,7 +63,7 @@ export default function EventDetailPage() {
               <div className="mt-3 space-y-2 text-[13px] text-white/70">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  {new Date(ev.event_date).toLocaleString(undefined, {
+                  {new Date(ev.event_date).toLocaleString(language === "es" ? "es" : undefined, {
                     weekday: "long",
                     month: "long",
                     day: "numeric",
@@ -76,7 +79,7 @@ export default function EventDetailPage() {
                 )}
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  {ev.attendee_count} attending
+                  {ev.attendee_count} {t("attending", "asistiendo")}
                 </div>
               </div>
               {ev.description && <p className="mt-4 text-white/80 leading-relaxed">{ev.description}</p>}
@@ -84,7 +87,7 @@ export default function EventDetailPage() {
                 onClick={toggle}
                 className="mt-5 rounded-full bg-gradient-to-r from-white/95 to-white/80 text-black"
               >
-                {joined ? "Cancel RSVP" : "Join Event"}
+                {joined ? t("Cancel RSVP", "Cancelar asistencia") : t("Join Event", "Unirse al evento")}
               </Button>
             </div>
           </div>
