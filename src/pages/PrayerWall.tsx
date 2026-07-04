@@ -710,20 +710,20 @@ export default function PrayerWall() {
                     <div className="flex items-center gap-1 px-2 py-2 border-t border-white/5">
                       <ActionBtn
                         icon={Heart}
-                        label="Like"
+                        label={t("Like", "Me gusta")}
                         active={mine.has("like")}
                         count={p.like_count}
                         onClick={() => toggleInteraction(p.id, "like")}
                       />
                       <ActionBtn
                         icon={MessageCircle}
-                        label="Comment"
+                        label={t("Comment", "Comentar")}
                         count={p.comment_count}
                         onClick={() => navigate(`/community/post/${p.id}`)}
                       />
                       <ActionBtn
                         icon={HandHeart}
-                        label="Pray"
+                        label={t("Pray", "Orar")}
                         active={mine.has("pray")}
                         count={p.pray_count}
                         onClick={() => toggleInteraction(p.id, "pray")}
@@ -731,7 +731,7 @@ export default function PrayerWall() {
                       {user?.id === p.user_id && (
                         <ActionBtn
                           icon={Trash2}
-                          label="Delete"
+                          label={t("Delete", "Eliminar")}
                           onClick={() => deletePost(p.id)}
                         />
                       )}
