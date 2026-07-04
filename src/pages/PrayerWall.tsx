@@ -590,11 +590,11 @@ export default function PrayerWall() {
       <section className="w-full border-t border-white/10 bg-black/20">
         <div className="max-w-3xl mx-auto px-5 sm:px-8 py-2">
           <h2 className="font-playfair text-lg text-white tracking-tight px-1 mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-            Feed
+            {t("Feed", "Muro")}
           </h2>
           {posts.length === 0 ? (
             <div className="px-4 py-12 text-center text-white/50 text-sm">
-              No posts yet. Tap the + button to share something.
+              {t("No posts yet. Tap the + button to share something.", "Aún no hay publicaciones. Toca el botón + para compartir algo.")}
             </div>
           ) : (
             <div className="divide-y divide-white/10 sm:space-y-4 sm:divide-y-0">
