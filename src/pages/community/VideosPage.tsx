@@ -35,6 +35,7 @@ interface VideoItem {
   video_url: string | null;
   thumbnail_url: string | null;
   author_name: string;
+  author_avatar_url?: string | null;
   view_count: number;
   duration_seconds: number | null;
   created_at: string;
