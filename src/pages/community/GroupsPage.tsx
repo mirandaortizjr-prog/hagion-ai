@@ -242,24 +242,24 @@ export default function GroupsPage() {
         <div className="flex items-center gap-1 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/10">
           {(
             [
-              { id: "rooms", label: "Rooms", icon: DoorOpen },
-              { id: "church", label: "My Church", icon: ChurchIcon },
+              { id: "rooms", label: t("Rooms", "Salas"), icon: DoorOpen },
+              { id: "church", label: t("My Church", "Mi Iglesia"), icon: ChurchIcon },
             ] as const
-          ).map((t) => {
-            const Icon = t.icon;
+          ).map((tab_) => {
+            const Icon = tab_.icon;
             return (
               <button
-                key={t.id}
-                onClick={() => setTab(t.id as Tab)}
+                key={tab_.id}
+                onClick={() => setTab(tab_.id as Tab)}
                 className={cn(
                   "flex-1 inline-flex items-center justify-center gap-1.5 py-1.5 rounded-full text-[11.5px] tracking-wide font-medium transition-all active:scale-95",
-                  tab === t.id
+                  tab === tab_.id
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-white/55 hover:text-white/85",
                 )}
               >
                 <Icon className="w-3.5 h-3.5" />
-                {t.label}
+                {tab_.label}
               </button>
             );
           })}
