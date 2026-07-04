@@ -502,6 +502,7 @@ interface VideoFeedItemProps {
   onPlaybackError: () => void;
   registerVideo: (el: HTMLVideoElement | null) => void;
   onProgress: (p: number, currentTime: number, duration: number) => void;
+  t: (en: string, es: string) => string;
 }
 
 function VideoFeedItem({
