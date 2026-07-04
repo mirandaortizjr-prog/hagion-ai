@@ -101,7 +101,7 @@ export default function PostDetailPage() {
   if (!post) {
     return (
       <div className="min-h-screen text-white px-5 max-w-3xl mx-auto">
-        <CommunityHeader title="Post" />
+        <CommunityHeader title={t("Post", "Publicación")} />
         <PremiumNav />
       </div>
     );
