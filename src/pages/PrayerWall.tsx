@@ -392,7 +392,7 @@ export default function PrayerWall() {
 
   const handlePost = async () => {
     if (!user) {
-      toast({ title: "Please sign in", description: "Sign in to share with the community" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión"), description: t("Sign in to share with the community", "Inicia sesión para compartir con la comunidad") });
       navigate("/auth");
       return;
     }
