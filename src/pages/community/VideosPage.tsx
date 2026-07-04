@@ -300,7 +300,7 @@ export default function VideosPage() {
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast({ title: "Link copied", description: url });
+        toast({ title: t("Link copied", "Enlace copiado"), description: url });
         return;
       }
     } catch {}
