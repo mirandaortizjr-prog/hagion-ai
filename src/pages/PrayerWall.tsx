@@ -670,7 +670,7 @@ export default function PrayerWall() {
                                     : "bg-white text-black hover:bg-white/90 shadow-[0_4px_14px_-4px_rgba(255,255,255,0.4)]"
                                 )}
                               >
-                                {isFollowing ? "Following" : "Follow"}
+                                {isFollowing ? t("Following", "Siguiendo") : t("Follow", "Seguir")}
                               </button>
                             )}
                           </>
