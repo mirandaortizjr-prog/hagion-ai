@@ -29,6 +29,7 @@ import {
   DoorOpen,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Group {
   id: string;
