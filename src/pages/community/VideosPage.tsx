@@ -538,10 +538,11 @@ function VideoFeedItem({
           }}
           src={video.video_url}
           poster={video.thumbnail_url || undefined}
+          loop
           muted={muted}
           playsInline
           autoPlay={isActive && !paused}
-          preload={isActive ? "auto" : "metadata"}
+          preload={isActive ? "auto" : "none"}
           onClick={onTogglePause}
           onLoadedMetadata={(e) => {
             const v = e.currentTarget;
@@ -553,7 +554,7 @@ function VideoFeedItem({
             const p = v.duration > 0 ? v.currentTime / v.duration : 0;
             onProgress(p, v.currentTime, v.duration || 0);
           }}
-          className="absolute inset-0 w-full h-full object-contain"
+          className="absolute inset-0 w-full h-full object-cover"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent">
