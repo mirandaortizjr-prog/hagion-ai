@@ -377,8 +377,8 @@ export default function VideosPage() {
       ) : (
         <div
           ref={containerRef}
-          className="absolute inset-0 overflow-y-scroll snap-y snap-mandatory scrollbar-none"
-          style={{ scrollSnapType: "y mandatory" }}
+          className="absolute inset-0 overflow-y-scroll snap-y snap-mandatory scrollbar-none overscroll-y-contain"
+          style={{ scrollSnapType: "y mandatory", scrollBehavior: "auto", WebkitOverflowScrolling: "touch" as any }}
         >
           {videos.map((v) => (
             <VideoFeedItem
