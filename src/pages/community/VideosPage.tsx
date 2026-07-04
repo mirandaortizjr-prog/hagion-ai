@@ -377,8 +377,8 @@ export default function VideosPage() {
       ) : (
         <div
           ref={containerRef}
-          className="absolute inset-0 overflow-y-scroll snap-y snap-mandatory scrollbar-none"
-          style={{ scrollSnapType: "y mandatory" }}
+          className="absolute inset-0 overflow-y-scroll snap-y snap-mandatory scrollbar-none overscroll-y-contain"
+          style={{ scrollSnapType: "y mandatory", scrollBehavior: "auto", WebkitOverflowScrolling: "touch" as any }}
         >
           {videos.map((v) => (
             <VideoFeedItem
@@ -554,7 +554,8 @@ function VideoFeedItem({
     <section
       data-video-id={video.id}
       onPointerDown={showControls}
-      className="relative w-full h-[100dvh] snap-start overflow-hidden bg-black"
+      className="relative w-full h-[100dvh] snap-start snap-always overflow-hidden bg-black"
+      style={{ scrollSnapStop: "always" }}
     >
       {video.video_url ? (
         <video
