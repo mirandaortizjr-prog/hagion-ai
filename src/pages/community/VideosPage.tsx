@@ -517,6 +517,7 @@ function VideoFeedItem({
   onComment,
   onMore,
   onFollow,
+  isSelf,
   onSeek,
   onPlaybackError,
   registerVideo,
