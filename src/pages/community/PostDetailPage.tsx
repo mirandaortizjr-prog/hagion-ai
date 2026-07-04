@@ -52,7 +52,7 @@ export default function PostDetailPage() {
 
   const toggleVote = async () => {
     if (!user || !post) {
-      toast({ title: "Please sign in" });
+      toast({ title: t("Please sign in", "Por favor inicia sesión") });
       return;
     }
     if (voted) {
