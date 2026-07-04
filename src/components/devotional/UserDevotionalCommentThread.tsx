@@ -249,6 +249,14 @@ export function UserDevotionalCommentThread({ devotionalId }: { devotionalId: st
       ) : (
         roots.map((c) => <CommentCard key={c.id} c={c} />)
       )}
+      {reportTargetId && (
+        <ReportDialog
+          open={!!reportTargetId}
+          onOpenChange={(o) => !o && setReportTargetId(null)}
+          targetType="user_devotional_comment"
+          targetId={reportTargetId}
+        />
+      )}
     </div>
   );
 }
