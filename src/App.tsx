@@ -78,6 +78,8 @@ import Invite from "./pages/Invite";
 import MyChurchPage from "./pages/community/MyChurchPage";
 import JoinChurchPage from "./pages/community/JoinChurchPage";
 import { FeatureGate } from "@/components/FeatureGate";
+import ChurchPro from "./pages/monetize/ChurchPro";
+import SponsorContent from "./pages/monetize/SponsorContent";
 
 const queryClient = new QueryClient();
 
@@ -190,6 +192,8 @@ const App = () => (
             <Route path="/invite/:code" element={<Invite />} />
             <Route path="/community/my-church" element={<MyChurchPage />} />
             <Route path="/join-church/:code" element={<JoinChurchPage />} />
+            <Route path="/monetize/church-pro" element={<ChurchPro />} />
+            <Route path="/monetize/sponsor" element={<SponsorContent />} />
             <Route path="/:assistantId" element={<AssistantChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

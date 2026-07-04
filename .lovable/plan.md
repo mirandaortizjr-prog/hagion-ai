@@ -1,74 +1,78 @@
+# Community Monetization: Sponsored Content + Ministry Pro
 
-# User-Submitted Devotionals + Discussion
-
-Turn the Daily Devotional into a community-powered library. Premium/Premium+ users submit devotionals, AI moderates them, and every day one is picked from the library on a fair-rotation basis. Each devotional has its own discussion thread underneath so readers can respond, share insight, and sharpen one another.
+Two revenue streams, both fully web-based so Native Forge's next pass is not affected. No Capacitor plugins, no in-app purchase code, no changes to `google_play_purchases` flow.
 
 ## What we're building
 
-### 1. Submission (Premium & Premium+ only)
-- New "Write a Devotional" button on the Daily Devotional page (gated by tier)
-- Form fields: **Title**, **Scripture reference**, **Reflection**, **Prayer**, optional **Topic tags**
-- Author's name + avatar attached automatically from their profile
-- Draft auto-save so long writes aren't lost
+### 1. Sponsored Content (ad-style, but native to the feed)
+- Sponsored **posts** in Discussions feed
+- Sponsored **churches** boosted in the Community/Church list & map
+- Sponsored **events** pinned at the top of Events
+- Sponsored **teachings** featured on the Teachings page
+- Each item shows a clear "Sponsored" label (Play Store requirement) and is capped so the feed doesn't feel spammy (e.g. 1 sponsored post every 5 organic posts).
 
-### 2. Two-stage AI moderation gate
-Every submission runs through Lovable AI before publishing:
-1. **Doctrinal check** — scripture accuracy, sound exegesis, defends orthodox Christian truth, flags heresy / prosperity gospel / logical fallacies / non-biblical claims
-2. **Quality check** — coherent, complete (has all required parts), not spammy or self-promotional, appropriate length
+### 2. Ministry / Church Pro tier
+A paid upgrade specifically for **churches and ministries** (not individual users — those keep the existing Premium tiers).
+- **Verified badge** on the church page + everywhere the church appears
+- **Featured placement** in church directory / map
+- **Unlimited events** + featured event slots
+- **Basic analytics** (page views, member joins, event RSVPs)
+- **Custom banner + description**
+- Billed via **Stripe Checkout in the browser** (opens system browser from the app). No Play Billing required — Google Play allows web checkout for B2B/organizational subscriptions from the seller's own site.
 
-Outcomes:
-- **Approved** → enters the library, eligible for daily rotation
-- **Needs revision** → sent back with specific AI feedback on what to fix (author can edit and resubmit)
-- **Rejected** → clear reason, cannot be resubmitted as-is
+## Technical section
 
-### 3. Fair-rotation daily pick
-A scheduled job picks one devotional per day using a **least-recently-featured** algorithm:
-- Every approved devotional gets a `last_featured_at` timestamp
-- Daily job picks the one with the oldest `last_featured_at` (nulls first, so brand-new devotionals surface fast)
-- Everyone gets airtime — no one dominates the front page
-- If library is empty on a given day, fall back to a Hagion AI-generated devotional (existing flow)
+### Database changes (migration)
+Add new columns to existing tables — no new user-facing tables required for MVP:
 
-### 4. Library browsing
-The Daily Devotional page gets a "Library" tab with:
-- **Newest** — recent approvals
-- **Topics** — anxiety, hope, forgiveness, prayer, suffering, etc.
-- **Scripture** — browse by book/passage
-- **Most-read** — engagement-based (reads, saves, amens) but does not affect rotation
+```
+posts:       + is_sponsored bool, sponsor_name text, sponsor_url text, sponsored_until timestamptz
+churches:    + is_verified bool, is_featured bool, featured_until timestamptz, pro_tier text, banner_url text
+events:      + is_sponsored bool, sponsored_until timestamptz
+teachings:   + is_sponsored bool, sponsored_until timestamptz
+```
 
-### 5. Discussion thread per devotional
-Underneath every devotional (both today's featured one and any library entry):
-- Comment thread — anyone can reply, quote scripture, encourage
-- Nested replies (one level deep, like Prayer Wall)
-- Reactions: 🙏 Amen, ❤️ Encouraged, 💡 Insight
-- Report button for anything off
-- Author is notified when their devotional gets comments
-- Comments are also AI-moderated on submit (lighter pass — catches abuse, heresy, spam)
+New table:
+```
+church_subscriptions (id, church_id, stripe_customer_id, stripe_subscription_id,
+                      status, tier, current_period_end, created_at)
+```
++ standard GRANTs + RLS (only church owner can read; service_role writes via webhook).
 
-## Technical outline
+New table:
+```
+sponsorships (id, target_type, target_id, sponsor_user_id, stripe_payment_intent_id,
+              amount_cents, starts_at, ends_at, status, created_at)
+```
+Sponsor Pro-tier users pay per campaign; row drives `is_sponsored` flag via ends_at.
 
-**New tables:**
-- `user_devotionals` — title, scripture_ref, reflection, prayer, tags, author_id, status (pending/approved/needs_revision/rejected), moderation_feedback, last_featured_at, featured_count, read_count, save_count, amen_count
-- `devotional_daily_pick` — date, devotional_id (source of truth for "today's" pick, so it's stable per user timezone)
-- `user_devotional_comments` — devotional_id, author_id, parent_id, body, reactions
-- `user_devotional_comment_reactions` — comment_id, user_id, type
-- `user_devotional_reads` / `user_devotional_saves` — engagement tracking
+### Edge functions (all `verify_jwt = false`, validate JWT in-code)
+1. `create-sponsorship-checkout` — creates a Stripe Checkout session for a sponsorship campaign (post / church / event / teaching, duration, budget).
+2. `create-church-pro-checkout` — Stripe Checkout for the Ministry Pro monthly/annual subscription.
+3. `stripe-webhook` — receives Stripe events, activates sponsorships/subscriptions, sets `is_verified` / `is_sponsored` flags.
+4. `sponsorship-cleanup` (cron-style, called from client on feed load) — flips `is_sponsored=false` when `ends_at < now()`.
 
-All with RLS: anyone authenticated can read approved devotionals + comments; only the author can edit their own submission (while status is `needs_revision`); only Premium/Premium+ can insert.
+Uses existing `STRIPE_SECRET_KEY` if present, otherwise we'll add it via `add_secret` when you're ready.
 
-**New edge functions:**
-- `moderate-user-devotional` — runs the two-stage AI check on submit
-- `moderate-devotional-comment` — lighter AI pass on comments
-- `pick-daily-devotional` — scheduled daily, applies least-recently-featured logic and writes to `devotional_daily_pick`
+### Frontend changes
+- Discussions/Events/Teachings/Churches lists: interleave sponsored items with clear "Sponsored" badge (styled to match theme, bilingual EN/ES).
+- New page: `/monetize/sponsor` — self-serve sponsor campaign creator (choose target, dates, budget → Stripe Checkout).
+- New page: `/monetize/church-pro` — Ministry Pro upgrade landing + Checkout button, only visible to users who own a church.
+- Church detail page: show Verified badge + Featured banner when applicable.
+- All strings run through the existing `t(en, es)` helper.
 
-**Frontend changes:**
-- `DailyDevotional.tsx` — reads from `devotional_daily_pick` for today; falls back to existing Hagion AI generator when library is empty; adds discussion thread section; adds "Write a Devotional" CTA for Premium+
-- New `DevotionalLibrary.tsx` page — Newest / Topics / Scripture / Most-read tabs
-- New `DevotionalSubmitDialog.tsx` — form + client-side draft save
-- New `DevotionalCommentThread.tsx` — reuses the existing prayer comment pattern
-- New `MyDevotionals.tsx` (in Profile) — see your submissions, revise the ones needing revision, view stats
+### What we are NOT doing (to protect Native Forge)
+- ❌ No AdMob / no `@capacitor-community/admob`
+- ❌ No Google Play Billing changes
+- ❌ No new Capacitor plugins
+- ❌ No changes to `capacitor.config.ts`
+- ✅ Stripe Checkout opens in the system browser via a plain `window.location.href` (works in the current WebView build)
 
-## What's not in this plan (open questions to confirm after)
-- Landing page split (first-time → Home, returning → Community) — separate change, easy to bolt on after
-- Whether pastors/leaders get a visible verified badge on their devotionals — worth doing, but let's decide UX after core ships
+## Rollout order
+1. Migration (schema + RLS + GRANTs)
+2. Stripe edge functions + webhook
+3. Sponsor campaign UI + Church Pro upgrade UI
+4. Feed integration (sponsored badges + placement rules)
+5. Bilingual pass on all new strings
 
-Ready to build once you approve.
+Approve and I'll build it in this order.
