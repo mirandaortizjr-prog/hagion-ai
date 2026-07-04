@@ -1867,6 +1867,8 @@ export type Database = {
       user_devotionals: {
         Row: {
           amen_count: number
+          appeal_count: number
+          appealed_at: string | null
           author_id: string
           comment_count: number
           created_at: string
@@ -1889,6 +1891,8 @@ export type Database = {
         }
         Insert: {
           amen_count?: number
+          appeal_count?: number
+          appealed_at?: string | null
           author_id: string
           comment_count?: number
           created_at?: string
@@ -1911,6 +1915,8 @@ export type Database = {
         }
         Update: {
           amen_count?: number
+          appeal_count?: number
+          appealed_at?: string | null
           author_id?: string
           comment_count?: number
           created_at?: string
