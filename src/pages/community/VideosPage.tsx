@@ -386,6 +386,7 @@ export default function VideosPage() {
           {videos.map((v) => (
             <VideoFeedItem
               key={v.id}
+              t={t}
               video={v}
               isActive={v.id === activeId}
               muted={muted}
