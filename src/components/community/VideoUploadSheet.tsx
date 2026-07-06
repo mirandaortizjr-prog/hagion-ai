@@ -22,7 +22,7 @@ const COPY = {
   en: {
     reelTitle: "Share a Clip",
     teachingTitle: "Upload a Vid",
-    reelHint: "Vertical video. Up to 30 seconds, 250 MB.",
+    reelHint: "Vertical video. Up to 3 minutes, 250 MB.",
     teachingHint: "Long-form vid. Up to 15 minutes, 1 GB.",
     title: "Title",
     description: "Description (optional)",
@@ -38,14 +38,14 @@ const COPY = {
     failure: "Upload failed",
     tooLargeReel: "Clip must be under 250 MB",
     tooLargeTeaching: "Vid must be under 1 GB",
-    tooLongReel: "Clip must be 30 seconds or less",
+    tooLongReel: "Clip must be 3 minutes or less",
     tooLongTeaching: "Vid must be 15 minutes or less",
     checking: "Checking video…",
   },
   es: {
     reelTitle: "Comparte un Clip",
     teachingTitle: "Sube un Vid",
-    reelHint: "Video vertical. Hasta 30 segundos, 250 MB.",
+    reelHint: "Video vertical. Hasta 3 minutos, 250 MB.",
     teachingHint: "Vid largo. Hasta 15 minutos, 1 GB.",
     title: "Título",
     description: "Descripción (opcional)",
@@ -61,7 +61,7 @@ const COPY = {
     failure: "Error al subir",
     tooLargeReel: "El Clip debe ser menor a 250 MB",
     tooLargeTeaching: "El Vid debe ser menor a 1 GB",
-    tooLongReel: "El Clip debe durar 30 segundos o menos",
+    tooLongReel: "El Clip debe durar 3 minutos o menos",
     tooLongTeaching: "El Vid debe durar 15 minutos o menos",
     checking: "Verificando video…",
   },
@@ -69,7 +69,7 @@ const COPY = {
 
 const REEL_MAX = 250 * 1024 * 1024;
 const TEACHING_MAX = 1024 * 1024 * 1024;
-const REEL_MAX_SECONDS = 30;
+const REEL_MAX_SECONDS = 3 * 60;
 const TEACHING_MAX_SECONDS = 15 * 60;
 
 const probeDuration = (file: File): Promise<number> =>
