@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageSquare, Star, Trash2, ChevronDown } from "lucide-react";
+import { MessageSquare, Star, Trash2, ChevronDown, Megaphone, BadgeCheck } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -224,6 +224,41 @@ export function AppSidebar() {
               </CollapsibleContent>
             </SidebarGroup>
           </Collapsible>
+
+          {/* Monetization Section */}
+          <SidebarGroup className="p-0 mt-2">
+            <SidebarGroupLabel className="text-base font-playfair font-semibold py-3 px-2 text-white">
+              {t('monetize') || 'Monetize'}
+            </SidebarGroupLabel>
+            <SidebarGroupContent className="px-0 py-1">
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => navigate('/monetize/sponsor')}
+                    className="w-full justify-start hover:bg-white/10 px-2 py-2 text-white"
+                  >
+                    <Megaphone className="mr-2 h-4 w-4 text-white/80" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm text-white">{t('promote_content') || 'Promote content'}</div>
+                      <div className="text-xs text-white/60">{t('promote_content_sub') || 'Boost a post, event or church'}</div>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    onClick={() => navigate('/monetize/church-pro')}
+                    className="w-full justify-start hover:bg-white/10 px-2 py-2 text-white"
+                  >
+                    <BadgeCheck className="mr-2 h-4 w-4 text-white/80" />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm text-white">{t('ministry_pro') || 'Ministry Pro'}</div>
+                      <div className="text-xs text-white/60">{t('ministry_pro_sub') || 'Verified badge for your church'}</div>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
         </div>
       </SidebarContent>
     </Sidebar>
