@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageSquare, Star, Trash2, ChevronDown } from "lucide-react";
+import { MessageSquare, Star, Trash2, ChevronDown, Megaphone, BadgeCheck } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
