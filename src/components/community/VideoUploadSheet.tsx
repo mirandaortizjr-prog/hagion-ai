@@ -22,8 +22,8 @@ const COPY = {
   en: {
     reelTitle: "Share a Clip",
     teachingTitle: "Upload a Vid",
-    reelHint: "Vertical video. Up to 30 seconds, 100 MB.",
-    teachingHint: "Long-form vid. Up to 15 minutes, 500 MB.",
+    reelHint: "Vertical video. Up to 30 seconds, 250 MB.",
+    teachingHint: "Long-form vid. Up to 15 minutes, 1 GB.",
     title: "Title",
     description: "Description (optional)",
     pick: "Choose video",
@@ -36,8 +36,8 @@ const COPY = {
     signin: "Please sign in to upload",
     success: "Published",
     failure: "Upload failed",
-    tooLargeReel: "Clip must be under 100 MB",
-    tooLargeTeaching: "Vid must be under 500 MB",
+    tooLargeReel: "Clip must be under 250 MB",
+    tooLargeTeaching: "Vid must be under 1 GB",
     tooLongReel: "Clip must be 30 seconds or less",
     tooLongTeaching: "Vid must be 15 minutes or less",
     checking: "Checking video…",
@@ -45,8 +45,8 @@ const COPY = {
   es: {
     reelTitle: "Comparte un Clip",
     teachingTitle: "Sube un Vid",
-    reelHint: "Video vertical. Hasta 30 segundos, 100 MB.",
-    teachingHint: "Vid largo. Hasta 15 minutos, 500 MB.",
+    reelHint: "Video vertical. Hasta 30 segundos, 250 MB.",
+    teachingHint: "Vid largo. Hasta 15 minutos, 1 GB.",
     title: "Título",
     description: "Descripción (opcional)",
     pick: "Elegir video",
@@ -59,16 +59,16 @@ const COPY = {
     signin: "Inicia sesión para subir",
     success: "Publicado",
     failure: "Error al subir",
-    tooLargeReel: "El Clip debe ser menor a 100 MB",
-    tooLargeTeaching: "El Vid debe ser menor a 500 MB",
+    tooLargeReel: "El Clip debe ser menor a 250 MB",
+    tooLargeTeaching: "El Vid debe ser menor a 1 GB",
     tooLongReel: "El Clip debe durar 30 segundos o menos",
     tooLongTeaching: "El Vid debe durar 15 minutos o menos",
     checking: "Verificando video…",
   },
 };
 
-const REEL_MAX = 100 * 1024 * 1024;
-const TEACHING_MAX = 500 * 1024 * 1024;
+const REEL_MAX = 250 * 1024 * 1024;
+const TEACHING_MAX = 1024 * 1024 * 1024;
 const REEL_MAX_SECONDS = 30;
 const TEACHING_MAX_SECONDS = 15 * 60;
 
