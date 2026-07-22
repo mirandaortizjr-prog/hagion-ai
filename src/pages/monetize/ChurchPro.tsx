@@ -157,12 +157,12 @@ export default function ChurchPro() {
                   <div className="grid grid-cols-2 gap-2">
                     <button onClick={() => setPlan("monthly")} className={`rounded-lg border p-3 text-left ${plan==="monthly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <div className="text-sm font-medium">{t("Monthly", "Mensual")}</div>
-                      <div className="text-xl font-bold">{monthlyPrice.replace("/", "<")}</div>
+                      <div className="text-xl font-bold">{monthlyPrice.split("/")[0]}<span className="text-xs font-normal text-muted-foreground">/{monthlyPrice.split("/")[1] ?? "mo"}</span></div>
                     </button>
                     <button onClick={() => setPlan("yearly")} className={`rounded-lg border p-3 text-left relative ${plan==="yearly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <Badge className="absolute -top-2 right-2">{t("Save 17%", "Ahorra 17%")}</Badge>
                       <div className="text-sm font-medium">{t("Yearly", "Anual")}</div>
-                      <div className="text-xl font-bold">{yearlyPrice.replace("/", "<")}</div>
+                      <div className="text-xl font-bold">{yearlyPrice.split("/")[0]}<span className="text-xs font-normal text-muted-foreground">/{yearlyPrice.split("/")[1] ?? "yr"}</span></div>
                     </button>
                   </div>
                   <Button className="w-full" size="lg" disabled={processing || rcLoading} onClick={checkout}>
