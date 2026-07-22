@@ -65,6 +65,49 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Premium / Premium+ subscriptions via RevenueCat
+    if (productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly') {
+      const periodEnd = event.expiration_at_ms
+        ? new Date(event.expiration_at_ms).toISOString()
+        : null
+      const now = new Date().toISOString()
+
+      if (eventType === 'INITIAL_PURCHASE' || eventType === 'RENEWAL' || eventType === 'UNCANCELLATION') {
+        const { data: existing } = await admin
+          .from('google_play_purchases')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('product_id', productId)
+          .maybeSingle()
+
+        const row = {
+          user_id: userId,
+          product_id: productId,
+          purchase_token: transactionId ?? event.original_transaction_id ?? `rc_${event.event_id ?? Date.now()}`,
+          order_id: event.transaction_id ?? null,
+          status: 'active',
+          expiry_time: periodEnd,
+          start_time: now,
+          auto_renewing: productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly',
+          acknowledged: true,
+          last_verified_at: now,
+          raw_response: event as any,
+        }
+
+        if (existing) {
+          await admin.from('google_play_purchases').update(row).eq('id', existing.id)
+        } else {
+          await admin.from('google_play_purchases').insert(row)
+        }
+      } else if (eventType === 'CANCELLATION' || eventType === 'EXPIRATION' || eventType === 'BILLING_ISSUE') {
+        await admin.from('google_play_purchases').update({
+          status: eventType === 'EXPIRATION' ? 'expired' : 'canceled',
+          expiry_time: periodEnd,
+          last_verified_at: now,
+        }).eq('user_id', userId).eq('product_id', productId)
+      }
+    }
+
     // Ministry Pro subscription
     if (productId === 'hagion_ministry_monthly' || productId === 'hagion_ministry_yearly') {
       const attrs = event.subscriber_attributes ?? {}
