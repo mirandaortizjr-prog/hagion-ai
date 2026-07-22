@@ -74,17 +74,12 @@ Deno.serve(async (req) => {
         : null
 
       if (eventType === 'INITIAL_PURCHASE' || eventType === 'RENEWAL' || eventType === 'UNCANCELLATION') {
-        const { data: existing } = await admin
-          .from('google_play_purchases')
-          .select('id')
-          .eq('user_id', userId)
-          .eq('product_id', productId)
-          .maybeSingle()
+        const purchaseToken = transactionId ?? event.original_transaction_id ?? `rc_${event.event_id ?? Date.now()}`
 
         const row = {
           user_id: userId,
           product_id: productId,
-          purchase_token: transactionId ?? event.original_transaction_id ?? `rc_${event.event_id ?? Date.now()}`,
+          purchase_token: purchaseToken,
           order_id: event.transaction_id ?? null,
           status: 'active',
           expiry_time: periodEnd,
@@ -95,10 +90,13 @@ Deno.serve(async (req) => {
           raw_response: event as any,
         }
 
-        if (existing) {
-          await admin.from('google_play_purchases').update(row).eq('id', existing.id)
-        } else {
-          await admin.from('google_play_purchases').insert(row)
+        const { error: upsertError } = await admin.from('google_play_purchases').upsert(row, {
+          onConflict: 'purchase_token',
+          ignoreDuplicates: false,
+        })
+
+        if (upsertError) {
+          console.error('google_play_purchases upsert error:', upsertError)
         }
       } else if (eventType === 'CANCELLATION' || eventType === 'EXPIRATION' || eventType === 'BILLING_ISSUE') {
         await admin.from('google_play_purchases').update({
