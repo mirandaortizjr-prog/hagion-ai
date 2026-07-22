@@ -10,11 +10,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { ArrowLeft, BadgeCheck, TrendingUp, BarChart3, Sparkles, Loader2, Smartphone } from "lucide-react";
 
+const PRODUCT_IDS: Record<"monthly" | "yearly", string> = {
+  monthly: "hagion_ministry_monthly",
+  yearly: "hagion_ministry_yearly",
+};
+
 export default function ChurchPro() {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const { isNative, products, purchase, isLoading: rcLoading } = useRevenueCat();
 
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -49,10 +55,30 @@ export default function ChurchPro() {
     if (params.get("canceled")) toast.info(t("Checkout canceled", "Pago cancelado"));
   }, [params]);
 
+  const productId = PRODUCT_IDS[plan];
+  const nativeProduct = products.find((p) => p.id === productId);
+  const monthlyPrice = isNative
+    ? nativeProduct?.priceString || "$19/mo"
+    : "$19/mo";
+  const yearlyPrice = isNative
+    ? products.find((p) => p.id === PRODUCT_IDS.yearly)?.priceString || "$190/yr"
+    : "$190/yr";
+
   const checkout = async () => {
     if (!selected) return;
     setProcessing(true);
     try {
+      if (isNative) {
+        const result = await purchase(productId, { church_id: selected });
+        if (result.success) {
+          toast.success(t("Subscription activated!", "¡Suscripción activada!"));
+          navigate("/main-menu");
+        } else if (result.error && result.error !== "Purchase cancelled") {
+          toast.error(t("Purchase failed", "La compra falló") + ": " + result.error);
+        }
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke("create-church-pro-checkout", {
         body: { church_id: selected, plan },
       });
