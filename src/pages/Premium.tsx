@@ -280,6 +280,11 @@ const Premium = () => {
                     {language === 'es' ? 'TU PLAN' : 'YOUR PLAN'}
                   </div>
                 )}
+                {isNative && plan.id === 'pro' && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-muted text-muted-foreground px-3 py-1 text-[10px] font-bold text-center">
+                    {language === 'es' ? 'SOLO EN WEB' : 'WEB ONLY'}
+                  </div>
+                )}
 
                 <div className="text-center mb-5 mt-3">
                   <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br ${plan.gradient} mb-3`}>
