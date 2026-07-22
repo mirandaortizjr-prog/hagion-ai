@@ -330,17 +330,35 @@ const Premium = () => {
           })}
         </div>
 
-        <div className="text-center text-xs text-muted-foreground space-y-1 max-w-2xl mx-auto">
+        <div className="text-center text-xs text-muted-foreground space-y-2 max-w-2xl mx-auto">
           <p>
-            {language === 'es'
-              ? 'Facturado mensualmente después de la prueba. Cancela en cualquier momento; el cambio surte efecto al final del ciclo de facturación.'
-              : 'Billed monthly after the trial. Cancel anytime; cancellation takes effect at the end of the billing period.'}
+            {isNative
+              ? (language === 'es'
+                  ? 'Las suscripciones se facturan y gestionan a través de Google Play. Puedes cancelar desde tu cuenta de Google Play.'
+                  : 'Subscriptions are billed and managed through Google Play. You can cancel from your Google Play account.')
+              : (language === 'es'
+                  ? 'Facturado mensualmente después de la prueba. Cancela en cualquier momento; el cambio surte efecto al final del ciclo de facturación.'
+                  : 'Billed monthly after the trial. Cancel anytime; cancellation takes effect at the end of the billing period.')}
           </p>
-          <p>
-            {language === 'es'
-              ? 'Impuestos calculados automáticamente. Sin reembolsos después de la facturación.'
-              : 'Taxes calculated automatically. No refunds after billing.'}
-          </p>
+          {!isNative && (
+            <p>
+              {language === 'es'
+                ? 'Impuestos calculados automáticamente. Sin reembolsos después de la facturación.'
+                : 'Taxes calculated automatically. No refunds after billing.'}
+            </p>
+          )}
+          {isNative && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRestore}
+              disabled={restoring}
+              className="mx-auto"
+            >
+              {restoring ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+              {language === 'es' ? 'Restaurar compras' : 'Restore purchases'}
+            </Button>
+          )}
           <p className="pt-2 text-[11px] text-white/40">
             <a href="/terms" className="underline hover:text-white/70">
               {language === 'es' ? 'Términos' : 'Terms'}
