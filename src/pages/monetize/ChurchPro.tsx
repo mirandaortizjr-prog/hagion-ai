@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRevenueCat } from "@/hooks/useRevenueCat";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { ArrowLeft, BadgeCheck, TrendingUp, BarChart3, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, BadgeCheck, TrendingUp, BarChart3, Sparkles, Loader2, Smartphone } from "lucide-react";
 
 export default function ChurchPro() {
   const { language } = useLanguage();
