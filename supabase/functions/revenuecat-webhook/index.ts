@@ -72,7 +72,6 @@ Deno.serve(async (req) => {
       const periodEnd = event.expiration_at_ms
         ? new Date(event.expiration_at_ms).toISOString()
         : null
-      const now = new Date().toISOString()
 
       if (eventType === 'INITIAL_PURCHASE' || eventType === 'RENEWAL' || eventType === 'UNCANCELLATION') {
         const { data: existing } = await admin
@@ -89,10 +88,10 @@ Deno.serve(async (req) => {
           order_id: event.transaction_id ?? null,
           status: 'active',
           expiry_time: periodEnd,
-          start_time: now,
-          auto_renewing: productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly',
+          start_time: nowIso,
+          auto_renewing: true,
           acknowledged: true,
-          last_verified_at: now,
+          last_verified_at: nowIso,
           raw_response: event as any,
         }
 
@@ -105,7 +104,7 @@ Deno.serve(async (req) => {
         await admin.from('google_play_purchases').update({
           status: eventType === 'EXPIRATION' ? 'expired' : 'canceled',
           expiry_time: periodEnd,
-          last_verified_at: now,
+          last_verified_at: nowIso,
         }).eq('user_id', userId).eq('product_id', productId)
       }
     }
