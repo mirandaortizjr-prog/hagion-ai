@@ -108,7 +108,7 @@ export default function SponsorContent() {
         if (result.success) {
           toast.success(t("Sponsorship activated!", "¡Patrocinio activado!"));
           navigate("/main-menu");
-        } else if (result.error !== "Purchase cancelled") {
+        } else if (result.error && result.error !== "Purchase cancelled") {
           toast.error(t("Purchase failed", "La compra falló") + ": " + result.error);
         }
         return;
