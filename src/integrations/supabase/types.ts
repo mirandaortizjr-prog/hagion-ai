@@ -80,6 +80,8 @@ export type Database = {
           current_period_end: string | null
           id: string
           owner_user_id: string
+          revenuecat_product_id: string | null
+          revenuecat_transaction_id: string | null
           status: string
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -92,6 +94,8 @@ export type Database = {
           current_period_end?: string | null
           id?: string
           owner_user_id: string
+          revenuecat_product_id?: string | null
+          revenuecat_transaction_id?: string | null
           status?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -104,6 +108,8 @@ export type Database = {
           current_period_end?: string | null
           id?: string
           owner_user_id?: string
+          revenuecat_product_id?: string | null
+          revenuecat_transaction_id?: string | null
           status?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -1680,6 +1686,8 @@ export type Database = {
           duration_days: number
           ends_at: string | null
           id: string
+          revenuecat_product_id: string | null
+          revenuecat_transaction_id: string | null
           sponsor_name: string | null
           sponsor_url: string | null
           sponsor_user_id: string
@@ -1697,6 +1705,8 @@ export type Database = {
           duration_days: number
           ends_at?: string | null
           id?: string
+          revenuecat_product_id?: string | null
+          revenuecat_transaction_id?: string | null
           sponsor_name?: string | null
           sponsor_url?: string | null
           sponsor_user_id: string
@@ -1714,6 +1724,8 @@ export type Database = {
           duration_days?: number
           ends_at?: string | null
           id?: string
+          revenuecat_product_id?: string | null
+          revenuecat_transaction_id?: string | null
           sponsor_name?: string | null
           sponsor_url?: string | null
           sponsor_user_id?: string
