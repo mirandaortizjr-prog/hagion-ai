@@ -13,11 +13,35 @@ import { ArrowLeft, Loader2, Megaphone, Smartphone } from "lucide-react";
 
 type Target = "post" | "event" | "teaching" | "church";
 
+const NATIVE_SPONSOR_PRICES: Record<number, string> = {
+  3: "$15",
+  7: "$31.50",
+  14: "$63",
+  30: "$112.50",
+  60: "$225",
+};
+
+const NATIVE_FEATURED_PRICES: Record<number, string> = {
+  3: "$24",
+  7: "$50.40",
+  14: "$100.80",
+  30: "$180",
+  60: "$360",
+};
+
+function nativeProductId(targetType: Target, days: number): string {
+  if (targetType === "church") {
+    return `featured_church_${days}_days`;
+  }
+  return `sponsor_content_${days}_days`;
+}
+
 export default function SponsorContent() {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const { isNative, products, purchase, isLoading: rcLoading } = useRevenueCat();
 
   const [targetType, setTargetType] = useState<Target>("post");
   const [items, setItems] = useState<Array<{ id: string; label: string }>>([]);
@@ -59,7 +83,13 @@ export default function SponsorContent() {
 
   const baseDaily = targetType === "church" ? 8 : 5;
   const raw = baseDaily * days;
-  const estimate = days >= 30 ? Math.floor(raw * 0.75) : days >= 7 ? Math.floor(raw * 0.9) : raw;
+  const webEstimate = days >= 30 ? Math.floor(raw * 0.75) : days >= 7 ? Math.floor(raw * 0.9) : raw;
+  const nativeEstimate = targetType === "church" ? NATIVE_FEATURED_PRICES[days] : NATIVE_SPONSOR_PRICES[days];
+
+  const nativeProduct = products.find((p) => p.id === nativeProductId(targetType, days));
+  const displayedPrice = isNative
+    ? nativeProduct?.priceString || nativeEstimate || `$${webEstimate}`
+    : `$${webEstimate}`;
 
   const checkout = async () => {
     if (!targetId) {
@@ -68,6 +98,22 @@ export default function SponsorContent() {
     }
     setProcessing(true);
     try {
+      if (isNative) {
+        const productId = nativeProductId(targetType, days);
+        const attrs: Record<string, string | null> =
+          targetType === "church"
+            ? { church_id: targetId }
+            : { target_type: targetType, target_id: targetId };
+        const result = await purchase(productId, attrs);
+        if (result.success) {
+          toast.success(t("Sponsorship activated!", "¡Patrocinio activado!"));
+          navigate("/main-menu");
+        } else if (result.error !== "Purchase cancelled") {
+          toast.error(t("Purchase failed", "La compra falló") + ": " + result.error);
+        }
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke("create-sponsorship-checkout", {
         body: {
           target_type: targetType,
