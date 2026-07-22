@@ -2,18 +2,25 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRevenueCat } from "@/hooks/useRevenueCat";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { ArrowLeft, BadgeCheck, TrendingUp, BarChart3, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, BadgeCheck, TrendingUp, BarChart3, Sparkles, Loader2, Smartphone } from "lucide-react";
+
+const PRODUCT_IDS: Record<"monthly" | "yearly", string> = {
+  monthly: "hagion_ministry_monthly",
+  yearly: "hagion_ministry_yearly",
+};
 
 export default function ChurchPro() {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const { isNative, products, purchase, isLoading: rcLoading } = useRevenueCat();
 
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -48,10 +55,30 @@ export default function ChurchPro() {
     if (params.get("canceled")) toast.info(t("Checkout canceled", "Pago cancelado"));
   }, [params]);
 
+  const productId = PRODUCT_IDS[plan];
+  const nativeProduct = products.find((p) => p.id === productId);
+  const monthlyPrice = isNative
+    ? nativeProduct?.priceString || "$19/mo"
+    : "$19/mo";
+  const yearlyPrice = isNative
+    ? products.find((p) => p.id === PRODUCT_IDS.yearly)?.priceString || "$190/yr"
+    : "$190/yr";
+
   const checkout = async () => {
     if (!selected) return;
     setProcessing(true);
     try {
+      if (isNative) {
+        const result = await purchase(productId, { church_id: selected });
+        if (result.success) {
+          toast.success(t("Subscription activated!", "¡Suscripción activada!"));
+          navigate("/main-menu");
+        } else if (result.error && result.error !== "Purchase cancelled") {
+          toast.error(t("Purchase failed", "La compra falló") + ": " + result.error);
+        }
+        return;
+      }
+
       const { data, error } = await supabase.functions.invoke("create-church-pro-checkout", {
         body: { church_id: selected, plan },
       });
@@ -130,20 +157,22 @@ export default function ChurchPro() {
                   <div className="grid grid-cols-2 gap-2">
                     <button onClick={() => setPlan("monthly")} className={`rounded-lg border p-3 text-left ${plan==="monthly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <div className="text-sm font-medium">{t("Monthly", "Mensual")}</div>
-                      <div className="text-xl font-bold">$19<span className="text-xs font-normal text-muted-foreground">/mo</span></div>
+                      <div className="text-xl font-bold">{monthlyPrice.split("/")[0]}<span className="text-xs font-normal text-muted-foreground">/{monthlyPrice.split("/")[1] ?? "mo"}</span></div>
                     </button>
                     <button onClick={() => setPlan("yearly")} className={`rounded-lg border p-3 text-left relative ${plan==="yearly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <Badge className="absolute -top-2 right-2">{t("Save 17%", "Ahorra 17%")}</Badge>
                       <div className="text-sm font-medium">{t("Yearly", "Anual")}</div>
-                      <div className="text-xl font-bold">$190<span className="text-xs font-normal text-muted-foreground">/yr</span></div>
+                      <div className="text-xl font-bold">{yearlyPrice.split("/")[0]}<span className="text-xs font-normal text-muted-foreground">/{yearlyPrice.split("/")[1] ?? "yr"}</span></div>
                     </button>
                   </div>
-                  <Button className="w-full" size="lg" disabled={processing} onClick={checkout}>
-                    {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                    {t("Upgrade to Ministry Pro", "Actualizar a Ministerio Pro")}
+                  <Button className="w-full" size="lg" disabled={processing || rcLoading} onClick={checkout}>
+                    {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : isNative ? <Smartphone className="h-4 w-4 mr-2" /> : null}
+                    {isNative ? t("Subscribe with Google Play", "Suscribirse con Google Play") : t("Upgrade to Ministry Pro", "Actualizar a Ministerio Pro")}
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
-                    {t("Secure checkout by Stripe. Cancel anytime.", "Pago seguro con Stripe. Cancela cuando quieras.")}
+                    {isNative
+                      ? t("Billed through Google Play. Web purchases use Stripe.", "Cobro a través de Google Play. En la web se usa Stripe.")
+                      : t("Secure checkout by Stripe. Cancel anytime.", "Pago seguro con Stripe. Cancela cuando quieras.")}
                   </p>
                 </>
               )}

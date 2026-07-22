@@ -3,9 +3,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Check, Crown, ArrowLeft, Sparkles, Zap, Loader2, Settings2 } from "lucide-react";
+import { Check, Crown, ArrowLeft, Sparkles, Zap, Loader2, Settings2, Smartphone, RefreshCw } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePremium } from "@/contexts/PremiumContext";
+import { useRevenueCat } from "@/hooks/useRevenueCat";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getStripeEnvironment } from "@/lib/stripe";
@@ -34,10 +35,12 @@ const Premium = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
   const { tier, isLoading, isDemo, refetch } = usePremium();
+  const { isNative, products, purchase, restorePurchases, isLoading: rcLoading } = useRevenueCat();
 
   const [checkoutPriceId, setCheckoutPriceId] = useState<string | null>(null);
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -58,6 +61,12 @@ const Premium = () => {
       setTimeout(() => refetch(), 4000);
     }
   }, [searchParams, setSearchParams, language, refetch]);
+
+  const getNativePrice = (priceId: string | null) => {
+    if (!isNative || !priceId) return null;
+    const p = products.find((p) => p.id === priceId);
+    return p?.priceString ?? null;
+  };
 
   const plans: Plan[] = [
     {
@@ -80,7 +89,7 @@ const Premium = () => {
       id: 'premium',
       priceId: 'hagion_premium_monthly',
       name: 'Premium',
-      price: '$9.99',
+      price: getNativePrice('hagion_premium_monthly') ?? '$9.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       icon: Sparkles,
@@ -99,7 +108,7 @@ const Premium = () => {
       id: 'premium_plus',
       priceId: 'hagion_premium_plus_monthly',
       name: 'Premium Plus',
-      price: '$15.99',
+      price: getNativePrice('hagion_premium_plus_monthly') ?? '$15.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       highlight: 'popular',
@@ -136,12 +145,27 @@ const Premium = () => {
     },
   ];
 
-  const handleSelect = (plan: Plan) => {
+  const handleSelect = async (plan: Plan) => {
     if (!user) {
       navigate('/auth?redirect=/premium');
       return;
     }
     if (!plan.priceId) return;
+
+    // Native path: use RevenueCat/Google Play Billing
+    if (isNative) {
+      const result = await purchase(plan.priceId);
+      if (result.success) {
+        toast.success(language === 'es' ? '¡Suscripción activada!' : 'Subscription activated!');
+        refetch();
+      } else if (result.error && result.error !== 'Purchase cancelled') {
+        toast.error(language === 'es' ? 'La compra falló' : 'Purchase failed', {
+          description: result.error,
+        });
+      }
+      return;
+    }
+
     // Any active paid tier → route through Stripe Billing Portal to switch
     // plans with proration; prevents creating duplicate subscriptions.
     if (tier !== 'free' && !isDemo) {
@@ -149,6 +173,20 @@ const Premium = () => {
       return;
     }
     setCheckoutPriceId(plan.priceId);
+  };
+
+  const handleRestore = async () => {
+    setRestoring(true);
+    const result = await restorePurchases();
+    if (result.success) {
+      toast.success(language === 'es' ? 'Compras restauradas' : 'Purchases restored');
+      refetch();
+    } else if (result.error && result.error !== 'Not on a native device') {
+      toast.error(language === 'es' ? 'No se pudieron restaurar las compras' : 'Could not restore purchases', {
+        description: result.error,
+      });
+    }
+    setRestoring(false);
   };
 
   const handleManageBilling = async () => {
@@ -186,7 +224,7 @@ const Premium = () => {
               {language === 'es' ? 'Planes Hagion' : 'Hagion Plans'}
             </h1>
           </div>
-          {tier !== 'free' && !isDemo && (
+          {tier !== 'free' && !isDemo && !isNative && (
             <Button variant="outline" size="sm" onClick={handleManageBilling} disabled={portalLoading}>
               {portalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Settings2 className="w-4 h-4 mr-2" />}
               {language === 'es' ? 'Facturación' : 'Billing'}
@@ -242,6 +280,11 @@ const Premium = () => {
                     {language === 'es' ? 'TU PLAN' : 'YOUR PLAN'}
                   </div>
                 )}
+                {isNative && plan.id === 'pro' && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-muted text-muted-foreground px-3 py-1 text-[10px] font-bold text-center">
+                    {language === 'es' ? 'SOLO EN WEB' : 'WEB ONLY'}
+                  </div>
+                )}
 
                 <div className="text-center mb-5 mt-3">
                   <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br ${plan.gradient} mb-3`}>
@@ -268,7 +311,7 @@ const Premium = () => {
 
                 <Button
                   size="lg"
-                  disabled={isFreeCurrent || isLoading}
+                  disabled={isFreeCurrent || isLoading || rcLoading || (isNative && plan.id === 'pro')}
                   onClick={() => handleSelect(plan)}
                   className={
                     plan.id === 'free'
@@ -283,6 +326,10 @@ const Premium = () => {
                     ? (language === 'es' ? 'Administrar' : 'Manage')
                     : plan.id === 'free'
                     ? (language === 'es' ? 'Empezar gratis' : 'Get started')
+                    : isNative && plan.id !== 'pro'
+                    ? (language === 'es' ? 'Suscribirse con Google Play' : 'Subscribe with Google Play')
+                    : isNative && plan.id === 'pro'
+                    ? (language === 'es' ? 'Solo disponible en web' : 'Available on web only')
                     : (language === 'es' ? 'Comenzar prueba' : 'Start trial')}
                 </Button>
               </Card>
@@ -290,17 +337,35 @@ const Premium = () => {
           })}
         </div>
 
-        <div className="text-center text-xs text-muted-foreground space-y-1 max-w-2xl mx-auto">
+        <div className="text-center text-xs text-muted-foreground space-y-2 max-w-2xl mx-auto">
           <p>
-            {language === 'es'
-              ? 'Facturado mensualmente después de la prueba. Cancela en cualquier momento; el cambio surte efecto al final del ciclo de facturación.'
-              : 'Billed monthly after the trial. Cancel anytime; cancellation takes effect at the end of the billing period.'}
+            {isNative
+              ? (language === 'es'
+                  ? 'Las suscripciones se facturan y gestionan a través de Google Play. Puedes cancelar desde tu cuenta de Google Play.'
+                  : 'Subscriptions are billed and managed through Google Play. You can cancel from your Google Play account.')
+              : (language === 'es'
+                  ? 'Facturado mensualmente después de la prueba. Cancela en cualquier momento; el cambio surte efecto al final del ciclo de facturación.'
+                  : 'Billed monthly after the trial. Cancel anytime; cancellation takes effect at the end of the billing period.')}
           </p>
-          <p>
-            {language === 'es'
-              ? 'Impuestos calculados automáticamente. Sin reembolsos después de la facturación.'
-              : 'Taxes calculated automatically. No refunds after billing.'}
-          </p>
+          {!isNative && (
+            <p>
+              {language === 'es'
+                ? 'Impuestos calculados automáticamente. Sin reembolsos después de la facturación.'
+                : 'Taxes calculated automatically. No refunds after billing.'}
+            </p>
+          )}
+          {isNative && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRestore}
+              disabled={restoring}
+              className="mx-auto"
+            >
+              {restoring ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+              {language === 'es' ? 'Restaurar compras' : 'Restore purchases'}
+            </Button>
+          )}
           <p className="pt-2 text-[11px] text-white/40">
             <a href="/terms" className="underline hover:text-white/70">
               {language === 'es' ? 'Términos' : 'Terms'}

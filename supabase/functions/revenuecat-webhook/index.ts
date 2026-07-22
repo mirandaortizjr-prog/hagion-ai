@@ -65,6 +65,48 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const nowIso = new Date().toISOString()
+
+    // Premium / Premium+ subscriptions via RevenueCat
+    if (productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly') {
+      const periodEnd = event.expiration_at_ms
+        ? new Date(event.expiration_at_ms).toISOString()
+        : null
+
+      if (eventType === 'INITIAL_PURCHASE' || eventType === 'RENEWAL' || eventType === 'UNCANCELLATION') {
+        const purchaseToken = transactionId ?? event.original_transaction_id ?? `rc_${event.event_id ?? Date.now()}`
+
+        const row = {
+          user_id: userId,
+          product_id: productId,
+          purchase_token: purchaseToken,
+          order_id: event.transaction_id ?? null,
+          status: 'active',
+          expiry_time: periodEnd,
+          start_time: nowIso,
+          auto_renewing: true,
+          acknowledged: true,
+          last_verified_at: nowIso,
+          raw_response: event as any,
+        }
+
+        const { error: upsertError } = await admin.from('google_play_purchases').upsert(row, {
+          onConflict: 'purchase_token',
+          ignoreDuplicates: false,
+        })
+
+        if (upsertError) {
+          console.error('google_play_purchases upsert error:', upsertError)
+        }
+      } else if (eventType === 'CANCELLATION' || eventType === 'EXPIRATION' || eventType === 'BILLING_ISSUE') {
+        await admin.from('google_play_purchases').update({
+          status: eventType === 'EXPIRATION' ? 'expired' : 'canceled',
+          expiry_time: periodEnd,
+          last_verified_at: nowIso,
+        }).eq('user_id', userId).eq('product_id', productId)
+      }
+    }
+
     // Ministry Pro subscription
     if (productId === 'hagion_ministry_monthly' || productId === 'hagion_ministry_yearly') {
       const attrs = event.subscriber_attributes ?? {}
