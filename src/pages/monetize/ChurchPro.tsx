@@ -157,20 +157,22 @@ export default function ChurchPro() {
                   <div className="grid grid-cols-2 gap-2">
                     <button onClick={() => setPlan("monthly")} className={`rounded-lg border p-3 text-left ${plan==="monthly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <div className="text-sm font-medium">{t("Monthly", "Mensual")}</div>
-                      <div className="text-xl font-bold">$19<span className="text-xs font-normal text-muted-foreground">/mo</span></div>
+                      <div className="text-xl font-bold">{monthlyPrice.replace("/", "<")}</div>
                     </button>
                     <button onClick={() => setPlan("yearly")} className={`rounded-lg border p-3 text-left relative ${plan==="yearly" ? "border-primary bg-primary/10" : "border-border"}`}>
                       <Badge className="absolute -top-2 right-2">{t("Save 17%", "Ahorra 17%")}</Badge>
                       <div className="text-sm font-medium">{t("Yearly", "Anual")}</div>
-                      <div className="text-xl font-bold">$190<span className="text-xs font-normal text-muted-foreground">/yr</span></div>
+                      <div className="text-xl font-bold">{yearlyPrice.replace("/", "<")}</div>
                     </button>
                   </div>
-                  <Button className="w-full" size="lg" disabled={processing} onClick={checkout}>
-                    {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                    {t("Upgrade to Ministry Pro", "Actualizar a Ministerio Pro")}
+                  <Button className="w-full" size="lg" disabled={processing || rcLoading} onClick={checkout}>
+                    {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : isNative ? <Smartphone className="h-4 w-4 mr-2" /> : null}
+                    {isNative ? t("Subscribe with Google Play", "Suscribirse con Google Play") : t("Upgrade to Ministry Pro", "Actualizar a Ministerio Pro")}
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">
-                    {t("Secure checkout by Stripe. Cancel anytime.", "Pago seguro con Stripe. Cancela cuando quieras.")}
+                    {isNative
+                      ? t("Billed through Google Play. Web purchases use Stripe.", "Cobro a través de Google Play. En la web se usa Stripe.")
+                      : t("Secure checkout by Stripe. Cancel anytime.", "Pago seguro con Stripe. Cancela cuando quieras.")}
                   </p>
                 </>
               )}
