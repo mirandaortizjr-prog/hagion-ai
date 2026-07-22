@@ -306,7 +306,7 @@ const Premium = () => {
 
                 <Button
                   size="lg"
-                  disabled={isFreeCurrent || isLoading}
+                  disabled={isFreeCurrent || isLoading || rcLoading}
                   onClick={() => handleSelect(plan)}
                   className={
                     plan.id === 'free'
@@ -321,6 +321,8 @@ const Premium = () => {
                     ? (language === 'es' ? 'Administrar' : 'Manage')
                     : plan.id === 'free'
                     ? (language === 'es' ? 'Empezar gratis' : 'Get started')
+                    : isNative
+                    ? (language === 'es' ? 'Suscribirse con Google Play' : 'Subscribe with Google Play')
                     : (language === 'es' ? 'Comenzar prueba' : 'Start trial')}
                 </Button>
               </Card>
