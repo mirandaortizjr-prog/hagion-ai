@@ -18,9 +18,12 @@ export type RevenueCatProduct = {
   currencyCode: string;
 };
 
-export type RevenueCatPurchaseResult =
-  | { success: true; productId: string; transactionId?: string }
-  | { success: false; error: string };
+export type RevenueCatPurchaseResult = {
+  success: boolean;
+  productId?: string;
+  transactionId?: string;
+  error?: string;
+};
 
 interface RevenueCatState {
   isInitialized: boolean;
