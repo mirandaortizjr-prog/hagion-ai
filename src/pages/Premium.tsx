@@ -145,12 +145,27 @@ const Premium = () => {
     },
   ];
 
-  const handleSelect = (plan: Plan) => {
+  const handleSelect = async (plan: Plan) => {
     if (!user) {
       navigate('/auth?redirect=/premium');
       return;
     }
     if (!plan.priceId) return;
+
+    // Native path: use RevenueCat/Google Play Billing
+    if (isNative) {
+      const result = await purchase(plan.priceId);
+      if (result.success) {
+        toast.success(language === 'es' ? '¡Suscripción activada!' : 'Subscription activated!');
+        refetch();
+      } else if (result.error && result.error !== 'Purchase cancelled') {
+        toast.error(language === 'es' ? 'La compra falló' : 'Purchase failed', {
+          description: result.error,
+        });
+      }
+      return;
+    }
+
     // Any active paid tier → route through Stripe Billing Portal to switch
     // plans with proration; prevents creating duplicate subscriptions.
     if (tier !== 'free' && !isDemo) {
@@ -158,6 +173,20 @@ const Premium = () => {
       return;
     }
     setCheckoutPriceId(plan.priceId);
+  };
+
+  const handleRestore = async () => {
+    setRestoring(true);
+    const result = await restorePurchases();
+    if (result.success) {
+      toast.success(language === 'es' ? 'Compras restauradas' : 'Purchases restored');
+      refetch();
+    } else if (result.error && result.error !== 'Not on a native device') {
+      toast.error(language === 'es' ? 'No se pudieron restaurar las compras' : 'Could not restore purchases', {
+        description: result.error,
+      });
+    }
+    setRestoring(false);
   };
 
   const handleManageBilling = async () => {
