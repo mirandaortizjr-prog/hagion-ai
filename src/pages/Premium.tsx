@@ -224,7 +224,7 @@ const Premium = () => {
               {language === 'es' ? 'Planes Hagion' : 'Hagion Plans'}
             </h1>
           </div>
-          {tier !== 'free' && !isDemo && (
+          {tier !== 'free' && !isDemo && !isNative && (
             <Button variant="outline" size="sm" onClick={handleManageBilling} disabled={portalLoading}>
               {portalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Settings2 className="w-4 h-4 mr-2" />}
               {language === 'es' ? 'Facturación' : 'Billing'}
