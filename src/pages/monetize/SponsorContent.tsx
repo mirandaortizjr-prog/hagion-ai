@@ -220,15 +220,17 @@ export default function SponsorContent() {
 
             <div className="rounded-lg bg-muted p-3 flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t("Estimated total", "Total estimado")}</span>
-              <span className="text-xl font-bold">${estimate}</span>
+              <span className="text-xl font-bold">{displayedPrice}</span>
             </div>
 
-            <Button className="w-full" size="lg" disabled={processing || !targetId} onClick={checkout}>
-              {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              {t("Continue to payment", "Continuar al pago")}
+            <Button className="w-full" size="lg" disabled={processing || !targetId || rcLoading} onClick={checkout}>
+              {processing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : isNative ? <Smartphone className="h-4 w-4 mr-2" /> : null}
+              {isNative ? t("Pay with Google Play", "Pagar con Google Play") : t("Continue to payment", "Continuar al pago")}
             </Button>
             <p className="text-xs text-muted-foreground text-center">
-              {t("Secure checkout by Stripe.", "Pago seguro con Stripe.")}
+              {isNative
+                ? t("Billed through Google Play. Web purchases use Stripe.", "Cobro a través de Google Play. En la web se usa Stripe.")
+                : t("Secure checkout by Stripe.", "Pago seguro con Stripe.")}
             </p>
           </CardContent>
         </Card>
