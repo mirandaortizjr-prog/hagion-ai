@@ -62,6 +62,12 @@ const Premium = () => {
     }
   }, [searchParams, setSearchParams, language, refetch]);
 
+  const getNativePrice = (priceId: string | null) => {
+    if (!isNative || !priceId) return null;
+    const p = products.find((p) => p.id === priceId);
+    return p?.priceString ?? null;
+  };
+
   const plans: Plan[] = [
     {
       id: 'free',
@@ -83,7 +89,7 @@ const Premium = () => {
       id: 'premium',
       priceId: 'hagion_premium_monthly',
       name: 'Premium',
-      price: '$9.99',
+      price: getNativePrice('hagion_premium_monthly') ?? '$9.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       icon: Sparkles,
@@ -102,7 +108,7 @@ const Premium = () => {
       id: 'premium_plus',
       priceId: 'hagion_premium_plus_monthly',
       name: 'Premium Plus',
-      price: '$15.99',
+      price: getNativePrice('hagion_premium_plus_monthly') ?? '$15.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       highlight: 'popular',
