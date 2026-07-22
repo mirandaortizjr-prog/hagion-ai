@@ -35,10 +35,12 @@ const Premium = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { language } = useLanguage();
   const { tier, isLoading, isDemo, refetch } = usePremium();
+  const { isNative, products, purchase, restorePurchases, isLoading: rcLoading } = useRevenueCat();
 
   const [checkoutPriceId, setCheckoutPriceId] = useState<string | null>(null);
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
