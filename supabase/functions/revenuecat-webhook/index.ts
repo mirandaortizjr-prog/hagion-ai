@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
     const nowIso = new Date().toISOString()
 
     // Premium / Premium+ subscriptions via RevenueCat
-    if (productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly') {
+    if (productId === 'hagion_premium_monthly' || productId === 'hagion_premium_plus_monthly' || productId === 'hagion_pro_monthly') {
       const periodEnd = event.expiration_at_ms
         ? new Date(event.expiration_at_ms).toISOString()
         : null

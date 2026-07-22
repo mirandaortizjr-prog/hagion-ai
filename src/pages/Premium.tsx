@@ -127,7 +127,7 @@ const Premium = () => {
       id: 'pro',
       priceId: 'hagion_pro_monthly',
       name: 'Pro',
-      price: '$39.99',
+      price: getNativePrice('hagion_pro_monthly') ?? '$39.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       highlight: 'best',
@@ -280,11 +280,6 @@ const Premium = () => {
                     {language === 'es' ? 'TU PLAN' : 'YOUR PLAN'}
                   </div>
                 )}
-                {isNative && plan.id === 'pro' && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-muted text-muted-foreground px-3 py-1 text-[10px] font-bold text-center">
-                    {language === 'es' ? 'SOLO EN WEB' : 'WEB ONLY'}
-                  </div>
-                )}
 
                 <div className="text-center mb-5 mt-3">
                   <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br ${plan.gradient} mb-3`}>
@@ -311,7 +306,7 @@ const Premium = () => {
 
                 <Button
                   size="lg"
-                  disabled={isFreeCurrent || isLoading || rcLoading || (isNative && plan.id === 'pro')}
+                  disabled={isFreeCurrent || isLoading || rcLoading}
                   onClick={() => handleSelect(plan)}
                   className={
                     plan.id === 'free'
@@ -326,10 +321,8 @@ const Premium = () => {
                     ? (language === 'es' ? 'Administrar' : 'Manage')
                     : plan.id === 'free'
                     ? (language === 'es' ? 'Empezar gratis' : 'Get started')
-                    : isNative && plan.id !== 'pro'
+                    : isNative
                     ? (language === 'es' ? 'Suscribirse con Google Play' : 'Subscribe with Google Play')
-                    : isNative && plan.id === 'pro'
-                    ? (language === 'es' ? 'Solo disponible en web' : 'Available on web only')
                     : (language === 'es' ? 'Comenzar prueba' : 'Start trial')}
                 </Button>
               </Card>
