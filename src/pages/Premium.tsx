@@ -127,7 +127,7 @@ const Premium = () => {
       id: 'pro',
       priceId: 'hagion_pro_monthly',
       name: 'Pro',
-      price: '$39.99',
+      price: getNativePrice('hagion_pro_monthly') ?? '$39.99',
       cadence: language === 'es' ? '/mes' : '/month',
       trial: language === 'es' ? '3 días gratis' : '3-day free trial',
       highlight: 'best',
