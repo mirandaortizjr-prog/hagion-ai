@@ -141,10 +141,7 @@ export function useRevenueCat() {
 
         let result: any;
         if (target) {
-          result = await Purchases.purchasePackage({
-            identifier: target.identifier,
-            offeringIdentifier: target.offeringIdentifier,
-          });
+          result = await Purchases.purchasePackage({ aPackage: target });
         } else {
           // Fallback for when offerings are empty or product not in current offering
           result = await Purchases.purchaseStoreProduct({
@@ -152,9 +149,7 @@ export function useRevenueCat() {
           });
         }
 
-        const customerInfo = result.customerInfo;
         const transaction = result.transaction;
-        const entitlements = customerInfo?.entitlements?.all ?? {};
 
         console.log("RevenueCat purchase success:", productId, transaction?.transactionIdentifier);
         return {
