@@ -756,6 +756,7 @@ export default function PrayerWall() {
 
 
       <PremiumNav />
+      <AccountSwitcher open={switcherOpen} onOpenChange={setSwitcherOpen} currentEmail={user?.email} />
     </div>
   );
 }
