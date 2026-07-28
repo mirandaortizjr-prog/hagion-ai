@@ -17,13 +17,14 @@ const Auth = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
+  const prefillEmail = searchParams.get("email") || "";
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -53,7 +54,24 @@ const Auth = () => {
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) goAfterAuth();
+      if (session) {
+        try {
+          const em = session.user?.email;
+          if (em) {
+            const raw = localStorage.getItem("hagion_recent_accounts");
+            const list: Array<{ email: string; name?: string; avatar?: string; ts: number }> = raw ? JSON.parse(raw) : [];
+            const filtered = list.filter((a) => a.email.toLowerCase() !== em.toLowerCase());
+            filtered.unshift({
+              email: em,
+              name: (session.user?.user_metadata as any)?.name,
+              avatar: (session.user?.user_metadata as any)?.avatar_url,
+              ts: Date.now(),
+            });
+            localStorage.setItem("hagion_recent_accounts", JSON.stringify(filtered.slice(0, 5)));
+          }
+        } catch {}
+        goAfterAuth();
+      }
     });
 
     // THEN check for existing session
