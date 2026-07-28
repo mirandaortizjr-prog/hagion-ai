@@ -22,6 +22,7 @@ import {
   Loader2,
   ImagePlus,
   Settings,
+  UserCog,
   Video,
   
   Plus,
