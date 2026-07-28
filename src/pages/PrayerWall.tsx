@@ -135,6 +135,7 @@ export default function PrayerWall() {
   const { language } = useLanguage();
   const t = (en: string, es: string) => (language === "es" ? es : en);
   const [user, setUser] = useState<any>(null);
+  const [switcherOpen, setSwitcherOpen] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
   const [reels, setReels] = useState<Reel[]>([]);
   const [teachings, setTeachings] = useState<Teaching[]>([]);
