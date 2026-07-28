@@ -42,6 +42,7 @@ import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { AccountSwitcher } from "@/components/community/AccountSwitcher";
 
 interface Post {
   id: string;
