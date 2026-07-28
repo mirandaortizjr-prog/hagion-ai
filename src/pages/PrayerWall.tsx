@@ -494,6 +494,13 @@ export default function PrayerWall() {
             >
               <Settings className="w-4 h-4" />
             </button>
+            <button
+              onClick={() => setSwitcherOpen(true)}
+              aria-label={t("Switch account", "Cambiar de cuenta")}
+              className="absolute right-[3.25rem] sm:right-[3.75rem] top-3 z-20 w-9 h-9 rounded-full bg-white/[0.08] border border-white/15 backdrop-blur-xl text-white/90 hover:text-white hover:bg-white/[0.14] transition flex items-center justify-center shadow-[0_6px_20px_-4px_rgba(0,0,0,0.6)]"
+            >
+              <UserCog className="w-4 h-4" />
+            </button>
             <div
               className="block w-full h-[252px] sm:h-[288px] border-y border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] overflow-hidden relative"
             >
