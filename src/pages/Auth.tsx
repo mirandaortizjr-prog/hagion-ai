@@ -54,7 +54,24 @@ const Auth = () => {
 
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) goAfterAuth();
+      if (session) {
+        try {
+          const em = session.user?.email;
+          if (em) {
+            const raw = localStorage.getItem("hagion_recent_accounts");
+            const list: Array<{ email: string; name?: string; avatar?: string; ts: number }> = raw ? JSON.parse(raw) : [];
+            const filtered = list.filter((a) => a.email.toLowerCase() !== em.toLowerCase());
+            filtered.unshift({
+              email: em,
+              name: (session.user?.user_metadata as any)?.name,
+              avatar: (session.user?.user_metadata as any)?.avatar_url,
+              ts: Date.now(),
+            });
+            localStorage.setItem("hagion_recent_accounts", JSON.stringify(filtered.slice(0, 5)));
+          }
+        } catch {}
+        goAfterAuth();
+      }
     });
 
     // THEN check for existing session
