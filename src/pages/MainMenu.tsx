@@ -18,6 +18,7 @@ import { usePremium } from "@/contexts/PremiumContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { isNative } from "@/hooks/useNativeFeatures";
 import elohimSymbol from "@/assets/elohim-symbol.png";
 import christCross from "@/assets/christ-cross.png";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
@@ -494,7 +495,7 @@ const MainMenu = () => {
 
   return (
     <SidebarProvider>
-      <div className="h-screen flex w-full overflow-hidden">
+      <div className={cn("h-screen flex w-full overflow-hidden", isNative && "native-app")}>
         <AppSidebar />
         <div className="flex-1 flex flex-col min-h-0">
           {/* Header */}
@@ -511,7 +512,7 @@ const MainMenu = () => {
                     "radial-gradient(ellipse at center, hsl(210 90% 60% / 0.55) 0%, hsl(210 90% 55% / 0.25) 45%, transparent 75%)",
                 }}
               />
-              <img src={hagionAiTitle} alt="Hagion AI" className="relative h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_16px_hsl(210_90%_60%/0.7)]" />
+              <img src={hagionAiTitle} alt="Hagion AI" loading="lazy" decoding="async" width={200} height={40} className="relative h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_16px_hsl(210_90%_60%/0.7)]" />
             </div>
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
               <Settings className="w-6 h-6" />
@@ -563,7 +564,7 @@ const MainMenu = () => {
 
       {/* Grid of Assistants — fits viewport, no scroll on Assistants/Divine */}
       <div className={cn(
-        "flex-1 px-2 sm:px-4 min-h-0",
+        "flex-1 px-2 sm:px-4 min-h-0 native-reduce-shadow",
         activeTab === "hagion-university" ? "overflow-auto pt-8 sm:pt-10 pb-4" :
         activeTab === "divine" ? "overflow-auto pt-8 sm:pt-10 pb-4" :
         "overflow-hidden flex items-center justify-center py-2"
@@ -590,12 +591,16 @@ const MainMenu = () => {
                 >
                   <div className="relative">
                     <div className="relative w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-white/40 via-primary/30 to-accent/40 shadow-[0_10px_30px_-8px_hsl(var(--primary)/0.55),0_0_0_1px_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_40px_-10px_hsl(var(--primary)/0.75)]">
-                      <div className="relative w-full h-full rounded-full bg-black/70 backdrop-blur-xl flex items-center justify-center overflow-hidden ring-1 ring-white/20">
+                      <div className="relative w-full h-full rounded-full bg-black/70 backdrop-blur-xl native-disable-backdrop flex items-center justify-center overflow-hidden ring-1 ring-white/20">
                         {/* Inner top highlight for glass feel */}
                         <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/25 to-transparent blur-sm" />
                         <img
                           src={guide.image}
                           alt={guide.name}
+                          loading="lazy"
+                          decoding="async"
+                          width={84}
+                          height={84}
                           className="relative w-[88%] h-[88%] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                         />
                       </div>
@@ -639,13 +644,16 @@ const MainMenu = () => {
                 aria-label={t('plan_of_salvation')}
               >
                 <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
-                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl native-disable-backdrop">
                     <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                     <img
                       src={planOfSalvation}
                       alt={t('plan_of_salvation')}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
+                      width={84}
+                      height={84}
                     />
                   </div>
                 </div>
@@ -662,15 +670,16 @@ const MainMenu = () => {
                 aria-label="Prayer & Testimony Wall"
               >
                 <div className="w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] transition-transform duration-300 group-hover:scale-105 group-active:scale-95 group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]">
-                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl native-disable-backdrop">
                     <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                     <img
                       src={prayerWallIcon}
                       alt="Prayer & Testimony Wall"
                       className="w-full h-full object-cover"
                       loading="lazy"
-                      width={1024}
-                      height={1024}
+                      decoding="async"
+                      width={84}
+                      height={84}
                     />
                   </div>
                 </div>
@@ -785,11 +794,15 @@ const MainMenu = () => {
                       : "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]"
                   )}
                 >
-                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl native-disable-backdrop">
                     <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                     <img
                       src={assistant.image}
                       alt={assistant.name}
+                      loading="lazy"
+                      decoding="async"
+                      width={84}
+                      height={84}
                       className="w-full h-full object-cover"
                     />
                     <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_-12px_24px_-8px_rgba(0,0,0,0.55),inset_0_2px_6px_rgba(255,255,255,0.15)]" />
@@ -951,7 +964,7 @@ const MainMenu = () => {
                           "shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]"
                         )}
                       >
-                        <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                        <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl native-disable-backdrop">
                           <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                           {item.image ? (
                             <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
