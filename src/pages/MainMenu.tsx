@@ -495,7 +495,7 @@ const MainMenu = () => {
 
   return (
     <SidebarProvider>
-      <div className="h-screen flex w-full overflow-hidden">
+      <div className={cn("h-screen flex w-full overflow-hidden", isNative && "native-app")}>
         <AppSidebar />
         <div className="flex-1 flex flex-col min-h-0">
           {/* Header */}
