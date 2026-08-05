@@ -597,6 +597,10 @@ const MainMenu = () => {
                         <img
                           src={guide.image}
                           alt={guide.name}
+                          loading="lazy"
+                          decoding="async"
+                          width={84}
+                          height={84}
                           className="relative w-[88%] h-[88%] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
                         />
                       </div>
