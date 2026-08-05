@@ -786,7 +786,7 @@ const MainMenu = () => {
                       : "bg-gradient-to-br from-[#7DD3FC] via-[#3BB4F2] to-[#0052D4] shadow-[0_8px_22px_-8px_hsl(var(--primary)/0.55)] group-hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.75)]"
                   )}
                 >
-                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
+                  <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl native-disable-backdrop">
                     <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                     <img
                       src={assistant.image}
