@@ -591,7 +591,7 @@ const MainMenu = () => {
                 >
                   <div className="relative">
                     <div className="relative w-[clamp(56px,18vw,84px)] h-[clamp(56px,18vw,84px)] rounded-full p-[2px] bg-gradient-to-br from-white/40 via-primary/30 to-accent/40 shadow-[0_10px_30px_-8px_hsl(var(--primary)/0.55),0_0_0_1px_rgba(255,255,255,0.08)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_40px_-10px_hsl(var(--primary)/0.75)]">
-                      <div className="relative w-full h-full rounded-full bg-black/70 backdrop-blur-xl flex items-center justify-center overflow-hidden ring-1 ring-white/20">
+                      <div className="relative w-full h-full rounded-full bg-black/70 backdrop-blur-xl native-disable-backdrop flex items-center justify-center overflow-hidden ring-1 ring-white/20">
                         {/* Inner top highlight for glass feel */}
                         <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/25 to-transparent blur-sm" />
                         <img
