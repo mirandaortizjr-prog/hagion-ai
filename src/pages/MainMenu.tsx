@@ -564,7 +564,7 @@ const MainMenu = () => {
 
       {/* Grid of Assistants — fits viewport, no scroll on Assistants/Divine */}
       <div className={cn(
-        "flex-1 px-2 sm:px-4 min-h-0",
+        "flex-1 px-2 sm:px-4 min-h-0 native-reduce-shadow",
         activeTab === "hagion-university" ? "overflow-auto pt-8 sm:pt-10 pb-4" :
         activeTab === "divine" ? "overflow-auto pt-8 sm:pt-10 pb-4" :
         "overflow-hidden flex items-center justify-center py-2"
