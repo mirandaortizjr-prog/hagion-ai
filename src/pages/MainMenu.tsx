@@ -651,6 +651,9 @@ const MainMenu = () => {
                       alt={t('plan_of_salvation')}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
+                      width={84}
+                      height={84}
                     />
                   </div>
                 </div>
