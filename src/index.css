@@ -136,9 +136,6 @@ All colors MUST be HSL.
   .native-app .native-safe-gradient {
     background: hsl(var(--background)) !important;
   }
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-border: 205 37% 78%;
-  }
 }
 
 @layer base {
