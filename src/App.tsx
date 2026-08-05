@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -116,6 +117,7 @@ const App = () => (
           <Sonner />
           <OfflineIndicator />
           <BrowserRouter>
+            <ErrorBoundary>
             <NativeAppWrapper>
             <OnboardingGuard>
             <PageTransition>
@@ -200,6 +202,7 @@ const App = () => (
           </PageTransition>
           </OnboardingGuard>
           </NativeAppWrapper>
+          </ErrorBoundary>
         </BrowserRouter>
         </TooltipProvider>
       </PremiumProvider>
