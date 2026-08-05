@@ -677,8 +677,9 @@ const MainMenu = () => {
                       alt="Prayer & Testimony Wall"
                       className="w-full h-full object-cover"
                       loading="lazy"
-                      width={1024}
-                      height={1024}
+                      decoding="async"
+                      width={84}
+                      height={84}
                     />
                   </div>
                 </div>
