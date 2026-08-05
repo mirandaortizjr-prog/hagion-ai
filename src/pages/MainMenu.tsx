@@ -18,6 +18,7 @@ import { usePremium } from "@/contexts/PremiumContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { isNative } from "@/hooks/useNativeFeatures";
 import elohimSymbol from "@/assets/elohim-symbol.png";
 import christCross from "@/assets/christ-cross.png";
 import holySpirItFire from "@/assets/holy-spirit-fire.png";
