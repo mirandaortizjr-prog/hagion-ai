@@ -799,6 +799,10 @@ const MainMenu = () => {
                     <img
                       src={assistant.image}
                       alt={assistant.name}
+                      loading="lazy"
+                      decoding="async"
+                      width={84}
+                      height={84}
                       className="w-full h-full object-cover"
                     />
                     <span className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_-12px_24px_-8px_rgba(0,0,0,0.55),inset_0_2px_6px_rgba(255,255,255,0.15)]" />
