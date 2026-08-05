@@ -512,7 +512,7 @@ const MainMenu = () => {
                     "radial-gradient(ellipse at center, hsl(210 90% 60% / 0.55) 0%, hsl(210 90% 55% / 0.25) 45%, transparent 75%)",
                 }}
               />
-              <img src={hagionAiTitle} alt="Hagion AI" className="relative h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_16px_hsl(210_90%_60%/0.7)]" />
+              <img src={hagionAiTitle} alt="Hagion AI" loading="lazy" decoding="async" width={200} height={40} className="relative h-8 sm:h-10 w-auto object-contain drop-shadow-[0_0_16px_hsl(210_90%_60%/0.7)]" />
             </div>
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
               <Settings className="w-6 h-6" />
