@@ -857,7 +857,7 @@ const MainMenu = () => {
                       className={`w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-1 ring-white/15 shadow-lg ${item.color}`}
                     >
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-full" />
+                        <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-full" />
                       ) : item.icon && (
                         <item.icon className="w-10 h-10 text-white" />
                       )}
@@ -898,7 +898,7 @@ const MainMenu = () => {
                       className={`w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-1 ring-white/15 shadow-lg ${item.color}`}
                     >
                       {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-full" />
+                        <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-full" />
                       ) : item.icon && (
                         <item.icon className="w-10 h-10 text-white" />
                       )}
@@ -954,7 +954,7 @@ const MainMenu = () => {
                         <div className="relative w-full h-full rounded-full overflow-hidden ring-1 ring-white/25 bg-black/40 backdrop-blur-xl">
                           <span className="pointer-events-none absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/30 to-transparent blur-sm z-10" />
                           {item.image ? (
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                           ) : Icon ? (
                             <div className="w-full h-full flex items-center justify-center">
                               <Icon className="w-8 h-8 text-white" />
